@@ -1,0 +1,35 @@
+#ts_system_code  
+
+
+
+#ts_function  
+
+
+#增加销售大单的备注字段长度
+
+#重建维修大单表
+
+#update
+update TD_STOCK_INFO set SKU_TYPE = null;
+update TD_STOCK_INFO set SKU_TYPE = 'S' where request_id is not null;
+UPDATE td_stock_info SET SKU_type='A' where SKU_type is null;
+UPDATE td_stock_flow SET SKU_type='A' where SKU_type is null;
+update ts_part_info set part_type='P';
+update TD_SALES_DETAIL set WARRANTY_TYPE='I' where order_type='N';
+update TD_SALES_DETAIL set order_type='S' where order_type='N';
+UPDATE td_asn SET asn_type='A' where asn_type is null;
+
+#新表
+TD_SERVICE_FEE_INFO
+TD_REPAIR_PARTS_INFO
+td_stock_tools_info
+ts_iris_code
+TD_REPAIR_IRIS_INFO
+
+#新字段
+ts_part_info.part_type
+TD_SALES_DETAIL.WARRANTY_TYPE	default='O'
+td_sales_fee.PAY_VARIETY
+td_asn.asn_type					default='A'
+td_service_status.CREATE_BY
+td_po.WARRANTY_TYPE				default='O'
