@@ -1,0 +1,1663 @@
+
+/*默认BODY样式*/
+body
+{
+	font-family: verdana;
+    font-size: 9pt;
+	color:#001B3A;
+    SCROLLBAR-FACE-COLOR: #f6f6f6;
+	SCROLLBAR-HIGHLIGHT-COLOR: #ffffff; 
+	SCROLLBAR-SHADOW-COLOR: #cccccc; 
+	SCROLLBAR-3DLIGHT-COLOR: #cccccc; 
+	SCROLLBAR-ARROW-COLOR: #330000; 
+	SCROLLBAR-TRACK-COLOR: #f6f6f6; 
+	SCROLLBAR-DARKSHADOW-COLOR: #ffffff;
+	
+}
+
+/**默认table样式*/
+table
+{
+	font-family: verdana;
+	font-size: 9pt;
+}
+
+/**默认div样式*/
+div
+{
+   	scrollbar-3dlight-color:#C3D3EA;
+	scrollbar-arrow-color:#3672b6;
+	scrollbar-base-color:#cccccc;
+	scrollbar-darkshadow-color:white;
+	scrollbar-face-color:#F6F9FE;
+	scrollbar-highlight-color:white;
+	scrollbar-shadow-color:#C3D3EA;
+	/***  added by jdh at 20040210 ***/
+	scrollbar-track-color :#eff4fb;
+	/***
+	SCROLLBAR-FACE-COLOR: #D4E2F6;
+	SCROLLBAR-HIGHLIGHT-COLOR: #3672B6; 
+	SCROLLBAR-SHADOW-COLOR: #3672B6; 
+	SCROLLBAR-3DLIGHT-COLOR: #e9e9e9; 
+	SCROLLBAR-ARROW-COLOR: dimgray; 
+	SCROLLBAR-TRACK-COLOR: #eff4fb; 
+	SCROLLBAR-DARKSHADOW-COLOR: #e9e9e9;
+	***/
+}
+
+/**默认连接样式*/
+a
+{
+	/**color: #A30000;**/
+	text-decoration: none;
+}
+/**默认输入框样式*/
+input{
+	margin-top:0px;
+	margin-down:0px;
+    color:#001B3A;
+}
+/**默认td样式*/
+td{
+	padding:0px;
+}
+/** added by jdh at 20040211 ”更多“字体样式**/
+.more{
+	font-size: 9pt;
+}
+/** end added **/
+/*********************begin 颜色样式***********/
+.color{
+	color:#003492;
+}
+/*********************begin 模板页面内容区域(输入区)div样式***********/
+.contentdiv{
+	width:100%;
+	height:100%;
+	position:;
+	padding:10px 10px 0px 10px;
+	overflow:auto;
+	border:0px solid black;
+}
+/******  下拉框的div样式 ********/
+.dropdownboxdiv{
+	/***border-style: inset; ***/
+	border-width: 0px; 
+	background-color: white; 
+	padding: 0px; 
+	overflow-X: hidden; 
+	position: absolute; 
+	visibility: hidden; 
+	filter: blendTrans(duration=0.0001); 
+	z-index: 10000;
+}
+
+/*********************begin select样式***********/
+select.select{
+	font-family: verdana;
+	font-size: 9pt;
+	
+	HEIGHT: 70px;
+}
+/*********************begin copyright样式***********/
+.copyright{
+	color:#12559B;
+	text-align:center;
+}
+/*********************begin 模板通用的body样式***********/
+body.common-body{
+	margin-bottom:0px;
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+}
+
+/*********************select模板通用的div样式***********/
+div.selectDiv{
+	font-family: verdana;
+	font-size: 9pt;
+	border: darkgray 1px solid;
+	overflow:auto;
+	SCROLLBAR-FACE-COLOR: #f6f6f6;
+	SCROLLBAR-HIGHLIGHT-COLOR: #ffffff; 
+	SCROLLBAR-SHADOW-COLOR: #cccccc; 
+	SCROLLBAR-3DLIGHT-COLOR: #cccccc; 
+	SCROLLBAR-ARROW-COLOR: #330000; 
+	SCROLLBAR-TRACK-COLOR: #f6f6f6; 
+	SCROLLBAR-DARKSHADOW-COLOR: #ffffff;
+}
+
+
+/*********************begin 模板通用的table样式***********/
+table.common-table{
+	width:100%;
+	height:100%;
+	border:0px;
+	border-collapse:collapse;
+}
+table.common-table #tabarea{
+	height:17px;
+}
+table.common-table #inputarea{
+	
+}
+table.common-table #notearea{
+	height:35px;
+}
+table.common-table #operatearea{
+	height:22px;
+}
+table.common-table #datapilot{
+	height:20px;
+}
+table.common-table #subtabarea{
+	height:18px;
+	background-color:#D5EAFD;
+	text-align:left;
+	color:#000066;
+	padding:0px 50px 0px 5px;
+}
+/*********************begin 条件table样式***********/
+table.condition-table{
+	width:98%;
+	border:1px solid #C3D3EA;
+	height:30px;
+	
+	background:#F6F9FE;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+/** added by jdh at 20040211 **/
+table.condition-table #querybutton{
+	BACKGROUND: URL("images/testimg/template/delve.gif") no-repeat center;
+	width:20px;
+	cursor:hand;
+}
+.otherbutton{
+	BACKGROUND: URL("images/testimg/template/button1.gif") no-repeat center;
+	height: 18px;
+	cursor:hand;
+	border: 1px solid #4D87C8;
+}
+/** end added **/
+/*********************begin tab页面body样式***********/
+body.tabbody{
+	margin-bottom:0px;
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	/*text-align:center;*/
+	border-collapse:collapse；
+}
+/*********************begin 便签头区域的table样式***********/
+table.tabarea{
+	width:100%;
+	border:0px solid graw;
+	padding:0px  0px 0px 0px;
+	margin-top:0px;
+	margin-bottom:0px;
+	border-collapse:collapse;
+	/***vertical-align:middle;***/
+}
+table.tabarea tr td{
+	padding:0px  0px 0px 0px;
+	height:17px;
+	text-align:left;
+	vertical-align:middle;
+
+}
+table.tabarea tr td .active-tab{
+	color=#001B3A;
+	vertical-align:middle;
+}
+table.tabarea tr td .inactive-tab{
+	color=#4268A4;
+}
+/*********************begin 输入区域的table样式***********/
+table.inputarea{
+	/*padding:20px 0px;*/
+	margin-left:0px;
+	width:100%;
+	margin-top:0px;
+	border-collapse:collapse;
+}
+table.inputarea tbody tr td{
+	text-align:right;
+	height:20px;
+}
+table.inputarea tbody tr td.td-input{
+	text-align:left;
+}
+/*********************end 输入区域的table样式***********/
+/*********************begin 注释区域的table样式***********/
+table.notearea{
+	width:100%;
+	/*padding:20px 0px 20px 0px;*/
+	margin-top:5px;
+	margin-bottom:10px;
+	border-collapse:collapse;
+}
+table.notearea tr td{
+	height:20px;
+	text-align:center;
+	color:#003492;
+}
+
+/*********************end 注释区域的table样式***********/
+
+/*********************begin info用的table样式***********/
+table.info-table{
+	margin-bottom:5px;
+	border-collapse:collapse;
+}
+table.info-table #info-head{
+	
+}
+table.info-table #info-content{
+	padding:5px 0px;
+}
+table.info-table #info-tail{
+	color:#003492;
+	padding:10px 0px;
+	text-align:center;
+}
+/*********************Detail 页面***********/
+body.detail{
+	margin:0px;
+}
+table.detail{
+	width:100%;
+	border-collapse:collapse;
+	border:0px;
+
+}
+table.detail-content{
+	margin-bottom:10px;
+}
+
+/*********************台帐页面***********/
+table.workplat{
+	border-collapse:collapse;
+	border:0px;
+}
+table.workplat.workplat-main-font{
+	color:#CC0033
+}
+table.workplat.workplat-brach-font{
+}
+table.workplat.number{
+	color:#ff0000;
+}
+/*********************begin 滚动用的table样式***********/
+table.marquee{
+	padding:10px 10px 10px 10px;
+	margin-left:10px;
+}
+table.marquee-table{
+	border-collapse:collapse;
+	border:0px;
+	
+}
+table.marquee-table .content{
+	background-color:#EFF4FB;
+}
+table.marquee-table .rollitem{
+	/***color:#003399;***/
+	color:#001B3A;
+}
+
+/*********************begin module用的table样式***********/
+table.module-table{
+	width:442px;
+	height:310px;
+	border:0px;
+	BACKGROUND: URL("images/testimg/template/Login_1.gif");
+	text-align:center;
+}
+table.module-table table{
+	border:0px;
+	text-align:center;
+	width:85%;
+}
+/** added by jdh at 20040211   ***/
+table.vertical-module{
+	border:0px gray solid;
+}
+table.vertical-module #name td {
+	font-weight:bold;
+	cursor:hand;
+	text-align:center;
+}
+table.vertical-module #icon td {
+	cursor:hand;
+	text-align:center;
+}
+/** end added by jdh at 20040211   ***/
+/** added by jdh at 20040210   ***/
+table.module-table #module-name td{
+	font-weight:bold;
+	cursor:hand;
+}
+table.module-table #module-icon td{
+	cursor:hand;
+}
+/** end added by jdh at 20040210   ***/
+/*********************begin error的table样式***********/
+table.error-head{
+	width:100%;
+}
+table.error-content{
+	width:100%;
+	height:78%;
+	border:0px; 
+	text-align:center;
+}
+table.error-content table{
+	width:90%;
+	border:0px;
+	margin-top:10px;
+}
+table.error-content table #error-icon{
+	BACKGROUND: URL("images/testimg/template/Error_1.gif");
+	width:41px;
+	height:42px;
+}
+table.error-content table #button td{
+	height:25px;
+	vertical-align:middle;
+	text-align:center;
+	padding:10px;
+}
+
+table.error-content table #error-info{
+	margin-top:10px;
+}
+table.error-content table #suggest-info{
+	color:#003492;
+	text-align:center;
+}
+/*********************begin login用的table样式***********/
+table.login-table{
+	width:442px;
+	height:310px;
+	border:0px;
+	BACKGROUND: URL("images/testimg/template/Login_1.gif");
+
+}
+table.login-table tr td.logo{
+	BACKGROUND: URL("images/testimg/template/Login_2.gif");
+	width:365px;
+	height:83px;
+	text-align:center;
+	vertical-align:middle;
+}
+table.login-toolbar{
+	width:90%;
+	border:0px;
+	
+}
+table.login-toolbar tr td{
+	text-align:right;
+}
+/*********************begin login用的body样式***********/
+body.loginbody{
+
+}
+
+
+/*********************begin 带附件上载输入区域的table样式***********/
+table.upload-input-area{
+	/*padding:20px 0px;*/
+	
+	margin-top:10px;
+	margin-left:10px;
+	margin-bottom:10px;
+}
+table.upload-input-area tbody tr td{
+	text-align:right;
+}
+table.upload-input-area tbody tr td.td-input{
+	text-align:left;
+}
+/****  added by jdh at 20040210*****/
+td.assign-button{
+	text-align:left;
+	padding:0px 10px 0px 10px;
+}
+/** end added ****/
+/*********************begin input的table样式***********/
+table.input-table{
+	/*padding:20px 0px;*/
+	
+	margin-top:0px;
+	margin-left:0px;
+}
+table.input-table tbody tr td{
+	text-align:right;
+	height:20px;
+}
+table.input-table tbody tr td.td-input{
+	text-align:left;
+}
+
+table.input-table .upload{
+	text-align:center;
+}
+table.upload-table{
+	margin-top:10px;
+	margin-left:10px;
+	margin-bottom:10px;
+}
+table.upload-table .upload-sum{
+	text-align:center;
+	padding:0px 10px 0px 0px;
+	margin-bottom:10px;
+}
+
+table.upload-table .upload-attach{
+	text-align:center;
+	padding:10px 0px 0px 0px;
+}
+table.upload-table .upload-select{
+	text-align:center;
+	padding:10px 0px 0px 0px;
+	margin-top:10px;
+
+}
+
+
+
+/*********************星号的样式***********/
+.star{
+	text-align:center;
+	color:red;
+	
+}
+/*********************************列表组件***************************************/
+/* 表格 */
+table.datatable
+{
+	cursor: default;
+	border-collapse: collapse;
+	/*border后面的三个参数的含义是：
+	边框线的宽度是：thin（细线）、medium（中粗线）和thick（粗线），此外，也可以自定义宽度，如：1pt、5px、2cm等；
+	边框线的类型：solid（实线）共九个确定值：none（无边框线）、 dotted（由点组成的虚线）、 dashed（由短线组成的虚线）、 solid（实线）、 double（双线，双线宽度加上它们之间的空白部分的宽度就等于border-width定义的宽度）、 groove（3D沟槽状的边框）、 ridge（3D脊状的边框）、 inset（3D内嵌边框，颜色较深）、 outset（3D外嵌边框，颜色较浅），注意：如果系统不支持这些边框的属性值，那么“dotted”、“dashed”、“double”、“groove”、“ridge”、“inset”和“outset”都会被“solid”代替。；
+	边框线的颜色：red（红色）。
+	*/
+	border:1px solid graw;
+	width: 100%;
+}
+/** added by jdh at 20040211 **/
+table.datatable td{
+	border-color:#c3d3ea;
+}
+/** end added **/
+/* 表格的页眉 */
+table.datatable thead 
+{
+	/**BACKGROUND: URL("images/testimg/table_header.gif");**/
+	background-color: #CDDDF4;
+	text-align: center;
+	color:  Black;
+	height:22px;
+	/*font-weight:normal | bold | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900*/
+	font-weight :normal
+}
+
+/* 表格体 */
+table.datatable tbody
+{
+		height:20px;
+		text-align: center;
+
+}
+
+/* 表格的页脚 */
+table.datatable tfoot
+{
+	background-color: #f0f0f0;
+	text-align: center
+}
+
+/* 表格的行 */
+table.datatable tr
+{
+		
+}
+
+/* 表格的奇数行 */
+table.datatable tr.row_odd
+{
+	background-color:    Window;
+}
+
+/* 表格的偶数行 */
+table.datatable tr.row_even
+{
+	/* background-color: #eeeeee ;*/
+	background-color: #F4F4F4;
+}
+
+/* 表格的选中行 */
+table.datatable tr.row_selected
+{
+	/*background-color: #e0e0e0;*/
+	background-color: #E3E3E3;
+}
+
+/* 当前激活表格的选中行 #8989bc  #E3E3E3 */
+table.datatable tr.row_active
+{
+	background-color:#E6E7E6;
+}
+
+/* 表格的指示器 */
+table.datatable td.indicate
+{
+	background-color: #f0f0f0;
+}
+
+/*排序的样式*/
+.sort-arrow {
+	width:					11px;
+	height:					11px;
+	background-position:	center center;
+	background-repeat:		no-repeat;
+	margin:					0 2px;
+}
+
+/*向下箭头*/
+.sort-arrow.descending {
+	background-image:		url("images/testimg/arrow_down.png");
+}
+
+/*向上箭头*/
+.sort-arrow.ascending {
+	background-image:		url("images/testimg/arrow_up.png");
+}
+
+/* 列表组件翻页条 */
+table.datapilot
+{
+	cursor: default;
+	border: 0px solid blue;
+	BACKGROUND: URL("/KaoMing/images/testimg/table_header.gif") ;
+	width: 100%;
+	height:20px;
+}
+table.datapilot tr{
+	
+}
+table.datapilot tr td{
+	padding:0px 0px 0px 0px;
+}
+table.datapilot font
+{
+	color: #A30000;
+	font-size: 11px;
+	cursor: hand;
+}
+
+/* 可变的记录数据，包括共多少条记录，当前页数/总页数 */
+table.datapilot .transformableNumber {
+	color: #A30000;	
+}
+
+/* 控制输入框长度 */
+table.datapilot #txtNumPerPage {
+	width: 22px;
+	height: 15px;
+}
+
+/* 控制输入框长度 */
+table.datapilot #txtGoto {
+	width: 22px;	
+	height: 15px;
+}
+
+/* 上下翻页 */
+table.datapilot .clickable {
+	color: #A30000;
+	cursor: hand;
+}
+
+table.datapilot #go
+{
+	/**	color:  gray;font-size: 16px;**/
+	border:0px solid red; 
+	width: 20px; 
+	height: 15px; 
+	background: #C0C0C0 url('/KaoMing/images/testimg/go.gif') no-repeat center;
+	cursor:hand ;
+	padding:0px 0px 0px 0px ;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+
+/*列表组件翻页条中的输入框*/
+table.datapilot input{
+	border: #3672B6 1px solid;
+	height: 15px;
+	/**width:  30px;*/
+   text-align: right;
+	font-size:  12px;
+	color:#A30000;
+	padding:0px 0px 0px 0px ;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+/*列表组件按钮的外层table样式*/
+table.toolbar{
+	width:100%;
+	BACKGROUND: URL("images/testimg/table_button.gif");
+	height:22px;
+	border:0px solid blue;
+	padding:0px  0px 0px 0px;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+table.toolbar tr{
+	vertical-align:text-top;
+}
+table.toolbar tr td {
+	padding:0px  0px 0px 0px;
+	vertical-align:text-top;
+	text-align:right;
+}
+
+/*列表组件按钮的table样式*/
+table.toolbar table{
+	border:0px solid red;
+	padding:0px  0px 0px 0px;
+	margin-top:-2px;
+	margin-bottom:0px;
+	
+}
+table.toolbar table tr{
+	vertical-align:text-top;
+}
+table.toolbar table tr td{
+	padding:0px  0px 0px 0px;
+	vertical-align:text-top;
+}
+
+/***************************** datagrid added by steve_gu at 2004-05-09 ******************/
+.webfxGrid {
+	border-width: 1px;
+	border-style: solid;
+	border-color: threedshadow threedhighlight threedhighlight threedshadow;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*** 左上角单元 **/
+.webfxGridMainCorner {
+	position:     absolute;
+	top:          0px;
+	left:         0px;
+	width:        35px;
+	height:       16px;
+	overflow:     hidden;
+	/*background:   buttonface;*/
+	background-color: #CDDDF4;
+	border-width: 1px;
+	border-style: solid;
+	border-color: threedhighlight threedshadow threedshadow threedhighlight;
+	cursor:       hand;
+	font:         menu;
+}
+
+.webfxGridMainCorner nobr {
+	width: 100%;
+	text-align: right;
+}
+
+.webfxGridMainCorner span {
+	position: absolute;
+	top: 1px;
+	left: 0px;
+	margin-left: 5px;
+	font-family: Marlett;
+}
+
+/**** 表格头 ******/
+.webfxGridMainHeader {
+	height: 16px;
+	overflow: hidden;
+	/*background: buttonface;*/
+	position: absolute;
+	top: 0px;
+	left: 0px;
+
+	background-color: #CDDDF4;
+	text-align: center;
+	color:  Black;	
+	font-weight :normal
+}
+
+.webfxGridMainHeader span {
+	margin-left: 5px;
+	font-family: Marlett;
+}
+
+.webfxGridMainIdCol {
+	width: 35px;
+	overflow: hidden;
+	/*background: buttonface;*/
+	background-color: white;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+/******* 表格体 ******/
+.webfxGridMain {
+	width: 100%;
+	height: 100%;
+	background: buttonface;
+	background-color:white;
+	overflow: auto;
+	scrollbar-3dlight-color: threedhighlight;
+	scrollbar-darkshadow-color: threedshadow;
+	scrollbar-highlight-color: buttonface;
+	scrollbar-shadow-color: buttonface;
+	padding: 14px 0px 0px 34px;
+}
+
+.webfxGridMain table, .webfxGridMainHeader table, .webfxGridMainIdCol table {
+	table-layout: fixed;
+	width: 100%;
+	empty-cells: show;
+}
+
+.webfxGridMain table {
+	border-width: 1px;
+	border-style: solid;
+	border-color: threedhighlight threedshadow threedshadow threedhighlight;
+	border-collapse: collapse;
+	background: window;
+}
+
+.webfxGridMain table td, .webfxGridMainHeader table td, .webfxGridMainIdCol table td {
+	font: menu;
+	empty-cells: show;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.webfxGridMain table td {
+	border-style: solid;
+	border-color: threedshadow;
+	border-width: 1px 1px 0px 0px;
+	height: 16px;
+	white-space: nowrap;
+	padding: 1px;
+}
+
+.webfxGridMain table td span {
+	display:       block;
+	width:         100%;
+	height:        100%;
+	white-space:   nowrap;
+	overflow:      hidden;
+	text-overflow: ellipsis;
+	font:          menu;
+	cursor:        hand;
+	padding:       0px;
+	border:        0px;
+}
+
+.webfxGridMain table tr.odd td {
+	background:    infobackground;
+}
+
+.webfxGridMain table tr.even td {
+	background:    window;
+}
+
+.webfxGridMain table tr.selected td {
+	border-style: solid;
+	border-color: threedshadow;
+	border-width: 1px 1px 0px 0px;
+	background:   #A9B2CA;
+	color:        windowtext;
+	padding:      0px;
+}
+
+.webfxGridMain table tr.selected td span {
+  border-style: solid;
+  border-color: window;
+  border-width: 1px 0px 1px 0px;
+  padding:      0px 1px 0px 1px;
+}
+
+.webfxGridMain table tr.selected td.selected {
+
+}
+
+.webfxGridMainHeader table td, .webfxGridMainIdCol table td {
+	border-width: 1px;
+	border-style: solid;
+	border-color: buttonhighlight buttonshadow buttonshadow buttonhighlight;
+}
+
+.webfxGridMainHeader table td {
+	height: 16px;
+	cursor: hand;
+}
+
+.webfxGridMainIdCol table td {
+	height: 16px;
+	padding: 0px 0px 2px 2px;
+	text-align: right;
+}
+
+.webfxGridBox {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	font: menu;
+	border: 0px;
+	display: none;
+}
+/******************* end add **********************************************/
+
+/*********************************输入控件***************************************/
+/* 编辑框 */
+.editor
+{
+	font-family: verdana;
+	font-size: 9pt;
+	border: #9AB8DA 1px solid;
+	scrollbar-3dlight-color:#C3D3EA;
+	scrollbar-arrow-color:black;
+	scrollbar-base-color:#cccccc;
+	scrollbar-darkshadow-color:white;
+	scrollbar-face-color:#F6F9FE;
+	scrollbar-highlight-color:white;
+	scrollbar-shadow-color:#C3D3EA;
+	/***  added by jdh at 20040210 ***/
+	scrollbar-track-color :#eff4fb;
+}
+
+/* 激活的编辑框 */
+.active_editor
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 9pt;
+    BORDER-RIGHT: #3672B6 1px solid;
+    BORDER-TOP: #3672B6 1px solid;
+    BORDER-LEFT:  #3672B6 1px solid;
+    BORDER-BOTTOM: #3672B6 1px solid;
+    SCROLLBAR-ARROW-COLOR: dimgray;    
+    SCROLLBAR-FACE-COLOR: #D4E2F6;
+    SCROLLBAR-HIGHLIGHT-COLOR: #3672B6;
+    SCROLLBAR-SHADOW-COLOR: #3672B6;
+    SCROLLBAR-3DLIGHT-COLOR: #e9e9e9;    
+    SCROLLBAR-DARKSHADOW-COLOR: #e9e9e9;
+    BACKGROUND-COLOR: window;
+    /***  added by jdh at 20040210 ***/
+    scrollbar-track-color :#eff4fb;
+}
+
+/* 字段标题 */
+.fieldlabel
+{
+	size:9pt;
+}
+
+/* 数据标签 */
+.datalabel
+{
+	size:9pt;
+}
+
+/*********************************按钮***************************************/
+/* 按钮 */
+.button
+{
+	font-family: verdana;
+	border: 1px solid #4D87C8;
+	font-size: 9pt;
+	cursor: hand;
+	height: 18px;
+	/**width:80px;*/
+	/**background-color: white;**/
+	BACKGROUND: URL("images/testimg/button.gif");
+	text-align: center;
+	margin-buttom:0px;
+	margin-top:0px;
+	padding:0px  0px 0px 0px;
+}
+
+/* 被按下的按钮 */
+.button_down
+{
+	font-family: verdana;
+	border: #20438E 1px solid;
+	font-size: 9pt;
+	cursor: hand;
+	height: 18px;
+	BACKGROUND: URL("images/testimg/button.gif");
+	/**background-color: white;**/
+	text-align: center;
+}
+
+/* added by steve_gu at 2004-02-18 */
+.dropdownButton {
+	position: absolute;
+	visibility: hidden;
+	border: whitesmoke 1px solid; 
+	font-family: Marlett;
+	font-size: 10px; 
+	cursor: hand; 
+	z-index: 9999;
+	background: url("images/testimg/dropdown_button.gif")
+}
+/* end add */
+
+/*********************************树状组件***************************************/
+/* 树状组件 */
+.tree-container {
+	margin: 0px;
+	padding: 0px;
+	font: icon;
+	white-space: nowrap;
+}
+
+/* 树状节点项 */
+.tree-item {
+	padding: 0px;
+	margin: 0px;
+	font: icon;
+	color: black;
+	white-space: nowrap;
+}
+
+/* 树状节点链接 */
+.tree-item a, .tree-item a:active, .tree-item a:hover {
+	margin-left: 3px;
+	padding: 1px 2px 1px 2px;
+}
+
+/* 树状节点链接 */
+.tree-item a {
+	color: black;
+	text-decoration: none;
+}
+
+/* 树状节点链接(放在上面时) */
+.tree-item a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+/* 树状节点链接(激活时) */
+.tree-item a:active {
+	background: highlight;
+	color: highlighttext;
+	text-decoration: none;
+}
+
+/* 树状节点图片*/
+.tree-item img {
+	vertical-align: middle;
+	border: 0px;
+}
+
+/* 树状节点图片*/
+.tree-icon {
+	width: 16px;
+	height: 16px;
+}
+/* 树状节点图片*/
+.tree-item a.selected {
+	color: selectedtext;
+	background: selected;
+}
+/* 树状节点图片*/
+.tree-item a.selected-inactive {
+	color: windowtext;
+	background: buttonface;
+}
+
+/* 复选树状节点图片*/
+.tree-check-box {
+	width: 16px;
+	height: 16px;
+}
+
+/*********************************TabPage组件***************************************/
+/* 标签页 */
+.tabset
+{
+	font-size:9pt;
+	cursor: default;
+}
+
+.tabpage {
+	color:black;
+}
+
+/* 标签页中的单个标签 */
+.tabpagebtn
+{
+	text-align: center;
+	font-size: 9pt;
+	padding-top: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
+	cursor: hand;
+}
+
+/* added by steve_gu at 2004-06-07 */
+.tabpageframe {
+	border: 1px solid #9AB8DA;
+}
+
+/* 切换时隐藏的tab div，页面初始化时默认是这样 */
+.tabpagediv {
+	display: none;
+}
+
+/* 切换时显示的tab div */
+.tabpageselectdiv {
+	border:  3px solid #9AB8DA;
+	width:   100%;
+	height:  50%;
+	display: block;
+}
+/* end add */
+
+/*********************************菜单组件***************************************/
+/* menu body */
+/** body */
+.menu-body {
+	color:		Black;
+	margin:		0;
+	padding:	0;
+	overflow:	hidden;
+	border:		0;
+	cursor:		default;
+}
+
+/** 外围边框div */
+.menu-body .outer-border {
+	border:		1px solid #3672b6;
+	margin:		0;
+	padding:	0;
+	
+}
+
+/** 内边框div */
+.menu-body .inner-border {
+	width:			100%;	
+	border:			1px solid #3672b6;
+	border-width:	1px 0 1px 0;
+	padding:		0 1px 0 1px;
+	margin:			0;
+	background:		#f9f8f7 url("images/testimg/menu_icon_background.gif") repeat-y;
+}
+
+/* end of menu body */
+
+/*****************************************************************************/
+
+/* menu items */
+/** default td of menuItem table */
+.menu-body td {
+	font:			Menu;
+	color:			Black;
+	background:		white;
+}
+
+.menu-body .hover td {
+	background-color:	#e3edfa;/*#b6bdd2;*/
+}
+
+.menu-body .disabled-hover td {
+	background-color:	white;
+}
+
+/** 前面没有图标的td */
+.menu-body td.empty-icon-cell {
+	padding:		2px;
+	border:			0;
+	background:		#e3edfa;
+}
+/** 若没有图标，则td里面为span */
+.menu-body td.empty-icon-cell span {
+	width:	16px;
+	height: 16px;
+}
+
+/** 前面有图标的td */
+.menu-body td.icon-cell {
+	padding:	2px;
+	border:		0;
+	background:	#e3edfa;
+}
+
+/** 若有图标，则td里面为img */
+.menu-body td.icon-cell img {
+	width:	16px;
+	height:	16px;
+	margin:	0;
+	filter:	Alpha(Opacity=70);
+}
+
+/*.menu-body .hover td.icon-cell img {
+	filter:	none;
+	position:	relative;
+	left:		-1px;
+	top:		-1px;
+}*/
+
+.menu-body .disabled-hover td.icon-cell img,
+.menu-body .disabled td.icon-cell img {
+	display:	static;
+	filter:		Gray() Alpha(Opacity=40);
+}
+
+
+.menu-body .disabled-hover td.empty-icon-cell,
+.menu-body .disabled-hover td.icon-cell,
+.menu-body .hover td.empty-icon-cell,
+.menu-body .hover td.icon-cell {
+	/*border:			1px solid #0A246A;*//** 如果嫌选中不明显可加上，同时需改padding*/
+	background-color:	#e3edfa;
+	border-right:	0;
+}
+
+.menu-body td.label-cell {
+	width:		100%;
+	padding:	2px 5px 2px 5px;
+	border:		0;
+	/* 为了适应xp风格 */
+	/**font-size:  11px;*/ 
+	color:      #001b3a;
+}
+
+.menu-body .disabled-hover td.label-cell,
+.menu-body .hover td.label-cell,
+.menu-body .disabled-hover td.shortcut-cell,
+.menu-body .hover td.shortcut-cell {
+	padding:		2px 5px 2px 5px;
+	/*border:			1px solid #0A246A;*/
+	border-left:	0;
+	border-right:	0;
+}
+
+
+.menu-body td.arrow-cell {
+	width:			20px;
+	padding:		2px 2px 2px 0px;
+	font-family:	Webdings;
+}
+
+.menu-body .hover td.arrow-cell {
+	padding:		2px 2px 2px 0px;
+	/*border:			1px solid #0A246A;*/
+	/*border-left:	0;*/
+}
+
+/* end menu items */
+
+/*****************************************************************************/
+
+/* disabled items */
+
+.menu-body .disabled-hover td.arrow-cell {
+	padding:		2px 2px 2px 0px;
+	/*border:			1px solid #0A246A;*/
+	border-left:	0;
+}
+
+.menu-body .disabled td {
+	color:				#cccccc;
+}
+
+.menu-body .disabled-hover td {
+	background-color:	white;
+	color:				#cccccc;
+}
+/* end disabled items */
+
+/*****************************************************************************/
+
+/* separator */
+
+.menu-body .separator td {
+	font-size:	0.001mm;
+	padding:	1px 0px 1px 1px;
+}
+
+.menu-body .separator-line {
+	overflow:		hidden;
+	border-top:		1px solid #dbd8d1;
+	height:			1px;
+}
+
+/* end separator */
+
+/*****************************************************************************/
+
+
+/* radio and check box items */
+
+.menu-body .checked {
+	padding:	0px;
+}
+
+.menu-body .checked.hover {
+	padding:	0px;
+}
+
+.menu-body .checked .check-box,
+.menu-body .checked .radio-button {
+	display:		inline-block;
+	font-family:	Webdings;
+	overflow:		hidden;
+	color:			MenuText;
+	text-align:		center;
+	vertical-align:	center;
+	border:			0px solid #0A246A;
+}
+
+.menu-body .check-box {
+	display:		inline-block;
+	font-family:	Webdings;
+	overflow:		hidden;
+	color:			MenuText;
+	text-align:		center;
+	vertical-align:	center;
+	border:			0px solid #0A246A;
+	width:			16px;
+	height:			16px;
+	font-size:		133%;
+	padding-bottom:	5px;
+	padding-left:	1px;
+}
+
+.menu-body .radio-button {
+	width:			16px;
+	height:			16px;
+	font-size:		50%;
+	padding:		5px;
+}
+
+/* end radio and check box items */
+
+/*****************************************************************************/
+
+.menu-bar {
+	/** 这儿改为透明色，背景色由具体应用中的背景图片决定 */
+	/*background:		ButtonFace;*/
+	cursor:			default;
+	padding:		0px;
+}
+
+.menu-bar .menu-button {
+	/*background:	url("images/testimg/menu_menubackgroup.gif");*/
+	color:		ButtonText;
+	font:		Menu;
+	font-size:  11px;
+	padding:	2px 4px 1px 5px;/*3px 7px 3px 7px;*/
+	border:		0;
+	margin:		0;
+	display:	inline-block;
+	white-space:	nowrap;
+	cursor:			default;
+}
+
+/** added by zhangtianping at 2004-02-03 */
+.menu-bar .menu-button table {
+	height:			100%;
+	padding:		0;
+	/*border-collapse: collapse;*/
+	border:			0;
+	cursor:			default;
+}
+
+.menu-bar .menu-button table tr td {
+	vertical-align:bottom;
+}
+
+.menu-bar .menu-button.active {
+	background:		#cdddf4;
+	padding:		1px 3px 1px 4px;/*2px 6px 3px 6px;*/
+	border:			1px solid #666666;
+	border-bottom:	0;
+}
+
+.menu-bar .menu-button.hover {
+	background:		#cdddf4;
+	padding:		1px 3px 1px 4px;/*2px 6px 2px 6px;*/
+	border-width:	1px;
+	border-style:	solid;
+	border-color:	#3672b6;
+	border-bottom:	0;
+}
+#popupmenu {
+	Z-INDEX: 10; LEFT: 6px; WIDTH: 100px; POSITION: absolute
+}
+/* End Menu Bar */
+
+/*********************************下拉组件***************************************/
+/* 下拉选单的边框 */
+.dropdown_frame
+{
+	border-style: outset;
+	border-width: 0px;
+	background-color: white;
+	padding: 0px;
+	filter: blendtrans(duration=0.3);
+}
+
+/* db和custom下拉选单中的iframe */
+.dropdown_frame iframe
+{
+	filter: blendtrans(duration=0.3);
+}
+
+/* 用来打开和关闭下拉选单的按钮 */
+.dropdown_button
+{
+	border: whitesmoke 1px solid;
+	font-family: marlett;
+	font-size: 10px;
+	cursor: hand;
+}
+
+/* 下拉表格 */
+table.dropdowntable
+{
+	border: #3672b6 1px solid;
+	cursor: default;
+	border-collapse: collapse;
+}
+/*** added by jdh at 20040211 for color in table of td **/
+table.dropdowntable tr td{
+	border-color:#c3d3ea;
+}
+/*** end added ***/
+/* 下拉表格的页眉 */
+table.dropdowntable thead
+{
+	font-weight: bolder;
+	font-size: 9pt;
+	text-align: center;
+}
+
+/* 下拉表格体 */
+table.dropdowntable tbody
+{
+	font-size: 9pt;
+	background-color: white;
+	cursor: hand;
+}
+
+/* 下拉表格的页脚 */
+table.dropdowntable tfoot
+{
+	font-size: 9pt;
+	background-color: #f0f0f0;
+}
+
+/* 下拉表格的奇数行 */
+table.dropdowntable tr.row_odd
+{
+
+}
+
+/* 下拉表格的偶数行 */
+table.dropdowntable tr.row_even
+{
+
+}
+
+/* 下拉表格的选中行 */
+table.dropdowntable tr.row_selected
+{
+	background-color: #9ab8da;
+	color: white;
+}
+
+/*********************************日历组件 by steve_gu***************************************/
+/* 日历 最外围的table */
+.calendar {
+	border-collapse:  collapse;
+	border:           #7BABE0 1px solid;
+	font-size:        9pt;
+	cursor:           default;
+	background-color: #E1EAF5;
+	width:            200px
+}
+
+/* 日历的页眉 tr*/
+.calendar .title {
+	width:            100%;
+	border:           0px;
+	vertical-align:   top;
+	FONT-SIZE:        9pt;
+	FONT-WEIGHT:      bold;
+	text-align:       center
+}
+
+/* 日历的页眉中年月份选择按钮(4个)及显示的年与月text(2个)，共6个td，每个td中有一个input*/
+/* 页眉中的四个按纽 */
+.calendar .title .buttonLastYear input,
+.calendar .title .buttonNextYear input,
+.calendar .title .buttonLastMonth input,
+.calendar .title .buttonNextMonth input {
+	FONT-SIZE:8;
+	FONT-FAMILY:webdings;
+	WIDTH:18px
+}
+
+.calendar .title .textYear input {
+}
+
+.calendar .title .textMonth input {
+}
+/* end of 页眉tr*/
+
+/* ***********added by steve_gu at 2004-03-04 用于年月**************/
+.calendar .data .monthCell {
+	border: #7BABE0 1px solid;
+	height: 100%;
+	width:  100%;
+	font-size: 11px;
+	border-collapse: collapse;
+	cursor: hand;
+}
+/* 若不需要月份数据的边框，可将下面去掉 */
+.calendar .data .monthCell tr td{
+	width: 25%;
+	border: #7BABE0 solid 1px;
+}
+
+/* 1月到12月的单元格tr */
+.calendar .data .monthCell .calendarMonth {
+	height:     36px;
+	text-align: center;
+}
+
+.calendar .data .monthCell .calendarMonth .cur {
+	color:            black;
+	background-color:  #FFFFE8
+}
+
+/* 选中的td */
+.calendar .data .monthCell .calendarMonth .selected {
+	background-color: #94C4FA;
+	color:            white;
+}
+
+/* ***********end of add ******************/
+
+/* 日历的数据tr*/
+.calendar .data {
+}
+/* 周日到周六以及一个月中的每天的单元格 table*/
+.calendar .data .calendarCell {
+	border : 1px solid #7BABE0;
+	HEIGHT : 100%;
+	WIDTH  : 100%;
+	FONT-SIZE: 9pt; 
+	BORDER-COLLAPSE: collapse; 
+	CURSOR: hand
+}
+
+/* 若不需要日期数据的边框，可将下面去掉 */
+.calendar .data .calendarCell tr td{
+	border: #7BABE0 solid 1px
+}
+
+/* 周日到周六的tr */
+.calendar .data .calendarCell .calendarWeek {
+	height  :20px;
+	background-image: url("images/testimg/table_title.gif");
+	text-align:   center
+}
+
+/* 1号到30号的单元格tr */
+.calendar .data .calendarCell .calendarDay {
+	height:     18px;
+	text-align: center
+}
+
+/* 三种情况(上月，本月与下月)的td */
+.calendar .data .calendarCell .calendarDay .pre {
+	color:             gray;
+	background-color:  white;
+}
+
+.calendar .data .calendarCell .calendarDay .cur {
+	color:            black;
+	background-color:  #FFFFE8
+}
+
+.calendar .data .calendarCell .calendarDay .next {
+	color:             gray;
+	background-color:  white;
+}
+
+/* 选中的td */
+.calendar .data .calendarCell .calendarDay .selected {
+	background-color: #94C4FA;
+	color:            white;
+}
+
+/* 日历的页脚tr */
+.calendar .footer {
+	text-align:       right
+}
+
+/* 日历的页脚中的td 显示时间*/
+.calendar .footer .time {
+	text-align: right
+}
+
+.calendar .footer .time input{
+
+}
+
+/* 页脚中今天yyyy-mm-dd的按钮button */
+.calendar .footer #buttonToday {
+	width:  110px;
+	height: 20px
+}
+/**********************************end of 日历组件 ****************/
+
+/********** begin load tree 用到的样式  *********/
+.webfx-tree-container {
+	padding-right: 0px; 
+	padding-left: 0px; 
+	padding-bottom: 0px; 
+	margin: 0px; 
+	font: icon; 
+	padding-top: 0px; 
+	white-space: nowrap;
+}
+
+.webfx-tree-item {
+	padding: 0px;
+	margin: 0px;
+	font: icon;
+	color: WindowText;
+	white-space: nowrap;
+	height: 16px;
+}
+
+.webfx-tree-item a, .webfx-tree-item a:active, .webfx-tree-item a:hover {
+	
+	margin-left: 3px;
+	padding: 0px 2px 1px 2px;
+	
+}
+
+.webfx-tree-item a {
+	color: black;
+	text-decoration: none;
+}
+
+.webfx-tree-item a:hover {
+	color: blue;
+	text-decoration: underline;
+	/****冀德豪增加20031202****/
+	background-color: #C1D2EE;
+	border: 1px solid #316AC5;
+}
+
+.webfx-tree-item a:active {
+	background: highlight;
+	color: highlighttext;
+	text-decoration: none;
+}
+
+.webfx-tree-item img {
+	vertical-align: middle;
+	border: 0px;
+}
+
+.webfx-tree-icon {
+	width: 19px;
+	height: 18px;
+}
+
+/*****
+ *  冀德豪 增加checkbox相应的样式
+ *  20031202
+ ******/
+.tree-text-item-Checkbox{
+	font-family:	Marlett;
+	padding:0px;
+	height:14px;
+	font-size:13px;
+	cursor:hand;
+	width:14px;
+	border:2px inset;
+	margin-left:2px;
+	white-space: nowrap;
+	float: none;
+	/***margin-right:2px;***/
+
+}
+/*****
+ *  冀德豪 增加拖动相应的样式
+ *  20031202
+ ******/
+.tree-item-dragingTooltip{
+	position:absolute;
+	border:1px solid black;
+	background:menu;
+	padding:3px;
+	font:icon;
+	filter:Alpha(Opacity=40); 
+}
+.tree-item-dragingOver{
+	border: 1px solid window;
+	border-bottom: 1px solid red;
+	
+}
+/********** end load tree 用到的样式  *********/

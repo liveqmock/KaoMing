@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+
+<class name="com.dne.sie.support.userRole.form.FunctionForm" 
+	   dynamic-update="true"     dynamic-insert="true"  table="ts_function">
+	   
+    <id name="id" type="long" column="FUNCTION_ID" unsaved-value="0">
+        <generator class="increment"/>
+		</id>
+	
+    	<property name="functionName" >
+    		<column name="FUNCTION_NAME" sql-type="varchar2(32)" />
+    	</property>
+    	
+    	<property name="functionDesc" >
+    		<column name="FUNCTION_DESC" sql-type="varchar2(64)" />
+    	</property>
+    	<property name="parentFunctionCode" >
+    		<column name="PARENT_FUNCTION_CODE" sql-type="number(10)" />
+    	</property>
+    	<property name="functionType" >
+    		<column name="FUNCTION_TYPE" sql-type="varchar2(1)" />
+    	</property>
+ 	<property name="link" >
+    		<column name="link" sql-type="varchar2(128)" />
+    	</property>
+    	<property name="layer" >
+    		<column name="layer" sql-type="number(2)" />
+    	</property>
+    	
+
+    	<property name="orderId" >
+    		<column name="ORDER_ID"  />
+    	</property>
+	
+	<property name="createBy"  update="false">
+    		<column name="CREATE_BY" sql-type="varchar2(32)" />
+    	</property>
+    	<property name="createDate"  insert="false" update="false">
+    		<column name="CREATE_DATE" sql-type="Date" />
+    	</property>
+    	<property name="updateBy" >
+    		<column name="UPDATE_BY" sql-type="varchar2(32)" />
+    	</property>
+    	<property name="updateDate"  insert="false">
+    		<column name="UPDATE_DATE" sql-type="Date" />
+    	</property>
+    	
+</class>
+</hibernate-mapping>

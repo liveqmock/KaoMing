@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+
+	<!-- ========== Form Bean Definitions =================================== -->
+	<form-beans>
+		
+		<form-bean name="userForm" type="com.dne.sie.support.userRole.form.UserForm" />
+		<form-bean name="roleForm" type="com.dne.sie.support.userRole.form.RoleForm" />
+		<form-bean name="functionForm" type="com.dne.sie.support.userRole.form.FunctionForm" />
+		
+		<form-bean name="stockInfoForm" type="com.dne.sie.stock.form.StockInfoForm" />
+		<form-bean name="stockFlowForm" type="com.dne.sie.stock.form.StockFlowForm" />
+		<form-bean name="stockTakeForm" type="com.dne.sie.stock.form.StockTakeForm" />
+		<form-bean name="stockToolsInfoForm" type="com.dne.sie.stock.form.StockToolsInfoForm" />
+		<form-bean name="repairPartForm" type="com.dne.sie.repair.form.RepairPartForm" />
+		<form-bean name="stockBackForm" type="com.dne.sie.stock.form.StockBackForm" />
+		
+		
+		
+		<form-bean name="partInfoForm" type="com.dne.sie.maintenance.form.PartInfoForm" />
+		<form-bean name="syscodeForm" type="com.dne.sie.maintenance.form.TsSystemCodeForm" />
+		<form-bean name="customerInfoForm" type="com.dne.sie.maintenance.form.CustomerInfoForm" />
+		<form-bean name="factoryInfoForm" type="com.dne.sie.maintenance.form.FactoryInfoForm" />
+		<form-bean name="attachedInfoForm" type="com.dne.sie.maintenance.form.AttachedInfoForm" />
+		<form-bean name="employeeInfoForm" type="com.dne.sie.maintenance.form.EmployeeInfoForm" />
+		<form-bean name="machineToolForm" type="com.dne.sie.maintenance.form.MachineToolForm" />
+		
+		
+		<form-bean name="saleInfoForm" type="com.dne.sie.reception.form.SaleInfoForm" />
+		<form-bean name="poForm" type="com.dne.sie.reception.form.PoForm" />
+		<form-bean name="saleDetailForm" type="com.dne.sie.reception.form.SaleDetailForm" />
+		
+		<form-bean name="asnForm" type="com.dne.sie.logistic.form.AsnForm" />
+		<form-bean name="subjectTreeForm" type="com.dne.sie.support.form.SubjectTreeForm" />
+		<form-bean name="accountItemForm" type="com.dne.sie.support.form.AccountItemForm" />
+		<form-bean name="accountStatisticsForm" type="com.dne.sie.support.form.AccountStatisticsForm" />
+		
+		<form-bean name="repairSearchForm" type="com.dne.sie.repair.form.RepairSearchForm" />
+		<form-bean name="repairServiceForm" type="com.dne.sie.repair.form.RepairServiceForm" />
+		
+		<form-bean name="bugInfoForm" type="com.dne.sie.support.form.BugInfoForm" />
+		
+		
+	</form-beans>
+
+	<!-- ==========Global Forward Definitions ============================== -->
+	<global-forwards>
+		<forward name="sessionDisable" path="/login.jsp" />
+		<forward name="userErr" path="/login.jsp?userErr=Y" />
+		<forward name="roleFalse" path="/common/roleFalse.jsp" />
+		<forward name="submitRepeat" path="/common/submitRepeat.jsp" />
+		<forward name="versionErr" path="/common/versionErr.jsp" />
+		<forward name="resultMessage" path="/common/resultMessage.jsp" />
+		<forward name="IllegalPoException" path="/common/IllegalPartException.jsp" />
+		<forward name="reportErr" path="/common/reportErr.jsp" />
+		<forward name="errorMsg" path="/common/errorMsg.jsp" />
+	</global-forwards>
+
+	<!-- ========== Action Mapping Definitions ============================== -->
+	<action-mappings>
+
+		<action  path="/indexAction" scope="request" type="com.dne.sie.support.action.IndexAction">
+			<forward name="frameContent" path="/main.jsp" />
+			<forward name="top" path="/top.jsp" />
+			<forward name="indexFrame" path="/index.jsp" />
+		</action>
+		
+		<!-- file upload -->
+		<action path="/apacheUpload" type="com.dne.sie.common.upload.ApacheUpload">
+			<forward name="fileUpload" path="/common/fileAdd.jsp" />
+			<forward name="excelUpload" path="/stock/stockInitialUpload.jsp" />
+		</action>
+		<!-- file upload end-->
+		
+		<!-- roll start -->
+		<action name="userForm" path="/userAction" scope="request" type="com.dne.sie.support.userRole.action.UserAction">
+			<forward name="userList" path="/support/userList.jsp" />
+			<forward name="addInit" path="/support/userInit.jsp" />
+			<forward name="userDetail" path="/support/userEdit.jsp" />
+			<forward name="userSelect" path="/support/userSelect.jsp" />
+			<forward name="lrSelect" path="/support/userSelectLR.jsp" />
+			<forward name="leftCreat" path="/leftCreat.jsp" />
+		</action>
+		
+		<action name="roleForm" path="/roleAction" scope="request" type="com.dne.sie.support.userRole.action.RoleAction">
+			<forward name="roleList" path="/support/roleList.jsp" />
+			<forward name="addInit" path="/support/roleEdit.jsp" />
+			<forward name="roleDetail" path="/support/roleEdit.jsp" />
+			<forward name="roleSelect" path="/support/userSelectLR.jsp" />
+			<forward name="roleContainSelect" path="/support/roleSelectLR.jsp" />
+		</action>
+
+		<action name="functionForm" path="/functionAction" scope="request" type="com.dne.sie.support.userRole.action.FunctionAction">
+			<forward name="treeInit" path="/support/roleConfig.jsp" />
+			<forward name="functionEdit" path="/support/roleConfigAlert.jsp" />
+			<forward name="pendingTree" path="/support/pendingTree.jsp" />
+		</action>
+		
+		<action name="saleInfoForm" path="/salePartsApproveAction" scope="request" type="com.dne.sie.reception.action.SalePartsApproveAction">
+			<forward name="iwPartsList" path="/support/iwPartsList.jsp" />
+			<forward name="iwPartsDetail" path="/support/iwPartsDetail.jsp" />
+		</action>
+		
+		<!-- roll end -->
+
+		<!-- stock start -->
+		<action name="saleDetailForm" path="/requestOperateAction" scope="request" type="com.dne.sie.stock.action.RequestOperateAction">
+			<forward name="saleOutList" path="/stock/saleOutList.jsp" />
+		</action>
+		<action name="saleDetailForm" path="/handAllocateAction" scope="request" type="com.dne.sie.stock.action.HandAllocateAction">
+			<forward name="requestList" path="/stock/requestList.jsp" />
+		</action>
+		
+		<action name="stockInfoForm" path="/stockOutOperateAction" scope="request" type="com.dne.sie.stock.action.StockOutOperateAction">
+			<forward name="stockAdjustOutList" path="/stock/stockAdjustOut.jsp" />
+			<forward name="stockTaxAdjustOutList" path="/stockTax/stockTaxAdjustOut.jsp" />
+			
+		</action>
+		
+		<action name="stockToolsInfoForm" path="/stockToolsAction" scope="request" type="com.dne.sie.stock.action.StockToolsAction">
+			<forward name="stockToolsList" path="/stock/stockToolsQueryList.jsp" />
+			<forward name="toolsAdjustInDetail" path="/stock/toolsAdjustInDetail.jsp" />
+		</action>
+
+		<action name="stockFlowForm" path="/stockInOperateAction" scope="request" type="com.dne.sie.stock.action.StockInOperateAction">
+			<forward name="orderInList" path="/stock/orderInList.jsp" />
+		</action>
+
+		<action name="stockFlowForm" path="/stockFlowAction" scope="request" type="com.dne.sie.stock.action.StockFlowAction">
+			<forward name="stockOutFlowList" path="/stock/stockOutList.jsp" />
+			<forward name="stockInFlowList" path="/stock/stockInList.jsp" />
+			<forward name="stockOutPrint" path="/stock/stockOutPrint.jsp" />
+			<forward name="stockInPrint" path="/stock/stockInPrint.jsp" />
+		</action>
+
+		
+		<action name="stockInfoForm" path="/stockTakeAction" scope="request" type="com.dne.sie.stock.action.StockTakeAction">
+			<forward name="takeInit" path="/stock/stockTakeInit.jsp" />
+			<forward name="takeFirst" path="/stock/stockTakeFirst.jsp" />
+			<forward name="takeDiff" path="/stock/stockTakeDiff.jsp" />
+			<forward name="takeSecond" path="/stock/stockTakeSecond.jsp" />
+			<forward name="takeReport" path="/stock/stockTakeReport.jsp" />
+		</action>
+
+		<action name="stockTakeForm" path="/stockReportAction" scope="request" type="com.dne.sie.stock.action.StockReportAction">
+			<forward name="reportList" path="/stock/stockTakeReport.jsp" />
+			<forward name="reportDetailList" path="/stock/stockTakeReportDetail.jsp" />
+
+		</action>
+
+		<action name="stockInfoForm" path="/stockInfoListAction" scope="request" type="com.dne.sie.stock.action.StockInfoListAction">		
+			<forward name="stockInfoList" path="/stock/stockQueryList.jsp" />
+			<forward name="stockInfoView" path="/stock/stockInfoView.jsp" />
+			<forward name="stockDetailFlow" path="/stock/stockDetailFlow.jsp" />
+			<forward name="stockInitial" path="/stock/stockInitial.jsp" />
+			<forward name="stockParseMessage" path="/stock/stockParseMessage.jsp" />
+			<forward name="partInitialParse" path="/stock/partParseMessage.jsp" />
+			<forward name="stockFlowParseMessage" path="/stock/stockFlowParseMessage.jsp" />
+			<forward name="stockTaxInfoList" path="/stockTax/stockTaxInfoList.jsp" />
+			<forward name="stockTaxInfoView" path="/stockTax/stockTaxInfoView.jsp" />
+		</action>
+		
+		<action name="repairPartForm" path="/repairOperateAction" scope="request" type="com.dne.sie.stock.action.RepairOperateAction">
+			<forward name="loanPartOutList" path="/stock/loanPartOutList.jsp" />
+			<forward name="loanToolOutList" path="/stock/loanToolOutList.jsp" />
+
+		</action>
+		<action name="stockBackForm" path="/stockBackAction" scope="request" type="com.dne.sie.stock.action.StockBackAction">
+			<forward name="stockBackList" path="/stock/stockBackList.jsp" />
+			<forward name="stockBackDetail" path="/stock/stockBackDetail.jsp" />
+
+		</action>
+		
+		
+		<!-- stock end -->
+
+		<!-- maintenance  start-->
+		
+		<action name="partInfoForm" path="/partInfoAction" scope="request" type="com.dne.sie.maintenance.action.PartInfoAction">		
+			<forward name="partInfoList" path="/maintenance/partInfoList.jsp" />
+			<forward name="partInfoAdd" path="/maintenance/partInfoAdd.jsp" />
+			<forward name="partInfoEdit" path="/maintenance/partInfoEdit.jsp" />
+			<forward name="popupPartStart" path="/popup/partInfo.jsp" />
+		</action>
+		<action name="syscodeForm" path="/syscodeAction" scope="request" type="com.dne.sie.maintenance.action.SyscodeAction">		
+			<forward name="syscodeList" path="/maintenance/syscodeList.jsp" />
+			<forward name="syscodeAdd" path="/maintenance/syscodeAdd.jsp" />
+			<forward name="syscodeEdit" path="/maintenance/syscodeEdit.jsp" />
+		</action>
+		<action name="customerInfoForm" path="/customerInfoAction" scope="request" type="com.dne.sie.maintenance.action.CustomerInfoAction">		
+			<forward name="customerList" path="/maintenance/customerList.jsp" />
+			<forward name="customerInit" path="/maintenance/customerInit.jsp" />
+			<forward name="customerEdit" path="/maintenance/customerEdit.jsp" />
+			<forward name="popupCustStart" path="/popup/customerInfo.jsp" />
+		</action>
+		<action name="factoryInfoForm" path="/factoryInfoAction" scope="request" type="com.dne.sie.maintenance.action.FactoryInfoAction">		
+			<forward name="factoryList" path="/maintenance/factoryList.jsp" />
+			<forward name="factoryInit" path="/maintenance/factoryInit.jsp" />
+			<forward name="factoryEdit" path="/maintenance/factoryEdit.jsp" />
+		</action>
+		<action name="customerInfoForm" path="/attachedInfoAction" scope="request" type="com.dne.sie.maintenance.action.AttachedInfoAction">		
+			<forward name="affixList" path="/common/popFileUp.jsp" />
+		</action>
+		<action name="employeeInfoForm" path="/employeeInfoAction" scope="request" type="com.dne.sie.maintenance.action.EmployeeInfoAction">		
+			<forward name="employeeList" path="/maintenance/employeeList.jsp" />
+			<forward name="employeeInit" path="/maintenance/employeeEdit.jsp" />
+			<forward name="employeeEdit" path="/maintenance/employeeEdit.jsp" />
+		</action>
+		<action name="machineToolForm" path="/machineToolAction" scope="request" type="com.dne.sie.maintenance.action.MachineToolAction">		
+			<forward name="machineToolList" path="/maintenance/machineToolList.jsp" />
+			<forward name="machineToolEdit" path="/maintenance/machineToolEdit.jsp" />
+		</action>
+		
+		
+		<!-- maintenance end -->
+		
+		<!-- reception  start-->
+		<action name="saleInfoForm" path="/saleInfoAction" scope="request" type="com.dne.sie.reception.action.SaleInfoAction">		
+			<forward name="saleRegistert" path="/reception/saleRegister.jsp" />
+			<forward name="inquiryDetail" path="/reception/inquiryDetail.jsp" />
+			<forward name="saleAskConfirmList" path="/reception/saleAskConfirmList.jsp" />
+			<forward name="saleAskConfirmDetail" path="/reception/saleAskConfirmDetail.jsp" />
+			<forward name="saleCheckList" path="/reception/saleCheckingList.jsp" />
+			<forward name="saleCheckDetail" path="/reception/saleCheckDetail.jsp" />
+			<forward name="saleCheckDetailEnd" path="/reception/saleCheckDetailEnd.jsp" />
+			<forward name="saleCheckListPop" path="/reception/saleCheckingPopList.jsp" />
+			<forward name="saleInfoList" path="/reception/saleInfoList.jsp" />
+			<forward name="saleInfoDetail" path="/reception/saleInfoDetail.jsp" />
+			<forward name="historyPrice" path="/reception/historyPriceList.jsp" />
+			<forward name="custPrice" path="/reception/custPriceList.jsp" />
+			<forward name="quotePrint" path="/reception/quoteCheckPrint.jsp" />
+			<forward name="inquiryPrint" path="/reception/inquiryPrint.jsp" />
+			<forward name="saleRecheckList" path="/reception/saleRecheckList.jsp" />
+		</action>
+		
+		<action name="poForm" path="/partPoAction" scope="request" type="com.dne.sie.reception.action.PartPoAction">		
+			<forward name="planList" path="/reception/planList.jsp" />
+			<forward name="manualPlanList" path="/reception/manualPlanList.jsp" />
+			<forward name="poList" path="/reception/poList.jsp" />
+			<forward name="poFormPrint" path="/reception/poFormPrint.jsp" />
+			
+		</action>
+		
+		
+		<!-- reception end -->
+		
+		<!-- asn start -->
+		<action name="saleInfoForm" path="/asnAction" scope="request" type="com.dne.sie.logistic.action.AsnAction">		
+			<forward name="asnReadyList" path="/logistic/asnReadyList.jsp" />
+		</action>
+		<action name="asnForm" path="/asnListAction" scope="request" type="com.dne.sie.logistic.action.AsnListAction">		
+			<forward name="consignApproveList" path="/logistic/consignApproveList.jsp" />
+			<forward name="asnResultList" path="/logistic/asnResultList.jsp" />
+			<forward name="asnList" path="/logistic/asnList.jsp" />
+			<forward name="asnDetail" path="/logistic/asnDetail.jsp" />
+			<forward name="asnPrint" path="/logistic/asnPrint.jsp" />
+		</action>
+		
+		<!-- asn end -->
+		
+		<!-- account start -->
+		<action name="subjectTreeForm" path="/accountAction" scope="request" type="com.dne.sie.support.action.AccountAction">
+			<forward name="treeFrame" path="/support/treeFrame.jsp" />
+			<forward name="treeInit" path="/support/subjectTree.jsp" />
+			<forward name="subjectEdit" path="/support/subjectEdit.jsp" />
+			<forward name="subAlert" path="/support/subAlert.jsp" />
+			
+		</action>
+		
+		<action name="accountItemForm" path="/accountItemAction" scope="request" type="com.dne.sie.support.action.AccountItemAction">		
+			<forward name="accountList" path="/support/accountList.jsp" />
+			<forward name="accountEdit" path="/support/accountEdit.jsp" />
+			<forward name="treeItem" path="/support/treeItemRadio.jsp" />
+			<forward name="dropdownTree" path="/support/dropdownTree.jsp" />
+			
+		</action>
+		
+		<action name="accountStatisticsForm" path="/accountStatisticsAction" scope="request" type="com.dne.sie.support.action.AccountStatisticsAction">		
+			<forward name="statList" path="/support/accountStatList.jsp" />
+			<forward name="statDetail" path="/support/accountStatDetail.jsp" />
+			
+		</action>
+		<!-- account end -->
+		
+		<!-- repair start -->
+		<action name="repairSearchForm" path="/repairAction" scope="request" type="com.dne.sie.repair.action.RepairAction">
+			<forward name="receiveInit" path="/repair/receive.jsp" />
+			<forward name="repairList" path="/repair/repairList.jsp" />
+			<forward name="repairCDetail" path="/repair/repairCDetail.jsp" />
+			<forward name="repairDispatchList" path="/repair/repairDispatchList.jsp" />
+			<forward name="repairDispatchDetail" path="/repair/repairDispatchDetail.jsp" />
+			<forward name="repairReturnList" path="/repair/repairReturnList.jsp" />
+			<forward name="repairReturnDetail" path="/repair/repairReturnDetail.jsp" />
+			<forward name="repairCompleteList" path="/repair/repairCompleteList.jsp" />
+			<forward name="repairCompleteCDetail" path="/repair/repairCompleteCDetail.jsp" />
+			<forward name="repairQueryCDetail" path="/repair/repairQueryCDetail.jsp" />
+			<forward name="repairQueryList" path="/repair/repairQueryList.jsp" />
+			<forward name="repairPrint" path="/repair/receivePrint.jsp" />
+			<forward name="dispatchPrint" path="/repair/dispatchPrint.jsp" />
+			<forward name="repairReportPrint" path="/repair/repairReportPrint.jsp" />
+			<forward name="repairSaleDetail" path="/repair/repairSaleDetail.jsp" />
+			
+			<forward name="repairQueryJwDetail" path="/repair/repairQueryJwDetail.jsp" />
+			<forward name="repairQueryAtDetail" path="/repair/repairQueryAtDetail.jsp" />
+			<forward name="repairQueryJcDetail" path="/repair/repairQueryJcDetail.jsp" />
+			<forward name="irisContent" path="/repair/irisContent.jsp" />
+			
+		</action>
+		<action name="repairSearchForm" path="/repairHandleAction" scope="request" type="com.dne.sie.repair.action.RepairHandleAction">
+			<forward name="addSucc" path="/repair/receivePrint.jsp" />
+		</action>
+		
+		<action name="repairSearchForm" path="/repairTurningAction" scope="request" type="com.dne.sie.repair.action.RepairTurningAction">
+			<forward name="jwReceiveInit" path="/repair/receiveTurning.jsp" />
+			<forward name="jwDispatchList" path="/repair/jwDispatchList.jsp" />
+			<forward name="jwCompleteList" path="/repair/jwCompleteList.jsp" />
+			<forward name="atDispatchList" path="/repair/atDispatchList.jsp" />
+			<forward name="atCompleteList" path="/repair/atCompleteList.jsp" />
+			<forward name="jcDispatchList" path="/repair/jcDispatchList.jsp" />
+			<forward name="jcCompleteList" path="/repair/jcCompleteList.jsp" />
+			
+			<forward name="jwDispatchDetail" path="/repair/jwDispatchDetail.jsp" />
+			<forward name="jwCompleteDetail" path="/repair/jwCompleteDetail.jsp" />
+			<forward name="atDispatchDetail" path="/repair/atDispatchDetail.jsp" />
+			<forward name="atCompleteDetail" path="/repair/atCompleteDetail.jsp" />
+			<forward name="jcDispatchDetail" path="/repair/jcDispatchDetail.jsp" />
+			<forward name="jcCompleteDetail" path="/repair/jcCompleteDetail.jsp" />
+		</action>
+		
+		
+		<action path="/upload" type="com.dne.sie.common.upload.TestUpload">
+			<forward name="upload" path="/test.jsp" />
+		</action>
+		
+		<action name="bugInfoForm" path="/bugInfoAction" scope="request" type="com.dne.sie.support.action.BugInfoAction">		
+			<forward name="bugInfoList" path="/report/bugList.jsp" />
+			<forward name="bugInfoEdit" path="/report/bugEdit.jsp" />
+		</action>
+	
+	
+	
+		
+		<!-- repair end -->
+		
+	</action-mappings>
+</struts-config>

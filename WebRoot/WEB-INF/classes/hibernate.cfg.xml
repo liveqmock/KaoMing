@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration> 
+ 
+<session-factory>
+<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+
+<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/chenran?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8</property>
+<property name="hibernate.connection.username">root</property>
+<property name="hibernate.connection.password">root</property>
+
+ 
+<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+<property name="hibernate.show_sql">true</property>
+
+<!-- 最大连接数 -->   
+<property name="hibernate.c3p0.max_size">20</property>
+   <!-- 最小连接数 -->   
+<property name="hibernate.c3p0.min_size">5</property>
+   <!-- 获得连接的超时时间,如果超过这个时间,会抛出异常，单位毫秒 -->   
+<property name="hibernate.c3p0.timeout">3600</property>
+   <!-- 最大的PreparedStatement的数量 -->   
+<property name="hibernate.c3p0.max_statements">50</property>
+   <!-- 每隔120秒检查连接池里的空闲连接 ，单位是秒-->   
+<property name="hibernate.c3p0.idle_test_period">120</property>
+   <!-- 当连接池里面的连接用完的时候，C3P0一下获取的新的连接数 -->   
+<property name="hibernate.c3p0.acquire_increment">1</property>
+  
+
+	<mapping resource="hbm/SystemCodeForm.hbm.xml"/>
+	<mapping resource="hbm/PartInfoForm.hbm.xml"/>
+	<mapping resource="hbm/FormNumber.hbm.xml"/>
+	<mapping resource="hbm/AttachedInfo.hbm.xml"/>
+	<mapping resource="hbm/CustomerInfo.hbm.xml"/>
+	<mapping resource="hbm/FactoryInfo.hbm.xml"/>
+	<mapping resource="hbm/IrisCodeForm.hbm.xml"/>
+	<mapping resource="hbm/MachineTool.hbm.xml"/>
+	
+	<mapping resource="hbm/StockInfo.hbm.xml"/>
+	<mapping resource="hbm/StockFlow.hbm.xml"/>
+	<mapping resource="hbm/StockTake.hbm.xml"/>
+	<mapping resource="hbm/StockTakeDetail.hbm.xml"/>
+	<mapping resource="hbm/StockTakeReport.hbm.xml"/>
+	<mapping resource="hbm/stockToolsInfo.hbm.xml"/>
+	
+
+	<mapping resource="hbm/User.hbm.xml"/>
+	<mapping resource="hbm/Role.hbm.xml"/>
+	 <!--  <mapping resource="hbm/UserRole.hbm.xml"/>-->
+	<mapping resource="hbm/FunctionForm.hbm.xml"/>
+	
+	<mapping resource="hbm/SaleInfo.hbm.xml"/>
+	<mapping resource="hbm/SaleDetail.hbm.xml"/>
+	<mapping resource="hbm/SalePayment.hbm.xml"/>
+	<mapping resource="hbm/Po.hbm.xml"/>
+	
+	<mapping resource="hbm/Asn.hbm.xml"/>
+	
+	<mapping resource="hbm/SubjectTree.hbm.xml"/>
+	<mapping resource="hbm/AccountInfo.hbm.xml"/>
+	<mapping resource="hbm/EmployeeInfo.hbm.xml"/>
+	<mapping resource="hbm/AccountStatistics.hbm.xml"/>
+	<mapping resource="hbm/AccountStatisticsSubject.hbm.xml"/>
+	<mapping resource="hbm/AccountStatisticsEmployee.hbm.xml"/>
+
+	<mapping resource="hbm/RepairServiceForm.hbm.xml"/>
+	<mapping resource="hbm/RepairManInfo.hbm.xml"/>
+	<mapping resource="hbm/RepairSearchForm.hbm.xml"/>
+	<mapping resource="hbm/RepairServiceStatus.hbm.xml"/>
+	<mapping resource="hbm/RepairFeeInfo.hbm.xml"/>
+	<mapping resource="hbm/RepairPartsInfo.hbm.xml"/>
+	<mapping resource="hbm/RepairIrisInfo.hbm.xml"/>
+	
+	<mapping resource="hbm/BugInfo.hbm.xml"/>
+	<mapping resource="hbm/BugQaFlow.hbm.xml"/>
+	
+	
+</session-factory>
+</hibernate-configuration>

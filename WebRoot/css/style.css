@@ -1,0 +1,212 @@
+a:link  { color: #333333; text-decoration: none }
+a:visited  { color: #666666; text-decoration:none }
+a:hover  { color: #ff9900; text-decoration: none}
+a:active  { color: #ff9900; text-decoration: none}
+a  { color: #333333; text-decoration:none }
+
+.button_g{
+	font-family: "宋体";
+	font-size: 12px;
+	color: #000000;
+	background-image: url(../images/button_g.gif);
+	background-color: #FFFFFF;
+	border: 0px none 0;
+	cursor: hand;
+	background-position: center bottom;
+	text-align: center;
+	background-repeat: no-repeat;
+	height: 24px;
+	width: 89px;
+	margin: 0px;
+	padding: 0px;
+
+
+}
+.button_b{
+	font-family: "宋体";
+	font-size: 12px;
+	color: #FFFFFF;
+	background-image: url(../images/button_b.gif);
+	background-color: #FFFFFF;
+	border: none;
+	cursor: hand;
+	background-position: center bottom;
+	text-align: center;
+	background-repeat: no-repeat;
+	height: 24px;
+	width: 89px;
+
+}
+.content12 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #333333;
+}
+
+.content12_white {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #FFFFFF;
+}
+.content11{
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 11px;
+	color: #333333;
+}
+.content_red {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #FF3366;
+}
+.content_yellow {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #FF7800;
+}
+.content_yellow14{
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 14px;
+	color: #FF7800;
+}
+.tableback1 {
+	background-color: #efefef;
+}
+.tableback2 {
+	background-color: #F7F7F7;
+}
+.tablebackwhite {
+	background-color: #FFFFFF;
+}
+.form {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 11px;
+	color: #666666;
+	border: 1px solid #666666;
+}
+.form_num {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 11px;
+	color: #666666;
+	border: 1px solid #666666;
+	text-align:right;
+}
+.button2 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #FFFFFF;
+	background-image: url(../images/button_2.gif);
+	height: 20px;
+	width: 45px;
+	cursor: hand;
+	background-color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	border: 0px none;
+
+}
+.button21 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #ff8000;
+	background-image: url(../images/button_2.gif);
+	height: 20px;
+	width: 45px;
+	cursor: hand;
+	background-color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	border: 0px none;
+
+}
+.button6 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #FFFFFF;
+	background-image: url(../images/button_6.gif);
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 120px;
+	cursor: hand;
+	background-color: #FFFFFF;
+	border: 0px none;
+
+}
+.button4 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #FFFFFF;
+	background-image: url(../images/button_4.gif);
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 61px;
+	cursor: hand;
+	background-color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	border: 0px none;
+
+
+}
+.button_file {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 12px;
+	color: #000000;
+	border: 1px solid #666666;
+}
+.content14 {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 14px;
+	font-weight: normal;
+	color: #000000;
+}
+.content14_bold {
+	font-family: "Arial", "Helvetica", "sans-serif";
+	font-size: 14px;
+	color: #333333;
+	font-weight: bold;
+	
+}
+body {
+	scrollbar-face-color: #E0D5BE;
+	scrollbar-shadow-color: #E0D5BE;
+	scrollbar-3dlight-color: #E0D5BE;
+	scrollbar-arrow-color:  #978C71;
+	scrollbar-track-color: #EBE4D3;
+	scrollbar-darkshadow-color: #E0D5BE;
+}
+.trLnk1 {
+	background-color: expression(
+	  onmouseover = function(){this.bgColor="#F7F7F7"},
+	  onmouseout = function(){this.bgColor="#EFEFEF"},
+	  onreadystatechange = function() {this.bgColor="#EFEFEF"}
+  
+	)
+}
+.trLnk2 {
+	background-color: expression(
+	  onreadystatechange = function() {this.bgColor="#F7F7F7"},
+	  onmouseover = function(){this.bgColor="#EFEFEF"},
+	  onmouseout = function(){this.bgColor="#F7F7F7"}
+	)
+	
+}
+.Noprint{font-family: "Arial", "Helvetica", "sans-serif";font-size: 12px;color: #FFFFFF;background-image: url(../images/button_4.gif);background-repeat: no-repeat;height: 20px;width: 61px;cursor: hand;background-color: #FFFFFF;margin: 0px;padding: 0px;border: 0px none;}
+
+
+.scrollDiv{SCROLLBAR-FACE-COLOR: #9ebfe8; SCROLLBAR-HIGHLIGHT-COLOR: #ffffff; OVERFLOW: scroll; WIDTH: 100%;
+ SCROLLBAR-SHADOW-COLOR: #ffffff; SCROLLBAR-3DLIGHT-COLOR: #9ebfe8; SCROLLBAR-ARROW-COLOR: #ffffff; 
+ SCROLLBAR-TRACK-COLOR: #ffffff; SCROLLBAR-DARKSHADOW-COLOR: #9ebfe8; HEIGHT: 100%; BACKGROUND-COLOR: transparent}
+
+ .titleFont{
+ 	font-family: "宋体";
+	font-size: 18px;
+	color: #333333;
+	font-weight: bold;
+}
+.printBorder{border:1px solid #000000;font-size:12px;border-collapse:collapse}
+.8pxFont{font-size:8px;color: #000000;}
+.10pxFont{font-size:10px;color: #000000;}
+.stdFont{font-size:12px;color: #000000;}
+.linkFont{font-family: "Arial";font-size:10pt;color: #000000;}
+.hotLineFont{font-family: "宋体";font-size:6.5pt;color: #000000;}
+.hotLineDateFont{font-family: "宋体";font-size:8pt;color: #000000;}

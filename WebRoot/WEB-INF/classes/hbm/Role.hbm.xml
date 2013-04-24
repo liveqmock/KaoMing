@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+
+<class name="com.dne.sie.support.userRole.form.RoleForm" 
+	   dynamic-update="true"                   
+        dynamic-insert="true" 
+	   table="TS_ROLE">
+	   
+	   <id name="id" type="long" column="role_id" unsaved-value="0">
+        <generator class="increment"/>
+		</id>
+    
+	
+	<set name="users" table="TS_USER_ROLE" lazy="true" inverse="false" cascade="none" >
+		<key column="ROLE_ID" ></key>
+		<many-to-many class="com.dne.sie.support.userRole.form.UserForm" column="USER_ID" />
+	</set>
+    
+    	<property name="roleName" >
+    		<column name="ROLE_NAME" sql-type="varchar2(10)" />
+    	</property>
+    	<property name="remark" >
+    		<column name="remark" sql-type="varchar2(512)" />
+    	</property>
+    	<property name="delFlag" insert="false">
+    		<column name="DEL_FLAG" sql-type="char(1)" />
+    	</property>
+    	<property name="functionCodes" >
+    		<column name="FUNCTION_CODES" sql-type="varchar2(2048)" />
+    	</property>
+    	<!-- 
+    	<property name="roleType" >
+    		<column name="ROLE_TYPE" sql-type="char(1)" />
+    	</property>
+    	 -->
+    	
+	
+			<property name="createBy"  update="false">
+    		<column name="CREATE_BY" sql-type="varchar2(32)" />
+    	</property>
+    	<property name="createDate"  insert="false" update="false">
+    		<column name="CREATE_DATE" sql-type="Date" />
+    	</property>
+    	<property name="updateBy" >
+    		<column name="UPDATE_BY" sql-type="varchar2(32)" />
+    	</property>
+    	<property name="updateDate"  insert="false">
+    		<column name="UPDATE_DATE" sql-type="Date" />
+    	</property>
+    	
+
+    	
+</class>
+</hibernate-mapping>
+  

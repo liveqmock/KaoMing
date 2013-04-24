@@ -1,0 +1,48 @@
+input, select, textarea, button, 
+.AutoTip_AutoComplete * {
+	font:	12px "Segoe UI", Verdana, Arial, Helvetica, sans-serif;	
+	line-height:	1.2em;
+}
+
+.AutoTip_AutoComplete {
+	background-color:	#fcfcfc;
+	border:	1px solid #333;
+	padding:	0;
+	margin:	0;
+	text-align:	left;
+	z-index:	999;
+}
+
+.AutoTip_AutoComplete_waiting {
+	background:	url(images/autocomplete/indicator.gif) no-repeat right;
+}
+
+.AutoTip_AutoComplete .selectable {
+	padding:	2px;
+	text-align:	left;
+	cursor:	pointer;
+}
+
+.AutoTip_AutoComplete .current {
+	background-color:	#FFD563;
+	color:	#000;
+}
+
+.AutoTip_AutoComplete .informal {
+	color:	#444;
+	float:	right;
+}
+
+.AutoTip_AutoComplete .boldfont {
+	font-weight:	bold;
+}
+
+.AutoTip_AutoComplete a {
+	margin:	2px;
+	color:	#000;
+	font-weight:	bold;
+}
+
+.AutoTip_AutoComplete a:hover {
+	color:	#333;
+}

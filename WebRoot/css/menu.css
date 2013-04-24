@@ -1,0 +1,273 @@
+/*********************************菜单组件***************************************/
+/* menu body */
+/** body */
+.menu-body {
+	color:		Black;
+	margin:		0;
+	padding:	0;
+	overflow:	hidden;
+	border:		0;
+	cursor:		default;
+}
+
+/** 外围边框div */
+.menu-body .outer-border {
+	border:		1px solid #939393;
+	margin:		0;
+	padding:	0;
+	
+}
+
+/** 内边框div */
+.menu-body .inner-border {
+	width:			100%;	
+	border:			1px solid #939393;
+	border-width:	1px 0 1px 0;
+	padding:		0 1px 0 1px;
+	margin:			0;
+	background:		#f9f8f7 url("../images/menu_icon_background.gif") repeat-y;
+}
+
+/* end of menu body */
+
+/*****************************************************************************/
+
+/* menu items */
+/** default td of menuItem table */
+.menu-body td {
+	font:			Menu;
+	color:			Black;
+	background:		white;
+}
+
+.menu-body .hover td {
+	background-color:	#EAEAEA;/*#b6bdd2;*/
+}
+
+.menu-body .disabled-hover td {
+	background-color:	#EAEAEA;
+}
+
+/** 前面没有图标的td */
+.menu-body td.empty-icon-cell {
+	padding:		2px;
+	border:			0;
+	background:		EAEAEA;
+}
+/** 若没有图标，则td里面为span */
+.menu-body td.empty-icon-cell span {
+	width:	16px;
+	height: 16px;
+}
+
+/** 前面有图标的td */
+.menu-body td.icon-cell {
+	padding:	2px;
+	border:		0;
+	background:	EAEAEA;
+}
+
+/** 若有图标，则td里面为img */
+.menu-body td.icon-cell img {
+	width:	16px;
+	height:	16px;
+	margin:	0;
+	filter:	Alpha(Opacity=70);
+}
+
+/*.menu-body .hover td.icon-cell img {
+	filter:	none;
+	position:	relative;
+	left:		-1px;
+	top:		-1px;
+}*/
+
+.menu-body .disabled-hover td.icon-cell img,
+.menu-body .disabled td.icon-cell img {
+	background-color:	#EAEAEA;
+	display:	static;
+	filter:		Gray() Alpha(Opacity=40);
+}
+
+
+.menu-body .disabled-hover td.empty-icon-cell,
+.menu-body .disabled-hover td.icon-cell,
+.menu-body .hover td.empty-icon-cell,
+.menu-body .hover td.icon-cell {
+	/*border:			1px solid #0A246A;*//** 如果嫌选中不明显可加上，同时需改padding*/
+	background-color:	#EAEAEA;
+	border-right:	0;
+}
+
+.menu-body td.label-cell {
+	width:		100%;
+	padding:	2px 5px 2px 5px;
+	border:		0;
+	/* 为了适应xp风格 */
+	/**font-size:  11px;*/ 
+}
+
+.menu-body .disabled-hover td.label-cell,
+.menu-body .hover td.label-cell,
+.menu-body .disabled-hover td.shortcut-cell,
+.menu-body .hover td.shortcut-cell {
+	padding:		2px 5px 2px 5px;
+	/*border:			1px solid #0A246A;*/
+	border-left:	0;
+	border-right:	0;
+}
+
+
+.menu-body td.arrow-cell {
+	width:			20px;
+	padding:		2px 2px 2px 0px;
+	font-family:	Webdings;
+}
+
+.menu-body .hover td.arrow-cell {
+	padding:		2px 2px 2px 0px;
+	/*border:			1px solid #0A246A;*/
+	/*border-left:	0;*/
+}
+
+/* end menu items */
+
+/*****************************************************************************/
+
+/* disabled items */
+
+.menu-body .disabled-hover td.arrow-cell {
+	padding:		2px 2px 2px 0px;
+	/*border:			1px solid #0A246A;*/
+	border-left:	0;
+}
+
+.menu-body .disabled td {
+	color:				#cccccc;
+}
+
+.menu-body .disabled-hover td {
+	background-color:	white;
+	color:				#cccccc;
+}
+/* end disabled items */
+
+/*****************************************************************************/
+
+/* separator */
+
+.menu-body .separator td {
+	font-size:	0.001mm;
+	padding:	1px 0px 1px 1px;
+}
+
+.menu-body .separator-line {
+	overflow:		hidden;
+	border-top:		1px solid #dbd8d1;
+	height:			1px;
+}
+
+/* end separator */
+
+/*****************************************************************************/
+
+
+/* radio and check box items */
+
+.menu-body .checked {
+	padding:	0px;
+}
+
+.menu-body .checked.hover {
+	padding:	0px;
+}
+
+.menu-body .checked .check-box,
+.menu-body .checked .radio-button {
+	display:		inline-block;
+	font-family:	Webdings;
+	overflow:		hidden;
+	color:			MenuText;
+	text-align:		center;
+	vertical-align:	center;
+	border:			0px solid #0A246A;
+}
+
+.menu-body .check-box {
+	display:		inline-block;
+	font-family:	Webdings;
+	overflow:		hidden;
+	color:			MenuText;
+	text-align:		center;
+	vertical-align:	center;
+	border:			0px solid #0A246A;
+	width:			16px;
+	height:			16px;
+	font-size:		133%;
+	padding-bottom:	5px;
+	padding-left:	1px;
+}
+
+.menu-body .radio-button {
+	width:			16px;
+	height:			16px;
+	font-size:		50%;
+	padding:		5px;
+}
+
+/* end radio and check box items */
+
+/*****************************************************************************/
+
+.menu-bar {
+	/** 这儿改为透明色，背景色由具体应用中的背景图片决定 */
+	/*background:		ButtonFace;*/
+	cursor:			default;
+	padding:		0px;
+}
+
+.menu-bar .menu-button {
+	/*background:	url("../images/menu_menubackgroup.gif");*/
+	color:		ButtonText;
+	font:		Menu;
+	font-size:  11px;
+	padding:	2px 4px 1px 5px;/*3px 7px 3px 7px;*/
+	border:		0;
+	margin:		0;
+	display:	inline-block;
+	white-space:	nowrap;
+	cursor:			default;
+}
+
+/** added by zhangtianping at 2004-02-03 */
+.menu-bar .menu-button table {
+	height:			100%;
+	padding:		0;
+	/*border-collapse: collapse;*/
+	border:			0;
+	cursor:			default;
+}
+
+.menu-bar .menu-button table tr td {
+	vertical-align:bottom;
+}
+
+.menu-bar .menu-button.active {
+	background:		#eaeaea;
+	padding:		1px 3px 1px 4px;/*2px 6px 3px 6px;*/
+	border:			1px solid #666666;
+	border-bottom:	0;
+}
+
+.menu-bar .menu-button.hover {
+	background:		#eaeaea;
+	padding:		1px 3px 1px 4px;/*2px 6px 2px 6px;*/
+	border-width:	1px;
+	border-style:	solid;
+	border-color:	#939393;
+	border-bottom:	0;
+}
+#popupmenu {
+	Z-INDEX: 10; LEFT: 6px; WIDTH: 100px; POSITION: absolute
+}
+/* End Menu Bar */

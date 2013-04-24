@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+
+<class name="com.dne.sie.support.userRole.form.UserRoleForm" 
+	   dynamic-update="true"                   
+        dynamic-insert="true" 
+	   table="TS_USER_ROLE">
+	   
+	   <meta attribute="sync-DAO">false</meta> 
+	   <composite-id name="id" class="UsersPK"> 
+	    	<key-property name="roleId">
+				<column name="role_id"></column>
+			</key-property>
+			<key-property name="userId">
+				<column name="user_id"></column>
+			</key-property>
+	   </composite-id> 
+	   
+        
+        <property name="createBy"  update="false">
+    		<column name="CREATE_BY" sql-type="varchar2(32)" />
+    	</property>
+    	<property name="createDate"  insert="false" update="false">
+    		<column name="CREATE_DATE" sql-type="Date" />
+    	</property>
+    	<property name="updateBy" >
+    		<column name="UPDATE_BY" sql-type="varchar2(32)" />
+    	</property>
+    	<property name="updateDate"  insert="false">
+    		<column name="UPDATE_DATE" sql-type="Date" />
+    	</property>
+        
+</class>
+</hibernate-mapping>
+  
