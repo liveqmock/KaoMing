@@ -136,6 +136,12 @@ function f_chk(flag){
 		return false;
 	}
 	
+	if(document.forms[0].receptionRemark.value != ""){
+		if(!f_maxLength(document.forms[0].remark,'备注',800)){
+			return false;
+		}
+	}
+	
 	if(flag=='N'){
 		if(document.forms[0].leaveProblem.value == ""){ 
 			alert("必须填写遗留问题！");
@@ -633,7 +639,10 @@ function fileAddFailed(failedCode){
                   <td valign="top">未尽事宜：</td>
                   <td colspan="3"><html:textarea property="tobeMatter" rows="2" cols="8" styleClass="form" style="width:100%" ></html:textarea></td>
                 </tr>
-            
+            	<tr class="tableback1"> 
+                  <td valign="top">备注：</td>
+                  <td colspan="3"><html:textarea property="receptionRemark" rows="2" cols="8" styleClass="form" style="width:100%" ></html:textarea></td>
+                </tr>
             
 					 
 			  <tr> 

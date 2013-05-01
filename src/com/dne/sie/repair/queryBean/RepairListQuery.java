@@ -34,7 +34,7 @@ public class RepairListQuery extends QueryBean{
 	
     private ArrayList queryCondition(RepairSearchForm form){
 		ArrayList paramList = new ArrayList();
-		whereStrBuffer = new StringBuffer(" where 1=1 ");
+		whereStrBuffer = new StringBuffer(" where rsf.delFlag=0 ");
 		if(form!=null){
 
 			QueryParameter param = null;

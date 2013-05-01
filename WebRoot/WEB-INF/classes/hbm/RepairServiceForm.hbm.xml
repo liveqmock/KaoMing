@@ -188,6 +188,10 @@
 		<property name="actualDuration">
 		   	<column name="actual_Duration" />
 		</property>
+		
+		<property name="receptionRemark">
+		   	<column name="reception_remark" />
+		</property>
 		<property name="dzRemark">
 		   	<column name="dz_Remark" />
 		</property>

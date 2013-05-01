@@ -27,7 +27,7 @@ import com.dne.sie.common.tools.EscapeUnescape;
 
 
 public class ApacheUpload extends ControlAction{
-//	private static Logger logger = Logger.getLogger(ApacheUpload.class);
+	private static Logger logger = Logger.getLogger(ApacheUpload.class);
 	
 	public String fileUpload(HttpServletRequest request, ActionForm form){
 		String forward = "fileUpload";
@@ -43,7 +43,10 @@ public class ApacheUpload extends ControlAction{
 			String realName=request.getParameter("path")==null?"":request.getParameter("path");
 			String fileMaxSize=request.getParameter("fileMaxSize")==null?"104857600":request.getParameter("fileMaxSize");
 			
-			String tempName="f"+userId+Operate.getSectTime()+realName.substring(realName.lastIndexOf('.'));
+			String tempName="f"+userId+Operate.getSectTime();
+			if(realName.lastIndexOf('.')!=-1){
+				tempName+=realName.substring(realName.lastIndexOf('.'));
+			}
 			
 			if(realName.lastIndexOf('/')!=-1){
 				realName=realName.substring(realName.lastIndexOf('/')+1);

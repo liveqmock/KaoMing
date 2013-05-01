@@ -59,7 +59,7 @@ public class RepairSearchForm extends CommForm{
 //	private String accessoryList;             //随机附件信息
 //	private String repairSource;              //维修来源
 	private String rr90;                      //原故障返修（90天）
-//	private String receptionRemark;           //备注
+	private String receptionRemark;           //备注
 	private Long operaterId;                  //电诊员
 	
 	private String currentStatus;			  //维修单状态
@@ -973,6 +973,14 @@ public class RepairSearchForm extends CommForm{
 
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
+	}
+
+	public String getReceptionRemark() {
+		return receptionRemark;
+	}
+
+	public void setReceptionRemark(String receptionRemark) {
+		this.receptionRemark = receptionRemark;
 	}
 
 

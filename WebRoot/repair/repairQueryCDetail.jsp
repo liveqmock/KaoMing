@@ -487,7 +487,10 @@ function showIrisDialog(content,desc,name){
                   <td valign="top">Î´¾¡ÊÂÒË£º</td>
                   <td colspan="3"><bean:write name="repairSearchForm" property="tobeMatter"  /></td>
                 </tr>
-            
+            	<tr class="tableback1"> 
+                  <td valign="top">±¸×¢£º</td>
+                  <td colspan="3"><bean:write name="repairSearchForm" property="receptionRemark"  /></td>
+                </tr>
             
 					 
 			  <tr> 
