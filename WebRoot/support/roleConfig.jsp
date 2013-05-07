@@ -237,7 +237,7 @@ function f_submit(){
     }else{
    	var allValue="";
    	
-   	 <%for(int i=0;i<functionTree.length;i++){   %>
+   	 <%for(int i=0;i<functionTree.length&&i<6;i++){   %>
 		var retValue<%=i%>=tree<%=i%>.getCheckedValues(); 
    	 	if(retValue<%=i%>!='') allValue+=","+retValue<%=i%>;
    	 <%}%>
