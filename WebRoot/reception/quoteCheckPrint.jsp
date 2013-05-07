@@ -170,8 +170,8 @@ try{
 		for(int i=0;i<repairFeeList.size();i++){
 			RepairFeeInfoForm rfi=(RepairFeeInfoForm)repairFeeList.get(i);
 			if(rfi.getFeeType().equals("P")){	//plan
-				vat17Repair=rfi.getRepairQuote()*0.17;
-				quoteAllRepair=rfi.getRepairQuote()*1.17;
+				vat17Repair=rfi.getRepairQuote()==null?0:rfi.getRepairQuote()*0.17;
+				quoteAllRepair=rfi.getRepairQuote()==null?0:rfi.getRepairQuote()*1.17;
 	%>
 		<td>&nbsp;</td>
 		<td><%=rfi.getRepairmanNum()%></td>
@@ -180,7 +180,7 @@ try{
 		<td><%=Operate.toFix(rfi.getTicketsAllCosts(),2) %></td>
 		<td><%=Operate.toFix(rfi.getLaborCosts(),2) %></td>
 		<td><%=Operate.toFix(rfi.getTaxes(),2) %></td>
-		<td align="center"><%=Operate.toFix(rfi.getRepairQuote(),2) %></td>
+		<td align="center"><%=Operate.toFix(rfi.getRepairQuote()==null?0:rfi.getRepairQuote(),2) %></td>
 		<%}} %>
 	</tr>
 	<tr>
