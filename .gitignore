@@ -3,4 +3,5 @@
 .project
 .classpath
 WebRoot/WEB-INF/classes/
+WebRoot/affix/
 logs/
