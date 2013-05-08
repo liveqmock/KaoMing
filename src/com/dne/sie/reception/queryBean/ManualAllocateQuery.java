@@ -150,9 +150,9 @@ public class ManualAllocateQuery extends QueryBean{
 		SaleDetailForm form = (SaleDetailForm)aform;
 		AdvQueryString listQuery = new AdvQueryString();
 		
-		String queryString = "select pa.saleDetailId,pa.saleNo,pa.stuffNo,pa.skuCode," +
+		String queryString = "select distinct pa.saleDetailId,pa.saleNo,pa.stuffNo,pa.skuCode," +
 				"pa.skuUnit,pa.partNum,pa.modelCode,pa.modelSerialNo,pa.salePerPrice," +
-				"sum(sif.skuNum),pa.createBy,pa.createDate,pa.version " +
+				"(sif.skuNum),pa.createBy,pa.createDate,pa.version " +
 				"from SaleDetailForm as pa,StockInfoForm as sif ";
 		
 		ArrayList paramList = this.queryCondition(form);

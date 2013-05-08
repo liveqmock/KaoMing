@@ -76,7 +76,7 @@
               <%
        if(stockFlowList!=null){
        	    String strTr="";
-      	    for(int i=1;i<stockFlowList.size();i++){
+      	    for(int i=stockFlowList.size()-1;i>0;i--){
       	        if(i%2==0) strTr="tableback2";
       	        else strTr="tableback1";
       		String[] temp=(String[])stockFlowList.get(i);

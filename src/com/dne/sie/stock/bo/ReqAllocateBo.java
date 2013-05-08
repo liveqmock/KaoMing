@@ -214,7 +214,7 @@ public class ReqAllocateBo extends CommBo {
 		private int allocateStart(StockInfoForm siForm,int partsNum ) throws Exception{
 								
 			//销售零件需求分配逻辑(S=销售零件需求)
-			if(reqForm.getOrderType().equals("S") ){
+			if(!reqForm.getOrderType().equals("D") ){
 				//先分配UN零件
 //					siForm.setStockType("R");
 				
