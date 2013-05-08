@@ -46,7 +46,7 @@
         <td width="80">机型：</td>
         <td width="140"><html:text property="modelCode"  styleClass="form" size="16" /></td>
         <td width="80">机身编码：</td>
-        <td width="120"><html:text property="stuffNo"  styleClass="form" size="16" /></td>
+        <td width="120"><html:text property="modelSerialNo"  styleClass="form" size="16" /></td>
         <td width="80">经办人：</td>
         <td width="120"><html:select styleClass="form" property="createBy"  >
 	     		           <html:option value="">全部</html:option>
