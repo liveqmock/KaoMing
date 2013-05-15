@@ -405,6 +405,7 @@ function fileAddFailed(failedCode){
 														for(int i=repairAttachment.size()-1;i>=0;i--){
 												 	  	String[] temp=(String[])repairAttachment.get(i);
 															strTr=i%2==0?"tableback2":"tableback1";
+															if(!temp[3].equals("T")){
 												%>
 															<tr class="<%=strTr%>">
 															  <td><%=i+1%></td>
@@ -413,7 +414,7 @@ function fileAddFailed(failedCode){
 															  <td><%=DicInit.getSystemName("FILE_TYPE",temp[3])%><input type="hidden" name="attachId" value="<%=temp[0]%>"></td>
 															  <td><%=temp[4]%></td>
 															</tr>
-												<%}}%>
+												<%}}}%>
 											</table>
 										</td>
 									</tr>
@@ -589,7 +590,21 @@ function fileAddFailed(failedCode){
 								<td width="20%"><B>文件类型</B></td>
 								<td width="15%"><B>上传时间</B></td>
 							</tr>
-					
+					<%
+						if(repairAttachment!=null){
+							for(int i=repairAttachment.size()-1;i>=0;i--){
+					 	  	String[] temp=(String[])repairAttachment.get(i);
+								strTr=i%2==0?"tableback2":"tableback1";
+								if(temp[3].equals("T")){
+					%>
+								<tr class="<%=strTr%>">
+								  <td><%=i+1%></td>
+								  <td>&nbsp;&nbsp;</td>
+								  <td><a href="<%=temp[2]%>" style="cursor: hand"  ><%=temp[1]%></a></td>
+								  <td><%=DicInit.getSystemName("FILE_TYPE",temp[3])%><input type="hidden" name="attachId" value="<%=temp[0]%>"></td>
+								  <td><%=temp[4]%></td>
+								</tr>
+					<%}}}%>
 						</table>
 					</td>
 				</tr>

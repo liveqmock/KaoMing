@@ -441,6 +441,7 @@ function setRCName(obj){
 														for(int i=repairAttachment.size()-1;i>=0;i--){
 												 	  	String[] temp=(String[])repairAttachment.get(i);
 															strTr=i%2==0?"tableback2":"tableback1";
+															if(temp[3].equals("A")||temp[3].equals("B")){
 												%>
 															<tr class="<%=strTr%>">
 															  <td><%=i+1%></td>
@@ -449,7 +450,7 @@ function setRCName(obj){
 															  <td><%=DicInit.getSystemName("FILE_TYPE",temp[3])%><input type="hidden" name="attachId" value="<%=temp[0]%>"></td>
 															  <td><%=temp[4]%></td>
 															</tr>
-												<%}}%>
+												<%}}}%>
 											</table>
 										</td>
 									</tr>
@@ -636,10 +637,27 @@ function setRCName(obj){
 								<td width="10%"><B>文件类型</B></td>
 								<td width="15%"><B>上传时间</B></td>
 							</tr>
-					
+						<%
+						if(repairAttachment!=null){
+							for(int i=repairAttachment.size()-1;i>=0;i--){
+					 	  	String[] temp=(String[])repairAttachment.get(i);
+								strTr=i%2==0?"tableback2":"tableback1";
+								if(temp[3].equals("C")||temp[3].equals("D")||temp[3].equals("E")||temp[3].equals("F")||temp[3].equals("O")){
+					%>
+								<tr class="<%=strTr%>">
+								  <td><%=i+1%></td>
+								  <td>&nbsp;&nbsp;</td>
+								  <td><a href="<%=temp[2]%>" style="cursor: hand"  ><%=temp[1]%></a></td>
+								  <td><%=DicInit.getSystemName("FILE_TYPE",temp[3])%><input type="hidden" name="attachId" value="<%=temp[0]%>"></td>
+								  <td><%=temp[4]%></td>
+								</tr>
+					<%}}}%>
 						</table>
 					</td>
 				</tr>
+				
+				
+					
 					
                <tr class="tableback1">
                 	<td>清点资料及配件：<font color='red'>*</font></td>

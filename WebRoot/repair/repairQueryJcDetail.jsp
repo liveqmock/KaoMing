@@ -208,6 +208,7 @@ function repairReportPrint(id){
 														for(int i=repairAttachment.size()-1;i>=0;i--){
 												 	  	String[] temp=(String[])repairAttachment.get(i);
 															strTr=i%2==0?"tableback2":"tableback1";
+															if(!temp[3].equals("T")){
 												%>
 															<tr class="<%=strTr%>">
 															  <td><%=i+1%></td>
@@ -216,7 +217,7 @@ function repairReportPrint(id){
 															  <td><%=DicInit.getSystemName("FILE_TYPE",temp[3])%><input type="hidden" name="attachId" value="<%=temp[0]%>"></td>
 															  <td><%=temp[4]%></td>
 															</tr>
-												<%}}%>
+												<%}}}%>
 											</table>
 										</td>
 									</tr>

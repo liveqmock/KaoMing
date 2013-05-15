@@ -646,7 +646,8 @@ function addRepairMan(){
 	var laborCosts=document.forms[0].laborCosts.value;
 	var remark=document.forms[0].rm_remark.value;
 	
-	if(f_isNull(document.forms[0].repairMan,'维修员')&&f_isNull(document.forms[0].departDate,'出发日期')&&checkInputDate(document.forms[0].departDate)){
+	if(f_isNull(document.forms[0].repairMan,'维修员')&&f_isNull(document.forms[0].departDate,'出发日期')&&checkInputDate(document.forms[0].departDate)
+			&&f_isNull(document.forms[0].workingHours,'预计工时')&&f_isNull(document.forms[0].ticketsAllCosts,'车船票')&&f_isNull(document.forms[0].laborCosts,'人工费')){
 		
 		var oBody = irisListTable.tBodies[0] ;
 		var oNewRow=oBody.insertRow();

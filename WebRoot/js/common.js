@@ -326,40 +326,40 @@ function close_child_win(){
 
 function chk_page_num(num,oThis){
   var flag=true;
-  var intNumPerPage=10,intGoto=1;
-  if (document.all.txtNumPerPage.length == null) {
-      intNumPerPage=document.all.txtNumPerPage.value;
-  }
-  else {
-      for (var i=0; i<document.all.txtNumPerPage.length;i++){
-          if(oThis == document.all.buttonGo[i]){
-              intNumPerPage=document.all.txtNumPerPage[i].value;
-              break;
-          }
-      }
-  }
-  if (document.all.txtGoto.length == null) {
-      intGoto=document.all.txtGoto.value;
-  }
-  else {
-      for (var i=0; i<document.all.txtGoto.length;i++){
-          if(oThis == document.all.buttonGo[i]){
-              intGoto=document.all.txtGoto[i].value;
-              break;
-          }
-      }
-  }
-  if(isNaN(intNumPerPage)||(intNumPerPage<1)||intNumPerPage.indexOf('.')!=-1){
-	 alert("你输入了不合法的每页记录数！");
-     flag=false;  }else if(intNumPerPage>num){
-	 alert("每页记录请勿超过"+num);
-     flag=false;  }
-  if(isNaN(intGoto)||(intGoto<1)||intGoto.indexOf('.')!=-1){
-	alert("你输入了不合法的当前页数！");
-    flag=false;  }
-  if (flag){
-      document.all.hiddenGoto.value = intGoto;      
-   }
+//  var intNumPerPage=10,intGoto=1;
+//  if (document.all.txtNumPerPage.length == null) {
+//      intNumPerPage=document.all.txtNumPerPage.value;
+//  }
+//  else {
+//      for (var i=0; i<document.all.txtNumPerPage.length;i++){
+//          if(oThis == document.all.buttonGo[i]){
+//              intNumPerPage=document.all.txtNumPerPage[i].value;
+//              break;
+//          }
+//      }
+//  }
+//  if (document.all.txtGoto.length == null) {
+//      intGoto=document.all.txtGoto.value;
+//  }
+//  else {
+//      for (var i=0; i<document.all.txtGoto.length;i++){
+//          if(oThis == document.all.buttonGo[i]){
+//              intGoto=document.all.txtGoto[i].value;
+//              break;
+//          }
+//      }
+//  }
+//  if(isNaN(intNumPerPage)||(intNumPerPage<1)||intNumPerPage.indexOf('.')!=-1){
+//	 alert("你输入了不合法的每页记录数！");
+//     flag=false;  }else if(intNumPerPage>num){
+//	 alert("每页记录请勿超过"+num);
+//     flag=false;  }
+//  if(isNaN(intGoto)||(intGoto<1)||intGoto.indexOf('.')!=-1){
+//	alert("你输入了不合法的当前页数！");
+//    flag=false;  }
+//  if (flag){
+//      document.all.hiddenGoto.value = intGoto;      
+//   }
    return flag;
 }
 

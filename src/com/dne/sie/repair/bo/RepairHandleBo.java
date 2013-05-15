@@ -117,7 +117,10 @@ public class RepairHandleBo extends CommBo {
 		rsf = (RepairServiceForm)this.copyBeans(rsf, searchForm);
 	
 		rsf.setUpdateDate(new Date());
-
+		rsf.setUpdateBy(searchForm.getUpdateBy());
+		//电诊员
+		rsf.setOperaterId(searchForm.getUpdateBy());
+		
 		if(searchForm.getTempActualOnsiteDate()!=null&&!searchForm.getTempActualOnsiteDate().equals(""))
 			rsf.setActualOnsiteDate(Operate.toDate(searchForm.getTempActualOnsiteDate()));
 		if(searchForm.getTempActualRepairedDate()!=null&&!searchForm.getTempActualRepairedDate().equals(""))
@@ -246,6 +249,8 @@ public class RepairHandleBo extends CommBo {
 		rsf = (RepairServiceForm)this.copyBeans(rsf, searchForm);
 	
 		rsf.setUpdateDate(new Date());
+		//电诊员
+		rsf.setOperaterId(searchForm.getUpdateBy());
 
 		//设置维修状态
 		RepairServiceStatusForm rssf = new RepairServiceStatusForm();

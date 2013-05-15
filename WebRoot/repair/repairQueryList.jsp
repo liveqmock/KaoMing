@@ -119,7 +119,6 @@ function doReset(){
 						<td width="90">维修性质：</td>
                         <td>
 							<html:select property="repairProperites" styleClass="form">
-	                          <option value="">全部</option>
 								<%
 								  for(int i=0;repairProperitesArr!=null&&i<repairProperitesArr.size();i++){
 									String[] temp=(String[])repairProperitesArr.get(i);
