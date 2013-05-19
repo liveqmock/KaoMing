@@ -9,6 +9,7 @@
 	String desc = (String)request.getAttribute("desc");
 	String name = (String)request.getAttribute("name");
 	String flag = (String)request.getAttribute("flag");
+	String id = (String)request.getAttribute("id");
  %>
  
 <SCRIPT LANGUAGE="JavaScript">
@@ -16,7 +17,7 @@
 function returnIrisValue(){
 	var irisInfo = new Array();
 	irisInfo[0]=document.forms[0].irisContent.value;
-	irisInfo[1]="<%=desc%>";
+	irisInfo[1]="<%=id%>";
 	returnValue=irisInfo;
 	
 	window.close();

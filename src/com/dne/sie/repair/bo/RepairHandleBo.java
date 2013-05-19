@@ -6,8 +6,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
@@ -169,28 +174,29 @@ public class RepairHandleBo extends CommBo {
 				}
 			}
 		}else if("cpSave".equals(searchForm.getFlag())){
+			if(searchForm.getActualOnsiteDateStr()!=null)
+				rsf.setActualOnsiteDate((Operate.toDate(searchForm.getActualOnsiteDateStr())));
+			if(searchForm.getActualRepairedDateStr()!=null) 
+				rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
+			
 			if(searchForm.getIrisIds()!=null&&!searchForm.getIrisIds().isEmpty()){
 				String delIris = "delete from RepairIrisInfoForm as ii where ii.repairNo="+rsf.getRepairNo();
 				al.add(new Object[]{delIris,"e"});
 				
 				String[] irisId = searchForm.getIrisIds().split(",");
+				//{ "iristree": [{"14": "p1111", "15":"p222", "49": "1", "50": "8", "62": "5", "63": "2" }]}
+				JSONObject jsonObject = JSONObject.fromObject(searchForm.getIrisValues());
+				JSONArray ja = jsonObject.getJSONArray("iristree");
+				JSONObject irisValues = (JSONObject)ja.get(0);
+				 Map<String, Object> irisMap = (Map) irisValues;
+				 
+				 
 				for(String id : irisId){
 					RepairIrisInfoForm iif = new RepairIrisInfoForm();
 					iif.setRepairNo(rsf.getRepairNo());
 					iif.setIrisCodeId(new Long(id));
-					if(Integer.parseInt(id) == AtomRoleCheck.PARAM1){
-						iif.setIrisContent(searchForm.getParameter1());
-					}else if(Integer.parseInt(id) == AtomRoleCheck.PARAM2){
-						iif.setIrisContent(searchForm.getParameter2());
-					}else if(Integer.parseInt(id) == AtomRoleCheck.PLC1){
-						iif.setIrisContent(searchForm.getPlc1());
-					}else if(Integer.parseInt(id) == AtomRoleCheck.PLC2){
-						iif.setIrisContent(searchForm.getPlc2());
-					}else if(Integer.parseInt(id) == AtomRoleCheck.PITCH1){
-						iif.setIrisContent(searchForm.getPitch1());
-					}else if(Integer.parseInt(id) == AtomRoleCheck.PITCH2){
-						iif.setIrisContent(searchForm.getPitch2());
-					}
+					
+					iif.setIrisContent(irisMap.get(id)==null?"":irisMap.get(id).toString());
 					
 					iif.setCreateBy(searchForm.getUpdateBy());
 					iif.setCreateDate(searchForm.getUpdateDate());
@@ -563,23 +569,18 @@ public class RepairHandleBo extends CommBo {
 			al.add(new Object[]{delIris,"e"});
 			
 			String[] irisId = searchForm.getIrisIds().split(",");
+			//{ "iristree": [{"14": "p1111", "15":"p222", "49": "1", "50": "8", "62": "5", "63": "2" }]}
+			JSONObject jsonObject = JSONObject.fromObject(searchForm.getIrisValues());
+			JSONArray ja = jsonObject.getJSONArray("iristree");
+			JSONObject irisValues = (JSONObject)ja.get(0);
+			 Map<String, Object> irisMap = (Map) irisValues;
+			
 			for(String id : irisId){
 				RepairIrisInfoForm iif = new RepairIrisInfoForm();
 				iif.setRepairNo(rsf.getRepairNo());
 				iif.setIrisCodeId(new Long(id));
-				if(Integer.parseInt(id) == AtomRoleCheck.PARAM1){
-					iif.setIrisContent(searchForm.getParameter1());
-				}else if(Integer.parseInt(id) == AtomRoleCheck.PARAM2){
-					iif.setIrisContent(searchForm.getParameter2());
-				}else if(Integer.parseInt(id) == AtomRoleCheck.PLC1){
-					iif.setIrisContent(searchForm.getPlc1());
-				}else if(Integer.parseInt(id) == AtomRoleCheck.PLC2){
-					iif.setIrisContent(searchForm.getPlc2());
-				}else if(Integer.parseInt(id) == AtomRoleCheck.PITCH1){
-					iif.setIrisContent(searchForm.getPitch1());
-				}else if(Integer.parseInt(id) == AtomRoleCheck.PITCH2){
-					iif.setIrisContent(searchForm.getPitch2());
-				}
+				
+				iif.setIrisContent(irisMap.get(id)==null?"":irisMap.get(id).toString());
 				
 				iif.setCreateBy(searchForm.getUpdateBy());
 				iif.setCreateDate(searchForm.getUpdateDate());
@@ -1117,6 +1118,19 @@ public class RepairHandleBo extends CommBo {
 		}
 		
 		return status;
+	}
+	
+	public static void main(String[] args) {
+		String xx = "{ \"iristree\": [{\"14\": \"p1111\", \"15\":\"p222\", \"49\": \"1\", \"50\": \"8\", \"62\": \"5\", \"63\": \"2\" }]}";
+		JSONObject jsonObject = JSONObject.fromObject(xx);
+		JSONArray ja = jsonObject.getJSONArray("iristree");
+		JSONObject irisValues = (JSONObject)ja.get(0);
+		 Map<String, Object> irisMap = (Map) irisValues;
+		 
+		 System.out.println(irisMap.get("14"));
+		 System.out.println(irisMap.get("62"));
+		
+		
 	}
 	
 }

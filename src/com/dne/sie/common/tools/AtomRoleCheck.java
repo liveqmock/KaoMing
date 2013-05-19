@@ -30,12 +30,7 @@ public class AtomRoleCheck {
 	public static final int 	LOGISTICMANAGER =7;
 	public static final int 	MANAGER =8;
 	
-	public static final int 	PARAM1 =14;
-	public static final int 	PARAM2 =15;
-	public static final int 	PLC1 =17;
-	public static final int 	PLC2 =18;
-	public static final int 	PITCH1 =49;
-	public static final int 	PITCH2 =50;
+	
 	
 	public static ArrayList tokenList[]=new ArrayList[2];
 

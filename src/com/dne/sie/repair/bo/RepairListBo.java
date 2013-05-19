@@ -311,8 +311,9 @@ public class RepairListBo extends CommBo {
 	
 	public String[] getIrisTree(List<RepairIrisInfoForm> repairIrisCodeList) throws Exception {
 		String[] type = {"A","B"};	//电气部分,机械部分
-		String strRet[]=new String[type.length];
+		String strRet[]=new String[type.length+1];
 		String strTree="";
+		String json="{ \"iristree\": [{";
 		//int i=0;
 		
 		for(int i=0;i<type.length;i++){
@@ -339,8 +340,13 @@ public class RepairListBo extends CommBo {
 						if(repairIrisCodeList!=null && iif!=null&&iif.getIrisContent()!=null){
 							content = iif.getIrisContent();
 						}
+						strRet[i]="document.write('<input name=\"iris_"+icf.getIrisCodeId()+"\" type=\"hidden\" value=\""+content+"\">'); \r\n "+strRet[i];
 //						strName+="&nbsp;&nbsp;<input name=\""+icf.getIrisDesc()+"\" size=16 value=\""+content+"\" maxlength=250 >";
-						strName+="&nbsp;&nbsp;<img src=\"images/i_board.gif\" onclick=showIrisDialog(\""+content+"\",\""+icf.getIrisDesc()+"\",\""+icf.getIrisName()+"\")  >";
+						strName+="&nbsp;&nbsp;<img src=\"images/i_board.gif\" onclick=showIrisDialog(\""+content+"\",\""+icf.getIrisDesc()+"\",\""+icf.getIrisName()+"\","+icf.getIrisCodeId()+")  >";
+						if(json.length()>20){
+							json += ",";
+						}
+						json += "\""+icf.getIrisCodeId()+"\":\""+content+"\"";
 					}
 					if(repairIrisCodeList!=null && iif!=null){
 						if(iif.getIrisCodeId().longValue() == id.longValue()){
@@ -362,6 +368,9 @@ public class RepairListBo extends CommBo {
 				strTree+".expandAll();\n"+
 				"document.write(\"<div id='treeContainer' >\" + "+strTree+" + \"</div>\");";
 		}
+		json+=" }]}";
+		strRet[type.length] =  json;
+		
 		return strRet;
 	}
 	

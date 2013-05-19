@@ -142,12 +142,16 @@ public class RepairListQuery extends QueryBean{
 			}
 			
 			if (form.getRepairProperites() != null && !"".equals(form.getRepairProperites())) {
-				whereStrBuffer.append(" and rsf.repairProperites = :repairProperites ");
-				param = new QueryParameter();
-				param.setName("repairProperites");
-				param.setValue(form.getRepairProperites());
-				param.setHbType(Hibernate.STRING);
-				paramList.add(param);
+				if(form.getRepairProperites().equals("repair")){
+					whereStrBuffer.append(" and rsf.repairProperites in ('C','Y') ");
+				}else{
+					whereStrBuffer.append(" and rsf.repairProperites = :repairProperites ");
+					param = new QueryParameter();
+					param.setName("repairProperites");
+					param.setValue(form.getRepairProperites());
+					param.setHbType(Hibernate.STRING);
+					paramList.add(param);
+				}
 			}
 			
 			if (form.getRr90() != null && !"".equals(form.getRr90())) {

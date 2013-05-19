@@ -113,6 +113,7 @@ public class RepairAction extends ControlAction {
 		String forward = "repairList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
 		rsForm.setCurrentStatus("DZ");		//电诊中
+		rsForm.setRepairProperites("repair");
 		
 		RepairListBo rlBo = RepairListBo.getInstance();
 		request.setAttribute("repairList",rlBo.getRepairList(rsForm));
@@ -190,6 +191,7 @@ public class RepairAction extends ControlAction {
 		String forward = "repairDispatchList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
 		rsForm.setCurrentStatus("T");		//销售完成
+		rsForm.setRepairProperites("repair");
 		
 		RepairListBo rlBo = RepairListBo.getInstance();
 		request.setAttribute("repairList",rlBo.getRepairList(rsForm));
@@ -257,6 +259,7 @@ public class RepairAction extends ControlAction {
 		String forward = "repairReturnList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
 		rsForm.setCurrentStatus("D");		//已派工
+		rsForm.setRepairProperites("repair");
 		
 		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
 		String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
@@ -317,6 +320,7 @@ public class RepairAction extends ControlAction {
 		String forward = "repairCompleteList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
 		rsForm.setCurrentStatus("R");		//在修
+		rsForm.setRepairProperites("repair");
 		
 		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
 		rsForm.setCurrentUserId(employeeId);
@@ -344,6 +348,8 @@ public class RepairAction extends ControlAction {
 		
 		RepairListBo rlBo = RepairListBo.getInstance();
 		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+		rsf.setActualOnsiteDateStr(Operate.formatYMDDate(rsf.getActualOnsiteDate()));
+		rsf.setActualRepairedDateStr(Operate.formatYMDDate(rsf.getActualRepairedDate()));
 		
 		request.setAttribute("repairServiceForm", rsf);
 		request.setAttribute("repairSearchForm", rsf);
@@ -415,6 +421,7 @@ public class RepairAction extends ControlAction {
 		request.setAttribute("name", new String(name.getBytes("iso-8859-1")));
 		request.setAttribute("Rnd", rnd);
 		request.setAttribute("flag", request.getParameter("flag"));
+		request.setAttribute("id", request.getParameter("id"));
 		return "irisContent";
 	}
 	

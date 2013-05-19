@@ -547,6 +547,7 @@ public class Operate {
 	* @return Date
 	*/
 	public static String formatDate(java.util.Date temp){
+		if(temp==null) return null;
 		String date = null; 
 		try{
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -562,6 +563,7 @@ public class Operate {
 	* @return Date
 	*/
 	public static String formatYMDDate(java.util.Date temp){
+		if(temp==null) return null;
 		String date = null; 
 		try{
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");

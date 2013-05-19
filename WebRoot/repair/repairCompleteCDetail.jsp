@@ -137,7 +137,7 @@ function f_chk(flag){
 	}
 	
 	if(document.forms[0].receptionRemark.value != ""){
-		if(!f_maxLength(document.forms[0].remark,'备注',800)){
+		if(!f_maxLength(document.forms[0].receptionRemark,'备注',800)){
 			return false;
 		}
 	}
@@ -158,7 +158,7 @@ function f_chk(flag){
 	}
 	
 	 var allValue="";
-   	 <%for(int i=0;i<irisTree.length;i++){   %>
+   	 <%for(int i=0;i<irisTree.length-1;i++){   %>
 		var retValue<%=i%>=tree<%=i%>.getCheckedValues(); 
    	 	if(retValue<%=i%>!='') allValue+=","+retValue<%=i%>;
    	 <%}%>
@@ -172,7 +172,7 @@ function f_chk(flag){
    	 	return false;
    	 }
    	 
-   	
+   	createIrisJson();
 		
 	return true;
 }
@@ -180,7 +180,7 @@ function f_chk(flag){
 
 function f_save(){
 	var allValue="";
-   	 <%for(int i=0;i<irisTree.length;i++){   %>
+   	 <%for(int i=0;i<irisTree.length-1;i++){   %>
 		var retValue<%=i%>=tree<%=i%>.getCheckedValues(); 
    	 	if(retValue<%=i%>!='') allValue+=","+retValue<%=i%>;
    	 <%}%>
@@ -189,23 +189,34 @@ function f_save(){
    	 	allValue=allValue.substring(1);
    	 	document.forms[0].irisIds.value=allValue;
    	 }
+   	 createIrisJson();
 	
 	showWaitDiv(800,1000);
-
+	
 	document.forms[0].action="repairHandleAction.do?method=saveRepair&flag=cpSave&repairNo="+document.forms[0].repairNo.value+"&version="+document.forms[0].version.value;
 	document.forms[0].submit();	
 }
 
 
-function showIrisDialog(content,desc,name){
-	content = eval("document.forms[0]."+desc).value;
-	var irisContent=window.showModalDialog("repairAction.do?method=irisContent&flag=add&irisContent="+(content)+"&desc="+desc+"&name="+name+"&Rnd="+Math.random(),"","dialogHeight: 180px; dialogWidth: 500px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
-	//var varStoreInfo=window.open("newsis/repair/irisContent.jsp","iris","height=700,width=600,resizable=no, status=no,scrollbars=yes");
-	if(irisContent!=null){
-		eval("document.forms[0]."+irisContent[1]).value=irisContent[0];
-	}
-	
+function showIrisDialog(content,desc,name,id){
+	var irisContent=window.showModalDialog("repairAction.do?method=irisContent&flag=add&irisContent="+(content)+
+			"&desc="+desc+"&name="+name+"&id="+id+"&Rnd="+Math.random(),"","dialogHeight: 180px; dialogWidth: 500px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
 
+	if(irisContent!=null){
+		eval("document.forms[0].iris_"+irisContent[1]).value=irisContent[0];
+	}
+
+}
+
+function createIrisJson(){
+	
+	var jsonVal = '{ "iristree": [{"14": "'+document.forms[0].iris_14.value+'", "15":"'+document.forms[0].iris_15.value+'", "17": "'+
+		document.forms[0].iris_17.value+'", "18": "'+document.forms[0].iris_18.value+'", "49": "'+
+		document.forms[0].iris_49.value+'", "50": "'+document.forms[0].iris_50.value+'", "62": "'+
+		document.forms[0].iris_62.value+'", "63": "'+document.forms[0].iris_63.value+'" }]}';
+	
+	document.forms[0].irisValues.value = jsonVal;
+	//alert(jsonVal);
 }
 
 
@@ -298,13 +309,7 @@ function fileAddFailed(failedCode){
 <html:hidden property="repairNo"/>
 <input name="irisIds" type="hidden">
 <input name="version" type="hidden" value="<%=rsf.getVersion() %>">
-<input name="parameter1" type="hidden">
-<input name="parameter2" type="hidden">
-<input name="plc1" type="hidden">
-<input name="plc2" type="hidden">
-<input name="pitch1" type="hidden">
-<input name="pitch2" type="hidden">
-
+<input name="irisValues" type="hidden">
 
 <table width="90%" height="96%" border="0" align="center" cellpadding="0" cellspacing="6" class="content12">
   <tr> 
@@ -621,7 +626,7 @@ function fileAddFailed(failedCode){
 	            
 	            <tr class="tableback1"> 
                   <td valign="top">修理内容：<font color='red'>*</font></td>
-                  <td colspan="3"><html:textarea property="repairContent" rows="2" cols="8" styleClass="form" style="width:100%" ></html:textarea></td>
+                  <td colspan="3"><html:textarea property="repairContent" rows="6" cols="8" styleClass="form" style="width:100%" ></html:textarea></td>
                 </tr>
                 
                <tr class="tableback2">

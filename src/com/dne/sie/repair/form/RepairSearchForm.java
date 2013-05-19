@@ -93,14 +93,10 @@ public class RepairSearchForm extends CommForm{
 	private Double ticketsAllCosts;							//车船票
 	private Double laborCosts;								//人工费
 	
-	private String parameter1;
-	private String parameter2;
-	private String plc1;
-	private String plc2;
-	private String pitch1;
-	private String pitch2;
+	
 	
 	private String irisIds;
+	private String irisValues;
 	
 	private String jwFoundation;
 	private String jwDoc;
@@ -703,54 +699,6 @@ public class RepairSearchForm extends CommForm{
 		this.laborCosts = laborCosts;
 	}
 
-	public String getParameter1() {
-		return parameter1;
-	}
-
-	public void setParameter1(String parameter1) {
-		this.parameter1 = parameter1;
-	}
-
-	public String getParameter2() {
-		return parameter2;
-	}
-
-	public void setParameter2(String parameter2) {
-		this.parameter2 = parameter2;
-	}
-
-	public String getPlc1() {
-		return plc1;
-	}
-
-	public void setPlc1(String plc1) {
-		this.plc1 = plc1;
-	}
-
-	public String getPlc2() {
-		return plc2;
-	}
-
-	public void setPlc2(String plc2) {
-		this.plc2 = plc2;
-	}
-
-	public String getPitch1() {
-		return pitch1;
-	}
-
-	public void setPitch1(String pitch1) {
-		this.pitch1 = pitch1;
-	}
-
-	public String getPitch2() {
-		return pitch2;
-	}
-
-	public void setPitch2(String pitch2) {
-		this.pitch2 = pitch2;
-	}
-
 	public String getIrisIds() {
 		return irisIds;
 	}
@@ -982,6 +930,16 @@ public class RepairSearchForm extends CommForm{
 	public void setReceptionRemark(String receptionRemark) {
 		this.receptionRemark = receptionRemark;
 	}
+
+	public String getIrisValues() {
+		return irisValues;
+	}
+
+	public void setIrisValues(String irisValues) {
+		this.irisValues = irisValues;
+	}
+
+
 
 
 	

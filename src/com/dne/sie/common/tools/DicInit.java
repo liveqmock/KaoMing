@@ -31,7 +31,7 @@ public class DicInit extends HttpServlet{
 	private DefaultDao dao;
 	public static HashMap SYS_CODE_MAP = new HashMap();	// SYSTEM_CODE´úÂë×Öµä±í
 	public static List<String> pageHTML = null; 
-	public final static long DEFAULT_DELAY = 24*3600000;
+	public final static long DEFAULT_DELAY = 24*3600000*7;
 	
 	public static char SPLIT1=0x0001;
 	public static char SPLIT2=0x0002;
