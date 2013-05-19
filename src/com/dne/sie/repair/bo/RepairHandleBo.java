@@ -547,6 +547,7 @@ public class RepairHandleBo extends CommBo {
 		rsf.setRepairContent(searchForm.getRepairContent());
 		rsf.setLeaveProblem(searchForm.getLeaveProblem());
 		rsf.setTobeMatter(searchForm.getTobeMatter());
+		rsf.setReceptionRemark(searchForm.getReceptionRemark());
 		
 		rsf.setUnCompleteQuickStatus(searchForm.getUnCompleteQuickStatus());
 		
@@ -591,6 +592,41 @@ public class RepairHandleBo extends CommBo {
 		this.getBatchDao().allDMLBatch(al);
 		
 	}
+	
+	
+	/**
+	 * 维修报告审批
+	 * @param searchForm
+	 * @throws VersionException
+	 * @throws Exception
+	 */
+	public void repairApprove(RepairSearchForm searchForm) throws VersionException,Exception {
+		ArrayList<Object[]> al = new ArrayList<Object[]>();
+		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+		if(rsf.getVersion()!=searchForm.getVersion()){
+			throw new VersionException("数据已被其他用户更新过，请重新打开后再提交！");
+		}
+		
+		rsf.setConfirmSymptom(searchForm.getConfirmSymptom()+"\r\n      ----"+Operate.formatDate(new Date()));
+		rsf.setCurrentStatus(searchForm.getCurrentStatus()); 
+		rsf.setUpdateBy(searchForm.getUpdateBy());
+		rsf.setUpdateDate(searchForm.getUpdateDate());
+
+		//设置维修状态
+		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+		rssf.setRepairStatus(rsf.getCurrentStatus());
+		rssf.setBeginDate(new Date());
+		rssf.setCreateBy(rsf.getUpdateBy());
+		rssf.setRepairServiceForm(rsf);
+		rsf.getServiceStatusSet().add(rssf);
+		
+		al.add(new Object[]{rsf,"u"});
+		
+		
+		this.getBatchDao().allDMLBatch(al);
+		
+	}
+	
 	
 	public String checkDispatchPart(Long repairNo) throws Exception{
 		String partHql="select count(*) from RepairPartForm rp where rp.repairNo=? and rp.repairPartStatus ='L' and rp.repairPartType='X'";

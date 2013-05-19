@@ -26,7 +26,7 @@ public class RepairServiceForm extends CommForm{
 	private String warrantyCardNo;            //保卡号
 	private Date purchaseDate;                //购机日期
 	private Date extendedWarrantyDate;
-	private String confirmSymptom;            //维修员确认故障
+	private String confirmSymptom;            //审批意见
 	private String repairContent;             //维修内容
 	private String unRepairReason;            //不修理原因
 	private String unQuickReason;             //不能即时维修原因

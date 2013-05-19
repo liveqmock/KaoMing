@@ -82,142 +82,50 @@ function repeatedReceivePrint(id,printType){//重新打印接机单
   window.open("receiveAction.do?method=repeatedReceivePrint&repairNo="+id+"&repeate=true&printType="+printType,"","height=700,width=860,scrollbars=yes");
 }
 
-function repairComplete(){
-	if(f_chk('Y')){
-		if(confirm("确定修复完成吗？")){
+function f_approve(flag){
+	if(f_chk(flag)){
+		if(confirm("确定审批完成吗？")){
 			
 			showWaitDiv(800,1000);
-			document.forms[0].action="repairHandleAction.do?method=repairEnd&unCompleteQuickStatus=N";
+			document.forms[0].action="repairHandleAction.do?method=repairEndApprove&result="+flag;
 			document.forms[0].submit();	
 		}
 	}
 }
 
-function repairUnComplete(){
-	if(f_chk('N')){
-		if(confirm("本次修理完成但有遗留问题？")){
-			showWaitDiv(800,1000);
-			document.forms[0].action="repairHandleAction.do?method=repairEnd&unCompleteQuickStatus=Y";
-			document.forms[0].submit();	
-		}
-	}
-}
+
 
 
 
 function f_chk(flag){ 
 		
-	if(document.forms[0].repairContent.value == ""){ //判断是否填写维修内容
-		alert("必须填写维修内容！");
+	if(flag=="N"&&document.forms[0].confirmSymptom.value == ""){ //判断是否填写维修内容
+		alert("必须填写审批意见！");
 		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-		document.forms[0].repairContent.focus();
+		document.forms[0].confirmSymptom.focus();
 		return false;
 	}	
-	if(document.forms[0].actualOnsiteDateStr.value == ""){ 
-		alert("必须填写实际上门日期！");
-		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-		document.forms[0].actualOnsiteDateStr.focus();
-		return false;
-	}
-	if(document.forms[0].actualRepairedDateStr.value == ""){ 
-		alert("必须填写实际修复日期！");
-		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-		document.forms[0].actualRepairedDateStr.focus();
-		return false;
-	}
-	if(!checkInputDate(document.forms[0].actualOnsiteDateStr)){
-		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-		document.forms[0].actualOnsiteDateStr.focus();
-		return false;
-	}
-	if(!checkInputDate(document.forms[0].actualRepairedDateStr)){
-		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-		document.forms[0].actualRepairedDateStr.focus();
-		return false;
-	}
 	
-	if(document.forms[0].receptionRemark.value != ""){
-		if(!f_maxLength(document.forms[0].receptionRemark,'备注',800)){
+	if(document.forms[0].confirmSymptom.value != ""){
+		if(!f_maxLength(document.forms[0].confirmSymptom,'审批意见',500)){
 			return false;
 		}
 	}
 	
-	if(flag=='N'){
-		if(document.forms[0].leaveProblem.value == ""){ 
-			alert("必须填写遗留问题！");
-			MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-			document.forms[0].leaveProblem.focus();
-			return false;
-		}	
-		if(document.forms[0].tobeMatter.value == ""){
-			alert("必须填写未尽事宜！");
-			MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-			document.forms[0].tobeMatter.focus();
-			return false;
-		}	
-	}
-	
-	 var allValue="";
-   	 <%for(int i=0;i<irisTree.length-1;i++){   %>
-		var retValue<%=i%>=tree<%=i%>.getCheckedValues(); 
-   	 	if(retValue<%=i%>!='') allValue+=","+retValue<%=i%>;
-   	 <%}%>
-   	 //alert(allValue);
-   	 if(allValue!=''){
-   	 	allValue=allValue.substring(1);
-   	 	document.forms[0].irisIds.value=allValue;
-   	 }else{
-   	 	MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
-   	 	alert("请选先确认障位置！");
-   	 	return false;
-   	 }
-   	 
-   	createIrisJson();
 		
 	return true;
 }
 
 
-function f_save(){
-	var allValue="";
-   	 <%for(int i=0;i<irisTree.length-1;i++){   %>
-		var retValue<%=i%>=tree<%=i%>.getCheckedValues(); 
-   	 	if(retValue<%=i%>!='') allValue+=","+retValue<%=i%>;
-   	 <%}%>
-   	 
-   	 if(allValue!=''){
-   	 	allValue=allValue.substring(1);
-   	 	document.forms[0].irisIds.value=allValue;
-   	 }
-   	 createIrisJson();
-	
-	showWaitDiv(800,1000);
-	
-	document.forms[0].action="repairHandleAction.do?method=saveRepair&flag=cpSave&repairNo="+document.forms[0].repairNo.value+"&version="+document.forms[0].version.value;
-	document.forms[0].submit();	
-}
 
 
 function showIrisDialog(content,desc,name,id){
-	var irisContent=window.showModalDialog("repairAction.do?method=irisContent&flag=add&irisContent="+(content)+
+	window.showModalDialog("repairAction.do?method=irisContent&flag=add&irisContent="+(content)+
 			"&desc="+desc+"&name="+name+"&id="+id+"&Rnd="+Math.random(),"","dialogHeight: 180px; dialogWidth: 500px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
 
-	if(irisContent!=null){
-		eval("document.forms[0].iris_"+irisContent[1]).value=irisContent[0];
-	}
 
 }
 
-function createIrisJson(){
-	
-	var jsonVal = '{ "iristree": [{"14": "'+document.forms[0].iris_14.value+'", "15":"'+document.forms[0].iris_15.value+'", "17": "'+
-		document.forms[0].iris_17.value+'", "18": "'+document.forms[0].iris_18.value+'", "49": "'+
-		document.forms[0].iris_49.value+'", "50": "'+document.forms[0].iris_50.value+'", "62": "'+
-		document.forms[0].iris_62.value+'", "63": "'+document.forms[0].iris_63.value+'" }]}';
-	
-	document.forms[0].irisValues.value = jsonVal;
-	//alert(jsonVal);
-}
 
 
 
@@ -657,7 +565,6 @@ function fileAddFailed(failedCode){
 	            <td height="1" colspan="8" bgcolor="#677789"></td>
 	          </tr>
 	          </table>
-	          <%if("X".equals(rsf.getCurrentStatus())){ %>
 	          <br>
 	          <table width="100%" border="0" cellpadding="1" cellspacing="1" class="content12">
 	            <tr> 
@@ -665,8 +572,8 @@ function fileAddFailed(failedCode){
 	            </tr>
 	            
 	            <tr class="tableback1"> 
-                  <td width="10%"><font color="red">审批意见：</font></td>
-                  <td colspan="3"><xmp><bean:write property="confirmSymptom"  name="repairSearchForm" /></xmp></td>
+                  <td  width="10%"><font color="blue">审批意见：</font></td>
+                  <td colspan="3"><html:textarea property="confirmSymptom" rows="4" cols="8" styleClass="form" style="width:100%" ></html:textarea></td>
                 </tr>
 	            
            		<tr> 
@@ -676,8 +583,7 @@ function fileAddFailed(failedCode){
 	            <td height="1" colspan="8" bgcolor="#677789"></td>
 	          </tr>
    			</table>
-   			<%} %>
-   			 <br>
+	          <br>
 	        <table width="100%" border="0" cellpadding="1" cellspacing="1" class="content12">
 	            <tr> 
 	              <td height="1" colspan="10" background="<%= request.getContextPath()%>/images/i_line.gif"></td>
@@ -1081,9 +987,8 @@ function fileAddFailed(failedCode){
 		  <tr> 
 		 		
 			  <td align="right"> 
-			    <input name="endRepairButton" type="button" onClick="repairComplete()" class="button4" value="修复完成">
-			    <input name="endRepairButton" type="button" onClick="repairUnComplete()" class="button6" value="有遗留问题">
-			    <input name="saveForm" type="button" class="button2" onClick="f_save()" value="暂存">
+			    <input name="endRepairButton" type="button" onClick="f_approve('Y')" class="button4" value="同意">
+			    <input name="endRepairButton" type="button" onClick="f_approve('N')" class="button4" value="拒绝">
 			  	<input name="closeButton" type="button" class="button2" value="关闭" onclick="window.close()"> 
 			  	
 			  </td>

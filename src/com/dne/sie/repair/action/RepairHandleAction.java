@@ -113,7 +113,7 @@ public class RepairHandleAction extends ControlAction {
 	}
 	
 	/**
-	 * –ﬁ∏¥
+	 * –ﬁ∏¥Ã·Ωª…Û≈˙
 	 * @param request
 	 * @param form
 	 * @return
@@ -939,6 +939,47 @@ public class RepairHandleAction extends ControlAction {
 		
 		request.setAttribute("tag", "1");
 		request.setAttribute("businessFlag", "repairReturnEnd");
+		
+		return forward;
+	}
+	
+	
+	/**
+	 * –ﬁ∏¥£®±®∏Ê£©…Û≈˙
+	 * @param request
+	 * @param form
+	 * @return
+	 * @throws Exception
+	 */
+	public String repairEndApprove(HttpServletRequest request, ActionForm form) throws Exception {
+		String forward = "resultMessage";
+		
+		RepairSearchForm searchForm=(RepairSearchForm) form;
+		RepairHandleBo rhb = RepairHandleBo.getInstance();
+		Long userId=(Long) request.getSession().getAttribute("userId");
+		
+		String result = request.getParameter("result");
+	
+		if("Y".equals(result)){
+			searchForm.setCurrentStatus("E"); //–ﬁ∏¥
+		}else if("N".equals(result)){
+			searchForm.setCurrentStatus("X"); //…Û≈˙æ‹æ¯
+		}
+		
+		searchForm.setUpdateBy(userId);
+		searchForm.setUpdateDate(new Date());
+		
+		try{
+			rhb.repairApprove(searchForm);
+		}catch(VersionException ve){
+			return "versionErr";
+		}
+		String tempAttache = request.getParameter("attacheIds");
+		if (tempAttache!=null&&!tempAttache.equals("")) {
+			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+		}
+		request.setAttribute("tag", "1");
+		request.setAttribute("businessFlag", "repairEnd");
 		
 		return forward;
 	}

@@ -321,7 +321,7 @@ function checkNowTime()
 
 
 function close_child_win(){ 
-	if(child) child.close();
+	//if(child) child.close();
 }
 
 function chk_page_num(num,oThis){

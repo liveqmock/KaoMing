@@ -319,7 +319,7 @@ public class RepairAction extends ControlAction {
 	public String repairCompleteList(HttpServletRequest request,ActionForm form) throws Exception{ 
 		String forward = "repairCompleteList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setCurrentStatus("R");		//在修
+		rsForm.setCurrentStatus("report");		//维修报告
 		rsForm.setRepairProperites("repair");
 		
 		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
@@ -345,11 +345,13 @@ public class RepairAction extends ControlAction {
 		String forward = "repairCompleteCDetail";
 		
 		String repairNo = request.getParameter("repairNo");
+		String flag = request.getParameter("flag");
 		
 		RepairListBo rlBo = RepairListBo.getInstance();
 		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
 		rsf.setActualOnsiteDateStr(Operate.formatYMDDate(rsf.getActualOnsiteDate()));
 		rsf.setActualRepairedDateStr(Operate.formatYMDDate(rsf.getActualRepairedDate()));
+		//if(rsf.getConfirmSymptom()!=null) rsf.setConfirmSymptom(rsf.getConfirmSymptom().replaceAll("\r\n", "<br>"));
 		
 		request.setAttribute("repairServiceForm", rsf);
 		request.setAttribute("repairSearchForm", rsf);
@@ -364,6 +366,25 @@ public class RepairAction extends ControlAction {
 		//取此维修单的附件
 		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
 		
+		if("approve".equals(flag)){
+			forward = "repairEndApproveCDetail";
+		}
+		return forward;
+	}
+	
+	public String repairEndApproveList(HttpServletRequest request,ActionForm form) throws Exception{ 
+		String forward = "repairEndApproveList";
+		RepairSearchForm rsForm = (RepairSearchForm) form;
+		rsForm.setCurrentStatus("F");		//修复提交
+		rsForm.setRepairProperites("repair");
+		
+		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
+		rsForm.setCurrentUserId(employeeId);
+		String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
+		rsForm.setRoleIds(roleIds);
+		
+		RepairListBo rlBo = RepairListBo.getInstance();
+		request.setAttribute("repairList",rlBo.getRepairList(rsForm));
 		return forward;
 	}
 	

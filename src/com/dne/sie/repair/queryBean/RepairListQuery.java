@@ -131,6 +131,8 @@ public class RepairListQuery extends QueryBean{
 				if(form.getCurrentStatus().equals("DZ")){
 					//电诊中,零件销售中
 					whereStrBuffer.append(" and rsf.currentStatus in ('A','S') ");
+				}else if(form.getCurrentStatus().equals("report")){
+					whereStrBuffer.append(" and rsf.currentStatus in ('R','X') ");
 				}else{
 					whereStrBuffer.append(" and rsf.currentStatus = :currentStatus ");
 					param = new QueryParameter();

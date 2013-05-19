@@ -306,6 +306,9 @@
 			<forward name="repairQueryJcDetail" path="/repair/repairQueryJcDetail.jsp" />
 			<forward name="irisContent" path="/repair/irisContent.jsp" />
 			
+			<forward name="repairEndApproveList" path="/repair/repairEndApproveList.jsp" />
+			<forward name="repairEndApproveCDetail" path="/repair/repairEndApproveCDetail.jsp" />
+			
 		</action>
 		<action name="repairSearchForm" path="/repairHandleAction" scope="request" type="com.dne.sie.repair.action.RepairHandleAction">
 			<forward name="addSucc" path="/repair/receivePrint.jsp" />
