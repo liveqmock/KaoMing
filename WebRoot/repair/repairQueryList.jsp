@@ -22,10 +22,9 @@ function view(id){
 }
 
 function doSubmit(){
-
+		document.forms[0].action="repairAction.do?method=repairQueryList";
 		event.srcElement.disabled = true;
 		document.forms[0].submit();
-	
 }
 
 document.onkeydown = keyDown ;
@@ -37,6 +36,16 @@ function keyDown(e){
 
 function doReset(){
 	document.forms[0].reset();
+}
+
+function f_position(){
+	var irisIds=window.showModalDialog("repairAction.do?method=positionQuery","","dialogHeight: 300px; dialogWidth: 420px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
+	//alert(irisIds);
+	if(irisIds!=null&&irisIds!=''){
+		document.forms[0].irisIds.value=irisIds;
+		doSubmit();
+	}
+	
 }
 
 //-->
@@ -59,7 +68,7 @@ function doReset(){
 %>
 <body bgcolor="#ffffff" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" onload="showQueryDateTR('receiveScope',1)">
 <html:form action="repairAction.do?method=repairQueryList" method="post">
-
+<input name="irisIds" type="hidden">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" class="content12">
   <tr>
     <td valign="top">
@@ -176,7 +185,11 @@ function doReset(){
                       </tr>
                       
                       <tr> 
-                        <td colspan="6"><html:button property="button" value=" 查 询 " styleClass="button2" onclick="doSubmit()"/>&nbsp;<input type="button" value=" 重 置 " class="button2" onclick="doReset()"/></td>
+                        <td colspan="6">
+                        	<html:button property="button" value=" 查 询 " styleClass="button2" onclick="doSubmit()"/>&nbsp;
+                        	<input type="button" value="故障位置查询" class="button6" onclick="f_position()"/>&nbsp;
+                        	<input type="button" value=" 重 置 " class="button2" onclick="doReset()"/>
+                        </td>
                       </tr>
                     </table>
                     <br> 

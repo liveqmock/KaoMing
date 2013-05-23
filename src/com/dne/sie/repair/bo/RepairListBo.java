@@ -299,6 +299,8 @@ public class RepairListBo extends CommBo {
 	
 	
 	public RepairIrisInfoForm getRepairIrisByCode(List<RepairIrisInfoForm> repairIrisCodeList,Long irisCode)  throws Exception {
+		if(repairIrisCodeList==null||irisCode==null) return null;
+		
 		for(RepairIrisInfoForm iif : repairIrisCodeList){
 			if(irisCode.longValue() == iif.getIrisCodeId().longValue()){
 				return iif;

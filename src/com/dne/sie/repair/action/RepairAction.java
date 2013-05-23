@@ -62,7 +62,8 @@ public class RepairAction extends ControlAction {
 		request.setAttribute("partsList", rlBo.getRepairPartsList(rsf.getRepairNo(),"complete"));
 		request.setAttribute("loanList", rlBo.getloanPartsList(rsf.getRepairNo(),"complete"));
 		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo(),"complete"));
-		if(rsf.getCurrentStatus().equals("F")||rsf.getCurrentStatus().equals("R")){
+		if(rsf.getCurrentStatus().equals("F")||rsf.getCurrentStatus().equals("R")
+				||rsf.getCurrentStatus().equals("E")||rsf.getCurrentStatus().equals("X")){
 			request.setAttribute("irisTree",rlBo.getIrisTree(rlBo.getRepairIrisList(rsf.getRepairNo())));
 		}
 		RepairSearchForm rsForm = new RepairSearchForm();
@@ -444,6 +445,13 @@ public class RepairAction extends ControlAction {
 		request.setAttribute("flag", request.getParameter("flag"));
 		request.setAttribute("id", request.getParameter("id"));
 		return "irisContent";
+	}
+	
+	public String positionQuery(HttpServletRequest request, ActionForm form) throws Exception{
+		RepairListBo rlBo = RepairListBo.getInstance();
+		request.setAttribute("irisTree",rlBo.getIrisTree(null));
+		
+		return "positionQuery";
 	}
 	
 	

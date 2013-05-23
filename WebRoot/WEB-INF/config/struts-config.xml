@@ -309,6 +309,8 @@
 			<forward name="repairEndApproveList" path="/repair/repairEndApproveList.jsp" />
 			<forward name="repairEndApproveCDetail" path="/repair/repairEndApproveCDetail.jsp" />
 			
+			<forward name="positionQuery" path="/repair/positionQuery.jsp" />
+			
 		</action>
 		<action name="repairSearchForm" path="/repairHandleAction" scope="request" type="com.dne.sie.repair.action.RepairHandleAction">
 			<forward name="addSucc" path="/repair/receivePrint.jsp" />

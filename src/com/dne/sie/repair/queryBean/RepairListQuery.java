@@ -193,6 +193,11 @@ public class RepairListQuery extends QueryBean{
 				paramList.add(param);
 			}
 			
+			if (form.getIrisIds() != null && !"".equals(form.getIrisIds().trim())) {
+				whereStrBuffer.append(" and rsf.repairNo in (SELECT repairNo FROM RepairIrisInfoForm iris where iris.irisCodeId in("+form.getIrisIds()+"))"); 
+			}
+			
+			
 			
 		}
 		return paramList;

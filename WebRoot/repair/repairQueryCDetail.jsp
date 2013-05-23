@@ -920,7 +920,8 @@ function showIrisDialog(content,desc,name){
 
   </td>
    </tr>
-  </table></html:form>
+  </table>
+</html:form>
 
 </body>
 
