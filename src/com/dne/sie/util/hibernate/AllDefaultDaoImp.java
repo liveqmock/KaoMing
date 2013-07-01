@@ -76,6 +76,27 @@ public class AllDefaultDaoImp implements DefaultDao, DefaultDaoBatch {
 		return tag;
 
 	}
+	
+	public Object execute(String strHql,Object...obj) throws ComException, Exception{
+		Object result=null;
+		if(strHql!=null){
+			HbConn hbConn=new HbConn();
+			try{
+				
+				Query q = hbConn.getSessionWithTransaction().createQuery(strHql);
+				for(int i=0;i<obj.length;i++){
+					q=this.setParam(q,obj[i],i);	
+				}
+				result = q.executeUpdate();
+				hbConn.commit();
+			} catch (Exception e) {
+				throw new Exception(e);
+			} finally {
+				hbConn.closeSession();
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * 查询对象，根据String类型id

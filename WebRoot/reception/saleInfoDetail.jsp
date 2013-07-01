@@ -384,7 +384,9 @@ try{
 			
 			if(chkPay){
 					document.forms[0].addPaymentButton.disabled=true;
-					ajax.setVar('totalQuote','<bean:write property="totalQuote" name="salesInfoForm" />');
+					var totalQuote='<bean:write property="totalQuote" name="salesInfoForm" />';
+					if(totalQuote=='') totalQuote=0;
+					ajax.setVar('totalQuote',totalQuote);
 					ajax.setVar('saleNo','<bean:write property="saleNo" name="salesInfoForm" />');
 					ajax.setVar("payAmount",document.forms[0].payAmount.value);
 					ajax.setVar("payType",document.forms[0].payType.value);

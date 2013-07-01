@@ -12,6 +12,7 @@ import com.dne.sie.common.tools.Operate;
 import com.dne.sie.maintenance.form.IrisCodeForm;
 import com.dne.sie.repair.form.RepairFeeInfoForm;
 import com.dne.sie.repair.form.RepairIrisInfoForm;
+import com.dne.sie.repair.form.RepairManInfoForm;
 import com.dne.sie.repair.form.RepairPartForm;
 import com.dne.sie.repair.form.RepairSearchForm;
 import com.dne.sie.repair.form.RepairServiceForm;
@@ -397,6 +398,10 @@ public class RepairListBo extends CommBo {
 		}
 		
 		return irisInfo;
+	}
+	
+	public RepairManInfoForm getRepairManInfo(Long id) throws Exception {
+		return (RepairManInfoForm)this.getDao().findById(RepairManInfoForm.class, id);
 	}
 	
 	

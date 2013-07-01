@@ -18,6 +18,8 @@ import com.dne.sie.common.tools.EscapeUnescape;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.maintenance.bo.PartInfoBo;
 import com.dne.sie.repair.bo.RepairHandleBo;
+import com.dne.sie.repair.bo.RepairListBo;
+import com.dne.sie.repair.form.RepairManInfoForm;
 import com.dne.sie.repair.form.RepairPartForm;
 import com.dne.sie.repair.form.RepairSearchForm;
 import com.dne.sie.repair.form.RepairServiceForm;
@@ -126,7 +128,7 @@ public class RepairHandleAction extends ControlAction {
 		RepairHandleBo rhb = RepairHandleBo.getInstance();
 		Long userId=(Long) request.getSession().getAttribute("userId");
 	
-		searchForm.setCurrentStatus("F"); //–ﬁ∏¥
+		searchForm.setCurrentStatus("F"); //Ã·Ωª…Û≈˙
 		searchForm.setUpdateBy(userId);
 		searchForm.setUpdateDate(new Date());
 		
@@ -922,6 +924,17 @@ public class RepairHandleAction extends ControlAction {
 		String[] repairCondition = request.getParameterValues("repairCondition");
 		String[] travelId = request.getParameterValues("travelId");
 		
+		String[] travelIdAjaxAdd = request.getParameterValues("travelIdAjaxAdd");
+		String[] repairManAjaxAdd = request.getParameterValues("repairManAjaxAdd");
+		String[] departDateAjaxAdd = request.getParameterValues("departDateAjaxAdd");
+		String[] arrivalDateAjaxAdd = request.getParameterValues("arrivalDateAjaxAdd");
+		String[] returnDateAjaxAdd = request.getParameterValues("returnDateAjaxAdd");
+		String[] travelFeeAjaxAdd = request.getParameterValues("travelFeeAjaxAdd");
+		String[] laborCostsAjaxAdd = request.getParameterValues("laborCostsAjaxAdd");
+		String[] repairConditionAjaxAdd = request.getParameterValues("repairConditionAjaxAdd");
+		String[] remarkAjaxAdd = request.getParameterValues("remarkAjaxAdd");
+		
+		
 		if(travelId==null){
 			throw new Exception("travelId null!");
 		}
@@ -934,7 +947,18 @@ public class RepairHandleAction extends ControlAction {
 		repairManInfo.add(laborCosts);
 		repairManInfo.add(repairCondition);
 		
-		rhb.returnEnd(searchForm,repairManInfo);
+		ArrayList<String[]> repairManInfoAdd = new ArrayList<String[]>();
+		repairManInfoAdd.add(travelIdAjaxAdd);
+		repairManInfoAdd.add(repairManAjaxAdd);
+		repairManInfoAdd.add(departDateAjaxAdd);
+		repairManInfoAdd.add(arrivalDateAjaxAdd);
+		repairManInfoAdd.add(returnDateAjaxAdd);
+		repairManInfoAdd.add(travelFeeAjaxAdd);
+		repairManInfoAdd.add(laborCostsAjaxAdd);
+		repairManInfoAdd.add(repairConditionAjaxAdd);
+		repairManInfoAdd.add(remarkAjaxAdd);
+		
+		rhb.returnEnd(searchForm,repairManInfo,repairManInfoAdd);
 		
 		
 		request.setAttribute("tag", "1");
@@ -983,5 +1007,163 @@ public class RepairHandleAction extends ControlAction {
 		
 		return forward;
 	}
+	
+	
+	
+	
+	public void saveRepairManAjax(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception{
+		
+		PrintWriter writer = response.getWriter();
+		response.setContentType("text/xml");
+		response.setHeader("Cache-Control", "no-cache");
+		
+		try{
+			Long userId=(Long) request.getSession().getAttribute("userId");
+			
+			String repairNo = request.getParameter("repairNo");
+			String repairManAjaxAdd = request.getParameter("repairManAjaxAdd");
+			String departDateAjaxAdd = request.getParameter("departDateAjaxAdd");
+			String arrivalDateAjaxAdd = request.getParameter("arrivalDateAjaxAdd");
+			String returnDateAjaxAdd = request.getParameter("returnDateAjaxAdd");
+			String workingHoursActualAjaxAdd = request.getParameter("workingHoursActualAjaxAdd");
+			String travelFeeAjaxAdd = request.getParameter("travelFeeAjaxAdd");
+			String laborCostsActualAjaxAdd = request.getParameter("laborCostsActualAjaxAdd");
+			String repairConditionAjaxAdd = request.getParameter("repairConditionAjaxAdd");
+			String remarkAjaxAdd = request.getParameter("remarkAjaxAdd");
+			
+			RepairManInfoForm rmi = new RepairManInfoForm();
+			rmi.setRepairNo(new Long(repairNo));
+			rmi.setRepairMan(new Long(repairManAjaxAdd));
+			rmi.setDepartDate(Operate.toSqlDate(departDateAjaxAdd));
+			rmi.setArrivalDate(Operate.toSqlDate(arrivalDateAjaxAdd));
+			rmi.setReturnDate(Operate.toSqlDate(returnDateAjaxAdd));
+			rmi.setWorkingHours(0);
+			rmi.setWorkingHoursActual(new Integer(workingHoursActualAjaxAdd));
+			rmi.setTravelFee(new Double(travelFeeAjaxAdd));
+			rmi.setLaborCosts(0D);
+			rmi.setLaborCostsActual(new Double(laborCostsActualAjaxAdd));
+			rmi.setRepairCondition(repairConditionAjaxAdd);
+			rmi.setRemark(remarkAjaxAdd);
+			
+			rmi.setCreateBy(userId);
+			rmi.setCreateDate(new Date());
+			
+				
+			RepairHandleBo rhBo=RepairHandleBo.getInstance();
+			rhBo.addRepairManAgain(rmi);
+			
+			writer.println("<xml>");
+			writer.println("<flag>true</flag>");
+			writer.println("</xml>");
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+			writer.println("<xml>");
+			writer.println("<flag>false</flag>");
+			writer.println("</xml>");
+		}finally{
+			writer.flush();
+			writer.close();
+		}
+		
+	}
+	
+	
+	
+	public void delRepairManAjax(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception{
+		
+		PrintWriter writer = response.getWriter();
+		response.setContentType("text/xml");
+		response.setHeader("Cache-Control", "no-cache");
+		
+		try{
+			String id = request.getParameter("id");
+			
+			RepairHandleBo rhBo=RepairHandleBo.getInstance();
+			rhBo.deleteRepairManAgain(new Long(id));
+			
+			writer.println("<xml>");
+			writer.println("<flag>true</flag>");
+			writer.println("</xml>");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+			writer.println("<xml>");
+			writer.println("<flag>false</flag>");
+			writer.println("</xml>");
+		}finally{
+			writer.flush();
+			writer.close();
+		}
+		
+	}
+	
+	
+	public void updateRepairManAjax(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception{
+		
+		PrintWriter writer = response.getWriter();
+		response.setContentType("text/xml");
+		response.setHeader("Cache-Control", "no-cache");
+		
+		try{
+			Long userId=(Long) request.getSession().getAttribute("userId");
+			
+			String id = request.getParameter("id");
+			String repairMan = request.getParameter("repairMan");
+			String arrivalDate = request.getParameter("arrivalDate");
+			String returnDate = request.getParameter("returnDate");
+			String workingHoursActual = request.getParameter("workingHoursActual");
+			String travelFee = request.getParameter("travelFee");
+			String laborCostsActual = request.getParameter("laborCostsActual");
+			String repairCondition = request.getParameter("repairCondition");
+			String remark = request.getParameter("remark");
+			
+			RepairManInfoForm rmi = (RepairManInfoForm)RepairListBo.getInstance().getRepairManInfo(new Long(id));
+			
+			rmi.setRepairMan(new Long(repairMan));
+			rmi.setArrivalDate(Operate.toSqlDate(arrivalDate));
+			rmi.setReturnDate(Operate.toSqlDate(returnDate));
+			rmi.setWorkingHoursActual(new Integer(workingHoursActual));
+			rmi.setTravelFee(new Double(travelFee));
+			rmi.setLaborCostsActual(new Double(laborCostsActual));
+			rmi.setRepairCondition(repairCondition);
+			rmi.setRemark(remark);
+			
+			rmi.setUpdateBy(userId);
+			rmi.setUpdateDate(new Date());
+			
+			RepairHandleBo rhBo=RepairHandleBo.getInstance();
+			rhBo.updateRepairMan(rmi);
+			
+			writer.println("<xml>");
+			writer.println("<flag>true</flag>");
+			writer.println("</xml>");
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+			writer.println("<xml>");
+			writer.println("<flag>false</flag>");
+			writer.println("</xml>");
+		}finally{
+			writer.flush();
+			writer.close();
+		}
+		
+	}
+	
 	
 }

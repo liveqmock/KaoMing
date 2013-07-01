@@ -367,6 +367,8 @@ public class RepairAction extends ControlAction {
 		//取此维修单的附件
 		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
 		
+		request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
+		
 		if("approve".equals(flag)){
 			forward = "repairEndApproveCDetail";
 		}
@@ -376,7 +378,7 @@ public class RepairAction extends ControlAction {
 	public String repairEndApproveList(HttpServletRequest request,ActionForm form) throws Exception{ 
 		String forward = "repairEndApproveList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setCurrentStatus("F");		//修复提交
+		rsForm.setCurrentStatus("F");		//修复审批提交
 		rsForm.setRepairProperites("repair");
 		
 		Long employeeId = (Long)request.getSession().getAttribute("employeeId");

@@ -19,7 +19,7 @@ try{
 	List loanList = (List)request.getAttribute("loanList");
 	List toolsList = (List)request.getAttribute("toolsList");
 	String[] irisTree = (String[])request.getAttribute("irisTree");
-	//List repairManList = (List)request.getAttribute("repairManList");
+	List repairManList = (List)request.getAttribute("repairManList");
 	//List feeList = (List)request.getAttribute("feeList");
 	
 	CustomerInfoForm rcif = rsf.getCustomInfoForm();
@@ -31,7 +31,7 @@ try{
 	//List unQucikStatusList=(ArrayList) DicInit.SYS_CODE_MAP.get("UNCOMPLETE_QUICK_STATUS");
 	//List crReasonList=(ArrayList) DicInit.SYS_CODE_MAP.get("CR_REASON");
 	//List unQuickReasonList=(ArrayList) DicInit.SYS_CODE_MAP.get("UNQUICK_REASON");
-	//List repairConditionList=(ArrayList) DicInit.SYS_CODE_MAP.get("REPAIR_CONDITION");
+	List repairConditionList=(ArrayList) DicInit.SYS_CODE_MAP.get("REPAIR_CONDITION");
 	
 %>
 <html>
@@ -237,64 +237,186 @@ function getFileType(){
 	return document.forms[0].fileType.value;
 }
 
-function selectResult(path,attacheId,createDate,filePath){
-	var oNewRow = uploadCompleteTable.insertRow(1);
-	var oNewCell = oNewRow.insertCell(0);
-	oNewCell.width="5%";
-	oNewCell.innerHTML=uploadCompleteTable.rows.length -1;
-	if(uploadCompleteTable.rows.length % 2 == 0){
-		oNewRow.className = "tableback1";
+
+var addRmFlag = false;
+function f_add_rm_line(){
+	if(addRmFlag==true){
+		alert("请先保存已添加的数据");
+		return;
+	} 
+	var oBody = repairManTable.tBodies[0] ;
+	var oNewRow=oBody.insertRow();
+	oNewRow.className = "tableback1";
+	//oNewRow.id = "PART_ROW2_"+partsId;
+	var i=0;
+	
+	
+	var selectRM = "<select name='repairManAjaxAdd' class='form'>";
+	selectRM+="<option value='' selected>==请选择==</option>";
+	<%
+	for(int j=0;repairManList!=null&&j<repairManList.size();j++){
+		String[] rs=(String[])repairManList.get(j);
+	%>
+		selectRM += "<option value='<%=rs[0]%>'><%=rs[1]%></option>";
+	<%}%>
+	selectRM+="</select>";
+	
+	var selectCondition = "<select name='repairConditionAjaxAdd' class='form'>";
+	<%
+	for(int j=0;repairConditionList!=null&&j<repairConditionList.size();j++){
+		String[] rs=(String[])repairConditionList.get(j);
+		if(!rs[0].equals("P")){
+	%>
+		selectCondition += "<option value='<%=rs[0]%>'><%=rs[1]%></option>";
+	<%}}%>
+	selectCondition+="</select>";
+	
+	oNewRow.insertCell(i++).innerHTML=selectRM;
+	oNewRow.insertCell(i++).innerHTML="<input name='departDateAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:input_date();'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='arrivalDateAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:input_date();'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='returnDateAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:input_date();'>";
+	oNewRow.insertCell(i++).innerHTML="0";
+	oNewRow.insertCell(i++).innerHTML="<input name='workingHoursActualAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:f_onlynumber();'>";
+	
+	oNewRow.insertCell(i++).innerHTML="<input name='travelFeeAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:f_onlymoney();'>";
+	oNewRow.insertCell(i++).innerHTML="0";
+	oNewRow.insertCell(i++).innerHTML="<input name='laborCostsActualAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:f_onlymoney();'>";
+	oNewRow.insertCell(i++).innerHTML=selectCondition;
+	oNewRow.insertCell(i++).innerHTML="<input name='remarkAjaxAdd' type='text' class='form' size='20'>";
+	oNewRow.insertCell(i++).innerHTML="<td><input type='button' class='button2' onClick='f_insert_rm()' value='保存'></td>";
+	oNewRow.insertCell(i++).innerHTML="&nbsp;";
+			
+	
+	addRmFlag = true;
+}
+
+
+var ajaxChk = new sack();
+function f_insert_rm(){
+	if(f_chk()){
+		ajaxChk.setVar("repairNo", document.forms[0].repairNo.value);
+		ajaxChk.setVar("repairManAjaxAdd", document.forms[0].repairManAjaxAdd.value);
+		ajaxChk.setVar("departDateAjaxAdd", document.forms[0].departDateAjaxAdd.value);
+		ajaxChk.setVar("arrivalDateAjaxAdd", document.forms[0].arrivalDateAjaxAdd.value);
+		ajaxChk.setVar("returnDateAjaxAdd", document.forms[0].returnDateAjaxAdd.value);
+		ajaxChk.setVar("workingHoursActualAjaxAdd", document.forms[0].workingHoursActualAjaxAdd.value);
+		ajaxChk.setVar("travelFeeAjaxAdd", document.forms[0].travelFeeAjaxAdd.value);
+		ajaxChk.setVar("laborCostsActualAjaxAdd", document.forms[0].laborCostsActualAjaxAdd.value);
+		ajaxChk.setVar("repairConditionAjaxAdd", document.forms[0].repairConditionAjaxAdd.value);
+		ajaxChk.setVar("remarkAjaxAdd", document.forms[0].remarkAjaxAdd.value);
+		
+		ajaxChk.setVar("method", "saveRepairManAjax");
+		ajaxChk.requestFile = "repairHandleAction.do";
+		ajaxChk.method = "POST";
+		ajaxChk.onCompletion = f_save_rm_end;
+		ajaxChk.runAJAX();
+	}
+}
+
+function f_save_rm_end(){
+	var returnXml = ajaxChk.responseXML;
+	var result = returnXml.getElementsByTagName("flag")[0].firstChild.nodeValue;
+	if(result=="true"){
+		alert("保存成功！");
+		location.reload();
 	}else{
-		oNewRow.className = "tableback2";
+		alert("保存出错，请联系管理员！");
 	}
-	oNewCell = oNewRow.insertCell(1);
-	oNewCell.width="5%";
-	oNewCell.innerHTML="<a onClick=delRow(this,"+attacheId+") style=\"cursor: hand\"><u><b>删除&nbsp;&nbsp;</b></u></a>";
-	oNewCell = oNewRow.insertCell(2);
-	oNewCell.width="65%";
-	oNewCell.innerHTML="<a href="+filePath+" style=\"cursor: hand\"  >"+path+"</a>";
-	oNewCell = oNewRow.insertCell(3);
-	oNewCell.width="10%";
-	oNewCell.innerHTML= "维修附件";
-	oNewCell = oNewRow.insertCell(4);
-	oNewCell.width="15%";
-	oNewCell.innerText= createDate;
-
-	globalButton.disabled = false;
-	globalButton = null;
-	hideWaitDiv();
 }
 
 
+function f_chk(){ 
+	if(f_isNull(document.forms[0].repairManAjaxAdd,'维修员')
+			&&f_isNull(document.forms[0].departDateAjaxAdd,'出发日期')&&checkInputDate(document.forms[0].departDateAjaxAdd)
+			&&f_isNull(document.forms[0].arrivalDateAjaxAdd,'到达日期')&&checkInputDate(document.forms[0].arrivalDateAjaxAdd)
+			&&f_isNull(document.forms[0].returnDateAjaxAdd,'返回日期')&&checkInputDate(document.forms[0].returnDateAjaxAdd)
+			&&f_isNull(document.forms[0].workingHoursActualAjaxAdd,'实际工时')
+			&&f_isNull(document.forms[0].travelFeeAjaxAdd,'车船票')
+			&&f_isNull(document.forms[0].laborCostsActualAjaxAdd,'实际人工费')
+		){
+		return true;
+	}
+	return false;
+}
 
-function delRow(obj,attacheId){
-	event.srcElement.disabled = true;
-	var delTr = getParentByTagName(obj,"TR");
-	for(k=0;k<uploadCompleteTable.rows.length;k++){
-		if(uploadCompleteTable.rows(k) == delTr){
-			uploadCompleteTable.deleteRow(k);
-			break;
+
+function f_del_rm(id){
+	ajaxChk.setVar("id", id);
+	ajaxChk.setVar("method", "delRepairManAjax");
+	ajaxChk.requestFile = "repairHandleAction.do";
+	ajaxChk.method = "GET";
+	ajaxChk.onCompletion = f_del_rm_end;
+	ajaxChk.runAJAX();
+	
+}
+
+function f_del_rm_end(){
+	var returnXml = ajaxChk.responseXML;
+	var result = returnXml.getElementsByTagName("flag")[0].firstChild.nodeValue;
+	if(result=="true"){
+		alert("删除成功！");
+		location.reload();
+	}else{
+		alert("删除出错，请联系管理员！");
+	}
+}
+
+
+function f_update_rm(id){
+	
+	if(document.forms[0].travelId==null){
+ 		return;
+    }
+	
+	ajaxChk.setVar("id", id);
+	
+	var len = document.forms[0].travelId.length;
+	if(len>1){
+	    var tag = 0;
+		for(var i=0;i<len;i++){
+			if(document.forms[0].travelId[i].value==id){   
+				ajaxChk.setVar("repairMan", document.forms[0].repairMan[i].value);
+				ajaxChk.setVar("arrivalDate", document.forms[0].arrivalDate[i].value);
+				ajaxChk.setVar("returnDate", document.forms[0].returnDate[i].value);
+				ajaxChk.setVar("workingHoursActual", document.forms[0].workingHoursActual[i].value);
+				ajaxChk.setVar("travelFee", document.forms[0].travelFee[i].value);
+				ajaxChk.setVar("laborCostsActual", document.forms[0].laborCostsActual[i].value);
+				ajaxChk.setVar("repairCondition", document.forms[0].repairCondition[i].value);
+				ajaxChk.setVar("remark", document.forms[0].remark[i].value);		
+				break;
+			}
 		}
+	} else {
+		if(document.forms[0].travelId.value==id){
+			ajaxChk.setVar("repairMan", document.forms[0].repairMan.value);
+			ajaxChk.setVar("arrivalDate", document.forms[0].arrivalDate.value);
+			ajaxChk.setVar("returnDate", document.forms[0].returnDate.value);
+			ajaxChk.setVar("workingHoursActual", document.forms[0].workingHoursActual.value);
+			ajaxChk.setVar("travelFee", document.forms[0].travelFee.value);
+			ajaxChk.setVar("laborCostsActual", document.forms[0].laborCostsActual.value);
+			ajaxChk.setVar("repairCondition", document.forms[0].repairCondition.value);
+			ajaxChk.setVar("remark", document.forms[0].remark.value);
+	 	}
 	}
-	fileDel(attacheId);
+	
+	
+	
+	ajaxChk.setVar("method", "updateRepairManAjax");
+	ajaxChk.requestFile = "repairHandleAction.do";
+	ajaxChk.method = "POST";
+	ajaxChk.onCompletion = f_update_rm_end;
+	ajaxChk.runAJAX();
 }
 
-function fileDel(attacheId){
-	var ajax2 = new sack(); 
-	ajax2.setVar("attacheId",attacheId); 		//设置需要传到后台的参数
-	ajax2.setVar("method", "fileDel");		//调用Action中的方法
-	ajax2.requestFile = "attachedInfoAction.do";		//调用Action
-	ajax2.method = "GET";				 //提交类型
-	//ajax2.onCompletion = delResult;	 	//ajax交互完需要执行的函数
-	ajax2.runAJAX(); 
-}
-
-
-//添加附件失败的时候回调的方法，其中filedCode为失败原因代码，具体参考/common/fileAdd.jsp中信息
-function fileAddFailed(failedCode){
-	globalButton.disabled = false;
-	globalButton = null;
-	hideWaitDiv();	
+function f_update_rm_end(){
+	var returnXml = ajaxChk.responseXML;
+	var result = returnXml.getElementsByTagName("flag")[0].firstChild.nodeValue;
+	if(result=="true"){
+		alert("修改成功！");
+		location.reload();
+	}else{
+		alert("修改出错，请联系管理员！");
+	}
 }
 
 //-->
@@ -1007,7 +1129,7 @@ function fileAddFailed(failedCode){
 	<table height="180" width="100%" cellspacing="0" cellpadding="1" class="content12" border="0" id="irisParentTable">
 	<tr><td width="100%">
 	<div class="scrollDiv" id="IRISScrollDiv">
-       <table width="100%" border="0" cellpadding="0" cellspacing="1" class="content12" id="irisListTable">
+       <table width="100%" border="0" cellpadding="0" cellspacing="1" class="content12" id="repairManTable">
         <thead>
         <tr bgcolor="#CCCCCC"> 
          <td height="18"><b>维修员</b></td>
@@ -1023,6 +1145,7 @@ function fileAddFailed(failedCode){
          <td><b>实际人工费</b></td>
          <td><b>维修情况</b></td>
          <td><b>备注</b></td>
+         <%if(rsf.getCurrentStatus().equals("X")){ %><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><%} %>
         </tr>
      	</thead>
         <tbody>
@@ -1035,9 +1158,10 @@ function fileAddFailed(failedCode){
  	  		RepairManInfoForm rmi = (RepairManInfoForm)irisIterator.next();
 			strTr=i%2==0?"tableback1":"tableback2";
 			i++;
+			if(!rsf.getCurrentStatus().equals("X")){
 %>        
         <tr class="<%=strTr%>" > 
-         <td><%=rmi.getRepairManName()%> <input type="hidden" name="travelId" value="<%=rmi.getTravelId()%>"></td>
+         <td><%=rmi.getRepairManName()%> </td>
          <td><%=rmi.getDepartDate()==null?"":Operate.formatYMDDate(rmi.getDepartDate())%></td>
          <td><%=rmi.getArrivalDate()==null?"":Operate.formatYMDDate(rmi.getArrivalDate())%></td>
          <td><%=rmi.getReturnDate()==null?"":Operate.formatYMDDate(rmi.getReturnDate())%></td>
@@ -1049,8 +1173,43 @@ function fileAddFailed(failedCode){
          <td><%=DicInit.getSystemName("REPAIR_CONDITION",rmi.getRepairCondition())%></td>
          <td><%=rmi.getRemark()==null?"":rmi.getRemark()%></td>
         </tr>
-<%}}%>
+        <%}else{ %>
         
+        <tr class="<%=strTr%>" > 
+         <td><input type="hidden" name="travelId" value="<%=rmi.getTravelId()%>">
+         	<select name="repairMan" class="form" >
+         	<%
+       		for(int j=0;repairManList!=null&&j<repairManList.size();j++){
+       			String[] rs=(String[])repairManList.get(j);
+       		%>
+       		<option value="<%=rs[0]%>" <%if(rmi.getRepairMan().longValue()==Long.parseLong(rs[0])){ %>selected <%} %>><%=rs[1]%></option>
+       		<%}%>
+      	 	</select>
+         </td>
+         <td><%=rmi.getDepartDate()==null?"":Operate.formatYMDDate(rmi.getDepartDate())%></td>
+         <td><input name="arrivalDate" type="text" class="form" size="10" value="<%=rmi.getArrivalDate()==null?"":Operate.formatYMDDate(rmi.getArrivalDate())%>" onkeydown='javascript:input_date();'></td>
+         <td><input name="returnDate" type="text" class="form" size="10" value="<%=rmi.getReturnDate()==null?"":Operate.formatYMDDate(rmi.getReturnDate())%>" onkeydown='javascript:input_date();'></td>
+         <td><%=rmi.getWorkingHours()==null?"":rmi.getWorkingHours()%></td>
+         <td><input name="workingHoursActual" type="text" class="form" size="6" value="<%=rmi.getWorkingHoursActual()==null?"":rmi.getWorkingHoursActual()%>" onkeydown='javascript:f_onlynumber();'></td>
+         <td><input name="travelFee" type="text" class="form" size="10" value="<%=rmi.getTravelFee()==null?"":Operate.toFix(rmi.getTravelFee(), 2)%>" onkeydown='javascript:f_onlymoney();'></td>
+         <td><%=rmi.getLaborCosts()==null?"":Operate.toFix(rmi.getLaborCosts(), 2)%></td>
+         <td><input name="laborCostsActual" type="text" class="form" size="10" value="<%=rmi.getLaborCostsActual()==null?"":Operate.toFix(rmi.getLaborCostsActual(),2)%>" onkeydown='javascript:f_onlymoney();'></td>
+         <td><select name="repairCondition" class="form">
+         	<%
+       		for(int j=0;repairConditionList!=null&&j<repairConditionList.size();j++){
+       			String[] rs=(String[])repairConditionList.get(j);
+       			if(!rs[0].equals("P")){
+       		%>
+       		<option value="<%=rs[0]%>" <%if(rs[0].equals(rmi.getRepairCondition())){ %>selected <%} %>><%=rs[1]%></option>
+       		<%}}%>
+      	 </select></td>
+      	 <td><input name="remark" type="text" class="form" size="20" value="<%=rmi.getRemark()==null?"":rmi.getRemark()%>"></td>
+      	 <td><input  type="button" class="button2" onClick="f_update_rm(<%=rmi.getTravelId()%>)" value="保存"></td>
+      	 <td><input  type="button" class="button2" onClick="f_del_rm(<%=rmi.getTravelId()%>)" value="删除"></td>
+        </tr>
+        
+        
+<%}}}%>
 
         </tbody>
        </table>
@@ -1059,6 +1218,11 @@ function fileAddFailed(failedCode){
 	</table> <!--end of irisParentTable-->
 	   </td>
      </tr>
+        <%if(rsf.getCurrentStatus().equals("X")){ %>
+        <tr>
+        	<td align="left"><input name="partAddButton" type="button" class="button2" value="添加" onclick="f_add_rm_line()"></td>
+        </tr>
+        <%} %>
      <tr> 
       <td height="2" bgcolor="#ffffff"></td>
      </tr>

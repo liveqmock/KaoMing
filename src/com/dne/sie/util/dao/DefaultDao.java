@@ -72,6 +72,8 @@ public interface DefaultDao {
      */
     public int execute(String hql) throws ComException;
     
+    public Object execute(String strHql,Object...obj) throws ComException, Exception;
+    
     public int updatePara(final String hql, final Map params) throws ComException;
     
     /**

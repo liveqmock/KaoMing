@@ -440,7 +440,7 @@ public class RepairHandleBo extends CommBo {
 	 * @param searchForm
 	 * @throws Exception
 	 */
-	public void returnEnd(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws Exception {
+	public void returnEnd(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo,ArrayList<String[]> repairManInfoAdd) throws Exception {
 		ArrayList al = new ArrayList();
 		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
 			
@@ -462,6 +462,7 @@ public class RepairHandleBo extends CommBo {
 		String[] travelFee = repairManInfo.get(3);
 		String[] laborCosts = repairManInfo.get(4);
 		String[] repairCondition = repairManInfo.get(5);
+		
 		
 		Set rmiSet = rsf.getRepairManSetInfo();
 		ArrayList rimList = new ArrayList(rmiSet);
@@ -497,9 +498,52 @@ public class RepairHandleBo extends CommBo {
 					break;
 				}
 			}
+			
 		}
 		al.add(rsf);
 		
+		
+		if(repairManInfoAdd!=null&&!repairManInfoAdd.isEmpty()){
+			String[] travelIdAdd = repairManInfoAdd.get(0);
+			String[] repairManAdd = repairManInfoAdd.get(1);
+			String[] departDateAdd = repairManInfoAdd.get(2);
+			String[] arrivalDateAdd = repairManInfoAdd.get(3);
+			String[] returnDateAdd = repairManInfoAdd.get(4);
+			String[] travelFeeAdd = repairManInfoAdd.get(5);
+			String[] laborCostsAdd = repairManInfoAdd.get(6);
+			String[] repairConditionAdd = repairManInfoAdd.get(7);
+			String[] remarkAjaxAdd = repairManInfoAdd.get(8);
+			
+			
+			for(int i=0;i<travelIdAdd.length;i++){
+				String id = travelIdAdd[i];
+				if("0".equals(id)){	//add
+					RepairManInfoForm rmi = new RepairManInfoForm();
+					rmi.setRepairNo(rsf.getRepairNo());
+					rmi.setRepairMan(new Long(repairManAdd[i]));
+					rmi.setDepartDate(Operate.toSqlDate(departDateAdd[i]));
+					rmi.setArrivalDate(Operate.toSqlDate(arrivalDateAdd[i]));
+					rmi.setReturnDate(Operate.toSqlDate(returnDateAdd[i]));
+					rmi.setWorkingHours(0);
+					rmi.setWorkingHoursActual(Operate.getSpacingDay(rmi.getArrivalDate(), rmi.getReturnDate()));
+					rmi.setTravelFee(new Double(travelFeeAdd[i]));
+					rmi.setLaborCosts(0D);
+					rmi.setLaborCostsActual(new Double(laborCostsAdd[i]));
+					rmi.setRepairCondition(repairConditionAdd[i]);
+					rmi.setRemark(remarkAjaxAdd[i]);
+					
+					rmi.setCreateBy(searchForm.getUpdateBy());
+					rmi.setCreateDate(searchForm.getUpdateDate());
+					
+					al.add(rmi);
+					
+					repairmanNum++;
+					if(rmi.getWorkingHoursActual() > workhour) workhour = rmi.getWorkingHoursActual();
+					travelFeeAll+=rmi.getTravelFee();
+					laborCostsAll+=rmi.getLaborCostsActual();
+				}
+			}
+		}
 		
 		//计算实际维修费用
 		RepairFeeInfoForm sfi = new RepairFeeInfoForm();
@@ -1134,10 +1178,15 @@ public class RepairHandleBo extends CommBo {
 		}else{
 			for(int i=0;i<repairList.size();i++){
 				RepairSearchForm rsf = (RepairSearchForm)repairList.get(i);
-				
-				if(!rsf.getCurrentStatus().equals("F")||rsf.getActualRepairedDate()==null){
+				//报告完成,取消,不修理,电诊解决
+				if(!rsf.getCurrentStatus().equals("E")&&!rsf.getCurrentStatus().equals("C")
+						&&!rsf.getCurrentStatus().equals("N")&&!rsf.getCurrentStatus().equals("P")){
 					throw new ComException("该机器正在维修中:"+rsf.getServiceSheetNo());
-				}else if(rsf.getCurrentStatus().equals("C")||rsf.getCurrentStatus().equals("N")||rsf.getCurrentStatus().equals("P")){	//取消,不修理,电诊解决
+				}
+				
+				//取消,不修理,电诊解决
+				if(rsf.getCurrentStatus().equals("C")||rsf.getCurrentStatus().equals("N")
+						||rsf.getCurrentStatus().equals("P")){	
 					continue;
 				}else if("R".equals(status)){	//前一张单已经是90天内返修
 					continue;
@@ -1149,11 +1198,28 @@ public class RepairHandleBo extends CommBo {
 						status = "C";
 					}
 				}
+				
+				
 			}
 			
 		}
 		
 		return status;
+	}
+	
+	
+	public void addRepairManAgain(RepairManInfoForm rmi) throws Exception{
+		this.getDao().insert(rmi);
+	}
+	
+	
+	public void deleteRepairManAgain(Long id) throws Exception{
+		this.getDao().execute("delete from RepairManInfoForm where travelId=?",id);
+	}
+	
+	
+	public void updateRepairMan(RepairManInfoForm rmi) throws Exception{
+		this.getDao().update(rmi);
 	}
 	
 	public static void main(String[] args) {

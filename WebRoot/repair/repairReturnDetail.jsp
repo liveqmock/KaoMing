@@ -82,7 +82,7 @@ function repeatedReceivePrint(id,printType){//重新打印接机单
 var repairMans = "";
 var ajaxChk = new sack();
 function returnEnd(){
-	if(!f_chk()){
+	if(!f_chk()&&!f_chkAjaxAdd()){
 		ajaxChk.setVar("repairNo", document.forms[0].repairNo.value);
 		ajaxChk.setVar("method", "checkReturnPart");
 		ajaxChk.requestFile = "repairHandleAction.do";
@@ -154,6 +154,7 @@ function repairReturnEnd(){
 			
 		}
 		
+		
 		return false;
 	}
 
@@ -208,6 +209,83 @@ function deleteLoanPartRow(partsId){
 }
 
 
+
+function f_add_rm_line(){
+
+	var oBody = repairManTable.tBodies[0] ;
+	var oNewRow=oBody.insertRow();
+	oNewRow.className = "tableback1";
+	//oNewRow.id = "PART_ROW2_"+partsId;
+	var i=0;
+	
+	
+	var selectRM = "<select name='repairManAjaxAdd' class='form'>";
+	selectRM+="<option value='' selected>==请选择==</option>";
+	<%
+	for(int j=0;repairManList!=null&&j<repairManList.size();j++){
+		String[] rs=(String[])repairManList.get(j);
+	%>
+		selectRM += "<option value='<%=rs[0]%>'><%=rs[1]%></option>";
+	<%}%>
+	selectRM+="</select>";
+	
+	var selectCondition = "<select name='repairConditionAjaxAdd' class='form'>";
+	<%
+	for(int j=0;repairConditionList!=null&&j<repairConditionList.size();j++){
+		String[] rs=(String[])repairConditionList.get(j);
+		if(!rs[0].equals("P")){
+	%>
+		selectCondition += "<option value='<%=rs[0]%>'><%=rs[1]%></option>";
+	<%}}%>
+	selectCondition+="</select>";
+	
+	oNewRow.insertCell(i++).innerHTML=selectRM;
+	oNewRow.insertCell(i++).innerHTML="<input name='departDateAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:input_date();'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='arrivalDateAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:input_date();'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='returnDateAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:input_date();'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='travelFeeAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:f_onlymoney();'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='laborCostsAjaxAdd' type='text' class='form' size='10' onkeydown='javascript:f_onlymoney();'>";
+	oNewRow.insertCell(i++).innerHTML=selectCondition;
+	oNewRow.insertCell(i++).innerHTML="<input name='remarkAjaxAdd' type='text' class='form' size='20'>";
+	oNewRow.insertCell(i++).innerHTML="<input name='travelIdAjaxAdd' type='hidden' value=0>";
+			
+	
+}
+
+
+function f_chkAjaxAdd(){ 
+	
+	var len = document.forms[0].travelIdAjaxAdd.length;
+	
+	if(len>1){
+		for(var i=0;i<len;i++){
+			if(f_isNull((document.forms[0].repairManAjaxAdd)[i],'维修员')
+				&&f_isNull(document.forms[0].departDateAjaxAdd[i],'出发日期')&&checkInputDate(document.forms[0].departDateAjaxAdd[i])
+				&&f_isNull(document.forms[0].arrivalDateAjaxAdd[i],'到达日期')&&checkInputDate(document.forms[0].arrivalDateAjaxAdd[i])
+				&&f_isNull(document.forms[0].returnDateAjaxAdd[i],'返回日期')&&checkInputDate(document.forms[0].returnDateAjaxAdd[i])
+				&&f_isNull(document.forms[0].travelFeeAjaxAdd[i],'车船票')
+				&&f_isNull(document.forms[0].laborCostsAjaxAdd[i],'实际人工费')
+				){
+				
+			}else{
+				return true;
+			}
+		}
+	}else{
+		if(f_isNull(document.forms[0].repairManAjaxAdd,'维修员')
+				&&f_isNull(document.forms[0].departDateAjaxAdd,'出发日期')&&checkInputDate(document.forms[0].departDateAjaxAdd)
+				&&f_isNull(document.forms[0].arrivalDateAjaxAdd,'到达日期')&&checkInputDate(document.forms[0].arrivalDateAjaxAdd)
+				&&f_isNull(document.forms[0].returnDateAjaxAdd,'返回日期')&&checkInputDate(document.forms[0].returnDateAjaxAdd)
+				&&f_isNull(document.forms[0].travelFeeAjaxAdd,'车船票')
+				&&f_isNull(document.forms[0].laborCostsAjaxAdd,'实际人工费')
+				){
+				
+		}else{
+			return true;
+		}
+	}
+	return false;
+}
 
 
 //-->
@@ -800,7 +878,7 @@ function deleteLoanPartRow(partsId){
 	<table height="180" width="100%" cellspacing="0" cellpadding="1" class="content12" border="0" id="irisParentTable">
 	<tr><td width="100%">
 	<div class="scrollDiv" id="IRISScrollDiv">
-       <table width="100%" border="0" cellpadding="0" cellspacing="1" class="content12" id="irisListTable">
+       <table width="100%" border="0" cellpadding="0" cellspacing="1" class="content12" id="repairManTable">
         <thead>
         <tr bgcolor="#CCCCCC"> 
          <td height="18"><b>维修员</b></td>
@@ -854,6 +932,9 @@ function deleteLoanPartRow(partsId){
 	</table> <!--end of irisParentTable-->
 	   </td>
      </tr>
+     <tr>
+        	<td align="left"><input name="partAddButton" type="button" class="button2" value="添加" onclick="f_add_rm_line()"></td>
+        </tr>
      <tr> 
       <td height="2" bgcolor="#ffffff"></td>
      </tr>

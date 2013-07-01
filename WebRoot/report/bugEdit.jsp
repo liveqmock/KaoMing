@@ -73,7 +73,7 @@ try{
        <tr class="tableback2"> 
 	    <td valign="top">√Ë ˆ£∫</td>
 	    <td colspan="5">
-	    	<html:textarea property="description" style="width:90% " styleClass="form"></html:textarea> </td>
+	    	<html:textarea property="description" style="width:90% "  rows="6" cols="8" styleClass="form"></html:textarea> </td>
 	   </tr>
 	  
 	   <tr> <td id="t1" colspan=6>&nbsp;</td> </tr>
@@ -101,7 +101,7 @@ try{
 
         <tr class="tableback2"> 
          <td width="10%">ªÿ∏¥£∫</td>
-         <td ><textarea name="reply" style="width:90% " class="form"></textarea> </td>
+         <td ><textarea name="reply" style="width:90% "  rows="4" cols="8" class="form"></textarea> </td>
          
         </tr>
    

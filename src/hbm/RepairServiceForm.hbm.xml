@@ -16,7 +16,7 @@
         
         <many-to-one name="customInfoForm" column="CUSTOMER_ID" cascade="none" class="com.dne.sie.maintenance.form.CustomerInfoForm" not-null="true" outer-join="true"/>
         
-        <set name="repairManSetInfo" inverse="true" cascade="save-update" lazy="false">
+        <set name="repairManSetInfo" inverse="true" cascade="save-update" lazy="false" order-by="travel_id asc">
             <key>
                 <column name="REPAIR_NO"  not-null="true" />
             </key>
