@@ -130,7 +130,7 @@ try{
     <td><strong>来源</strong></td>
     <td><strong>类型</strong></td>
     <td><strong>成本（单）</strong></td>
-    <td><strong>销售价（单）</strong></td>
+    <td><strong>报价（单）</strong></td>
     <td><strong>利润（单）</strong></td>
     <td><strong>状态</strong></td>
     <td  align="center" ><strong>附件</strong></td>
@@ -159,7 +159,7 @@ try{
           <td ><%=DicInit.getSystemName("ORDER_TYPE", temp[9])%></td>
           <td ><%=DicInit.getSystemName("WARRANTY_TYPE", temp[26])%></td>
           <td ><%=temp[16]==null?"":temp[16]%></td>
-          <td ><%=temp[18]==null?"":temp[18]%></td>
+          <td ><%=temp[6]==null?"":temp[6]%></td>
           <td ><%=temp[19]==null?"":temp[19]%></td>
           <td ><%=DicInit.getSystemName("SALE_STATUS", temp[21])%></td>
           <td align="center"><a href="javascript:up_affix(<%=temp[0]%>)" style="cursor: hand"><img src="googleImg/icon/writely.gif" border=0 title="附件" ></a></td>          

@@ -1,13 +1,27 @@
 package com.dne.sie.common.tools;
 
 
-import java.util.*;
-import java.text.*;
+import java.io.File;
 import java.io.InputStream;
-import java.io.File; 
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+
 import com.dne.sie.common.exception.ComException;
 
 /**
@@ -1636,14 +1650,64 @@ public class Operate {
     	return monthList;
     }
     
+    /**
+     * 乘法
+     * @param value1
+     * @param value2
+     * @return
+     * @throws Exception
+     */
+    public static double normalMultiply(Double value1,Double value2)throws Exception{
+		BigDecimal b1 = new BigDecimal(value1.toString());		
+		BigDecimal b2 = new BigDecimal(value2.toString());
+		return b1.multiply(b2).doubleValue();
+	}
+	
+    /**
+     * 加法
+     * @param value1
+     * @param value2
+     * @return
+     * @throws Exception
+     */
+	public static double normalAdd(Double value1,Double value2)throws Exception{
+		BigDecimal b1 = new BigDecimal(value1.toString());		
+		BigDecimal b2 = new BigDecimal(value2.toString());
+		return b1.add(b2).doubleValue();
+	}
+	/**
+	 * 减法
+	 * @param value1
+	 * @param value2
+	 * @return
+	 * @throws Exception
+	 */
+	public static double normalSub(Double value1,Double value2)throws Exception{
+		System.out.println(value1+"--------"+value2);
+		BigDecimal b1 = new BigDecimal(value1.toString());		
+		BigDecimal b2 = new BigDecimal(value2.toString());
+		System.out.println("xx="+b1.subtract(b2));
+		return b1.subtract(b2).doubleValue();
+	}
+	/**
+	 * 除法
+	 * @param value1
+	 * @param value2
+	 * @return
+	 * @throws Exception
+	 */
+	public static double normalDivide(Double value1,Double value2)throws Exception{
+		BigDecimal b1 = new BigDecimal(value1.toString());		
+		BigDecimal b2 = new BigDecimal(value2.toString());
+		return b1.divide(b2).doubleValue();
+	}
+    
 
     public static void main(String[] args) {
     	try{
-    		List<String> xx=Operate.getMonthList();
-    		for(String aa :xx){
-    		
-    		System.out.println(aa);
-    		}
+    		Double d1 = 88811.2;
+    		Double d2 =88800.1;
+    		System.out.println(normalSub(d1,d2));
     		
     	}catch(Exception e){
 			e.printStackTrace();

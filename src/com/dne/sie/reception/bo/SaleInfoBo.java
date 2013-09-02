@@ -581,11 +581,13 @@ public class SaleInfoBo extends CommBo {
 			al.add(obj);
 			
 			SaleInfoForm sif = this.findById(spf.getSaleNo());
-			double totalQuteWithTax = sif.getTotalQuteWithTax();
+//			double totalQuteWithTax = sif.getTotalQuteWithTax();
 			//客户已付总额	
 			sif.setTotalPay(spf.getSaleTotalPrice()-spf.getBalanceDue());
+
 			//付款状态
-			if(sif.getTotalPay()<totalQuteWithTax){	
+			if(Operate.roundD(new Double(sif.getTotalPay()),2) < sif.getTotalQuteWithTax()){
+//			if(sif.getTotalPay().doubleValue()<totalQuteWithTax){	
 				sif.setPayStatus("B");	//有尾款
 			}else{
 				sif.setPayStatus("A");	//已达账
@@ -604,12 +606,13 @@ public class SaleInfoBo extends CommBo {
 			al.add(obj);
 			
 			SaleInfoForm sif = this.findById(spf.getSaleNo());
-			double totalQuteWithTax = sif.getTotalQuteWithTax();
+		
 			//开票金额
 			sif.setBillingMoney((sif.getBillingMoney()==null?0:sif.getBillingMoney()) 
 					+ (spf.getBillingMoney()==null?0:spf.getBillingMoney()));
 			//开票状态
-			if(sif.getBillingMoney()<totalQuteWithTax){	
+//			if(sif.getBillingMoney()<totalQuteWithTax){
+			if(Operate.roundD(new Double(sif.getBillingMoney()),2)<sif.getTotalQuteWithTax()){
 				sif.setBillingStatus("B");	//部分开票
 			}else{
 				sif.setBillingStatus("A");	//已开票
