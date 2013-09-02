@@ -23,6 +23,8 @@
 		
 		SaleInfoForm sif = (SaleInfoForm)request.getAttribute("salesInfoForm");
 		List repairFeeList = (List)request.getAttribute("repairFeeList");
+		
+		Long userId = (Long)session.getAttribute("userId");
     
 %>
 <body  bgcolor="#ffffff" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" onload="init_vat17()">
@@ -191,7 +193,7 @@
 		<td id="costPlan"><bean:write property="costPlan" name="salesInfoForm" /></td><input name="costPlan" type="hidden" value="<bean:write property='costPlan' name='salesInfoForm' />">
 		<td id="costReal"><bean:write property="costReal" name="salesInfoForm" /></td><input name="costReal" type="hidden" value="<bean:write property='costReal' name='salesInfoForm' />">
 		<td id="totalQuote"><bean:write property="totalQuote" name="salesInfoForm" /></td><input name="totalQuote" type="hidden" value="<bean:write property='totalQuote' name='salesInfoForm' />">
-		<td>¡¡&nbsp;</td>
+		<td>¡¡<bean:write property='totalPay' name='salesInfoForm' /></td>
 		<td id="profitPlan"><bean:write property="profitPlan" name="salesInfoForm" /></td><input name="profitPlan" type="hidden" value="<bean:write property='profitPlan' name='salesInfoForm' />">
 		<td id="profitReal"><bean:write property="profitReal" name="salesInfoForm" /></td><input name="profitReal" type="hidden" value="<bean:write property='profitReal' name='salesInfoForm' />">
 	</tr>
@@ -280,7 +282,7 @@
 <table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td align="left">
-    	<%if("T".equals(sif.getSaleStatus())){%>
+    	<%if("T".equals(sif.getSaleStatus())||AtomRoleCheck.checkRole(userId, "MANAGER")){%>
     	<input type="button" name="bt" value="ÔÝ´æ" onClick="javascript:f_order_confirm('saveEnd')">
    		<input type="button" name="bt" value="¸´ºËÈ·¶¨" onClick="javascript:f_order_confirm('confirmEnd')"></td>
    		<%}%>

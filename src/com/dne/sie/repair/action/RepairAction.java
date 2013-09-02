@@ -370,7 +370,16 @@ public class RepairAction extends ControlAction {
 		request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
 		
 		if("approve".equals(flag)){
-			forward = "repairEndApproveCDetail";
+			if(rsf.getWarrantyType().equals("A")){
+				forward="repairEndApproveJwDetail";
+			}else if(rsf.getWarrantyType().equals("B")){
+				forward="repairEndApproveAtDetail";
+			}else if(rsf.getWarrantyType().equals("C")){
+				forward="repairEndApproveJcDetail";
+			}else{
+				forward = "repairEndApproveCDetail";
+			}
+			
 		}
 		return forward;
 	}
@@ -379,7 +388,7 @@ public class RepairAction extends ControlAction {
 		String forward = "repairEndApproveList";
 		RepairSearchForm rsForm = (RepairSearchForm) form;
 		rsForm.setCurrentStatus("F");		//–ﬁ∏¥…Û≈˙Ã·Ωª
-		rsForm.setRepairProperites("repair");
+		//rsForm.setRepairProperites("repair");
 		
 		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
 		rsForm.setCurrentUserId(employeeId);

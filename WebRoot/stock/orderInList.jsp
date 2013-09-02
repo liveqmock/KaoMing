@@ -47,6 +47,7 @@
 		  			  <td><strong>实收数量</strong></td>
 		  			  <td><strong>单价$</strong></td>
 		  			  <td><strong>运费￥</strong></td>
+		  			  <td><strong>关税￥</strong></td>
 		  			  <td><strong>进价￥</strong></td>
 		  			  <td><strong>发票号</strong></td>
 		  			  <td><strong>订购日期</strong></td>
@@ -73,6 +74,7 @@
           <td ><input name="receiveNum" size="5" onkeydown="f_onlynumber()"></td >
           <td ><%=temp[8]==null?"":temp[8]%><input type="hidden" name="orderDollar" value="<%=temp[8]==null?"":temp[8]%>"></td>
           <td ><input name="freightTW" size="5" value="" onkeydown="javascript:f_onlymoney();" ></td >
+          <td ><input name="tariff" size="5" value="" onkeydown="javascript:f_onlymoney();" ></td >
           <td ><input name="perCost" size="5" value="<%=temp[10]==null?"":temp[10]%>"  ><input type="hidden" name="perCostInit" value="<%=temp[10]==null?"":temp[10]%>"></td >
           <td ><input name="invoiceNo" size="15" maxlength="44" ></td>
           <td ><%=temp[9]==null?"":temp[9]%></td>

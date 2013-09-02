@@ -227,7 +227,7 @@ public class RepairTurningAction extends ControlAction {
 		RepairTurningBo rtb = RepairTurningBo.getInstance();
 		Long userId=(Long) request.getSession().getAttribute("userId");
 	
-		searchForm.setCurrentStatus("E"); //修复
+		searchForm.setCurrentStatus("E"); //报告完成
 		searchForm.setUpdateBy(userId);
 		searchForm.setUpdateDate(new Date());
 		

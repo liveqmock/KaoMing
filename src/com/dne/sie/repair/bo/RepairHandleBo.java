@@ -514,33 +514,34 @@ public class RepairHandleBo extends CommBo {
 			String[] repairConditionAdd = repairManInfoAdd.get(7);
 			String[] remarkAjaxAdd = repairManInfoAdd.get(8);
 			
-			
-			for(int i=0;i<travelIdAdd.length;i++){
-				String id = travelIdAdd[i];
-				if("0".equals(id)){	//add
-					RepairManInfoForm rmi = new RepairManInfoForm();
-					rmi.setRepairNo(rsf.getRepairNo());
-					rmi.setRepairMan(new Long(repairManAdd[i]));
-					rmi.setDepartDate(Operate.toSqlDate(departDateAdd[i]));
-					rmi.setArrivalDate(Operate.toSqlDate(arrivalDateAdd[i]));
-					rmi.setReturnDate(Operate.toSqlDate(returnDateAdd[i]));
-					rmi.setWorkingHours(0);
-					rmi.setWorkingHoursActual(Operate.getSpacingDay(rmi.getArrivalDate(), rmi.getReturnDate()));
-					rmi.setTravelFee(new Double(travelFeeAdd[i]));
-					rmi.setLaborCosts(0D);
-					rmi.setLaborCostsActual(new Double(laborCostsAdd[i]));
-					rmi.setRepairCondition(repairConditionAdd[i]);
-					rmi.setRemark(remarkAjaxAdd[i]);
-					
-					rmi.setCreateBy(searchForm.getUpdateBy());
-					rmi.setCreateDate(searchForm.getUpdateDate());
-					
-					al.add(rmi);
-					
-					repairmanNum++;
-					if(rmi.getWorkingHoursActual() > workhour) workhour = rmi.getWorkingHoursActual();
-					travelFeeAll+=rmi.getTravelFee();
-					laborCostsAll+=rmi.getLaborCostsActual();
+			if(travelIdAdd!=null){
+				for(int i=0;i<travelIdAdd.length;i++){
+					String id = travelIdAdd[i];
+					if("0".equals(id)){	//add
+						RepairManInfoForm rmi = new RepairManInfoForm();
+						rmi.setRepairNo(rsf.getRepairNo());
+						rmi.setRepairMan(new Long(repairManAdd[i]));
+						rmi.setDepartDate(Operate.toSqlDate(departDateAdd[i]));
+						rmi.setArrivalDate(Operate.toSqlDate(arrivalDateAdd[i]));
+						rmi.setReturnDate(Operate.toSqlDate(returnDateAdd[i]));
+						rmi.setWorkingHours(0);
+						rmi.setWorkingHoursActual(Operate.getSpacingDay(rmi.getArrivalDate(), rmi.getReturnDate()));
+						rmi.setTravelFee(new Double(travelFeeAdd[i]));
+						rmi.setLaborCosts(0D);
+						rmi.setLaborCostsActual(new Double(laborCostsAdd[i]));
+						rmi.setRepairCondition(repairConditionAdd[i]);
+						rmi.setRemark(remarkAjaxAdd[i]);
+						
+						rmi.setCreateBy(searchForm.getUpdateBy());
+						rmi.setCreateDate(searchForm.getUpdateDate());
+						
+						al.add(rmi);
+						
+						repairmanNum++;
+						if(rmi.getWorkingHoursActual() > workhour) workhour = rmi.getWorkingHoursActual();
+						travelFeeAll+=rmi.getTravelFee();
+						laborCostsAll+=rmi.getLaborCostsActual();
+					}
 				}
 			}
 		}
@@ -1179,7 +1180,8 @@ public class RepairHandleBo extends CommBo {
 			for(int i=0;i<repairList.size();i++){
 				RepairSearchForm rsf = (RepairSearchForm)repairList.get(i);
 				//报告完成,取消,不修理,电诊解决
-				if(!rsf.getCurrentStatus().equals("E")&&!rsf.getCurrentStatus().equals("C")
+				if(!rsf.getWarrantyType().equals("C")
+						&&!rsf.getCurrentStatus().equals("E")&&!rsf.getCurrentStatus().equals("C")
 						&&!rsf.getCurrentStatus().equals("N")&&!rsf.getCurrentStatus().equals("P")){
 					throw new ComException("该机器正在维修中:"+rsf.getServiceSheetNo());
 				}

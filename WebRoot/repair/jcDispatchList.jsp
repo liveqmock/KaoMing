@@ -38,7 +38,7 @@ function keyDown(e){
 function f_cancel(){
 	if(chk()!=''&&chk()!=null){
 	    if(window.confirm("确定取消该单吗？")){
-	    	document.forms[0].action="repairTurningAction.do?method=cancelRepair";
+	    	document.forms[0].action="repairHandleAction.do?method=cancelRepair";
 	    	document.forms[0].repairNos.value=chk();
 	    	
 			document.forms[0].submit();

@@ -23,6 +23,7 @@
 
 <%
 try{
+		Long userId = (Long)session.getAttribute("userId");
 		ArrayList vtrData = (ArrayList)request.getAttribute("detailList");
 		String viewFlag = (String)request.getAttribute("flag");
 		SaleInfoForm sif = (SaleInfoForm)request.getAttribute("salesInfoForm");
@@ -42,9 +43,11 @@ try{
 				isChange=true;
 		}
 		
+		
+		
 		String totalQuteWithTax = sif.getTotalQuteWithTax().toString();
 		
-		Long userId = (Long)session.getAttribute("userId");
+		
 		
     
 %>
@@ -277,7 +280,7 @@ try{
 </table> <!--end of paidParentTable-->
 
 <br>
-<%if(isChange){%>
+<%if(isChange||AtomRoleCheck.checkRole(userId, "MANAGER")){%>
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="content12">
  <tr> 
     <td height="2" colspan="16"  bgcolor="green"></td>

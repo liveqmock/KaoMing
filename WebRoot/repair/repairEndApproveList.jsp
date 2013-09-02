@@ -44,7 +44,7 @@ function keyDown(e){
     ArrayList repairList = (ArrayList)request.getAttribute("repairList");
     
     int count=repairList == null?0:Integer.parseInt((String)repairList.get(0));
-
+    ArrayList repairProperitesArr = (ArrayList)DicInit.SYS_CODE_MAP.get("REPAIR_PROPERITES");
 	
 	
 %>
@@ -88,8 +88,17 @@ function keyDown(e){
                         <td><html:text property="customerName" styleClass="form" size="16"/></td>
                         <td>联系人：</td>
                         <td><html:text property="linkman" styleClass="form" size="16"/></td>
-                        <td width="90">联系电话：</td>
-                        <td width="140"><html:text property="phone" styleClass="form" size="16"/></td>
+                        <td >维修性质：</td>
+                        <td>
+							<html:select property="repairProperites" styleClass="form">
+								<%
+								  for(int i=0;repairProperitesArr!=null&&i<repairProperitesArr.size();i++){
+									String[] temp=(String[])repairProperitesArr.get(i);
+								%>
+								 <html:option value="<%=temp[0]%>"><%=temp[1]%></html:option>
+								<%}%>
+      						</html:select>
+                        </td>
                       </tr>
                 
                       <tr> 
@@ -111,6 +120,7 @@ function keyDown(e){
 						<TH ><b>保固书编号</b></TH>
 						<TH ><b>维修员</b></TH>
 						<TH ><b>状态</b></TH>
+						<TH ><b>维修性质</b></TH>
                       </tr></thead>
                       <tbody>
 <%
@@ -130,10 +140,15 @@ function keyDown(e){
       <td ><%=temp[4]==null?"":temp[4]%></td>
       <td ><%=temp[5]==null?"":temp[5]%></td>
       <td ><%=DicInit.getSystemName("RR90",temp[7])%></td>
+      <%if(temp[22].equals("T")){ %>
+      <td ><%=DicInit.getSystemName("TUNING_TYPE",temp[8])%></td>
+      <%}else{ %>
       <td ><%=DicInit.getSystemName("WARRANTY_TYPE",temp[8])%></td>
+      <%} %>
       <td ><%=temp[15]==null?"":temp[15]%></td>
       <td ><%=temp[6]==null?"":temp[6]%></td>
 	  <td ><%=DicInit.getSystemName("CURRENT_STATUS",temp[12])%></td>
+	  <td ><%=DicInit.getSystemName("REPAIR_PROPERITES",temp[22])%></td>
     </tr>
    
      

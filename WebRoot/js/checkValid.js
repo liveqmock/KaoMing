@@ -484,6 +484,7 @@ function f_isValidFloat(fieldName,fieldDesc,intNum,decNum)
 //******************************************************************
 function f_isNull(fieldName,fieldDesc)
 {
+	if(fieldName==null) return true;
    var flag=true;
    if(fieldName.value==null||fieldName.value=="") {
       flag=false;
@@ -827,6 +828,7 @@ function f_isMoney(data0){
 
 //check Date format
 function checkInputDate(obj){
+	if(obj==null) return true;
     var   strDate=obj.value;
     var  re =/^(\d{4})-(\d{2})-(\d{2})$/;
     if(re.test(strDate))//判断日期格式符合YYYY-MM-DD标准

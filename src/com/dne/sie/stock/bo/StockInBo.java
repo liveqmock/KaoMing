@@ -293,7 +293,7 @@ public class StockInBo extends CommBo{
 				sif.setStandard(pi.getStandard());
 				sif.setSkuUnit(pf.getSkuUnit());
 				sif.setSkuNum(intReceiveNum);
-				sif.setPerCost(new Float(para[2][i]));
+				sif.setPerCost(calculatePerCost(new Float(para[2][i]),new Float(para[4][i]),new Float(para[6][i])));
 				sif.setOrderDollar(new Float(para[3][i]));
 				sif.setFreightTW(new Float(para[4][i]));
 				sif.setInvoiceNo(para[5][i]);
@@ -361,6 +361,10 @@ public class StockInBo extends CommBo{
 	   }
 	   
 	   return tag;
+   }
+   
+   private static Float calculatePerCost(Float cost,Float freightTW,Float tariff){
+	   return cost + freightTW + tariff;
    }
    
 

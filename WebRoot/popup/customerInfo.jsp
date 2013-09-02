@@ -32,7 +32,7 @@
    
                 <tr class="tableback1"> 
                   <td width="98"> 客户ID：</td>
-                  <td width="126"><html:text property="customerId"  styleClass="form" size="16" maxlength="3" /></td>
+                  <td width="126"><html:text property="customerId"  styleClass="form" size="16" maxlength="4" /></td>
                    
                   <td width="98">客户名称：</td>
                   <td width="121"><html:text property="customerName"  styleClass="form" size="16" maxlength="32" /></td>
@@ -86,6 +86,7 @@
       %>      
       <tr class="<%=strTr%>"> 
 		  <td align=center><input type="radio" name="goback" value="<%=temp[0]+"~^"+temp[1]%>" onclick="returnValue(this)"></td>
+          <td ><%=temp[0]==null?"":temp[0]%></td>
           <td ><%=temp[1]==null?"":temp[1]%></td>
           <td ><%=temp[2]==null?"":temp[2]%></td>
           <td ><%=temp[3]==null?"":temp[3]%></td>

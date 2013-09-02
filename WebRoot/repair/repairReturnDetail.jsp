@@ -254,6 +254,7 @@ function f_add_rm_line(){
 
 
 function f_chkAjaxAdd(){ 
+	if(document.forms[0].travelIdAjaxAdd==null) return false;
 	
 	var len = document.forms[0].travelIdAjaxAdd.length;
 	

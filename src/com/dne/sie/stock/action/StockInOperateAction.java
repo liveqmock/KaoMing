@@ -64,8 +64,9 @@ public class StockInOperateAction extends ControlAction{
 			String[] perCost = request.getParameterValues("perCost"); //实际单价(RMB)
 			String[] orderDollar = request.getParameterValues("orderDollar"); //订购单价($)
 			String[] freightTW = request.getParameterValues("freightTW"); //台湾运费(RMB)
-			String[] invoiceNo = request.getParameterValues("invoiceNo"); //台湾运费(RMB)
-			String[][] para = {poNo,receiveNum,perCost,orderDollar,freightTW,invoiceNo};
+			String[] tariff = request.getParameterValues("tariff"); //关税(RMB)
+			String[] invoiceNo = request.getParameterValues("invoiceNo"); //发票号
+			String[][] para = {poNo,receiveNum,perCost,orderDollar,freightTW,invoiceNo,tariff};
 			
 			StockInBo sib = StockInBo.getInstance();
 			tag=sib.orderInReceive(para,orderNo,userId,transportMode);

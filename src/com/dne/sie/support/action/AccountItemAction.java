@@ -63,6 +63,7 @@ public class AccountItemAction extends ControlAction {
 		
 		request.setAttribute("empList",EmployeeInfoBo.getInstance().getEmpSelectList());
 		
+		request.setAttribute("accountItemForm",new AccountItemForm());
 		request.setAttribute("flag","init");
 		
 		return forward;

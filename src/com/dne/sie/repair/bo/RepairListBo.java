@@ -96,7 +96,7 @@ public class RepairListBo extends CommBo {
 		if (dataList != null) {
 			CommonSearch cs = CommonSearch.getInstance();
 			for (int i = 0; i < dataList.size(); i++) {
-				String[] data = new String[22];
+				String[] data = new String[23];
 				rsf = (RepairSearchForm) dataList.get(i);
 				data[0] = rsf.getRepairNo() == null ? "" : rsf.getRepairNo().toString();
 				data[1] = rsf.getServiceSheetNo();
@@ -105,9 +105,7 @@ public class RepairListBo extends CommBo {
 				data[4] = rsf.getModelCode();
 				data[5] = rsf.getSerialNo();
 				data[6] = "";
-				if(serviceOrder.getCurrentStatus().equals("D")){
-					data[6] = this.getRepairManName(rsf.getRepairNo());
-				}else if(((rsf.getWarrantyType().equals("B")||rsf.getWarrantyType().equals("C"))
+				if(((rsf.getWarrantyType().equals("B")||rsf.getWarrantyType().equals("C"))
 						&&rsf.getCurrentStatus().equals("T")&&rsf.getLastRepairNo()!=null)){
 					data[6] = this.getRepairManName(rsf.getLastRepairNo());
 					if(rsf.getCustomerVisitDate()!=null){
@@ -118,6 +116,8 @@ public class RepairListBo extends CommBo {
 							data[20] = "N";
 						}
 					}
+				}else{
+					data[6] = this.getRepairManName(rsf.getRepairNo());
 				}
 				data[7] = rsf.getRr90()== null ? "" :rsf.getRr90();
 				data[8] = rsf.getWarrantyType();
@@ -132,7 +132,7 @@ public class RepairListBo extends CommBo {
 				data[17] = rsf.getCreateBy()==null?"":cs.findUserNameByUserId(rsf.getCreateBy());		
 				data[18] = rsf.getOperaterId()==null?"":cs.findUserNameByUserId(rsf.getOperaterId());	
 				data[21] = rsf.getUpdateDate() == null ? "" : Operate.formatYMDDate(rsf.getUpdateDate());
-				
+				data[22] = rsf.getRepairProperites();
 				alData.add(data);
 			}
 			alData.add(0, count + "");

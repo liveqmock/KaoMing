@@ -94,7 +94,7 @@
     <td >客户：</td>
     <td >
     	<html:hidden property="customerId"/>
-    	<html:text  styleClass="form" property="customerName"  size="16"  />&nbsp;
+    	<html:text  styleClass="form" property="customerName"  size="24"  />&nbsp;
     	<a href="javascript:showCustomerInfo('customerName')"><img src="googleImg/icon/search.gif" align="absmiddle" border="0"></a>    
     </td>
     <td >地点：</td>
