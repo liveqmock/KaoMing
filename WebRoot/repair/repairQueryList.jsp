@@ -23,7 +23,7 @@ function view(id){
 
 function doSubmit(){
 		document.forms[0].action="repairAction.do?method=repairQueryList";
-		event.srcElement.disabled = true;
+		document.forms[0].query.disabled = true;
 		document.forms[0].submit();
 }
 
@@ -186,7 +186,7 @@ function f_position(){
                       
                       <tr> 
                         <td colspan="6">
-                        	<html:button property="button" value=" 查 询 " styleClass="button2" onclick="doSubmit()"/>&nbsp;
+                        	<html:button property="query" value=" 查 询 " styleClass="button2" onclick="doSubmit()"/>&nbsp;
                         	<input type="button" value="故障位置查询" class="button6" onclick="f_position()"/>&nbsp;
                         	<input type="button" value=" 重 置 " class="button2" onclick="doReset()"/>
                         </td>

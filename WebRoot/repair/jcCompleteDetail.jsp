@@ -237,7 +237,7 @@ function selectResult(path,attacheId,createDate,filePath,affixType){
 
 
 function delRow2(obj,attacheId){
-	event.srcElement.disabled = true;
+	//event.srcElement.disabled = true;
 	var delTr = getParentByTagName(obj,"TR");
 	for(var k=0;k<uploadCompleteTable2.rows.length;k++){
 		if(uploadCompleteTable2.rows(k) == delTr){
@@ -248,7 +248,7 @@ function delRow2(obj,attacheId){
 	fileDel(attacheId);
 }
 function delRow(obj,attacheId){
-	event.srcElement.disabled = true;
+	//event.srcElement.disabled = true;
 	var delTr = getParentByTagName(obj,"TR");
 	for(var k=0;k<uploadCompleteTable.rows.length;k++){
 		if(uploadCompleteTable.rows(k) == delTr){

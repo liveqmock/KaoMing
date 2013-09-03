@@ -22,9 +22,8 @@ function view(id,status){
 }
 
 function doSubmit(){
-
-		event.srcElement.disabled = true;
-		document.forms[0].submit();
+	document.forms[0].query.disabled = true;
+	document.forms[0].submit();
 	
 }
 
@@ -106,7 +105,7 @@ function f_cancel(){
                       </tr>
                 
                       <tr> 
-                        <td colspan="6"><html:button property="button" value=" ²é Ñ¯ " styleClass="button2" onclick="doSubmit()"/></td>
+                        <td colspan="6"><html:button property="query" value=" ²é Ñ¯ " styleClass="button2" onclick="doSubmit()"/></td>
                       </tr>
                     </table>
                     <br> 

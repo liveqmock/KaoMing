@@ -23,7 +23,7 @@ function view(id,status){
 
 function doSubmit(){
 
-		event.srcElement.disabled = true;
+		//event.srcElement.disabled = true;
 		document.forms[0].submit();
 	
 }

@@ -447,7 +447,7 @@ function selectResult(path,attacheId,createDate,filePath){
 
 
 function delRow(obj,attacheId){
-	event.srcElement.disabled = true;
+	//event.srcElement.disabled = true;
 	var delTr = getParentByTagName(obj,"TR");
 	for(k=0;k<uploadCompleteTable.rows.length;k++){
 		if(uploadCompleteTable.rows(k) == delTr){
