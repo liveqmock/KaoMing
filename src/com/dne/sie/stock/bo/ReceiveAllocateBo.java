@@ -13,14 +13,7 @@ import com.dne.sie.util.query.QueryParameter;
 
 public class ReceiveAllocateBo extends CommBo{
 	
-	private static final ReceiveAllocateBo INSTANCE = new ReceiveAllocateBo();
 	
-	private ReceiveAllocateBo(){
-	}
-	
-	public static final ReceiveAllocateBo getInstance() {
-	   return INSTANCE;
-	}
 	
 	
 	private ArrayList<SaleDetailForm> reqAll=new ArrayList<SaleDetailForm>();
@@ -241,7 +234,7 @@ public class ReceiveAllocateBo extends CommBo{
 	public static void main(String[] args) {
 		try{
 			
-			ReceiveAllocateBo rab=ReceiveAllocateBo.getInstance();
+			ReceiveAllocateBo rab=new ReceiveAllocateBo();
 			
 			rab.allocate(rab.getStockList());
 		}catch(Exception e){

@@ -477,6 +477,51 @@ function fileAddFailed(failedCode){
 }
 
 
+function dzComplete(){
+	
+	if(document.forms[0].dzReason.value == ""){ //判断是否填写维修内容
+		alert("必须填写电诊原因后才能修理完成！");
+		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
+		document.forms[0].dzReason.focus();
+		return false;
+	}	
+	
+	if(document.forms[0].dzResult.value == ""){ //判断是否填写维修内容
+		alert("必须填写电诊结果后才能修理完成！");
+		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
+		document.forms[0].dzResult.focus();
+		return false;
+	}
+	
+	if(confirm("确定修理结束吗？")){
+		showWaitDiv(800,1000);
+		document.forms[0].action="repairHandleAction.do?method=repairDZComplete&repairNo="+document.forms[0].repairNo.value+"&version="+document.forms[0].version.value;
+		document.forms[0].submit();	
+	}
+
+}
+function prepareDoNotRepair(){
+	if(document.forms[0].dzReason.value == ""){ //判断是否填写维修内容
+		alert("必须填写电诊原因后才能修理完成！");
+		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
+		document.forms[0].dzReason.focus();
+		return false;
+	}	
+	
+	if(document.forms[0].dzResult.value == ""){ //判断是否填写维修内容
+		alert("必须填写电诊结果后才能修理完成！");
+		MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer9','','hide','Layer10','','hide','Layer11','','hide','Layer8','','hide');
+		document.forms[0].dzResult.focus();
+		return false;
+	}
+	if(confirm("您真的需要进行不修理操作吗？")){
+		showWaitDiv(800,1000);
+		document.forms[0].action="repairHandleAction.do?method=doNotRepair&repairNo="+document.forms[0].repairNo.value+"&version="+document.forms[0].version.value;
+		document.forms[0].submit();	
+	}
+}
+
+
 //-->
 </script>
 </head>
@@ -1154,7 +1199,9 @@ function fileAddFailed(failedCode){
 		  <tr> 
 		 		
 			  <td align="right"> 
-				<input name="saveForm" type="button" class="button2" onClick="f_save()" value="保存">
+			  	<input name="endRepairButton" type="button" onClick="dzComplete()" class="button4" value="电诊解决">
+			  	<input name="noRepairButton" type="button" onClick="prepareDoNotRepair()" class="button4" value="不修理"> 
+				<input name="saveForm" type="button" class="button2" onClick="f_save()" value="暂存">
 			  	<input name="closeButton" type="button" class="button2" value="关闭" onclick="window.close()"> 
 			  </td>
 			</tr>

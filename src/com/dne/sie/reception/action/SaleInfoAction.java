@@ -1034,5 +1034,27 @@ public class SaleInfoAction extends ControlAction{
 				writer.close();
 			}
 		}
+		
+		
+		public String saleInfoCancel(HttpServletRequest request, ActionForm form){
+			String forward = "resultMessage";
+			String saleNo = null;
+			try{
+				Long userId = (Long)request.getSession().getAttribute("userId");
+				SaleInfoForm pif=(SaleInfoForm)form;
+				saleNo = pif.getSaleNo();
+				SaleInfoBo sib = SaleInfoBo.getInstance();
+				sib.saleInfoCancel(saleNo,userId);
+				request.setAttribute("tag", "1");
+				
+			}catch(Exception e){
+				request.setAttribute("tag", "-1");
+				e.printStackTrace();
+			}finally{
+				request.setAttribute("businessFlag", "saleInfoCancel");
+			}
+			return forward;
+			
+		}
 
 }

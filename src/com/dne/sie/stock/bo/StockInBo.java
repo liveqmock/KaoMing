@@ -355,7 +355,7 @@ public class StockInBo extends CommBo{
 	   
 	   if(poList.size()>0&&this.getBatchDao().saveOrUpdateBatch(poList)){
 		   if (this.getBatchDao().insertBatch(stockList)) {
-			   tag = ReceiveAllocateBo.getInstance().allocate(stockList);
+			   tag = new ReceiveAllocateBo().allocate(stockList);
 //			   sob.inMerge(inStuffNo.substring(1).replace(",", "','"));
 		   }
 	   }

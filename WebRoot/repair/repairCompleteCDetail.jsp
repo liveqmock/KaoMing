@@ -233,6 +233,66 @@ function doAddAttached(){
 	uploadNew.doSaveWithForeignKey(<%=rsf.getRepairNo()%>);
 }
 
+function selectResult(path,attacheId,createDate,filePath){
+	var oNewRow = uploadCompleteTable.insertRow(1);
+	var oNewCell = oNewRow.insertCell(0);
+	oNewCell.width="5%";
+	oNewCell.innerHTML=uploadCompleteTable.rows.length -1;
+	if(uploadCompleteTable.rows.length % 2 == 0){
+		oNewRow.className = "tableback1";
+	}else{
+		oNewRow.className = "tableback2";
+	}
+	oNewCell = oNewRow.insertCell(1);
+	oNewCell.width="5%";
+	oNewCell.innerHTML="<a onClick=delRow(this,"+attacheId+") style=\"cursor: hand\"><u><b>删除&nbsp;&nbsp;</b></u></a>";
+	oNewCell = oNewRow.insertCell(2);
+	oNewCell.width="65%";
+	oNewCell.innerHTML="<a href="+filePath+" style=\"cursor: hand\"  >"+path+"</a>";
+	oNewCell = oNewRow.insertCell(3);
+	oNewCell.width="10%";
+	oNewCell.innerHTML= "维修附件";
+	oNewCell = oNewRow.insertCell(4);
+	oNewCell.width="15%";
+	oNewCell.innerText= createDate;
+
+	globalButton.disabled = false;
+	globalButton = null;
+	hideWaitDiv();
+}
+
+
+
+function delRow(obj,attacheId){
+	//event.srcElement.disabled = true;
+	var delTr = getParentByTagName(obj,"TR");
+	for(k=0;k<uploadCompleteTable.rows.length;k++){
+		if(uploadCompleteTable.rows(k) == delTr){
+			uploadCompleteTable.deleteRow(k);
+			break;
+		}
+	}
+	fileDel(attacheId);
+}
+
+function fileDel(attacheId){
+	var ajax2 = new sack(); 
+	ajax2.setVar("attacheId",attacheId); 		//设置需要传到后台的参数
+	ajax2.setVar("method", "fileDel");		//调用Action中的方法
+	ajax2.requestFile = "attachedInfoAction.do";		//调用Action
+	ajax2.method = "GET";				 //提交类型
+	//ajax2.onCompletion = delResult;	 	//ajax交互完需要执行的函数
+	ajax2.runAJAX(); 
+}
+
+
+//添加附件失败的时候回调的方法，其中filedCode为失败原因代码，具体参考/common/fileAdd.jsp中信息
+function fileAddFailed(failedCode){
+	globalButton.disabled = false;
+	globalButton = null;
+	hideWaitDiv();	
+}
+
 function getFileType(){
 	return document.forms[0].fileType.value;
 }

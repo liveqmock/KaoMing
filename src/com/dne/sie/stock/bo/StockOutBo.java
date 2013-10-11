@@ -291,8 +291,8 @@ public class StockOutBo extends CommBo{
 					
 					StockFlowForm sff = sib.infoToFlow(sif);
 					
-					sff.setSkuNum(prf.getPartNum());	//出库数量
-					sff.setRestNum(this.getRestStock(sif.getStuffNo(), prf.getPartNum(), "O"));	//结存数量
+					sff.setSkuNum(sif.getSkuNum());	//出库数量
+					sff.setRestNum(this.getRestStock(sif.getStuffNo(), sif.getSkuNum(), "O"));	//结存数量
 //					if(sff.getRestNum()==0){
 //						strStuffNo+="','"+sif.getStuffNo();
 //					}

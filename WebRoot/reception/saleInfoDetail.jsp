@@ -55,6 +55,7 @@ try{
 
 <html:form method="post" action="saleInfoAction.do?method=saleInfoDetail">
 <input name="saleDetailId" type="hidden" >
+<input name="saleNo" type="hidden" value="<%=sif.getSaleNo()%>">
 <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="content12">
   <tr>
     <td>零件订购清单&gt;明细</td>
@@ -111,6 +112,11 @@ try{
   <tr> 
     <td height="1" colspan="11" bgcolor="#677789"></td>
   </tr>
+  <%if(AtomRoleCheck.checkRole(userId, "MANAGER")){ %>
+  <tr >
+     <td colspan="11"><input name="addPaymentButton" type="button"  value="销售单取消" onclick="f_sale_cancel()"></td>
+    </tr>
+    <%} %>
 </table>
 <table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
@@ -556,6 +562,13 @@ try{
 		deleteTr.style.display = "none";
 	}
 
+	
+	function f_sale_cancel(){
+		if(confirm("确定取消该销售单吗？")){
+			document.forms[0].action="saleInfoAction.do?method=saleInfoCancel";
+			document.forms[0].submit();
+		}
+	}
 </script>
 </body>
 <%

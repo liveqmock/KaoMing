@@ -859,7 +859,17 @@ public class SaleInfoBo extends CommBo {
 		return tag;
 	}
   	
-  
+  	
+  	
+  	public void saleInfoCancel(String saleNo,Long userId) throws Exception{
+  		SaleInfoForm sif = this.findById(saleNo);
+  		sif.setDelFlag(1);
+  		sif.setUpdateBy(userId);
+  		sif.setUpdateDate(new Date());
+  		
+  		this.getDao().update(sif);
+  		
+  	}
 
 	/**
 	 * 获取零件历史报价
