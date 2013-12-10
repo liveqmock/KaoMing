@@ -284,13 +284,9 @@ public class StockOutBo extends CommBo{
 				
 				for (int j = 0; j < stockInfoList.size(); j++) {
 					StockInfoForm sif = (StockInfoForm) stockInfoList.get(j);
-					sif.setSkuNum(new Integer(0));
-					sif.setUpdateBy(userId);
-					sif.setUpdateDate(new Date());
-					sif.setFlowNo(FormNumberBuilder.getStockFlowId());
-					
+			
 					StockFlowForm sff = sib.infoToFlow(sif);
-					
+					sff.setFlowId(FormNumberBuilder.getStockFlowId());
 					sff.setSkuNum(sif.getSkuNum());	//出库数量
 					sff.setRestNum(this.getRestStock(sif.getStuffNo(), sif.getSkuNum(), "O"));	//结存数量
 //					if(sff.getRestNum()==0){

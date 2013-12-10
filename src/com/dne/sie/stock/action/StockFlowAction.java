@@ -4,18 +4,21 @@ package com.dne.sie.stock.action;
 //import java.util.ArrayList;
 
 //Java 扩展类
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-
-//第三方类
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
-//自定义类
+import com.dne.sie.common.tools.CommonSearch;
 import com.dne.sie.stock.bo.StockInBo;
 import com.dne.sie.stock.form.StockFlowForm;
 import com.dne.sie.util.action.ControlAction;
+//第三方类
+//自定义类
 
 
 
@@ -69,6 +72,39 @@ public class StockFlowAction extends ControlAction{
 			e.printStackTrace();
 		}
 		return forward;
+  }
+  
+  
+  /**
+   * 流水明细
+   * @param request
+   * @param form
+   * @return
+   */
+  public String flowDetail(HttpServletRequest request, ActionForm form) throws Exception {
+		String forward = "stockFlowDetail";
+		
+		String id = request.getParameter("id");
+		StockFlowForm sff = StockInBo.getInstance().flowDetail(new Long(id));
+		request.setAttribute("stockFlowForm",sff);
+		request.setAttribute("createByName", CommonSearch.getInstance().findUserNameByUserId(sff.getCreateBy()));
+		
+		return forward;
+  }
+  
+  
+  public String updateInvoiceNo(HttpServletRequest request, ActionForm form) throws Exception {
+	  StockFlowForm sff = (StockFlowForm)form;
+	  HttpSession session = request.getSession();
+	  Long userId = (Long) session.getAttribute("userId");
+	  sff.setUpdateBy(userId);
+	  sff.setUpdateDate(new Date());
+		
+	  StockInBo.getInstance().updateInvoiceNo(sff);
+	  request.setAttribute("businessFlag", "updateInvoiceNo");
+	  request.setAttribute("tag", "1");
+	  
+	  return "resultMessage";
   }
   
   /**

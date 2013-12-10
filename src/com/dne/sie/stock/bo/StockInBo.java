@@ -83,7 +83,23 @@ public class StockInBo extends CommBo{
 	
 		return alData;	     	
 	}
-
+	
+	
+	
+	public StockFlowForm flowDetail(Long flowId)  throws Exception{
+		return (StockFlowForm)this.getDao().findById(StockFlowForm.class, flowId);
+	}
+	
+	
+	public void updateInvoiceNo(StockFlowForm sff)  throws Exception{
+		StockFlowForm inFlow = this.flowDetail(sff.getFlowId());
+		inFlow.setInvoiceNo(sff.getInvoiceNo());
+		inFlow.setUpdateBy(sff.getUpdateBy());
+		inFlow.setUpdateDate(sff.getUpdateDate());
+		
+		this.getDao().update(inFlow);
+		
+	}
 	
 	/**
 	  * 库存调整入库确认

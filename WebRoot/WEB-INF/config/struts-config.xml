@@ -132,6 +132,8 @@
 			<forward name="stockInFlowList" path="/stock/stockInList.jsp" />
 			<forward name="stockOutPrint" path="/stock/stockOutPrint.jsp" />
 			<forward name="stockInPrint" path="/stock/stockInPrint.jsp" />
+			<forward name="stockFlowDetail" path="/stock/stockFlowDetail.jsp" />
+			
 		</action>
 
 		
@@ -232,6 +234,8 @@
 			<forward name="quotePrint" path="/reception/quoteCheckPrint.jsp" />
 			<forward name="inquiryPrint" path="/reception/inquiryPrint.jsp" />
 			<forward name="saleRecheckList" path="/reception/saleRecheckList.jsp" />
+			<forward name="partReturnDetail" path="/reception/partReturnDetail.jsp" />
+			
 		</action>
 		
 		<action name="poForm" path="/partPoAction" scope="request" type="com.dne.sie.reception.action.PartPoAction">		

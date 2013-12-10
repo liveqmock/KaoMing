@@ -6,7 +6,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import com.dne.sie.common.exception.ComException;
 import com.dne.sie.common.exception.VersionException;
-import com.dne.sie.common.tools.AtomRoleCheck;
 import com.dne.sie.common.tools.FormNumberBuilder;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.maintenance.form.AttachedInfoForm;
@@ -119,7 +117,7 @@ public class RepairHandleBo extends CommBo {
 		if(rsf.getVersion()!=searchForm.getVersion()){
 			throw new VersionException("数据已被其他用户更新过，请重新打开后再提交！");
 		}
-		rsf = (RepairServiceForm)this.copyBeans(rsf, searchForm);
+		rsf = (RepairServiceForm)copyBeans(rsf, searchForm);
 	
 		rsf.setUpdateDate(new Date());
 		rsf.setUpdateBy(searchForm.getUpdateBy());
@@ -252,7 +250,7 @@ public class RepairHandleBo extends CommBo {
 		ArrayList al = new ArrayList();
 		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
 		String warrantyType = rsf.getWarrantyType();
-		rsf = (RepairServiceForm)this.copyBeans(rsf, searchForm);
+		rsf = (RepairServiceForm)copyBeans(rsf, searchForm);
 	
 		rsf.setUpdateDate(new Date());
 		//电诊员
@@ -760,7 +758,7 @@ public class RepairHandleBo extends CommBo {
 	
 	
 
-    public CommForm copyBeans(CommForm target, CommForm original) throws Exception{
+    public static CommForm copyBeans(CommForm target, CommForm original) throws Exception{
 //    	logger.info("NpcInterface: -----copyBeans---originalInfo="+original);
     	Field[] fds = original.getClass().getDeclaredFields();
 		for(Field fd : fds){
@@ -1172,7 +1170,7 @@ public class RepairHandleBo extends CommBo {
 	public String getRr90Status(RepairSearchForm searchForm) throws ComException,Exception{
 		String status=null;
 		
-		List repairList = this.getDao().list("from RepairSearchForm as rsf where rsf.serialNo=? and rsf.delFlag=0",searchForm.getSerialNo());
+		List repairList = this.getDao().list("from RepairSearchForm as rsf where rsf.serialNo=? and rsf.repairProperites='C' and rsf.delFlag=0",searchForm.getSerialNo());
 		
 		if(repairList==null||repairList.isEmpty()){
 			status = "N";
@@ -1193,6 +1191,9 @@ public class RepairHandleBo extends CommBo {
 				}else if("R".equals(status)){	//前一张单已经是90天内返修
 					continue;
 				}else{
+					if(rsf.getActualRepairedDate()==null){
+						throw new ComException("该机器正在维修中:"+rsf.getServiceSheetNo());
+					}
 					int day = Operate.getSpacingDay(rsf.getActualRepairedDate(),new Date());
 					if(day<=90){
 						status = "R";

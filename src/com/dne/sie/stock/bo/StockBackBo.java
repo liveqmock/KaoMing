@@ -136,7 +136,7 @@ public class StockBackBo extends CommBo{
 					sif.setStockStatus("A");
 					sif.setFlowNo(FormNumberBuilder.getStockFlowId());
 					sif.setCreateBy(userId);
-					sif.setUpdateDate(new Date());
+					sif.setCreateDate(new Date());
 					
 					StockFlowForm sff=StockInBo.getInstance().infoToFlow(sif);
 					sff.setSkuNum(sdf.getPartNum());

@@ -448,6 +448,12 @@ function myOnload(){
 						document.form1.mybutton.value=buttonConfirm;		
 						break;	
 						
+				case "updateInvoiceNo" : 	
+					message="发票修改完成";
+					document.form1.mybutton.value=buttonClose;	
+					closeFlag="1";
+					break;
+						
 				case "manualAllcate" : 	
 						message="手工分配完成";
 						myurl="window.location='handAllocateAction.do?method=requestList'";

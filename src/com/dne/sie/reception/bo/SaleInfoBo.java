@@ -19,7 +19,7 @@ import com.dne.sie.reception.form.SaleDetailForm;
 import com.dne.sie.reception.form.SaleInfoForm;
 import com.dne.sie.reception.form.SalePaymentForm;
 import com.dne.sie.reception.queryBean.SaleInfoQuery;
-import com.dne.sie.repair.form.RepairPartForm;
+import com.dne.sie.repair.bo.RepairHandleBo;
 import com.dne.sie.repair.form.RepairServiceForm;
 import com.dne.sie.repair.form.RepairServiceStatusForm;
 import com.dne.sie.stock.bo.ReqAllocateBo;
@@ -27,6 +27,7 @@ import com.dne.sie.stock.bo.StockOutBo;
 import com.dne.sie.stock.form.StockInfoForm;
 import com.dne.sie.support.userRole.bo.RoleBo;
 import com.dne.sie.util.bo.CommBo;
+import com.dne.sie.util.form.CommForm;
 import com.dne.sie.util.query.QueryParameter;
 
 
@@ -859,7 +860,86 @@ public class SaleInfoBo extends CommBo {
 		return tag;
 	}
   	
-  	
+  	/**
+  	 * 已发货零件的退回
+	 * 	1.新增一行负销售零件(状态：退回)
+	 * 	2.修改客户应付总额及状态
+	 * 	3.产生待回库零件记录
+  	 * @param saleDetailId
+  	 * @param returnNum
+  	 * @param userId
+  	 * @throws Exception
+  	 */
+  	public String partReturn(Long saleDetailId,Integer returnNum ,Long userId) throws Exception{
+  		SaleDetailForm sdf = findByDetailId(saleDetailId);
+  		List<Object[]> dataList = new ArrayList<Object[]>();
+  		
+  		if(sdf.getPartNum().intValue() == returnNum.intValue()){
+  			sdf.setPartStatus("X");
+	  		sdf.setUpdateBy(userId);
+	  		sdf.setUpdateDate(new Date());
+	  		
+	  		Object[] obj3={sdf,"u"};
+	  		dataList.add(obj3);
+  		}else{
+	  		
+	  		//新增一行负销售零件
+	  		SaleDetailForm returnSdf = new SaleDetailForm();
+	  		returnSdf = (SaleDetailForm)RepairHandleBo.copyBeans(returnSdf, sdf);
+	
+	  		returnSdf.setStuffNo(sdf.getStuffNo());
+	  		returnSdf.setPartNum(returnNum);
+	  		
+	  		//产生待回库零件记录
+	  		returnSdf.setPartStatus("X");	//已退回
+	  		
+	  		returnSdf.setCreateBy(userId);
+	  		returnSdf.setCreateDate(new Date());
+	  		returnSdf.setUpdateBy(null);
+	  		returnSdf.setUpdateDate(null);
+	  		
+	  		Object[] obj1={returnSdf,"i"};
+	  		dataList.add(obj1);
+	  		
+	  		//修改原记录数量
+	  		sdf.setPartNum(sdf.getPartNum() - returnNum);
+	  		sdf.setUpdateBy(userId);
+	  		sdf.setUpdateDate(new Date());
+	  		
+	  		Object[] obj3={sdf,"u"};
+	  		dataList.add(obj3);
+  		}
+  		
+  		//修改客户应付总额及状态
+  		SaleInfoForm sif = this.findById(sdf.getSaleNo());
+  		if(sif.getTotalQuote()!=null){
+  			//客户应付总额
+  			sif.setTotalQuote(Operate.roundF(new Float(sif.getTotalQuote() - (sdf.getPerQuote()*returnNum)),2));
+  			
+  			//付款状态
+  			if(sif.getTotalPay()!=null){	//客户已付总额
+  				if(Operate.roundD(new Double(sif.getTotalPay()),2) < sif.getTotalQuteWithTax()){
+  					sif.setPayStatus("B");	//有尾款
+  				}else{
+  					sif.setPayStatus("A");	//已达账
+  				}
+  			}else{
+  				sif.setPayStatus("C");	//未达账
+  			}
+  			
+  			String remark=sif.getRemark()==null?"":sif.getRemark();
+  			sif.setRemark(remark+" ("+saleDetailId+")退回已发货零件:"+sdf.getPartNum()+",数量:"+returnNum+" "+Operate.getDate());
+  			sif.setUpdateBy(userId);
+  			sif.setUpdateDate(new Date());
+  			
+  			Object[] obj2={sif,"u"};
+  	  		dataList.add(obj2);
+  		}
+  		
+  		this.getBatchDao().allDMLBatch(dataList);
+  		
+  		return sdf.getSaleNo();
+  	}
   	
   	public void saleInfoCancel(String saleNo,Long userId) throws Exception{
   		SaleInfoForm sif = this.findById(saleNo);

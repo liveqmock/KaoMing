@@ -28,7 +28,6 @@ import com.dne.sie.reception.form.SalePaymentForm;
 import com.dne.sie.repair.bo.RepairHandleBo;
 import com.dne.sie.repair.bo.RepairListBo;
 import com.dne.sie.repair.form.RepairFeeInfoForm;
-import com.dne.sie.repair.form.RepairPartForm;
 import com.dne.sie.repair.form.RepairSearchForm;
 import com.dne.sie.support.userRole.action.RoleAction;
 import com.dne.sie.util.action.ControlAction;
@@ -715,8 +714,53 @@ public class SaleInfoAction extends ControlAction{
 		}
 		return forward;
 	}
-
 	
+	/**
+	 * 已发货零件的退回申请页面，确认数量
+	 * @param request
+	 * @param form
+	 * @return
+	 */
+	public String partReturnDetail(HttpServletRequest request, ActionForm form) throws Exception {
+		request.setAttribute("saleDetailId",request.getParameter("saleDetailId"));
+		request.setAttribute("stuffNo",request.getParameter("stuffNo"));
+		
+		return "partReturnDetail";
+	}
+	
+	
+	/**
+	 * 已发货零件的退回
+	 * 	1.新增一行负销售零件(状态：退回)
+	 * 	2.修改客户应付总额及状态
+	 * 	3.产生待回库零件记录
+	 * @param request
+	 * @param form
+	 * @return
+	 */
+	public String partReturnConfirm(HttpServletRequest request, ActionForm form) {
+		String forward = "resultMessage";
+		String tag= "-1" ;
+		String saleNo = null;
+		try{
+			HttpSession session = request.getSession();
+			Long userId = (Long) session.getAttribute("userId");
+			
+			String saleDetailId = request.getParameter("saleDetailId");
+			String returnNum = request.getParameter("returnNum");
+			
+			SaleInfoBo sib = SaleInfoBo.getInstance();
+			saleNo = sib.partReturn(new Long(saleDetailId),new Integer(returnNum),userId);
+			tag = "1";
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			request.setAttribute("tag", tag);
+			request.setAttribute("businessFlag", "partCancel");
+			request.setAttribute("tempData", saleNo);
+		}
+		return forward;
+	}
 	
 	/**
 	 * 历史报价列表

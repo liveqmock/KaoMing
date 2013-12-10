@@ -122,8 +122,8 @@
       %>      
       <tr class="<%=strTr%>"> 
 		  <td align=center><input type="checkbox" name="chk" value="<%=temp[0]%>"></td>      
-          <td ><%=temp[2]==null?"":temp[2]%></td>
-          <td ><%=temp[3]==null?"":temp[3]%></td>
+          <td ><A href="javascript:view('<%=temp[0]%>')"><%=temp[2]%></A></td>
+          <td ><A href="javascript:view('<%=temp[0]%>')"><%=temp[3]%></A></td>
           <td ><%=temp[4]==null?"":temp[4]%></td>
 		  <td ><%=temp[5]==null?"":temp[5]%></td>
 		  <td ><%=temp[1]==null?"":temp[1]%></td>
@@ -185,6 +185,10 @@ function doRefresh(){
 	document.forms[0].excel.disabled = false;
 }
 
+function view(id){
+    window.open("stockFlowAction.do?method=flowDetail&id="+id,"","width=800,height=300,left=50,top=10,menubar=no,toolbar=no,resizable=yes,scrolling=yes,scrollbars=yes");
+   
+}
 
 </SCRIPT>
 

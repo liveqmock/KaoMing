@@ -11,10 +11,7 @@
 <script language=javascript src="js/checkValid.js"></script>
 <script language=javascript src="js/ajax.js"></script>
 </head>
-<%
-		String idRepeat=(String)request.getAttribute("idRepeat")==null?"":(String)request.getAttribute("idRepeat");
 
-%>
 <body>
 <html:form action="customerInfoAction.do?method=customerEdit" method="post" >
 <br>

@@ -149,7 +149,10 @@ try{
       	    for(int i=0;i<vtrData.size();i++){
       	        if(i%2==0) strTr="tableback2";
       	        else strTr="tableback1";
+      	        
       		String[] temp=(String[])vtrData.get(i);
+      		if(temp[21].equals("X")) strTr = "tablebackred";
+      		
       		String dsb="disabled";
       		if(!"view".equals(viewFlag)&&temp[21].compareTo("N")<=0){
       				dsb="";
@@ -168,8 +171,12 @@ try{
           <td ><%=temp[6]==null?"":temp[6]%></td>
           <td ><%=temp[19]==null?"":temp[19]%></td>
           <td ><%=DicInit.getSystemName("SALE_STATUS", temp[21])%></td>
-          <td align="center"><a href="javascript:up_affix(<%=temp[0]%>)" style="cursor: hand"><img src="googleImg/icon/writely.gif" border=0 title="附件" ></a></td>          
+          <td align="center"><a href="javascript:up_affix(<%=temp[0]%>)" style="cursor: hand"><img src="googleImg/icon/writely.gif" border=0 title="附件" ></a></td>  
+          <%if(temp[21].equals("T")&&!sif.getSaleStatus().equals("Z")){ %>
+          <td ><input type="button"  value="退回" onclick="f_return('<%=temp[0]%>','<%=temp[4]%>','<%=temp[5]%>')" <%if(!AtomRoleCheck.checkRole(userId, "MANAGER")){%>disabled<%} %>></td>
+          <%}else if(!temp[21].equals("X")){ %>
           <td ><input type="button"  value="取消" onclick="f_cancel('<%=temp[0]%>',this)" <%=dsb%>></td>
+          <%} %>
         </tr>
       
       <%}}%> 
@@ -511,6 +518,19 @@ try{
 			document.forms[0].saleDetailId.value=detailId;
 			document.forms[0].action="saleInfoAction.do?method=partCancel";
 			document.forms[0].submit();
+		}
+	}
+	
+	function f_return(detailId,stuffNo,partNum){
+		var returnNum=window.showModalDialog("saleInfoAction.do?method=partReturnDetail&saleDetailId="+detailId+"&stuffNo="+stuffNo+"&Rnd="+Math.random(),"","dialogHeight: 220px; dialogWidth: 620px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
+		if(returnNum!=null){
+			if(new Number(returnNum)>new Number(partNum)){
+				alert("不能大于原数量！");
+			}else{
+				document.forms[0].saleDetailId.value=detailId;
+				document.forms[0].action="saleInfoAction.do?method=partReturnConfirm&returnNum="+returnNum;
+				document.forms[0].submit();
+			}
 		}
 	}
 	
