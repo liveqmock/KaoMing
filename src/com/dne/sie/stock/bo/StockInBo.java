@@ -61,7 +61,7 @@ public class StockInBo extends CommBo{
 		StockFlowForm sff=null;
 		for (int i = 0; i < dataList.size(); i++) {
 			sff = (StockFlowForm)dataList.get(i);
-			String[] data = new String[14];
+			String[] data = new String[15];
 			data[0] = sff.getFlowId().toString();
 			data[1] = DicInit.getSystemName("SKU_TYPE",sff.getSkuType());
 			data[2] = sff.getSkuCode();
@@ -76,6 +76,7 @@ public class StockInBo extends CommBo{
 			data[11] = sff.getFormNo()==null?"":sff.getFormNo();
 			data[12] = sff.getOrderDollar()==null?"":sff.getOrderDollar().toString();
 			data[13] = DicInit.getSystemName("TRANSPORT_MODE",sff.getTransportMode());
+			data[14] = sff.getBinCode();
 			
 			alData.add(data);
 		}
@@ -313,6 +314,7 @@ public class StockInBo extends CommBo{
 				sif.setOrderDollar(new Float(para[3][i]));
 				sif.setFreightTW(new Float(para[4][i]));
 				sif.setInvoiceNo(para[5][i]);
+				sif.setBinCode(para[7][i]);
 				sif.setSkuType("A");	//默认
 				sif.setStockStatus("X");	//临时状态，等待到货分配时修改
 				sif.setRequestId(pf.getRequestId());	//申请零件时的saleDetailId，到货分配时调用
@@ -340,6 +342,7 @@ public class StockInBo extends CommBo{
 				sff.setFreightTW(sif.getFreightTW());
 				sff.setInvoiceNo(sif.getInvoiceNo());
 				sff.setTransportMode(sif.getTransportMode());
+				sff.setBinCode(sif.getBinCode());
 				
 				poList.add(sff);
 				

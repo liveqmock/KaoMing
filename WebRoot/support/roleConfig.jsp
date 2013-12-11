@@ -4,7 +4,7 @@
  
 <html>
 <head>
-<title>office_list</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>office_list</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/treeStyle.css">
 <SCRIPT  src="js/tree/client_ini.js"></SCRIPT>

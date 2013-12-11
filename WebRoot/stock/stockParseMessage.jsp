@@ -5,7 +5,7 @@
 
 <html>
 <head>
-<title>cipErr</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>cipErr</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/style.css">
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/styles2.css">
 

@@ -47,7 +47,7 @@ try{
 <script language=javascript src="<%= request.getContextPath()%>/js/checkValid.js"></script>
 <script language=javascript src="<%= request.getContextPath()%>/js/inputValidation.js"></script>
 <script language=javascript src="<%= request.getContextPath()%>/js/repair.js"></script>
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function highlightButton(s) {

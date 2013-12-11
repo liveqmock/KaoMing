@@ -37,6 +37,7 @@
 	<mapping resource="hbm/FactoryInfo.hbm.xml"/>
 	<mapping resource="hbm/IrisCodeForm.hbm.xml"/>
 	<mapping resource="hbm/MachineTool.hbm.xml"/>
+	<mapping resource="hbm/StationBinForm.hbm.xml"/>
 	
 	<mapping resource="hbm/StockInfo.hbm.xml"/>
 	<mapping resource="hbm/StockFlow.hbm.xml"/>

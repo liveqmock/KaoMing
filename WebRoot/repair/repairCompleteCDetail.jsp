@@ -50,7 +50,7 @@ try{
 <script language=javascript src="<%= request.getContextPath()%>/js/repair.js"></script>
 <SCRIPT  src="js/tree/client_ini.js"></SCRIPT>
 <SCRIPT  src="js/tree/xtree.js"></SCRIPT> 
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function highlightButton(s) {

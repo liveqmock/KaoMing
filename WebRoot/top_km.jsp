@@ -5,7 +5,7 @@
 	String userName=(String)session.getAttribute("userName");
 %>
 <head>
-<title>newsis</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>newsis</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
  
 <link href="<%= request.getContextPath()%>/css/style.css" rel="stylesheet" type="text/css">
 <script LANGUAGE="JAVASCRIPT">

@@ -140,6 +140,15 @@ public class StockFlowQuery extends QueryBean{
 				paramList.add(param);
 			}
 			
+			if (form.getBinCode() != null && !form.getBinCode().equals("")) {
+				where +=  " and pa.binCode like :binCode";
+				QueryParameter param = new QueryParameter();
+				param.setName("binCode");
+				param.setValue(form.getBinCode());
+				param.setHbType(Hibernate.STRING);
+				paramList.add(param);
+			}
+			
 			obj[0]=where;
 			obj[1]=paramList;
 			obj[2]=strFrom;

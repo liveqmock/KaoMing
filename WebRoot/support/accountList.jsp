@@ -13,11 +13,11 @@
 <script language=javascript src="js/commonSelect.js"></script>
 <script language=javascript src="js/popCalendar.js"></script>
 <script language=javascript src="js/common.js"></script>
-<SCRIPT language="JScript.Encode" src="js/tree/client_ini.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/basic.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/control.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/editor.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/dropdown.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/client_ini.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/basic.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/control.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/editor.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/dropdown.js"></SCRIPT>
 <script event="onload" for="window">initDocument();</SCRIPT>
 </HEAD>
 <%

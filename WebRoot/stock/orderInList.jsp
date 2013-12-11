@@ -18,7 +18,7 @@
 		String orderNo = request.getAttribute("orderNo")==null?"":(String)request.getAttribute("orderNo");
 		ArrayList transportModeList = (ArrayList)DicInit.SYS_CODE_MAP.get("TRANSPORT_MODE");
 		String tranModeCode=null;
-		
+		ArrayList binCodes = (ArrayList)session.getAttribute("binCodes");
 %>
 <body>
 <html:form action="stockInOperateAction.do?method=orderInList" method="post" >
@@ -50,6 +50,7 @@
 		  			  <td><strong>关税￥</strong></td>
 		  			  <td><strong>进价￥</strong></td>
 		  			  <td><strong>发票号</strong></td>
+		  			  <td><strong>仓位</strong></td>
 		  			  <td><strong>订购日期</strong></td>
 		  		   </tr>
       
@@ -77,6 +78,15 @@
           <td ><input name="tariff" size="5" value="" onkeydown="javascript:f_onlymoney();" ></td >
           <td ><input name="perCost" size="5" value="<%=temp[10]==null?"":temp[10]%>"  ><input type="hidden" name="perCostInit" value="<%=temp[10]==null?"":temp[10]%>"></td >
           <td ><input name="invoiceNo" size="15" maxlength="44" ></td>
+          <td><select name="binCode" style="width:100" class="form">
+		  				<option value="">==请选择==</option>
+                        <%for(int j=0; binCodes!=null&&j<binCodes.size(); j++ ){
+                            	String bin=(String)binCodes.get(j);
+                        %>
+	                        <option value="<%=bin%>"><%=bin%></option>
+                        <%}%>
+	          </select>
+	      </td>
           <td ><%=temp[9]==null?"":temp[9]%></td>
         </tr>      
       <%}}else{%> 
@@ -134,6 +144,11 @@
 									alert("请输入发票号！");
 									return true;
 							}
+							if(document.forms[0].binCode[i].value==''){
+								document.forms[0].binCode[i].focus();
+								alert("请选择仓位！");
+								return true;
+							}
 					}
 			} else {
 					if(document.forms[0].receiveNum.value==''){
@@ -150,6 +165,11 @@
 							document.forms[0].invoiceNo.focus();
 							alert("请输入发票号！");
 							return true;
+					}
+					if(document.forms[0].binCode.value==''){
+						document.forms[0].binCode.focus();
+						alert("请选择仓位！");
+						return true;
 					}
 			}
 			return false;

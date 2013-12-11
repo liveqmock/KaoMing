@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>stockOutOperate_list</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>stockOutOperate_list</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/styles2.css">
 <script language=javascript src="js/popPartInfo.js"></script>

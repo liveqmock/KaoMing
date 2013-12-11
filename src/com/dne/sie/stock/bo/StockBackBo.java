@@ -137,6 +137,7 @@ public class StockBackBo extends CommBo{
 					sif.setFlowNo(FormNumberBuilder.getStockFlowId());
 					sif.setCreateBy(userId);
 					sif.setCreateDate(new Date());
+					sif.setBinCode(sbf.getBinCode());
 					
 					StockFlowForm sff=StockInBo.getInstance().infoToFlow(sif);
 					sff.setSkuNum(sdf.getPartNum());
@@ -146,10 +147,13 @@ public class StockBackBo extends CommBo{
 					sff.setFeeType(sdf.getOrderType());
 					sff.setFormNo(sdf.getSaleNo());
 					sff.setRequestId(sdf.getSaleDetailId());
+					sff.setBinCode(sbf.getBinCode());
+					
+					sdf.setPartStatus("Y");	//ÒÑÍË»Ø¿â
 					
 					updateList.add(sif);
 					updateList.add(sff);
-					
+					updateList.add(sdf);
 				}
 			}
 			
@@ -190,6 +194,7 @@ public class StockBackBo extends CommBo{
 					sif.setFlowNo(FormNumberBuilder.getStockFlowId());
 					sif.setCreateBy(userId);
 					sif.setUpdateDate(new Date());
+					sif.setBinCode(sbf.getBinCode());
 					
 					StockFlowForm sff=StockInBo.getInstance().infoToFlow(sif);
 					sff.setSkuNum(sdf.getApplyQty());
@@ -199,6 +204,7 @@ public class StockBackBo extends CommBo{
 					sff.setFeeType("R");
 					sff.setFormNo(sdf.getServiceSheetNo());
 					sff.setRequestId(sdf.getPartsId());
+					sff.setBinCode(sbf.getBinCode());
 					
 					updateList.add(sif);
 					updateList.add(sff);

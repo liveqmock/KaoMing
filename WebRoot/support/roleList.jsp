@@ -9,7 +9,7 @@
 <title>roleList</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 <script language=javascript src="js/common.js"></script>
 </head>
 <%

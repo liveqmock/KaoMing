@@ -2,7 +2,7 @@
 
 
 
-<SCRIPT language="JScript.Encode" src="js/checkValid.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/checkValid.js"></SCRIPT>
 <SCRIPT language=JAVASCRIPT1.2>
 
 function getValueLenCheckInfo(fieldName,len){

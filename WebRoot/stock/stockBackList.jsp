@@ -23,13 +23,15 @@
 	
 		ArrayList backItemList = (ArrayList)DicInit.SYS_CODE_MAP.get("STOCK_BACK_ITEM");	
 		List applyUserList = StockBackBo.getInstance().backApplyUserList();
+		
+		ArrayList binCodes = (ArrayList)session.getAttribute("binCodes");
 
 %>
 <body >
 <html:form action="stockBackAction.do?method=stockBackList" method="post" >
 <input name="partsIds" type="hidden">
 <html:hidden property="stockBackItemBak"/>
-
+<html:hidden property="binCode"/>
 <table align=center width="99%">
 				
                 <tr class="tableback2"> 
@@ -72,7 +74,6 @@
 	<h3 class="underline"><p align="left">&nbsp;&nbsp;<input name="query" type="button" value="查询" onclick="f_query()"></p></h3>
 	 <table width="99%" border="0" cellpadding="0" cellspacing="1" class="content12">
                       <tr bgcolor="#CCCCCC"> 
-          				<td align=center><input name="allbox" type="checkbox" onClick="checkAll(this);"></td>     
           				<td><strong>销售单/维修单</strong></td>   
                         <td><strong>料号</strong></td>
                         <td><strong>零件名称</strong></td>
@@ -81,6 +82,8 @@
                         <td><strong>申请人</strong></td>
                         <td><strong>申请日期</strong></td>
                         <td><strong>回库类型</strong></td>
+                        <td><strong>仓位</strong></td>
+                        <td><strong>操作</strong></td>
                       </tr>
          
        
@@ -94,7 +97,6 @@
       		
       %>      
       <tr class="<%=strTr%>"> 
-		  <td align=center><input type="checkbox" name="chk" value="<%=temp[0]%>"></td> 
 		  <td ><%=temp[1]==null?"":temp[1]%></td>    
           <td ><%=temp[2]==null?"":temp[2]%></td>
           <td ><%=temp[3]==null?"":temp[3]%></td>
@@ -103,6 +105,16 @@
 		  <td ><%=temp[6]==null?"":temp[6]%></td>
 		  <td ><%=temp[7]==null?"":temp[7]%></td>
 		  <td ><%=DicInit.getSystemName("STOCK_BACK_ITEM",temp[8])%></td>
+		  <td><select id="<%=temp[0] %>" name="binCodes" style="width:100" class="form">
+		  				<option value="">==请选择==</option>
+                        <%for(int j=0; binCodes!=null&&j<binCodes.size(); j++ ){
+                            	String bin=(String)binCodes.get(j);
+                        %>
+	                        <option value="<%=bin%>"><%=bin%></option>
+                        <%}%>
+	          </select>
+	      </td>
+	      <td ><input name="back" type="button"  value='回库' onclick="f_back('<%=temp[0]%>')"></td>
         </tr>      
       <%}}else{%> 
 	<tr class="tableback1"></tr>
@@ -113,11 +125,11 @@
     </tr>
     </table>
     
-              <tr align="left">
+              <!-- <tr align="left">
                     <td class="content_yellow">
                      <input name="back" type="button"  value='回库' onclick="f_back()">
                     </td>
-                  </tr>
+                  </tr> -->
 
 	
 	  
@@ -133,16 +145,20 @@ function f_query(){
 	document.forms[0].submit();
 }
 
-function f_back(){
-	var ids=chk();
+function f_back(ids){
+	
 	if(ids!=''&&ids!=null){
-		//window.open("stockFlowAction.do?method=stockInOutPrint&flowType=I&ids="+ids,"","scrollbars=yes,width=700,height=600");
+		var binCode = document.getElementById(ids).value;
+		if(binCode==""){
+			alert("请先选择仓位");
+			return;
+		}
+
 		document.forms[0].back.disabled = true;
+		document.forms[0].binCode.value=binCode;
 		document.forms[0].partsIds.value=ids;
 		document.forms[0].action="stockBackAction.do?method=stockBackOperate"; 
 		document.forms[0].submit();
-	}else{
-		alert('请先选择记录!');
 	}
 }
 

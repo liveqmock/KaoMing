@@ -23,6 +23,7 @@
 			count=Integer.parseInt((String)stockFlowList.get(0));
 		}
 		ArrayList flowItemList = (ArrayList)DicInit.SYS_CODE_MAP.get("FLOW_ITEM");	
+		ArrayList binCodes = (ArrayList)session.getAttribute("binCodes");
 
 %>
 <body onload="showQueryDateTR('dateScope',3);">
@@ -43,9 +44,15 @@
                     
                 </tr>
                 <tr class="tableback1"> 
-                  <td width="98"> 数量：</td>
-                  <td width="126"><html:text  styleClass="form" property="strSkuNum"  maxlength="6"  size="16"  onkeydown="f_onlynumber()" /></td>
-                   
+                  <td width="98">仓位：</td>
+                  <td width="121"><html:select styleClass="form" property="binCode"    style="width:100">
+		  				<option value="">==请选择==</option>
+                        <%for(int j=0; binCodes!=null&&j<binCodes.size(); j++ ){
+                            	String bin=(String)binCodes.get(j);
+                        %>
+	                        <html:option value="<%=bin%>"><%=bin%></html:option>
+                        <%}%>
+	          		</html:select></td>
                   <td width="97">价格：</td>
                   <td width="172"><html:text  styleClass="form" property="strPerCost"    maxlength="8" size="16" onkeydown="f_onlymoney()"/></td>
                 
@@ -103,6 +110,7 @@
                         <td><strong>数量</strong></td>
                         <td><strong>单位</strong></td>
                         <td><strong>类型</strong></td>
+                        <td><strong>仓位</strong></td>
                         <td><strong>成本单价(RMB)</strong></td>
                         <td><strong>客户名称</strong></td>
                         <td><strong>出库方式</strong></td>
@@ -127,6 +135,7 @@
           <td ><%=temp[4]==null?"":temp[4]%></td>
 		  <td ><%=temp[5]==null?"":temp[5]%></td>
 		  <td ><%=temp[1]==null?"":temp[1]%></td>
+		  <td ><%=temp[14]==null?"":temp[14]%></td>
 		  <td ><%=temp[6]==null?"":temp[6]%></td>
 		  <td ><%=temp[7]==null?"":temp[7]%></td>
 		  <td ><%=temp[8]==null?"":temp[8]%></td>

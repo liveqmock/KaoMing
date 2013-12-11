@@ -45,7 +45,6 @@ public class StockFlowAction extends ControlAction{
 			sff.setFlowType("I");
 			StockInBo sio = StockInBo.getInstance();
 			request.setAttribute("stockFlowList",sio.stockInOutList(sff));
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -67,7 +66,6 @@ public class StockFlowAction extends ControlAction{
 			sff.setFlowType("O");
 			StockInBo sio = StockInBo.getInstance();
 			request.setAttribute("stockFlowList",sio.stockInOutList(sff));
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

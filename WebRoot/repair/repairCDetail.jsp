@@ -54,7 +54,7 @@ try{
 <script language=javascript src="js/iris_map.js"></script>
 <script language=javascript src="js/checkIris.js"></script>
 <script language=javascript src="<%= request.getContextPath()%>/js/customerTemp.js"></script>
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function highlightButton(s) {

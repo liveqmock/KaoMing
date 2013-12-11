@@ -27,6 +27,7 @@
 		String reportFileName=(String)request.getAttribute("reportFileName");
 		ArrayList skuTypeList = (ArrayList)DicInit.SYS_CODE_MAP.get("SKU_TYPE");
 
+		ArrayList binCodes = (ArrayList)session.getAttribute("binCodes");
 
 %>
 <body onload="showQueryDateTR('dateScope',3);">
@@ -39,8 +40,15 @@
                   <td width="121"><html:text  styleClass="form" property="stuffNo"  maxlength="32"  size="16"  /></td>
                   <td width="98"> 零件名称：</td>
                   <td width="126"><html:text  styleClass="form" property="skuCode"  maxlength="32"  size="16"  /></td>
-                  <td width="98">单位：</td>
-                  <td width="121"><html:text  styleClass="form" property="skuUnit"  maxlength="4"  size="16"  /></td>
+                  <td width="98">仓位：</td>
+                  <td width="121"><html:select styleClass="form" property="binCode"    style="width:100">
+		  				<option value="">==请选择==</option>
+                        <%for(int j=0; binCodes!=null&&j<binCodes.size(); j++ ){
+                            	String bin=(String)binCodes.get(j);
+                        %>
+	                        <html:option value="<%=bin%>"><%=bin%></html:option>
+                        <%}%>
+	          </html:select></td>
                 </tr>
                 <tr class="tableback2"> 
                 <td width="97">零件数量：</td>

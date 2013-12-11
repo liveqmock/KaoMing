@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/style.css">
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/styles2.css">
 <script language=javascript src="js/common.js"></script>
-<SCRIPT language="JScript.Encode" src="<%= request.getContextPath()%>/js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="<%= request.getContextPath()%>/js/commonSelect.js"></SCRIPT>
 <script language=javascript src="<%= request.getContextPath()%>/js/popCalendar.js"></script>
 <script language=javascript src="<%= request.getContextPath()%>/js/checkValid.js"></script>
 <script language=javascript src="js/popSortTable.js"></script>

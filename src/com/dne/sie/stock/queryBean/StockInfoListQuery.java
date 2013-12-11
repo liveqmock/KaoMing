@@ -136,7 +136,14 @@ public class StockInfoListQuery extends QueryBean{
 				paramList.add(param);
 			}
 			
-			
+			if (form.getBinCode() != null && !form.getBinCode().equals("")) {
+				whereIn +=  " and si.binCode like :binCode";
+				QueryParameter param = new QueryParameter();
+				param.setName("binCode");
+				param.setValue(form.getBinCode());
+				param.setHbType(Hibernate.STRING);
+				paramList.add(param);
+			}
 		}
 		return paramList;
 	}

@@ -10,8 +10,8 @@
 <title>userList</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <link href="css/styles2.css" rel="stylesheet" type="text/css" />
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/ascii.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/ascii.js"></SCRIPT>
 <script language=javascript src="js/common.js"></script>
 </head>
 <%

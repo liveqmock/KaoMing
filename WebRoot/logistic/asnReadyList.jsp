@@ -17,7 +17,7 @@
 <script language=javascript src="js/ajax.js"></script>
 <script language=javascript src="js/inputValidation.js"></script>
 <script language=javascript src="js/checkValid.js"></script>
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 
 </head>
 <%

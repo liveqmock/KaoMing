@@ -10,11 +10,11 @@
 <html>
 	<head>
 <link rel="stylesheet" href="css/treeStyle.css">	
-<SCRIPT language="JScript.Encode" src="js/tree/client_ini.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/basic.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/control.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/editor.js"></SCRIPT>
-<SCRIPT language="JScript.Encode" src="js/tree/dropdown.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/client_ini.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/basic.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/control.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/editor.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/tree/dropdown.js"></SCRIPT>
 <SCRIPT  src="js/tree/menu.js"></SCRIPT>
 <SCRIPT  src="js/tree/xtree.js"></SCRIPT> 
 <script event="onload" for="window">initDocument();</SCRIPT>

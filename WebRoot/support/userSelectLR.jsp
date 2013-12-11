@@ -4,10 +4,10 @@
 
 <html>
 <head>
-<title>user_choose</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>user_choose</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/styles2.css">
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 </head>
 <%
 try{

@@ -8,7 +8,7 @@ try{
 <html>
 <head>
 <title>服务器当前用户状态表</title>
-<SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 var owebbody;  // for array column

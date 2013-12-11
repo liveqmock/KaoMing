@@ -1,7 +1,6 @@
 package com.dne.sie.stock.action;
 
-//Java 基础类import
-//import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -66,7 +65,8 @@ public class StockInOperateAction extends ControlAction{
 			String[] freightTW = request.getParameterValues("freightTW"); //台湾运费(RMB)
 			String[] tariff = request.getParameterValues("tariff"); //关税(RMB)
 			String[] invoiceNo = request.getParameterValues("invoiceNo"); //发票号
-			String[][] para = {poNo,receiveNum,perCost,orderDollar,freightTW,invoiceNo,tariff};
+			String[] binCode = request.getParameterValues("binCode"); //发票号
+			String[][] para = {poNo,receiveNum,perCost,orderDollar,freightTW,invoiceNo,tariff,binCode};
 			
 			StockInBo sib = StockInBo.getInstance();
 			tag=sib.orderInReceive(para,orderNo,userId,transportMode);

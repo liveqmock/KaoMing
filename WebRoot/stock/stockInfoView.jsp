@@ -72,6 +72,7 @@
 			<td ><strong>销售单号</strong></td>
 			<td ><strong>申请客户</strong></td>
 			<td ><strong>发票号</strong></td>
+			<td ><strong>仓位</strong></td>
             </tr>
          
               <%
@@ -94,6 +95,7 @@
           <td ><%=temp[12]==null?"":temp[12]%></td>
           <td ><%=temp[13]==null?"":temp[13]%></td>
           <td ><%=temp[15]==null?"":temp[15]%></td>
+          <td ><%=temp[18]==null?"":temp[18]%></td>
         </tr>      
       <%}}%> 
       

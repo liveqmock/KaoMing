@@ -31,6 +31,8 @@ public class StockBackForm extends ActionForm {
 	//…Í«Î»’∆⁄
 	private Date applyDate;
 	
+	private String binCode;
+	
 	private String partsIds;
 	private String stockBackItemBak;
 
@@ -129,6 +131,15 @@ public class StockBackForm extends ActionForm {
 	public void setStockBackItemBak(String stockBackItemBak) {
 		this.stockBackItemBak = stockBackItemBak;
 	}
+
+	public String getBinCode() {
+		return binCode;
+	}
+
+	public void setBinCode(String binCode) {
+		this.binCode = binCode;
+	}
+	
 	
 	
 	

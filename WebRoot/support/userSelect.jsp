@@ -5,10 +5,10 @@
  
 <html>
 <head>
-<title>user_list</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>user_list</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/styles2.css">
-<SCRIPT language="JScript.Encode" src="js/commonSelect.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 <base target="_self">
 </head>
 <%

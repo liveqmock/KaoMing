@@ -111,7 +111,7 @@ public class ReceiveAllocateBo extends CommBo{
 		}
 		
 		strHql += where+" order by pa.saleDetailId ";
-		System.out.println("--xx---strHql="+strHql);
+//		System.out.println("--xx---strHql="+strHql);
 		requestList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
 		//获取所分配的销售单号
 		for(int j=0;j<requestList.size();j++){

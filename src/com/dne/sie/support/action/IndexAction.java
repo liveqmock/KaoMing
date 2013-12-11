@@ -1,11 +1,11 @@
 package com.dne.sie.support.action;
 
 
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionForm;
+
+import com.dne.sie.maintenance.bo.StationBinBo;
 import com.dne.sie.support.bo.IndexBo;
 import com.dne.sie.util.action.ControlAction;
 
@@ -64,6 +64,12 @@ public class IndexAction extends ControlAction {
 	 */
 	public String loginConfirm(HttpServletRequest request, ActionForm form){
 		String forward = "indexFrame";
+		try {
+			request.getSession().setAttribute("binCodes",StationBinBo.getInstance().getAllBinCodes());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 		return forward;	
 	}

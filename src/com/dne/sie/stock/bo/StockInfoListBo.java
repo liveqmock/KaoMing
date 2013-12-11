@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import com.dne.sie.common.tools.DicInit;
 import com.dne.sie.common.tools.ExcelEdit;
-import com.dne.sie.common.tools.FormNumberBuilder;
 import com.dne.sie.common.tools.Operate;
-
 import com.dne.sie.maintenance.form.FormNumber;
 import com.dne.sie.maintenance.form.PartInfoForm;
 import com.dne.sie.stock.form.StockFlowForm;
 import com.dne.sie.stock.form.StockInfoForm;
+import com.dne.sie.stock.queryBean.StockFlowQuery;
 import com.dne.sie.stock.queryBean.StockInfoListQuery;
 import com.dne.sie.stock.queryBean.StockInfoQuery;
-import com.dne.sie.stock.queryBean.StockFlowQuery;
 import com.dne.sie.stock.queryBean.StockTaxInfoListQuery;
 import com.dne.sie.util.bo.CommBo;
 
@@ -96,7 +95,7 @@ public class StockInfoListBo extends CommBo {
 				StockInfoForm sif=new StockInfoForm();
 				for (int i = 0; i < dataList.size(); i++) {
 					sif = (StockInfoForm)dataList.get(i);
-					String[] data = new String[18];
+					String[] data = new String[19];
 					data[0] = sif.getStockId().toString();
 					data[1] = sif.getSkuCode();
 					data[2] = sif.getShortCode();
@@ -116,6 +115,7 @@ public class StockInfoListBo extends CommBo {
 					data[15] = sif.getInvoiceNo();
 					data[16] = sif.getSkuNumTax()==null?"":sif.getSkuNumTax()+"";
 					data[17] = sif.getPerCostTax()==null?"":Operate.roundF(sif.getPerCostTax(),2)+"";
+					data[18] = sif.getBinCode();
 					
 					if("R".equals(sif.getStockStatus())) {
 						if("S".equals(sif.getSkuType())){	//销售保留零件

@@ -25,7 +25,7 @@
 		<form-bean name="attachedInfoForm" type="com.dne.sie.maintenance.form.AttachedInfoForm" />
 		<form-bean name="employeeInfoForm" type="com.dne.sie.maintenance.form.EmployeeInfoForm" />
 		<form-bean name="machineToolForm" type="com.dne.sie.maintenance.form.MachineToolForm" />
-		
+		<form-bean name="stationBinForm" type="com.dne.sie.maintenance.form.StationBinForm" />
 		
 		<form-bean name="saleInfoForm" type="com.dne.sie.reception.form.SaleInfoForm" />
 		<form-bean name="poForm" type="com.dne.sie.reception.form.PoForm" />
@@ -213,7 +213,10 @@
 			<forward name="machineToolList" path="/maintenance/machineToolList.jsp" />
 			<forward name="machineToolEdit" path="/maintenance/machineToolEdit.jsp" />
 		</action>
-		
+		<action name="stationBinForm" path="/stationBinAction" scope="request" type="com.dne.sie.maintenance.action.StationBinAction">		
+			<forward name="stationBinList" path="/maintenance/stationBinList.jsp" />
+			<forward name="stationBinEdit" path="/maintenance/stationBinEdit.jsp" />
+		</action>
 		
 		<!-- maintenance end -->
 		

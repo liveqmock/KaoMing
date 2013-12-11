@@ -3,7 +3,7 @@
  
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>newsis</title><SCRIPT language="JScript.Encode" src="js/screen.js"></SCRIPT>
+<title>newsis</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 </head>
  
 <FRAMESET ROWS="69,0,*" id="fSet1" border="0" frameborder="NO" >

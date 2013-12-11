@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class name="com.dne.sie.maintenance.form.StationBinForm" dynamic-update="true" dynamic-insert="true" table="ts_station_bin">
+	<id name="binCode" unsaved-value="any">
+          <column name="BIN_CODE"  />
+          <generator class="assigned"></generator>
+    </id>
+		<property name="binType" >
+    		<column name="BIN_TYPE"  />
+    	</property>
+    	<property name="isSysCtl" >
+    		<column name="IS_SYS_CTL"  />
+    	</property>
+    	<property name="delFlag" insert="false" >
+    		<column name="DEL_FLAG"  />
+    	</property>
+    	
+	    
+	    
+		<property name="createBy"  update="false">
+    		<column name="CREATE_BY"  />
+    	</property>
+    	<property name="createDate" insert="false" update="false">
+    		<column name="CREATE_DATE"  />
+    	</property>
+    	<property name="updateBy" insert="false">
+    		<column name="UPDATE_BY"  />
+    	</property>
+    	<property name="updateDate"  insert="false">
+    		<column name="UPDATE_DATE"  />
+    	</property>
+    	
+</class>
+</hibernate-mapping>
+  
