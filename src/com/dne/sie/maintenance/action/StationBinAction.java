@@ -156,8 +156,11 @@ public class StationBinAction extends ControlAction {
   public String insertStationBin(HttpServletRequest request, ActionForm form) throws Exception{
 		String forward = "stationBinList";
 		StationBinForm pif=(StationBinForm)form;
+		pif.setDelFlag(0L);
 		StationBinBo.getInstance().add(pif);
 		request.setAttribute("stationBinList",StationBinBo.getInstance().list(new StationBinForm()));
+		request.getSession().removeAttribute("binCodes");
+		request.getSession().setAttribute("binCodes",StationBinBo.getInstance().getAllBinCodes());
 		return forward;
   }
   
@@ -173,7 +176,8 @@ public class StationBinAction extends ControlAction {
 		StationBinForm pif=(StationBinForm)form;
 		StationBinBo.getInstance().modify(pif);
 		request.setAttribute("stationBinList",StationBinBo.getInstance().list(new StationBinForm()));
-		
+		request.getSession().removeAttribute("binCodes");
+		request.getSession().setAttribute("binCodes",StationBinBo.getInstance().getAllBinCodes());
 		return forward;
   }
   
@@ -182,7 +186,8 @@ public class StationBinAction extends ControlAction {
 		String stationBins=request.getParameter("ids");
 		StationBinBo.getInstance().delete(stationBins);
 		request.setAttribute("stationBinList",StationBinBo.getInstance().list(new StationBinForm()));
-		
+		request.getSession().removeAttribute("binCodes");
+		request.getSession().setAttribute("binCodes",StationBinBo.getInstance().getAllBinCodes());
 		return forward;
   }
 

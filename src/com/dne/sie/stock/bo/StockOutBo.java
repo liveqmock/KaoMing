@@ -65,7 +65,7 @@ public class StockOutBo extends CommBo{
 			data[2] = sif.getSkuCode()==null?"":sif.getSkuCode();
 			data[3] = sif.getSkuNum()==null?"":sif.getSkuNum()+"";
 			data[4] = sif.getPerCost()==null?"":Operate.roundD(sif.getPerCost(),2)+"";
-			data[5] = sif.getSkuType()==null?"":sif.getSkuType();
+			data[5] = DicInit.getSystemName("SKU_TYPE",sif.getSkuType());
 			data[6] = sif.getOrderDollar()==null?"":Operate.roundD(sif.getOrderDollar(),2)+"";
 			alData.add(data);
 		}
@@ -73,7 +73,37 @@ public class StockOutBo extends CommBo{
 	
 		return alData;	  	
 	} 
-			
+	
+	/**
+	 * 显示可做位移的零件
+	 * @param sifQuery
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<?> stockBinMoveList(StockInfoForm sifQuery) throws Exception{
+
+		ArrayList alData = new ArrayList();
+		AdjustOutQuery uq = new AdjustOutQuery(sifQuery);
+		
+		List dataList = uq.doListQuery(sifQuery.getFromPage(),sifQuery.getToPage());
+		int count = uq.doCountQuery();
+
+		for (int i = 0; i < dataList.size(); i++) {
+			StockInfoForm sif = (StockInfoForm)dataList.get(i);
+			String[] data = new String[7];
+			data[0] = sif.getStockId().toString();
+			data[1] = sif.getStuffNo()==null?"":sif.getStuffNo();
+			data[2] = sif.getSkuCode()==null?"":sif.getSkuCode();
+			data[3] = sif.getSkuNum()==null?"":sif.getSkuNum()+"";
+			data[4] = DicInit.getSystemName("SKU_TYPE",sif.getSkuType());
+			data[5] = sif.getCreateDate()==null?"":Operate.trimDate(sif.getCreateDate()).toString();
+			data[6] = sif.getBinCode()==null?"":sif.getBinCode();
+			alData.add(data);
+		}
+		alData.add(0, count + "");
+	
+		return alData;	  	
+	} 	
 
 	/**
 	* 库调出库
@@ -436,6 +466,14 @@ public class StockOutBo extends CommBo{
 
 		return tag;		    	
 	}
+	
+	
+	public boolean moveBin(Long stockId,String binCode) throws Exception{
+		this.getDao().execute("update StockInfoForm si set si.binCode=?,updateDate=now() where si.id=? ", binCode,stockId);
+		return true;
+	}
+	
+	
 	
 	public Float findStockCost(Long requestId) throws Exception{
 		String hql="select sff.perCost from StockFlowForm as sff where sff.requestId = ? and sff.perCost is not null ";

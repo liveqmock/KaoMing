@@ -136,6 +136,23 @@ public class AdjustOutQuery extends QueryBean{
 			}
 			
 			
+			if (form.getBinCode1() != null && !form.getBinCode1().isEmpty()) {
+				whereIn += " and si.binCode >= :binCode1";
+				QueryParameter param = new QueryParameter();
+				param.setName("binCode1");
+				param.setValue(form.getBinCode1());
+				param.setHbType(Hibernate.STRING);
+				paramList.add(param);
+			}
+			if (form.getBinCode2() != null && !form.getBinCode2().isEmpty()) {
+				whereIn += " and si.binCode <= :binCode2";
+				QueryParameter param = new QueryParameter();
+				param.setName("binCode2");
+				param.setValue(form.getBinCode2());
+				param.setHbType(Hibernate.STRING);
+				paramList.add(param);
+			}
+			
 		}
 		return paramList;
 	}
@@ -147,8 +164,7 @@ public class AdjustOutQuery extends QueryBean{
 		AdvQueryString countQuery = new AdvQueryString();
 		ArrayList paramList = this.queryCondition(form);
 
-		String queryString = "select count(*) " +
-			"from StockInfoForm as si "+whereIn;
+		String queryString = "select count(*) from StockInfoForm as si "+whereIn;
 			
 		countQuery.setQueryString(queryString);
 		countQuery.setParameters(paramList);
@@ -162,8 +178,7 @@ public class AdjustOutQuery extends QueryBean{
 		AdvQueryString listQuery = new AdvQueryString();
 		
 		ArrayList paramList = this.queryCondition(form);
-		String queryString = "from StockInfoForm as si  "+whereIn+
-			" order by si.stuffNo,si.stockId";
+		String queryString = "from StockInfoForm as si  "+whereIn+" order by si.stuffNo,si.stockId";
 			
 		listQuery.setQueryString(queryString);
 		listQuery.setParameters(paramList);

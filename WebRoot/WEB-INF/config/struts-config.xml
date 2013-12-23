@@ -115,7 +115,7 @@
 		<action name="stockInfoForm" path="/stockOutOperateAction" scope="request" type="com.dne.sie.stock.action.StockOutOperateAction">
 			<forward name="stockAdjustOutList" path="/stock/stockAdjustOut.jsp" />
 			<forward name="stockTaxAdjustOutList" path="/stockTax/stockTaxAdjustOut.jsp" />
-			
+			<forward name="stockBinMoveList" path="/stock/stockBinMoveList.jsp" />
 		</action>
 		
 		<action name="stockToolsInfoForm" path="/stockToolsAction" scope="request" type="com.dne.sie.stock.action.StockToolsAction">

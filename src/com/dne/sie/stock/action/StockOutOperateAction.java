@@ -1,20 +1,17 @@
 package com.dne.sie.stock.action;
 
-//Java 基础类
-//import java.util.ArrayList;
 
-//Java 扩展类
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-
-//第三方类
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
-
-//自定义类
-import com.dne.sie.util.action.ControlAction;
 import com.dne.sie.stock.bo.StockOutBo;
 import com.dne.sie.stock.form.StockInfoForm;
+import com.dne.sie.util.action.ControlAction;
 
 
 /**
@@ -39,6 +36,21 @@ public class StockOutOperateAction extends ControlAction{
 			
 			StockOutBo sob = StockOutBo.getInstance();
 			request.setAttribute("stockInfoList",sob.adjustOutList(sif));
+			request.setAttribute("binList",sob.adjustOutList(sif));
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return forward;
+	}
+	
+	public String stockBinMoveList(HttpServletRequest request, ActionForm form) {
+		String forward = "stockBinMoveList";
+		try{
+			StockInfoForm sif=(StockInfoForm)form;
+			
+			StockOutBo sob = StockOutBo.getInstance();
+			request.setAttribute("stockInfoList",sob.stockBinMoveList(sif));
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -120,5 +132,35 @@ public class StockOutOperateAction extends ControlAction{
 	
 	
 	
+	public void ajaxMoveBin(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+		PrintWriter writer = null;
+		
+		try{
+			String id=request.getParameter("id");
+			String binCode=request.getParameter("binCode");
+			StockOutBo sob = StockOutBo.getInstance();
+			String strXml="false";
+			if(sob.moveBin(new Long(id),binCode)){
+				strXml="true";
+			}
+		
+			writer = response.getWriter();
+			response.setContentType("text/xml");		  
+			response.setHeader("Cache-Control", "no-cache");
+			writer.println("<xml>");
+			
+			writer.println("<result>"+strXml+"</result>");
+		
+			writer.println("</xml>");
+			
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if(writer!=null) writer.flush();
+			if(writer!=null) writer.close();
+		}
+	
+	}
 	
 }
