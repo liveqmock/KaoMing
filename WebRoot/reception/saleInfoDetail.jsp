@@ -345,18 +345,24 @@ try{
          <td><B>开票金额</B></td>
          <td><B>开票类型</B></td>
          <td><B>发票号</B></td>
+         <td>&nbsp;</td>
         </tr>
       </THEAD>
       <TBODY>
          <%for(int i=0;i<invoiceList.size();i++){
       		String[] temp=(String[])invoiceList.get(i);
       %>
-         <tr class="tableback1">
+         <tr class="tableback1" id="Invoice_ROW_<%=temp[0]%>">
          <td width="20%" ><%=temp[1]%></td>
          <td><%=temp[5]%></td>
          <td><%=temp[2]%></td>
          <td><%=temp[3]%></td>
          <td><%=temp[4]%></td>
+         <%if(AtomRoleCheck.checkRole(userId, "MANAGER")){ %>
+         <td width="6%" align="center"><input name="delPartButton" type="button" class="button2" value="删除" onclick="deleteInvoice('Invoice_ROW_<%=temp[0]%>')"></td>
+         <%}else{ %>
+         <td>&nbsp;</td>
+         <%} %>
         </tr>
       <%}%>
       </TBODY>
@@ -543,15 +549,18 @@ try{
 	
 	var ajaxD = new sack();
 	function deleteAPart(partsIdTRRow){
-		var feeId = partsIdTRRow.substr(9);// 从9开始截是因为前面有"PART_ROW_"开头
-		ajaxD.setVar("feeId",feeId);
-		ajaxD.setVar("method", "deleteSalePayment");
-		ajaxD.requestFile = "saleInfoAction.do";
-		ajaxD.method = "GET";
-		ajaxD.onCompletion = deletePartCompleted;
-		ajaxD.runAJAX();
-		globalButton = event.srcElement;
-		globalButton.disabled = true;
+		if(confirm("确定删除该收款吗？")){
+			var feeId = partsIdTRRow.substr(9);// 从9开始截是因为前面有"PART_ROW_"开头
+			ajaxD.setVar("feeId",feeId);
+			ajaxInvoice.setVar("type","payment");
+			ajaxD.setVar("method", "deleteSalePayment");
+			ajaxD.requestFile = "saleInfoAction.do";
+			ajaxD.method = "GET";
+			ajaxD.onCompletion = deletePartCompleted;
+			ajaxD.runAJAX();
+			globalButton = event.srcElement;
+			globalButton.disabled = true;
+		}
 	}
 	function deletePartCompleted(){
 		var returnXml = ajaxD.responseXML;
@@ -581,7 +590,52 @@ try{
 		}
 		deleteTr.style.display = "none";
 	}
+	
+	
+	
+	
+	var ajaxInvoice = new sack();
+	function deleteInvoice(partsIdTRRow){
+		if(confirm("确定删除该发票吗？")){
+			var feeId = partsIdTRRow.substr(12);// 从12开始截是因为前面有"Invoice_ROW_"开头
+			ajaxInvoice.setVar("feeId",feeId);
+			ajaxInvoice.setVar("type","invoice");
+			ajaxInvoice.setVar("method", "deleteSalePayment");
+			ajaxInvoice.requestFile = "saleInfoAction.do";
+			ajaxInvoice.method = "GET";
+			ajaxInvoice.onCompletion = deleteInvoiceCompleted;
+			ajaxInvoice.runAJAX();
+			globalButton = event.srcElement;
+			globalButton.disabled = true;
+		}
+	}
+	function deleteInvoiceCompleted(){
+		var returnXml = ajaxInvoice.responseXML;
+		var flag = returnXml.getElementsByTagName("flag")[0].firstChild.nodeValue;
+		if(eval(flag)){
+			var feeId = returnXml.getElementsByTagName("feeId")[0].firstChild.nodeValue;
+			deleteInvoiceRow(feeId);
+		}else{
+			alert("删除失败，请联系管理员！");
+		}
+		globalButton.disabled = false;
+		globalButton = null;
+	}
 
+	function deleteInvoiceRow(partsId){
+		//alert("deletePartRow.partsId:"+partsId);
+		var deleteTr = eval("Invoice_ROW_"+partsId);
+		if(invoiceTable.tBodies[0].rows.length>0){
+			for(var p=0;p<invoiceTable.tBodies[0].rows.length;p++){
+				if(invoiceTable.tBodies[0].rows[p].id == "Invoice_ROW_"+partsId){
+					//alert("invoiceTable.tBodies[0].rows[p].id:"+invoiceTable.tBodies[0].rows[p].id);
+					invoiceTable.tBodies[0].removeChild(deleteTr);
+				}
+			}
+		}
+		deleteTr.style.display = "none";
+	}
+	
 	
 	function f_sale_cancel(){
 		if(confirm("确定取消该销售单吗？")){
