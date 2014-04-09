@@ -62,6 +62,7 @@
                       <tr bgcolor="#CCCCCC"> 
                         <td><strong> 零件料号</strong></td>
                         <td><strong> 零件编号</strong></td>
+                        <td><strong> 仓位号</strong></td>
                         <td><strong>库存数量</strong></td>
                         <td><strong>盘点数量</strong></td>
                         
@@ -80,6 +81,7 @@
       	  <input type="hidden" name="stockTakeDetailId" value="<%=temp[0]%>">
           <td ><%=temp[2]==null?"":temp[2]%></td>
        	  <td ><%=temp[3]==null?"":temp[3]%></td>
+       	  <td ><%=temp[1]==null?"":temp[1]%></td>
        	  <td ><%=temp[4]==null?"":temp[4]%></td>
        	  <td ><input class="form" name="takeNum" size="6" value="<%=temp[5]==null?"":temp[5]%>" onkeydown="f_onlynumber()" ></td>
        	  
@@ -104,8 +106,8 @@
                     	<!--<input type="button" class="button4" onClick="f_diffAdjust()" value="库调申请">-->
                     <%}%>
                     
-                    <input type="button" class="button4" onClick="f_confirm()"value="盘点确认"> 
-                    <input type="button" class="button4" onClick="f_cancel()"value="盘点取消"> 
+                    <input id="confirm" type="button" class="button4" onClick="f_confirm()"value="盘点确认"> 
+                    <input id="cancel" type="button" class="button4" onClick="f_cancel()"value="盘点取消"> 
                   </td>
                 </tr>
                 
@@ -122,7 +124,6 @@
 
 var takeNum="";
 var ids="";
-var globalButton = null;
 
 var ajax = new sack(); 
 function f_tempSave(){
@@ -152,8 +153,7 @@ function f_tempSave(){
 	ajax.method = "POST";				
 	ajax.onCompletion = saveCompleted;	
 	ajax.runAJAX();     
-	globalButton = event.srcElement;
-	globalButton.disabled = true;
+	
 }
 
 
@@ -166,8 +166,6 @@ function f_tempSave(){
 			alert("暂存成功");
 		}
 		
-		globalButton.disabled = false;
-		globalButton = null;
 	}
 	
 function diffCompare() {
@@ -222,21 +220,19 @@ function f_saveChk() {
 
 
 function f_cancel(){
-    globalButton = event.srcElement;
-    globalButton.disabled = true;
+	document.getElementById("cancel").disabled=true;
     location="stockTakeAction.do?method=takeCancel&stockTakeId="+document.forms[0].stockTakeId.value;
 
 }
 
 function f_confirm(){
     if(f_saveChk()){
-    	globalButton = event.srcElement;
-    	globalButton.disabled = true;
+    	document.getElementById("confirm").disabled=true;
     	
     	document.forms[0].action="stockTakeAction.do?method=takeSecondConfirm";
-				document.forms[0].takeNumAll.value=takeNum;
-				document.forms[0].target="_self";
-				document.forms[0].submit(); 
+		document.forms[0].takeNumAll.value=takeNum;
+		document.forms[0].target="_self";
+		document.forms[0].submit(); 
     }
 }
 

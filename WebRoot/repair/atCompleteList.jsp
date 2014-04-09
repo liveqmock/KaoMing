@@ -108,6 +108,7 @@ function keyDown(e){
 						
 						<TH ><b>就位日期</b></TH>
 						<TH ><b>派工人员</b></TH>
+						<TH ><b>状态</b></TH>
 						<TH ><b>登记人</b></TH>
                       </tr></thead>
                       <tbody>
@@ -119,7 +120,7 @@ function keyDown(e){
   	        else strTr="tableback1";
   			String[] temp=(String[])atCompleteList.get(i);
   %>
-	<tr class="<%=strTr%>" > 
+	<tr class="<%=strTr%>" >
 	<%-- <td align=center><input type="checkbox" name="chk" value="<%=temp[0]%>"></td> --%>
     <td onmouseover="this.style.color='orange'" onmouseout="this.style.color='black'" style="cursor: hand" align=center onclick="javascript:view('<%=temp[0]%>','<%=temp[12]%>')"><%=temp[1]%></td>
       <td ><%=temp[2]==null?"":temp[2]%></td>
@@ -130,6 +131,12 @@ function keyDown(e){
       
        <td ><%=temp[21]==null?"":temp[21]%></td>
        <td ><%=temp[6]==null?"":temp[6]%></td>
+       <%if("W".equals(temp[12])){ %> 
+       <td ><font color="red"><%=DicInit.getSystemName("CURRENT_STATUS",temp[12])%></font></td>
+       <%}else{ %>
+       <td ><%=DicInit.getSystemName("CURRENT_STATUS",temp[12])%></td>
+       <%} %>
+       
         <td ><%=temp[17]==null?"":temp[17]%></td>
     </tr>
    

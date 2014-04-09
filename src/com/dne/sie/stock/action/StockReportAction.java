@@ -3,32 +3,23 @@ package com.dne.sie.stock.action;
 //Java 基础类
 import java.util.ArrayList;
 
-//Java 扩展类
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-//第三方类
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
-import org.apache.log4j.Logger;
 
-
-//自定义类
-import com.dne.sie.util.action.ControlAction;
-import com.dne.sie.maintenance.action.AttachedInfoAction;
+import com.dne.sie.common.exception.ReportException;
 import com.dne.sie.common.tools.CommonSearch;
 import com.dne.sie.common.tools.Operate;
-import com.dne.sie.stock.form.StockTakeDetailForm;
+import com.dne.sie.stock.bo.StockTakeBo;
 import com.dne.sie.stock.form.StockTakeForm;
 import com.dne.sie.stock.form.StockTakeReportForm;
-import com.dne.sie.stock.bo.StockTakeBo;
-import com.dne.sie.stock.bo.StockInBo;
-import com.dne.sie.stock.bo.StockInfoListBo;
-import com.dne.sie.stock.form.StockInfoForm;
-import com.dne.sie.common.exception.ReportException;
+import com.dne.sie.util.action.ControlAction;
+//Java 扩展类
+//第三方类
+//自定义类
 
 
 /**

@@ -40,7 +40,7 @@ public class StockInfoListReportBo extends BaseReportQuery{
 			
 			
 			String countSql="select count(*) from TD_STOCK_INFO si "+strWhere;
-			System.out.println("----------countSql="+countSql);
+//			System.out.println("----------countSql="+countSql);
 			int count=Integer.parseInt(DBOperation.selectOne(countSql));
 			if(count==0){
 				throw new ReportException("查询结果数据为0,请修改查询条件,重新查询");
@@ -56,7 +56,7 @@ public class StockInfoListReportBo extends BaseReportQuery{
 				 "  sum(si.sku_Num) sku_Num,si.per_Cost from TD_STOCK_INFO si "+strWhere+
 				 "  group by si.SKU_CODE,si.SHORT_CODE,si.STUFF_NO,si.STANDARD"+
 				 ")as t1 group by SKU_CODE,SHORT_CODE,STUFF_NO,STANDARD";
-				System.out.println("----------strSql[0]="+strSql[0]);
+//				System.out.println("----------strSql[0]="+strSql[0]);
 				rf.setSql(strSql);
 				rf.setSqlCount(count);
 			}

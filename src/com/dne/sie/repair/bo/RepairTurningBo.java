@@ -10,15 +10,12 @@ import org.apache.log4j.Logger;
 
 import com.dne.sie.common.exception.ComException;
 import com.dne.sie.common.exception.VersionException;
-import com.dne.sie.common.tools.AtomRoleCheck;
 import com.dne.sie.common.tools.FormNumberBuilder;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.maintenance.bo.MachineToolBo;
 import com.dne.sie.maintenance.form.CustomerInfoForm;
 import com.dne.sie.maintenance.form.MachineToolForm;
-import com.dne.sie.repair.form.RepairIrisInfoForm;
 import com.dne.sie.repair.form.RepairManInfoForm;
-import com.dne.sie.repair.form.RepairPartForm;
 import com.dne.sie.repair.form.RepairSearchForm;
 import com.dne.sie.repair.form.RepairServiceForm;
 import com.dne.sie.repair.form.RepairServiceStatusForm;
@@ -399,6 +396,99 @@ public class RepairTurningBo extends CommBo {
 		al.add(new Object[]{atRsf,"i"});
 		
 		this.getBatchDao().allDMLBatch(al);
+		
+	}
+	
+	public void atNotComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
+		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+		if(rsf.getVersion()!=searchForm.getVersion()){
+			throw new VersionException("数据已被其他用户更新过，请重新打开后再提交！");
+		}
+
+//		rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
+		rsf.setAtPlc(searchForm.getAtPlc());
+		rsf.setAtMissParts(searchForm.getAtMissParts());
+		rsf.setAtCircuit(searchForm.getAtCircuit());
+		rsf.setAtOthers(searchForm.getAtOthers());
+		rsf.setAtPrecision(searchForm.getAtPrecision());
+		rsf.setAtUHW0(searchForm.getAtUHW0());
+		rsf.setAtSHW0(searchForm.getAtSHW0());
+		rsf.setAtUHW90(searchForm.getAtUHW90());
+		rsf.setAtSHW90(searchForm.getAtSHW90());
+		rsf.setAtUHW180(searchForm.getAtUHW180());
+		rsf.setAtSHW180(searchForm.getAtSHW180());
+		rsf.setAtUHW270(searchForm.getAtUHW270());
+		rsf.setAtSHW270(searchForm.getAtSHW270());
+		rsf.setAtTrain(searchForm.getAtTrain());
+		rsf.setAtSign(searchForm.getAtSign());
+		rsf.setAtUnsignRemark(searchForm.getAtUnsignRemark());
+		rsf.setActualDuration(searchForm.getActualDuration());
+		
+		
+		rsf.setCurrentStatus(searchForm.getCurrentStatus()); //已派工
+		rsf.setUpdateBy(searchForm.getUpdateBy());
+		rsf.setUpdateDate(searchForm.getUpdateDate());
+		rsf.setActualRepairedDate(searchForm.getUpdateDate());
+
+		//设置维修状态
+		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+		rssf.setRepairStatus(rsf.getCurrentStatus());
+		rssf.setBeginDate(new Date());
+		rssf.setCreateBy(rsf.getUpdateBy());
+		rssf.setRepairServiceForm(rsf);
+		rsf.getServiceStatusSet().add(rssf);
+		
+		
+		String[] travelId = repairManInfo.get(0);
+		String[] arrivalDate = repairManInfo.get(1);
+		String[] returnDate = repairManInfo.get(2);
+		String[] travelFee = repairManInfo.get(3);
+		String[] laborCosts = repairManInfo.get(4);
+		String[] repairCondition = repairManInfo.get(5);
+		
+		if(travelId!=null && travelId.length>0){
+			Set rmiSet = rsf.getRepairManSetInfo();
+			ArrayList rimList = new ArrayList(rmiSet);
+			int repairmanNum=0,workhour=0;
+			double travelFeeAll=0,laborCostsAll=0;
+			//派工维修员
+			for(int i=0;i<rimList.size();i++){
+				//设置维修员
+				RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
+				for(int j=0;j<travelId.length;j++){
+					if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
+						if(arrivalDate[j]==null || returnDate[j]==null || travelFee[j]==null || laborCosts[j]==null || repairCondition[j]==null
+								|| arrivalDate[j].isEmpty() || returnDate[j].isEmpty() || travelFee[j].isEmpty() || laborCosts[j].isEmpty() || repairCondition[j].isEmpty()){
+							continue;
+						}
+				
+						rsf.getRepairManSetInfo().remove(rmif);
+						
+						rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
+						rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
+						rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
+						rmif.setTravelFee(new Double(travelFee[j]));
+						rmif.setLaborCostsActual(new Double(laborCosts[j]));
+						rmif.setRepairCondition(repairCondition[j]);
+						
+						rmif.setUpdateDate(new Date());
+						rmif.setUpdateBy(rsf.getUpdateBy());
+						
+						//rmif.setRepairServiceForm(rsf);
+						
+						rsf.getRepairManSetInfo().add(rmif);
+						
+						repairmanNum++;
+						if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
+						travelFeeAll+=rmif.getTravelFee();
+						laborCostsAll+=rmif.getLaborCostsActual();
+						
+						break;
+					}
+				}
+			}
+		}
+		this.getDao().update(rsf);
 		
 	}
 	

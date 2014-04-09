@@ -558,8 +558,7 @@ try{
 			ajaxD.method = "GET";
 			ajaxD.onCompletion = deletePartCompleted;
 			ajaxD.runAJAX();
-			globalButton = event.srcElement;
-			globalButton.disabled = true;
+			
 		}
 	}
 	function deletePartCompleted(){
@@ -571,8 +570,7 @@ try{
 		}else{
 			alert("删除失败，请联系管理员！");
 		}
-		globalButton.disabled = false;
-		globalButton = null;
+		
 	}
 	function deletePartRowEnd(partsId){
 		deletePartRow(partsId);
@@ -605,8 +603,7 @@ try{
 			ajaxInvoice.method = "GET";
 			ajaxInvoice.onCompletion = deleteInvoiceCompleted;
 			ajaxInvoice.runAJAX();
-			globalButton = event.srcElement;
-			globalButton.disabled = true;
+			
 		}
 	}
 	function deleteInvoiceCompleted(){
@@ -618,8 +615,7 @@ try{
 		}else{
 			alert("删除失败，请联系管理员！");
 		}
-		globalButton.disabled = false;
-		globalButton = null;
+		
 	}
 
 	function deleteInvoiceRow(partsId){

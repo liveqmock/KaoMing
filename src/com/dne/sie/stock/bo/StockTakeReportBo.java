@@ -46,7 +46,7 @@ public class StockTakeReportBo extends BaseReportQuery{
 			if(!takeId.equals("")){
 				strSqlCount +=	" where  rpt.STOCK_TAKE_ID="+takeId;
 			}
-			System.out.println("---------strSqlCount="+strSqlCount);
+//			System.out.println("---------strSqlCount="+strSqlCount);
 			int count=Integer.parseInt(DBOperation.selectOne(strSqlCount));
 			
 			if(count>20000){
@@ -69,7 +69,7 @@ public class StockTakeReportBo extends BaseReportQuery{
 						"rpt.DIFF_NUM,if(rpt.DIFF_NUM = 0 ,0,round(rpt.diff_Price/rpt.DIFF_NUM)) diff_Price,rpt.diff_Price from TS_PART_INFO pi," +
 						"TD_STOCK_TAKE_RPT rpt where pi.STUFF_NO=rpt.STUFF_NO " ;
 				}
-				System.out.println("---------strSql[0]="+strSql[0]);
+//				System.out.println("---------strSql[0]="+strSql[0]);
 				rf.setSql(strSql);
 				rf.setSqlCount(count);
 				rf.setQuery(query);

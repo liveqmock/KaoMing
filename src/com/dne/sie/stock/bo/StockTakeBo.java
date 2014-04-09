@@ -84,13 +84,13 @@ public class StockTakeBo extends CommBo{
 	public ArrayList[] takeFirstList(StockTakeDetailForm stdfQuery) {
 		ArrayList[] stockInfoLists=new ArrayList[3];
 		ArrayList stockInfoList=new ArrayList();
-//		char spliter = 0x0001;
+		char spliter = 0x0001;
 		try{
 			StockTakeDetailQuery stq = new StockTakeDetailQuery(stdfQuery);
 			List detailList=stq.doListQuery();
 			
 			StockTakeDetailForm stdf=new StockTakeDetailForm();
-//			HashSet stockBin=new HashSet();
+			HashSet stockBin=new HashSet();
 			for(int i=0;i<detailList.size();i++){
 				stdf=(StockTakeDetailForm)detailList.get(i);
 				String[] data = new String[7];
@@ -104,41 +104,41 @@ public class StockTakeBo extends CommBo{
 				data[5] = stdf.getTakeNum()==null?"":stdf.getTakeNum().toString();
 				data[6] = stdf.getSkuUnit()==null?"":stdf.getSkuUnit().toString();
 				
-//				stockBin.add(data[1]);
+				stockBin.add(data[1]);
 				stockInfoList.add(data);
 			}
 			
-//			StockTakeForm stf=this.getTakeInfo(stdfQuery.getStockTakeId());
-//			String strBinCode1="",strBinCode2="";
-//			
-//			if(stf.getBinCodeBegin()!=null&&!stf.getBinCodeBegin().equals("")){
-//				strBinCode1=" and sbf.binCode>='"+stf.getBinCodeBegin()+"'";
-//			}
-//			if(stf.getBinCodeEnd()!=null&&!stf.getBinCodeEnd().equals("")){
-//				strBinCode2=" and sbf.binCode<='"+stf.getBinCodeEnd()+"'";
-//			}
+			StockTakeForm stf=this.getTakeInfo(stdfQuery.getStockTakeId());
+			String strBinCode1="",strBinCode2="";
+			
+			if(stf.getBinCodeBegin()!=null&&!stf.getBinCodeBegin().equals("")){
+				strBinCode1=" and sbf.binCode>='"+stf.getBinCodeBegin()+"'";
+			}
+			if(stf.getBinCodeEnd()!=null&&!stf.getBinCodeEnd().equals("")){
+				strBinCode2=" and sbf.binCode<='"+stf.getBinCodeEnd()+"'";
+			}
 			
 			//查询没有放零附件的仓位号
-//			String strBinHql="select distinct sbf.binCode " +
-//				"from StationBinForm as sbf where sbf.delFlag=0  "+
-//				 strBinCode1 + strBinCode2;
-//			ArrayList allBinList=(ArrayList)this.getDao().list(strBinHql);
-//			ArrayList noneBinList=new ArrayList();
-//			for(int i=0;i<allBinList.size();i++){
-//				Object obj=(Object)allBinList.get(i);
-//				String strBin=(String)obj;
-//				if(!stockBin.contains(strBin)){
-//					noneBinList.add(strBin);
-//				}
-//			}
+			String strBinHql="select distinct sbf.binCode " +
+				"from StationBinForm as sbf where sbf.delFlag=0  "+
+				 strBinCode1 + strBinCode2;
+			ArrayList allBinList=(ArrayList)this.getDao().list(strBinHql);
+			ArrayList noneBinList=new ArrayList();
+			for(int i=0;i<allBinList.size();i++){
+				Object obj=(Object)allBinList.get(i);
+				String strBin=(String)obj;
+				if(!stockBin.contains(strBin)){
+					noneBinList.add(strBin);
+				}
+			}
 			
 			//仓库仓位的select框
-//			StockInBo sib = StockInBo.getInstance();
-//			ArrayList stockList=sib.getStockList();
-//			
+			StockInBo sib = StockInBo.getInstance();
+			ArrayList stockList=sib.getStockList();
+			
 			stockInfoLists[0]=stockInfoList;
-//			stockInfoLists[1]=stockList;
-//			stockInfoLists[2]=noneBinList;
+			stockInfoLists[1]=stockList;
+			stockInfoLists[2]=noneBinList;
 						
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -171,7 +171,7 @@ public class StockTakeBo extends CommBo{
 				String strWhere=getStockInfoWhere(siQuery);
 				
 				String strHql="select min(sif.stockId),sif.skuCode,sif.stuffNo," +
-					"sum(sif.skuNum),sif.skuUnit " +
+					"sum(sif.skuNum),sif.skuUnit,sif.binCode " +
 					"from StockInfoForm as sif where sif.skuNum>0 "+strWhere+
 					" group by sif.stuffNo,sif.skuUnit "+
 					" order by  sif.stuffNo";
@@ -192,7 +192,7 @@ public class StockTakeBo extends CommBo{
 					stdf.setCreateDate(siQuery.getCreateDate());
 					stdf.setStuffNo((String)obj[2]);
 					stdf.setSkuUnit((String)obj[4]);
-					
+					stdf.setBinCode((String)obj[5]);
 					addList.add(stdf);
 				}
 				if(this.getBatchDao().insertBatch(addList)){
@@ -409,8 +409,8 @@ public class StockTakeBo extends CommBo{
 				//如果第一次输入盘点数量 或 上次数量和这次不同
 				if(inNum==0||takeNum!=inNum){
 					stdf.setTakeNum(new Integer(takeNum));
-					System.out.println("---stockNum="+stockNum);
-					System.out.println("---takeNum="+takeNum);
+//					System.out.println("---stockNum="+stockNum);
+//					System.out.println("---takeNum="+takeNum);
 					stdf.setDiffNum(new Integer(stockNum-takeNum));
 					modList.add(stdf);
 				}
@@ -848,6 +848,7 @@ public class StockTakeBo extends CommBo{
 				strf.setCreateBy(stf.getCreateBy());
 				
 				String[] diffArray=(String[])diffList.get(i);
+				strf.setBinCode(diffArray[1]);
 				strf.setStuffNo(diffArray[2]);
 				strf.setSkuCode(diffArray[3]);
 				int diffNum=Integer.parseInt(diffArray[5])-Integer.parseInt(diffArray[4]);
@@ -1403,12 +1404,12 @@ public class StockTakeBo extends CommBo{
 			if (form.getRealCost2() != null && form.getRealCost2().intValue()!=0) {
 				where = where + " and sif.perCost <= "+form.getRealCost2();
 			}
-//			if (form.getBinCode1() != null && !form.getBinCode1().equals("")) {
-//				where = where + " and sif.binCode >='"+form.getBinCode1()+"'";
-//			}
-//			if (form.getBinCode2() != null && !form.getBinCode2().equals("")) {
-//				where = where + " and sif.binCode <= '"+form.getBinCode2()+"'";
-//			}
+			if (form.getBinCode1() != null && !form.getBinCode1().equals("")) {
+				where = where + " and sif.binCode >='"+form.getBinCode1()+"'";
+			}
+			if (form.getBinCode2() != null && !form.getBinCode2().equals("")) {
+				where = where + " and sif.binCode <= '"+form.getBinCode2()+"'";
+			}
 			
 			
 		}catch(Exception e) {
@@ -1530,9 +1531,7 @@ public class StockTakeBo extends CommBo{
 			
 			try{
 				String strWhere=getStockInfoWhere(siQuery);
-				//String strHql="from StockInfoForm as sif where 1=1 "+strWhere+
-				//" order by sif.stockCode,sif.binCode,sif.skuCode ";
-				String strHql="select sif.stuffNo,sif.skuCode,sif.skuUnit " +
+				String strHql="select sif.stuffNo,sif.skuCode,sif.skuUnit,sif.binCode " +
 					"from StockInfoForm as sif where sif.skuNum>0 "+strWhere+
 					" group by sif.stuffNo "+
 					" order by sif.stuffNo";
@@ -1540,7 +1539,7 @@ public class StockTakeBo extends CommBo{
 				
 				if(alData!=null&&alData.size()>0){
 
-					String[] colName={"序列","零件料号","零件名称","单位","盘点数量"};
+					String[] colName={"序列","零件料号","零件名称","单位","仓位号","盘点数量"};
 					alData.add(0, colName);
 
 					StringBuffer strSource=new StringBuffer();
@@ -1602,8 +1601,6 @@ public class StockTakeBo extends CommBo{
 					for(int j=0;j<temp.length;j++){
 						
 						if(j==0) strSource.append(temp[j]);
-						//跳过binCode，id
-						else if(j==1||j==temp.length-1) continue;
 						else strSource.append("\t").append(temp[j]);
 					}
 					strSource.append("\r\n");

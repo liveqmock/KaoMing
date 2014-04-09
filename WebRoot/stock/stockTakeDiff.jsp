@@ -17,14 +17,14 @@
     String flowTime = (String)request.getAttribute("flowTime");
     String flag = (String)request.getAttribute("flag");
     String strTitle="二次盘点";
-    if(flag.equals("1")) strTitle="一次盘点";
+    if("1".equals(flag)) strTitle="一次盘点";
     
     CommonSearch cs = CommonSearch.getInstance();
     if(flowUser!=null) flowUser=cs.findUserNameByUserId(new Long(flowUser));
 %>
 
 <body bgcolor="#ffffff" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
-<html:hidden property="stockTakeId" value="<%=flowId%>" />
+<input type="hidden" name="stockTakeId" value="<%=flowId%>" >
  <html:form action="stockTakeAction.do?method=takeSave" method="post" >
 
   <table width="90%" border="0" align="center" cellpadding="2" cellspacing="1" class="content12">
@@ -51,6 +51,7 @@
   <tr bgcolor="#CCCCCC"> 
     <td><strong> 零件料号</strong></td>
     <td><strong> 零件编号</strong></td>
+    <td><strong> 仓位号</strong></td>
     <td><strong>库存数量</strong></td>
     <td><strong>盘点数量</strong></td>
   </tr>
@@ -67,6 +68,7 @@
       <tr class="<%=strTr%>"> 
           <td ><%=temp[2]==null?"":temp[2]%></td>
        	  <td ><%=temp[3]==null?"":temp[3]%></td>
+       	  <td ><%=temp[1]==null?"":temp[1]%></td>
        	  <td ><%=temp[4]==null?"":temp[4]%></td>
        	  <td ><%=temp[5]==null?"":temp[5]%></td>
         </tr>

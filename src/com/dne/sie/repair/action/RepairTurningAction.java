@@ -283,6 +283,53 @@ public class RepairTurningAction extends ControlAction {
 		return forward;
 	}
 	
+	
+	public String atNotComplete(HttpServletRequest request, ActionForm form) throws Exception {
+		String forward = "resultMessage";
+		
+		RepairSearchForm searchForm=(RepairSearchForm) form;
+		RepairHandleBo rhb = RepairHandleBo.getInstance();
+		RepairTurningBo rtb = RepairTurningBo.getInstance();
+		Long userId=(Long) request.getSession().getAttribute("userId");
+	
+		searchForm.setCurrentStatus("W"); //未完成
+		searchForm.setUpdateBy(userId);
+		searchForm.setUpdateDate(new Date());
+		
+		String[] arrivalDate = request.getParameterValues("arrivalDate");
+		String[] returnDate = request.getParameterValues("returnDate");
+		String[] travelFee = request.getParameterValues("travelFee");
+		String[] laborCosts = request.getParameterValues("laborCosts");
+		String[] repairCondition = request.getParameterValues("repairCondition");
+		String[] travelId = request.getParameterValues("travelId");
+		
+		if(travelId==null){
+			throw new Exception("travelId null!");
+		}
+		
+		ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
+		repairManInfo.add(travelId);
+		repairManInfo.add(arrivalDate);
+		repairManInfo.add(returnDate);
+		repairManInfo.add(travelFee);
+		repairManInfo.add(laborCosts);
+		repairManInfo.add(repairCondition);
+		
+		try{
+			rtb.atNotComplete(searchForm,repairManInfo);
+		}catch(VersionException ve){
+			return "versionErr";
+		}
+		String tempAttache = request.getParameter("attacheIds");
+		if (tempAttache!=null&&!tempAttache.equals("")) {
+			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+		}
+		request.setAttribute("tag", "1");
+		request.setAttribute("businessFlag", "turningList");
+		request.setAttribute("tempData","atCompleteList");
+		
+		return forward;
+	}
 
 	/**
 	 * “安调”->“安调派工查詢”
@@ -341,7 +388,7 @@ public class RepairTurningAction extends ControlAction {
 		
 		RepairSearchForm rsForm = (RepairSearchForm) form;
 		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("D");	//已派工
+		rsForm.setCurrentStatus("AT");	//已派工、未完成
 		rsForm.setWarrantyType("B"); //安调
 		
 

@@ -13,6 +13,7 @@ import org.apache.struts.action.ActionMapping;
 
 import com.dne.sie.common.tools.CommonSearch;
 import com.dne.sie.common.tools.EscapeUnescape;
+import com.dne.sie.stock.bo.StockInBo;
 import com.dne.sie.stock.bo.StockTakeBo;
 import com.dne.sie.stock.form.StockInfoForm;
 import com.dne.sie.stock.form.StockTakeDetailForm;
@@ -46,11 +47,8 @@ public class StockTakeAction extends ControlAction{
 			String takeStatus=stf.getTakeStatus();
 			if(takeStatus==null||takeStatus.equals("")){//流程未启动过，进入开始盘点页面
 				
-//				StockInBo sib = StockInBo.getInstance();
-//				ArrayList stockList=sib.getStockList();
-				
-//				StockTakeBo stb = StockTakeBo.getInstance();
-//				request.setAttribute("binCode",stockList);
+				StockInBo sib = StockInBo.getInstance();
+				request.setAttribute("binCode",sib.getStockList());
 				
 				forward = "takeInit";
 				
@@ -104,7 +102,6 @@ public class StockTakeAction extends ControlAction{
    	*/
 	public String takeStart(HttpServletRequest request, ActionForm form) {
 	   String forward = "takeFirst";
-
 	   try{
 			//获取盘点条件sif
 		   StockInfoForm sif=(StockInfoForm)form;
@@ -131,11 +128,10 @@ public class StockTakeAction extends ControlAction{
 						stdf.setStockTakeId(new Long(takeId));
 						ArrayList temp[] = (ArrayList[])stb.takeFirstList(stdf);
 						//创建一次盘点的数据session
-//						session.setAttribute("initList",temp);
+						session.setAttribute("initList",temp);
 						request.setAttribute("stockInfoList",temp[0]);
-//						request.setAttribute("stockCode",temp[1]);
-//						request.setAttribute("binCode",temp[2]);
-//						request.setAttribute("noneBin",temp[3]);
+						request.setAttribute("binCode",temp[1]);
+						request.setAttribute("noneBin",temp[2]);
 					}
 					request.setAttribute("takeId",takeId+"");
 				}else{
@@ -166,7 +162,7 @@ public class StockTakeAction extends ControlAction{
 			Long userId=(Long)session.getAttribute("userId");
 			
 			String skuCode = request.getParameter("skuCode");
-//			String stockCode = request.getParameter("stockCode");
+			String binCode = request.getParameter("binCode");
 			String stuffNo = request.getParameter("stuffNo");
 			String skuNum = request.getParameter("skuNum");
 //			String snNo = request.getParameter("snNo");
@@ -178,6 +174,7 @@ public class StockTakeAction extends ControlAction{
 			stdf.setStuffNo(stuffNo);
 			stdf.setStockNum(new Integer(0));
 			stdf.setTakeNum(new Integer(skuNum));
+			stdf.setBinCode(binCode);
 			stdf.setStockTakeId(new Long(stockTakeId));
 			stdf.setAdjustFlag("A");	//调整标志，盘点新增
 			stdf.setCreateBy(userId);

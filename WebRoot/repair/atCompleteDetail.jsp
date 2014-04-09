@@ -111,6 +111,16 @@ function atCompleteEnd(){
 	}
 }
 
+function atNotComplete(){
+	//if(!f_chkDispatch()){
+		document.forms[0].atTrain.value=chk();
+		
+		showWaitDiv(800,1000);
+		document.forms[0].action="repairTurningAction.do?method=atNotComplete";
+		document.forms[0].submit();	
+	//}
+}
+
 
 
 function f_chk(){
@@ -1073,17 +1083,17 @@ function resetRMInputForm(){
         <tr class="<%=strTr%>" > 
          <td><%=rmi.getRepairManName()%> <input type="hidden" name="travelId" value="<%=rmi.getTravelId()%>"></td>
          <td><%=rmi.getDepartDate()==null?"":Operate.formatYMDDate(rmi.getDepartDate())%></td>
-         <td><input name="arrivalDate" type="text" class="form" size="10" onkeydown='javascript:input_date();'></td>
-         <td><input name="returnDate" type="text" class="form" size="10" onkeydown='javascript:input_date();'></td>
-         <td><input name="travelFee" type="text" class="form" size="10" onkeydown='javascript:f_onlymoney();'></td>
-         <td><input name="laborCosts" type="text" class="form" size="10" onkeydown='javascript:f_onlymoney();'></td>
+         <td><input name="arrivalDate" type="text" class="form" size="10" onkeydown='javascript:input_date();' value="<%=rmi.getArrivalDate() == null ?"":Operate.formatYMDDate(rmi.getArrivalDate())%>"></td>
+         <td><input name="returnDate" type="text" class="form" size="10" onkeydown='javascript:input_date();' value="<%=rmi.getReturnDate() == null ?"":Operate.formatYMDDate(rmi.getArrivalDate())%>"></td>
+         <td><input name="travelFee" type="text" class="form" size="10" onkeydown='javascript:f_onlymoney();' value="<%=rmi.getTravelFee()==null?"":Operate.roundD(rmi.getTravelFee(), 2)%>"></td>
+         <td><input name="laborCosts" type="text" class="form" size="10" onkeydown='javascript:f_onlymoney();' value="<%=rmi.getLaborCostsActual()==null?"":Operate.roundD(rmi.getLaborCostsActual(), 2)%>"></td>
          <td><select name="repairCondition" class="form">
          	<%
        		for(int j=0;repairConditionList!=null&&j<repairConditionList.size();j++){
        			String[] rs=(String[])repairConditionList.get(j);
        			if(!rs[0].equals("P")){
        		%>
-       		<option value="<%=rs[0]%>"><%=rs[1]%></option>
+       		<option value="<%=rs[0]%>" <%if(rs[0].equals(rmi.getRepairCondition())){ %>selected <%} %>><%=rs[1]%></option>
        		<%}}%>
       	 </select></td>
          <td><%=rmi.getRemark()==null?"":rmi.getRemark()%></td>
@@ -1121,6 +1131,7 @@ function resetRMInputForm(){
 		 		
 			  <td align="right"> 
 			    <input name="endRepairButton" type="button" onClick="atComplete()" class="button4" value="安调完成">
+			    <input name="endRepairButton" type="button" onClick="atNotComplete()" class="button6" value="安调未完成">
 			  	<input name="closeButton" type="button" class="button2" value="关闭" onclick="window.close()"> 
 			  	
 			  </td>

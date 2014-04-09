@@ -100,9 +100,9 @@ var ajax = new sack();
 var ii=1;
 var rownumber = 0;
 var rowid = 1;
-var globalButton = null;
+
 function doAddAttached(){
-	globalButton = event.srcElement;
+	
 	var path = uploadNew.getMyfileName();
 
 	if(path.length == 0){
@@ -194,8 +194,7 @@ function fileDel(attacheId){
 }
 
 function fileAddFailed(failedCode){
-	globalButton.disabled = false;
-	globalButton = null;
+	
 }
 </script>
 

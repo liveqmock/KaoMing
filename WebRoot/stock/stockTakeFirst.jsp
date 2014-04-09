@@ -19,6 +19,8 @@
 </head>
 <%
     ArrayList stockInfoList = (ArrayList)request.getAttribute("stockInfoList");
+	ArrayList binCodeList = (ArrayList)request.getAttribute("binCode");  
+	ArrayList noneBinList = (ArrayList)request.getAttribute("noneBin"); 
   
  
     String takeId = (String)request.getAttribute("takeId")==null?"-1":(String)request.getAttribute("takeId"); 
@@ -66,8 +68,16 @@ try{
                       <tr> 
                         <td width="98">数量：<font color="red"><a onclick="temp()">* </a></font></td>
                         <td><html:text styleClass="form" property="skuNum" size="14" value="1"  maxlength="6" onkeydown="f_onlynumber()"/> </td>
-                        <td></td>
-                  			<td></td>
+                        <td>仓位号：<font color="red">*</font></td>
+                  		<td><select class="form" style="width:80" name="binCode">
+							<option value="">===全部===</option>
+							<%for(int i=0;binCodeList!=null&&i<binCodeList.size();i++){
+              						String temp=(String)binCodeList.get(i);
+              				%>
+                				<option value="<%=temp%>"><%=temp%></option>
+                			<%}%>
+      		  				</select> 
+      		  			</td>
                   			<td></td>
                   			<td></td>
                       </tr>
@@ -90,6 +100,7 @@ try{
                         <td><strong>零件料号</strong></td>
                         <td><strong>零件名称</strong></td>
                         <td><strong>单位</strong></td>
+                        <td><strong>仓位号</strong></td>
                         <td><strong>盘点数量</strong></td>
                         
                       </tr>
@@ -109,6 +120,7 @@ try{
           <td ><%=temp[2]==null?"":temp[2]%></td>
           <td ><%=temp[3]==null?"":temp[3]%></td>
           <td ><%=temp[6]==null?"":temp[6]%></td>
+          <td ><%=temp[1]==null?"":temp[1]%></td>
           <td ><input class="form" name="takeNum" size="6" value="<%=temp[5]==null?"":temp[5]%>" onkeydown="f_onlynumber()" ></td>
        	  
         </tr>
@@ -133,7 +145,7 @@ try{
                     <input id="tempSave" type="button" class="button2" onClick="f_tempSave()" <%=strDisabled%> value="暂存"> 
                     <!--<input id="diffCompare" type="button" class="button4" onClick="f_diffCompare()" <%=strDisabled%> value="差异比较"> -->
                     <input id="confirm" type="button" class="button4" onClick="f_confirm()" <%=strDisabled%> value="盘点确认">
-                    <input type="button" class="button4" onClick="f_cancel()" value="盘点取消"> 
+                    <input id="cancel" type="button" class="button4" onClick="f_cancel()" value="盘点取消"> 
                   </td>
                 </tr>
                 
@@ -154,7 +166,6 @@ try{
 
 var takeNum="";
 var ids="";
-var globalButton = null;
 
 
 var ajax = new sack(); 
@@ -163,6 +174,7 @@ function f_add(){
     	ajax.setVar("skuCode", escape(document.forms[0].skuCode.value)); 
     	ajax.setVar("stuffNo", document.forms[0].stuffNo.value); 
     	ajax.setVar("skuNum", document.forms[0].skuNum.value); 
+    	ajax.setVar("binCode", document.forms[0].binCode.value); 
     	ajax.setVar("stockTakeId", document.forms[0].stockTakeId.value); 
     	
 			ajax.setVar("method", "takeFirstAdd");		
@@ -245,8 +257,7 @@ function f_tempSave(){
 	ajax.method = "POST";				
 	ajax.onCompletion = saveCompleted;	
 	ajax.runAJAX();     
-	globalButton = event.srcElement;
-	globalButton.disabled = true;
+
 }
 
 	function saveCompleted(){  
@@ -258,8 +269,6 @@ function f_tempSave(){
 			alert("暂存成功");
 		}
 		
-		globalButton.disabled = false;
-		globalButton = null;
 		
 	}
 
@@ -314,21 +323,18 @@ function f_saveChk() {
 
 
 function f_cancel(){
-    globalButton = event.srcElement;
-    globalButton.disabled = true;
+    document.getElementById("cancel").disabled=true;
     location="stockTakeAction.do?method=takeCancel&stockTakeId="+document.forms[0].stockTakeId.value;
 }
 
 function f_confirm(){
     if(f_saveChk()){
-    	globalButton = event.srcElement;
-	globalButton.disabled = true;
-	
-	document.forms[0].action="stockTakeAction.do?method=takeFirstConfirm";
-	document.forms[0].takeNumAll.value=takeNum;
-	//document.forms[0].idsAll.value=ids;
-	document.forms[0].target="_self";
-	document.forms[0].submit(); 
+    	document.getElementById("confirm").disabled=true;
+		document.forms[0].action="stockTakeAction.do?method=takeFirstConfirm";
+		document.forms[0].takeNumAll.value=takeNum;
+		//document.forms[0].idsAll.value=ids;
+		document.forms[0].target="_self";
+		document.forms[0].submit(); 
     	
     }
 }
@@ -343,6 +349,7 @@ function f_property(){
 
 
 function temp(){
+	
     if(f_isNull(document.forms[0].skuNum,'数量')&&f_isValidInt(document.forms[0].skuNum,'数量')){
     	var tempNum1=document.forms[0].skuNum.value;
     	var len = document.forms[0].takeNum.length;
@@ -355,6 +362,7 @@ function temp(){
 	    	document.forms[0].takeNum.value=tempNum1;
 	    }
     }
+	
 }
 
 function f_chkSnLot(tNum,sn,lot,place){
