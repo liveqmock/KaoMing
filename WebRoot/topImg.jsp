@@ -4,7 +4,7 @@
 
 
 <head>
-<title>newsis</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
+<title>newsis</title>
 <link href="css/style.css" rel="stylesheet" type="text/css">
 
 </head>

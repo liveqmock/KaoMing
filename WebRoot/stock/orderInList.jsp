@@ -38,6 +38,7 @@
 	<table width="99%" border="0" align="center" cellpadding="2" cellspacing="1" class="content12">
            	<tr bgcolor="#CCCCCC"> 
            	  <td><strong>料号</strong></td>
+           	  <td><strong>名称</strong></td>
 		  			  <td><strong>机型</strong></td>
 		  			  <td><strong>销售单</strong></td>
 		  			  <td><strong>客户名称</strong></td>
@@ -66,6 +67,7 @@
       <tr class="<%=strTr%>"> 
      	 		<input type="hidden" name="poNo" value="<%=temp[0]%>">
       		<td ><%=temp[1]==null?"":temp[1]%></td>
+      		<td ><%=temp[12]==null?"":temp[12]%></td>
           <td ><%=temp[2]==null?"":temp[2]%></td>
           <td ><%=temp[3]==null?"":temp[3]%></td>
           <td ><%=temp[4]==null?"":temp[4]%></td>
@@ -96,7 +98,7 @@
       
       
         <tr> 
-      <td height="1" bgcolor="#677789" colspan="14"></td>
+      <td height="1" bgcolor="#677789" colspan="16"></td>
     </tr>
         
         </table>

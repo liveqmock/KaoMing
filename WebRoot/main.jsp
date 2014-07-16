@@ -7,7 +7,7 @@
 <html>
 <head>
 
-<title>kaoming</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
+<title>kaoming</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="css/style.css" rel="stylesheet" type="text/css">

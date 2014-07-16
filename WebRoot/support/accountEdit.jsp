@@ -98,7 +98,7 @@
     	<a href="javascript:showCustomerInfo('customerName')"><img src="googleImg/icon/search.gif" align="absmiddle" border="0"></a>    
     </td>
     <td >µØµã£º</td>
-    <td ><html:text  styleClass="form" property="place"  maxlength="12"  size="24" /></td>
+    <td ><html:text  styleClass="form" property="place"  maxlength="250"  size="24" /></td>
   </tr>
   <tr class="tableback1"> 
     <td valign="top">ÕªÒª£º</td>

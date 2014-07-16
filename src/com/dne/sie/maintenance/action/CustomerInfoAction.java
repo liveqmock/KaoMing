@@ -1,33 +1,24 @@
 package com.dne.sie.maintenance.action;
 
-//Java 基础类
-//import java.util.List;
 
-//Java 扩展类
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import javax.servlet.http.HttpServletResponse;
 
-
-//第三方类
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
 import sun.misc.BASE64Decoder;
-//import org.apache.struts.action.ActionMapping;
 
-//自定义类
-import com.dne.sie.util.action.ControlAction;
 import com.dne.sie.common.tools.DicInit;
 import com.dne.sie.common.tools.EscapeUnescape;
 import com.dne.sie.maintenance.bo.CustomerInfoBo;
-import com.dne.sie.maintenance.bo.PartInfoBo;
 import com.dne.sie.maintenance.form.CustomerInfoForm;
-import com.dne.sie.maintenance.form.PartInfoForm;
+import com.dne.sie.util.action.ControlAction;
+
 
 
 /**
@@ -323,6 +314,7 @@ public class CustomerInfoAction extends ControlAction {
 					if("TWKM".equals(customerId)){
 						continue;
 					}
+					
 					customerId = obj[0].toString();
 					customerName = obj[1].toString();
 					linkman = obj[2]==null?"":obj[2].toString();
@@ -337,7 +329,7 @@ public class CustomerInfoAction extends ControlAction {
 					if(customerName.indexOf(inputValue) != -1) {
 						//把输入的值和数据库的数据比较后,加粗
 						StrongDealerName = customerName.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
-						
+
 						buffer.append("<div onselect=\"this.text.value = '")
 							  .append(customerName)
 							  .append("';$('customerId').value = '")

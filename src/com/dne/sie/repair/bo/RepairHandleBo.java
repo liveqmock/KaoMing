@@ -1180,7 +1180,8 @@ public class RepairHandleBo extends CommBo {
 				//报告完成,取消,不修理,电诊解决
 				if(!rsf.getWarrantyType().equals("C")
 						&&!rsf.getCurrentStatus().equals("E")&&!rsf.getCurrentStatus().equals("C")
-						&&!rsf.getCurrentStatus().equals("N")&&!rsf.getCurrentStatus().equals("P")){
+						&&!rsf.getCurrentStatus().equals("N")&&!rsf.getCurrentStatus().equals("P")
+						&&!rsf.getCurrentStatus().equals("F")){
 					throw new ComException("该机器正在维修中:"+rsf.getServiceSheetNo());
 				}
 				
@@ -1191,7 +1192,7 @@ public class RepairHandleBo extends CommBo {
 				}else if("R".equals(status)){	//前一张单已经是90天内返修
 					continue;
 				}else{
-					if(rsf.getActualRepairedDate()==null){
+					if(!rsf.getCurrentStatus().equals("F")&&rsf.getActualRepairedDate()==null){
 						throw new ComException("该机器正在维修中:"+rsf.getServiceSheetNo());
 					}
 					int day = Operate.getSpacingDay(rsf.getActualRepairedDate(),new Date());

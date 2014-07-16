@@ -236,7 +236,7 @@ public class StockInBo extends CommBo{
 			List<PoForm> orderList = this.getDao().parameterQuery(strHql, paramList);
 			for(int i=0;orderList!=null&&i<orderList.size();i++){
 				PoForm pf=orderList.get(i);
-				String[] temp = new String[12];
+				String[] temp = new String[13];
 				temp[0]=pf.getPoNo().toString();
 				temp[1]=pf.getStuffNo();
 				temp[2]=pf.getModelCode();
@@ -249,6 +249,7 @@ public class StockInBo extends CommBo{
 				temp[9]=pf.getCreateDate().toLocaleString();
 				temp[10]=Operate.toFix(pf.getPerQuote() * CommonSearch.getInstance().getExchangeRate(pf.getSaleNo()), 2);
 				temp[11]=pf.getTransportMode();
+				temp[12]=pf.getSkuCode();
 				
 				orderInfoList.add(temp);
 			}
