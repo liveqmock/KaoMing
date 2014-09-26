@@ -1,20 +1,20 @@
 package com.dne.sie.support.action;
 
-//Java »ù´¡Àà
+//Java ï¿½ï¿½ï¿½ï¿½
 //import java.util.List;
 import java.util.Date;
 
-//Java À©Õ¹Àà
+//Java ï¿½ï¿½Õ¹ï¿½ï¿½
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-//µÚÈý·½Àà
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
-//×Ô¶¨ÒåÀà
+//ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 import com.dne.sie.util.action.ControlAction;
 import com.dne.sie.common.tools.FormNumberBuilder;
 import com.dne.sie.common.tools.Operate;
@@ -25,7 +25,7 @@ import com.dne.sie.support.form.AccountItemForm;
 
 
 /**
- * ·ÑÓÃÐÅÏ¢Action´¦ÀíÀà
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Actionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * @author xt
  * @version 1.1.5.6
  */
@@ -33,10 +33,10 @@ public class AccountItemAction extends ControlAction {
 	
 	
 	/**
-	* ·ÑÓÃ±íÐÅÏ¢ ÁÐ±íÒ³Ãæ
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ ï¿½Ð±ï¿½Ò³ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
    public String accountList(HttpServletRequest request, ActionForm form) throws Exception{
 		String forward = "accountList";
@@ -53,10 +53,10 @@ public class AccountItemAction extends ControlAction {
    }
    
    /**
-	* ·ÑÓÃ±íÐÅÏ¢ ÐÂÔöÒ³Ãæ
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
   public String accountInit(HttpServletRequest request, ActionForm form) throws Exception {
 		String forward = "accountEdit";
@@ -70,10 +70,10 @@ public class AccountItemAction extends ControlAction {
   }
   
   /**
-	* ·ÑÓÃ±íÐÅÏ¢ ÐÞ¸ÄÒ³Ãæ
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ ï¿½Þ¸ï¿½Ò³ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
   public String accountEdit(HttpServletRequest request, ActionForm form) {
 		String forward = "accountEdit";
@@ -94,10 +94,10 @@ public class AccountItemAction extends ControlAction {
   }
 
   /**
-	* ·ÑÓÃ±íÐÅÏ¢ ²åÈë²Ù×÷
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
   public String insertAccount(HttpServletRequest request, ActionForm form) {
 		String forward = "accountEdit";
@@ -128,10 +128,10 @@ public class AccountItemAction extends ControlAction {
   
 
   /**
-	* ·ÑÓÃ±íÐÅÏ¢ ÐÞ¸Ä²Ù×÷
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ ï¿½Þ¸Ä²ï¿½ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
   public String updateAccount(HttpServletRequest request, ActionForm form) {
 		String forward = "resultMessage";
@@ -148,7 +148,10 @@ public class AccountItemAction extends ControlAction {
 			}
 			
 			AccountItemBo cibo = AccountItemBo.getInstance();
-			
+
+            if(pif.getCustomerName()==null||pif.getCustomerName().isEmpty()){
+                pif.setCustomerId("");
+            }
 			int tag=cibo.modify(pif);
 			request.setAttribute("tag", tag + "");
 			request.setAttribute("businessFlag", "updateAccount");
@@ -162,10 +165,10 @@ public class AccountItemAction extends ControlAction {
   
 
   /**
-	* ·ÑÓÃ±íÐÅÏ¢ É¾³ý²Ù×÷
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ É¾ï¿½ï¿½ï¿½ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
   public String deleteAccount(HttpServletRequest request, ActionForm form) {
 		String forward = "resultMessage";
@@ -181,10 +184,10 @@ public class AccountItemAction extends ControlAction {
   }
 
 	/**
-	 * ¿ÆÄ¿Ê÷³õÊ¼»¯Ò³Ãæ
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ò³ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */
 	public String treeItemRadio(HttpServletRequest request,ActionForm form) {
 		String forward = "treeItem";	
@@ -204,10 +207,10 @@ public class AccountItemAction extends ControlAction {
 	
 
 	/**
-	* ·ÑÓÃ±íÐÅÏ¢ ÁÐ±íÒ³Ãæ
+	* ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Ï¢ ï¿½Ð±ï¿½Ò³ï¿½ï¿½
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
    public String dropdownTree(HttpServletRequest request, ActionForm form) throws Exception{
 		String forward = "dropdownTree";

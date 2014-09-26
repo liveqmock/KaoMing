@@ -1,5 +1,5 @@
 
-// ´¦Àí¾²Ì¬ÏÂÀ­¿ò£¬Ê¹ÆäÌá½»µÄÖµÊÇÕæÊµµÄÖµ¡£
+// ï¿½ï¿½ï¿½?Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½á½»ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Öµï¿½ï¿½
 //-----------------------
 var _activeElement=null;
 var _activeEditor=null;
@@ -17,14 +17,14 @@ var _tabpage_list=new Array();
 var _skip_activeChanged=false;
 
 /**
- * µÃµ½²Ù×÷ÏµÍ³ÐÅÏ¢£¬ÈçWin32
+ * ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Win32
  */
 function getPlatform(){
 	return window.clientInformation.platform;
 }
 
 /**
- * µÃµ½IE°æ±¾£¬Èç6.0
+ * ï¿½Ãµï¿½IEï¿½æ±¾ï¿½ï¿½ï¿½ï¿½6.0
  */
 function getIEVersion(){
 	var index=window.clientInformation.userAgent.indexOf("MSIE");
@@ -37,18 +37,18 @@ function getIEVersion(){
 }
 
 /**
- * ¸ù¾ÝtableÀïµÄtdÔªËØµÃµ½trÔªËØ
- * @param cell tdÔªËØ
- * @return trÔªËØ
+ * ï¿½ï¿½ï¿½tableï¿½ï¿½ï¿½tdÔªï¿½ØµÃµï¿½trÔªï¿½ï¿½
+ * @param cell tdÔªï¿½ï¿½
+ * @return trÔªï¿½ï¿½
  */
 function getRowByCell(cell){
 	return cell.parentElement;
 }
 
 /**
- * ¸ù¾ÝtableÀïµÄtdÔªËØµÃµ½tableÔªËØ
- * @param cell tdÔªËØ
- * @return tableÔªËØ
+ * ï¿½ï¿½ï¿½tableï¿½ï¿½ï¿½tdÔªï¿½ØµÃµï¿½tableÔªï¿½ï¿½
+ * @param cell tdÔªï¿½ï¿½
+ * @return tableÔªï¿½ï¿½
  */
 function getTableByCell(cell){
 	var tbody=getRowByCell(cell).parentElement;
@@ -56,9 +56,9 @@ function getTableByCell(cell){
 }
 
 /**
- * ¸ù¾ÝtableÀïµÄtrÔªËØµÃµ½tableÔªËØ
- * @param cell trÔªËØ
- * @return tableÔªËØ
+ * ï¿½ï¿½ï¿½tableï¿½ï¿½ï¿½trÔªï¿½ØµÃµï¿½tableÔªï¿½ï¿½
+ * @param cell trÔªï¿½ï¿½
+ * @return tableÔªï¿½ï¿½
  */
 function getTableByRow(row){
 	var tbody=row.parentElement;
@@ -77,8 +77,8 @@ function getElementEventName(element, eventName){
 }
 
 /**
- * ÅÐ¶ÏÒ»±äÁ¿ÊÇ·ñÎªÓÃ»§×Ô¶¨ÒåÊÂ¼þ
- * @param function_name ´ýÅÐ¶ÏµÄ±äÁ¿
+ * ï¿½Ð¶ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½Ã»ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+ * @param function_name ï¿½ï¿½ï¿½Ð¶ÏµÄ±ï¿½ï¿½ï¿½
  * @return true or false
  */
 function isUserEventDefined(function_name){
@@ -89,9 +89,9 @@ function isUserEventDefined(function_name){
 }
 
 /**
- * ´¥·¢ÓÃ»§×Ô¶¨ÒåÊÂ¼þ
- * @param function_name  ÊÂ¼þº¯Êý
- * @param param          ²ÎÊýÊý×é
+ * ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+ * @param function_name  ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param param          ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 function fireUserEvent(function_name, param){
 	var result;
@@ -106,10 +106,10 @@ function fireUserEvent(function_name, param){
 
 /**
  * do something when the active element changed.
- * @param activeElement µ±Ç°»ñµÃ½¹µãµÄ»î¶¯¶ÔÏó
+ * @param activeElement ï¿½ï¿½Ç°ï¿½ï¿½Ã½ï¿½ï¿½ï¿½Ä»î¶¯ï¿½ï¿½ï¿½ï¿½
  */
 function processActiveElementChanged(activeElement){
-	/** ÄÚ²¿º¯Êý */
+	/** ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	function isChildofTable(obj) {
 		var result=null;
 		var tmpObj;
@@ -123,27 +123,27 @@ function processActiveElementChanged(activeElement){
 		return result;
 	}
 	
-	/** ÄÚ²¿º¯Êý£¬ÉèÖÃµ±Ç°activeµÄÊäÈë¿ò£¬Í¬Ê±¶Ô¸Õ¸ÕÊ§È¥½¹µãµÄÊäÈë¿òÖ´ÐÐÇåÀí¹¤×÷ */
+	/** ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½Ç°activeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬Ê±ï¿½Ô¸Õ¸ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ */
 	function set_activeEditor(editor){
-		// Èç¹ûµ±Ç°active editor²»ÊÇÉÏ´ÎµÄ
+		// ï¿½ï¿½ï¿½Ç°active editorï¿½ï¿½ï¿½ï¿½ï¿½Ï´Îµï¿½
 		if (_activeEditor!=editor){
-			// ´¦ÀíÉÏÒ»¸öÔªËØÊ§È¥½¹µãÐèÒªµÄ²Ù×÷
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ôªï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ä²ï¿½ï¿½ï¿½
 			if (_activeEditor){
 				if (needUpdateEditor){					
 					if (_activeEditor.window==window) {
-						// ¸üÐÂÊäÈë¿ò
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						updateEditorInput(_activeEditor);
 					}
 					else {
 						_activeEditor.window.updateEditorInput(_activeEditor);
 					}
 				}
-				// ½¹µãÒÆ¿ªºó£¬Òþ²ØÏÂÀ­¿òµÄ°´Å¦
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä°ï¿½Å¦
 				if (typeof(hideDropDownBtn)!="undefined") hideDropDownBtn();
 				
 				switch (_activeEditor.getAttribute("attrib")){
 					case "editor":{
-						// ÉèÖÃÎªÊ§È¥½¹µãºóµÄ·ç¸ñ
+						// ï¿½ï¿½ï¿½ï¿½ÎªÊ§È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½
 						_activeEditor.className="editor";
 						if(_activeEditor.getAttribute("isTwin") != null){
 							//setElementValue(_activeEditor,_activeEditor.value);
@@ -166,7 +166,7 @@ function processActiveElementChanged(activeElement){
 			if (editor && !editor.readOnly){
 				var field=getElementField(editor);
 				if (editor.getAttribute("attrib")=="editor"){
-					// ÉèÖÃ¼¤»î×´Ì¬µÄÊäÈë¿ò·ç¸ñ
+					// ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					editor.className="active_editor";
 					if (field){
 						editor.dataType=field.dataType;
@@ -181,7 +181,7 @@ function processActiveElementChanged(activeElement){
 				if (getValidStr(editor.getAttribute("dropDown_mode"))=="" &&
 					(editor.getAttribute("dataType")=="yearmonth"))
 					editor.dropDown_mode="yearmonth";
-				// ÉèÖÃÊÇ·ñÖ»¶Á£¨ÏÂÀ­¿òÖ»ÄÜÑ¡Ôñ²»ÄÜÊäÈë£©
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£©
 				editor.contentEditable=(!isTrue(editor.getAttribute("dropDown_fixed")));
 
 				editor.use_keyField=true;
@@ -189,24 +189,24 @@ function processActiveElementChanged(activeElement){
 
 				if (!isTrue(editor.getAttribute("dropDown_fixed")) && !compareText(editor.type, "checkbox")) editor.select();
 				if (typeof(showDropDownBtn)!="undefined"){
-					// ÕâÀïÖ´ÐÐÏÔÊ¾ÏÂÀ­°´Å¥²Ù×÷
+					// ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½
 					showDropDownBtn(editor);
-					// ×Ô¶¯ÏÔÊ¾ÏÂÀ­ÁÐ±í
+					// ï¿½Ô¶ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 					if (isTrue(editor.getAttribute("autoDropDown"))) showDropDownBox(editor);
 				}
 			}
-			// _activeEditorÎªµ±Ç°µÄeditor
+			// _activeEditorÎªï¿½ï¿½Ç°ï¿½ï¿½editor
 			_activeEditor = editor;
 		}
 	}
 	
 	/** 
-	 * ´¦ÀíÇ°Ò»¸öÔªËØÊ§È¥½¹µãµÄ²Ù×÷
+	 * ï¿½ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½Ôªï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
 	 */
 	function processElementBlur(){
-		// activeElement:ÏÂÒ»¸ö»ñµÃ½¹µãµÄÔªËØ
-		// _activeElement:Ê§È¥½¹µãµÄÔªËØ
-		// ±£Ö¤Ö»alert´íÎóÐÅÏ¢Ò»´Î
+		// activeElement:ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+		// _activeElement:Ê§È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+		// ï¿½ï¿½Ö¤Ö»alertï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ò»ï¿½ï¿½
 		var alerted = false;
 		var doblur=(activeElement!=_activeEditor );
 		//changed by jdh at 20040209
@@ -235,10 +235,10 @@ function processActiveElementChanged(activeElement){
 				}				
 				set_activeEditor(null);
 			}
-			// added by steve_gu at 2004-05-14 Ôö¼ÓÁË¿ØÖÆ¶Ôµ¥¸öÊäÈë¿òÊ§È¥½¹µãÊ±ÊÇ·ñ½øÐÐÑéÖ¤
+			// added by steve_gu at 2004-05-14 ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½Æ¶Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
 			if (validateConfig.validateOnBlur && validateConfig.validateOnBlur == true) {		
 			// added by steve_gu at 2003-12-31
-			// ·Ç¿ÕÑéÖ¤
+			// ï¿½Ç¿ï¿½ï¿½ï¿½Ö¤
 				if(doblur){
 					if (_activeElement.getAttribute("noempty") != null && _activeElement.value.length==0) {
 						//if (_activeElement.getAttribute("noempty") == "true") {
@@ -249,10 +249,10 @@ function processActiveElementChanged(activeElement){
 					}
 				}
 				// added by steve_gu at 2004-01-06
-				// ÕûÊýÑéÖ¤£¬ËäÈ»ÈôÎªÕûÐÍ£¬ÔÚÊäÈëÊ±ÒÑÆÁ±ÎµôÁË¼üÅÌÊäÈë£¬µ«ÎªÁË·ÀÖ¹Í¨¹ýÕ³ÌùµÄ·½·¨»òÖÐÎÄÊäÈë£¬ÔÚÊ§È¥½¹µãÊ±»¹µÃ½øÒ»²½ÑéÖ¤
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½Îªï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½Ë¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½Îªï¿½Ë·ï¿½Ö¹Í¨ï¿½ï¿½Õ³ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö¤
 				if (_activeElement.getAttribute("datatype") == "int") {
 					var intValue = _activeElement.value;
-					// modified by steve_gu at 2004-05-21,²ÉÓÃÕýÔò±í´ïÊ½ÖÐµÄÄ£Ê½Æ¥Åä,Ìæ»»¡±Ã¿Ò»¶Î×Ö·û´®¶¼ÄÜ½âÎö³ÉÕûÊý¡°·½·¨
+					// modified by steve_gu at 2004-05-21,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ðµï¿½Ä£Ê½Æ¥ï¿½ï¿½,ï¿½æ»»ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					var pattern = /[^0-9]/;
 					if (pattern.exec(intValue) != null) {
 						if (alerted == false) {
@@ -265,10 +265,10 @@ function processActiveElementChanged(activeElement){
 					// end modify
 				}	
 				
-				// ¸¡µãÐÍÑéÖ¤£¬ËäÈ»ÈôÎª¸¡µãÐÍ£¬ÔÚÊäÈëÊ±ÒÑÆÁ±ÎµôÁË¼üÅÌÊäÈë£¬µ«ÎªÁË·ÀÖ¹Í¨¹ýÕ³ÌùµÄ·½·¨»òÖÐÎÄÊäÈë£¬ÔÚÊ§È¥½¹µãÊ±»¹µÃ½øÒ»²½ÑéÖ¤
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½Ë¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½Îªï¿½Ë·ï¿½Ö¹Í¨ï¿½ï¿½Õ³ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö¤
 				if (_activeElement.getAttribute("datatype") == "float") {
 					var floatValue = _activeElement.value;
-					// modified by steve_gu at 2004-05-21,²ÉÓÃÕýÔò±í´ïÊ½ÖÐµÄÄ£Ê½Æ¥Åä,Ìæ»»¡±Ã¿Ò»¶Î×Ö·û´®¶¼ÄÜ½âÎö³ÉÐ¡Êý¡°·½·¨
+					// modified by steve_gu at 2004-05-21,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ðµï¿½Ä£Ê½Æ¥ï¿½ï¿½,ï¿½æ»»ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½
 					var pattern = /[^01234569789.]/;
 					if (pattern.exec(floatValue) != null) {
 						if (alerted == false) {
@@ -294,15 +294,15 @@ function processActiveElementChanged(activeElement){
 				}			
 												
 				// added by steve_gu at 2004-01-02
-				// ÈôÉèÁËformatÊôÐÔ,Ôò¶þ´Î¿ª·¢ÈËÔ±formatµÄÉèÖÃ±ØÐëÎª??.???»ò*.??»ò??.*¸ñÊ½
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½formatï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½Ô±formatï¿½ï¿½ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Îª??.???ï¿½ï¿½*.??ï¿½ï¿½??.*ï¿½ï¿½Ê½
 				if (_activeElement.getAttribute("datatype") =="float" && _activeElement.getAttribute("format")) {				
-					// modified by steve_gu at 2004-04-22 ¹Ì¶¨¸ñÊ½µÄ¸¡µãÐÍÒ²¿ÉÎª¿Õ
+					// modified by steve_gu at 2004-04-22 ï¿½Ì¶ï¿½ï¿½ï¿½Ê½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Îªï¿½ï¿½
 					if (_activeElement.value != "") {
 					
 					var arrInputValue = _activeElement.value.split(".");				
 					var floatFormat = _activeElement.getAttribute("format");
 					var arrFloatFormat = floatFormat.split(".");
-					// ¶àÓÚÒ»¸ö"."						
+					// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½"."						
 					if (arrInputValue.length >= 3) {
 						if (alerted == false) {
 							alert(constErrFloatType);
@@ -311,16 +311,16 @@ function processActiveElementChanged(activeElement){
 						_activeElement.focus();
 						activeElement = _activeElement;					
 					}
-					// Èç¹ûÐ¡ÊýÎ»¹Ì¶¨£¬×Ô¶¯²¹×ã»ò½ØÈ¡
+					// ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡
 					if (arrFloatFormat[1].substring(0,1) == "?") {
-						// Ã»ÓÐÐ¡ÊýÎ»,×Ô¶¯²¹×ã
+						// Ã»ï¿½ï¿½Ð¡ï¿½ï¿½Î»,ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (arrInputValue.length == 1) {
 							_activeElement.value += "." ;
 							for (var i = 0; i <= arrFloatFormat[1].length - 1; i++) {
 								_activeElement.value += "0";
 							}
 						}
-						// ÓÐÐ¡ÊýÎ»£¬µ«¿ÉÄÜ²»È«£¬×Ô¶¯²¹×ã£»»ò¹ý¶à£¬Ôò½ØÈ¡
+						// ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½È«ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ã£»ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½È¡
 						if (arrInputValue.length == 2) {
 							if ( arrInputValue[1].length < arrFloatFormat[1].length) {
 								for (var i = 0; i < arrFloatFormat[1].length - arrInputValue[1].length;i++) {
@@ -333,8 +333,8 @@ function processActiveElementChanged(activeElement){
 							}
 						}
 					}
-					// ²¹×ã»ò½ØÈ¡ÒÔºóÔÙÅÐ¶ÏÕûÊýÎ»ºÍÐ¡ÊýÎ»Îª?»¹ÊÇ*
-					// Èç¹ûÕûÊýÎ»ºÍÐ¡ÊýÎ»¸ñÊ½¾ùÎª???
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ð¡ï¿½ï¿½Î»Îª?ï¿½ï¿½ï¿½ï¿½*
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½ï¿½Ê½ï¿½ï¿½Îª???
 					if (arrFloatFormat[0].substring(0,1) == "?" && arrFloatFormat[1].substring(0,1) == "?") {
 						if (_activeElement.value.split(".")[0].length != arrFloatFormat[0].length || _activeElement.value.split(".")[1].length != arrFloatFormat[1].length) {
 							var temp = constErrFloatFormat.replace("%intCount", arrFloatFormat[0].length);
@@ -350,7 +350,7 @@ function processActiveElementChanged(activeElement){
 					if (arrFloatFormat[0].substring(0,1) == "?" && arrFloatFormat[1].substring(0,1) == "*") {
 						if (_activeElement.value.split(".")[0].length != arrFloatFormat[0].length) {
 							var temp = constErrFloatFormat.replace("%intCount", arrFloatFormat[0].length);
-							temp = temp.replace("%decimalCount", "²»ÏÞ");
+							temp = temp.replace("%decimalCount", "ï¿½ï¿½ï¿½ï¿½");
 							if (alerted == false) {
 								alert(temp);
 								alerted = true;
@@ -359,11 +359,11 @@ function processActiveElementChanged(activeElement){
 							activeElement = _activeElement;
 						}
 					}
-					// ÒòÎª¹Ì¶¨µÄÐ¡ÊýÎ»ÒÑ²¹×ã»ò½ØÈ¡£¬ËùÒÔ²»¿ÉÄÜ³öÏÖ¸ñÊ½Îª£¨²»¹Ì¶¨µÄÕûÊýÎ»£¬¹Ì¶¨µÄÐ¡ÊýÎ»£©¶ø³¤¶È²»Âú×ãµÄÇé¿ö
+					// ï¿½ï¿½Îªï¿½Ì¶ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½Ñ²ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½Ü³ï¿½ï¿½Ö¸ï¿½Ê½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					}				
 				}// end of format			
 				
-				// ×îÐ¡³¤¶ÈÑéÖ¤
+				// ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
 				if (_activeElement.getAttribute("minlength")) {
 					var minLength = _activeElement.getAttribute("minlength");
 					if (_activeElement.value.length < minLength) {
@@ -376,7 +376,7 @@ function processActiveElementChanged(activeElement){
 					}
 				}
 
-				// ×î´ó³¤¶ÈÑéÖ¤
+				// ï¿½ï¿½ó³¤¶ï¿½ï¿½ï¿½Ö¤
 				if (_activeElement.getAttribute("maxlength")) {
 					var maxLength = _activeElement.getAttribute("maxlength");
 					if (_activeElement.value.length > maxLength) {
@@ -390,7 +390,7 @@ function processActiveElementChanged(activeElement){
 				}
 
 				// added by steve_gu at 2004-01-06
-				// ÈÕÆÚÊ±¼äÑéÖ¤
+				// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ö¤
 				if (_activeElement.getAttribute("datatype") == "date" && _activeElement.value != "" && _activeElement.value != null) {
 					if (_activeElement.getAttribute("separator")) {				
 						var tmpValue = _activeElement.value.replace(_activeElement.getAttribute("separator"), "/");
@@ -409,7 +409,7 @@ function processActiveElementChanged(activeElement){
 						_activeElement.focus();
 						activeElement = _activeElement;					
 					}
-					// added by steve_gu at 2004-01-30£¬ÒòÎªjsÖÐÅÐ¶ÏÒ»¸ö×Ö·û´®ÊÇ·ñÎªÓÐÐ§ÈÕÆÚÐÍºÜ¿íËÉ£¬ËùÒÔÒªÏÞÖÆÈÕÆÚÊäÈëµÄ³¤¶È
+					// added by steve_gu at 2004-01-30ï¿½ï¿½ï¿½ï¿½Îªjsï¿½ï¿½ï¿½Ð¶ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ÍºÜ¿ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
 					if (tmpValue.length != 0 && tmpValue.length > 10) {
 						if (alerted == false) {
 							alert(constErrTypeDate.replace("%s", _activeElement.value));
@@ -488,13 +488,13 @@ function processActiveElementChanged(activeElement){
 		
 	}
 	
-	// ×îÍâ²ãº¯ÊýµÄÕæÕýÖ´ÐÐ´¦
+	// ï¿½ï¿½ï¿½ï¿½ãº¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð´ï¿½
 	if (window.closed) return;
-	// Èç¹û½¹µãÃ»ÓÐ¸Ä±ä£¬²»Ö´ÐÐÈÎºÎ²Ù×÷
+	// ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð¸Ä±ä£¬ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ÎºÎ²ï¿½ï¿½ï¿½
 	if (activeElement==_activeElement) return;
 
 	if (activeElement){
-		// ´¦ÀíÔªËØÊ§È¥½¹µãµÄ²Ù×÷
+		// ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
 		processElementBlur();
 
 		switch (activeElement.getAttribute("attrib")){
@@ -514,7 +514,7 @@ function processActiveElementChanged(activeElement){
 				table._activeRow=null;
 				break;
 			}
-			case "editor":; //×¢ÒâÃ»ÓÐbreak
+			case "editor":; //×¢ï¿½ï¿½Ã»ï¿½ï¿½break
 			case "dockeditor":{
 				set_activeEditor(activeElement);
 				break;
@@ -525,23 +525,23 @@ function processActiveElementChanged(activeElement){
 }
 
 /**
- * documentÖÐµÄÊôÐÔ¸Ä±ä´¥·¢µÄÊÂ¼þ£¬ÕâÀïÖ÷ÒªÊÇÍ³Ò»´¦ÀíÒ³ÃæÔªËØ½¹µã×ªÒÆµÄ²Ù×÷
+ * documentï¿½Ðµï¿½ï¿½ï¿½ï¿½Ô¸Ä±ä´¥ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Í³Ò»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ôªï¿½Ø½ï¿½ï¿½ï¿½×ªï¿½ÆµÄ²ï¿½ï¿½ï¿½
  */
 function _document_onpropertychange() {
 	if (event.propertyName=="activeElement") {
-		// documentµÄÄÚÖÃÊôÐÔµÄ¸Ä±ä£¬±íÊ¾½¹µã×ªÒÆ,¸ÃÊôÐÔreadonly,²¢²»ÄÜÓÉ´úÂëÏÔÊ½µØ¸Ä±ä£¬
+		// documentï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔµÄ¸Ä±ä£¬ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½readonly,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ø¸Ä±ä£¬
 		processActiveElementChanged(document.activeElement);
 	}
 }
 
 /**
- * Ò³Ãæ°´¼üÊÂ¼þ
+ * Ò³ï¿½æ°´ï¿½ï¿½ï¿½Â¼ï¿½
  */
 function _document_onkeydown(){
 	switch (event.keyCode){
 		case 123:{
 			if (event.altKey && event.ctrlKey && event.shiftKey){
-				eval(window.prompt("µ÷ÊÔ", ""));
+				eval(window.prompt("ï¿½ï¿½ï¿½ï¿½", ""));
 			}
 			break;
 		}
@@ -572,7 +572,7 @@ function _document_oncontextmenu(){
 */
 
 /**
- * µÃµ½Ç°Ò»¸ötabÒ³
+ * ï¿½Ãµï¿½Ç°Ò»ï¿½ï¿½tabÒ³
  * param obj
  */
 function getPriorTabElement(obj){
@@ -604,7 +604,7 @@ function getPriorTabElement(obj){
 }
 
 /**
- * µÃµ½ºóÒ»¸ötabÒ³
+ * ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½tabÒ³
  * param obj
  */
 function getNextTabElement(obj){
@@ -636,7 +636,7 @@ function getNextTabElement(obj){
 }
 
 /**
- * ¿ØÖÆ°´¼üÊÂ¼þ
+ * ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
  */
 function _control_onkeydown() {
 	//alert("keydown");
@@ -935,7 +935,7 @@ function _control_onkeydown() {
 }
 
 /**
- * µÃµ½¾ø¶ÔÎ»ÖÃ
+ * ï¿½Ãµï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
  * param obj 
  * param offsetObj
  */
@@ -955,9 +955,9 @@ function getAbsPosition(obj, offsetObj){
 }
 
 /**
- * ÅÐ¶ÏÒ»¸ö¶ÔÏóÊÇ·ñÊÇÁíÍâÒ»¸ö¶ÔÏóº¢×Ó£¬²»¹ÜÊÇÖ±½Óº¢×Ó£¬»¹ÊÇÈÎÒâºó´ú
- * @param obj ´ýÅÐ¶ÏµÄ¶ÔÏó
- * @param parentObj ¸¸¶ÔÏó
+ * ï¿½Ð¶ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Óºï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param obj ï¿½ï¿½ï¿½Ð¶ÏµÄ¶ï¿½ï¿½ï¿½
+ * @param parentObj ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * @param true or false
  */
 function isChild(obj, parentObj) {
@@ -976,8 +976,8 @@ function isChild(obj, parentObj) {
 }
 
 /**
- * Ê¹Ò³ÃæÖÐµÄËùÓÐÔªËØÊ§Ð§£¬²ÉÓÃ¼Ó¸öz-indexÊôÐÔºÜ´óµÄdiv¸²¸ÇÆäËûÔªËØ£¬È»ºóÀûÓÃÂË¾µ»ÒÉ«Í¸Ã÷ÏÔÊ¾ÏÂÃæµÄÔªËØ
- * µ«<select>ÔªËØ¸Ç²»×¡£¬Áí£¬window²ÎÊýÃ»ÓÐÓÃµ½
+ * Ê¹Ò³ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Ê§Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼Ó¸ï¿½z-indexï¿½ï¿½ï¿½ÔºÜ´ï¿½ï¿½divï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½Ø£ï¿½È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½É«Í¸ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+ * ï¿½ï¿½<select>Ôªï¿½Ø¸Ç²ï¿½×¡ï¿½ï¿½ï¿½?windowï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ãµï¿½
  */
 function disableDocument(window){
 	if (typeof(_over_label)=="undefined"){
@@ -991,7 +991,7 @@ function disableDocument(window){
 }
 
 /**
- * Ê¹Ò³ÃæÔªËØÓÐÐ§£¬ÊÇdisableDocument(window)µÄÄæ²Ù×÷
+ * Ê¹Ò³ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½disableDocument(window)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 function enableDocument(window){
 	if(_over_label) _over_label.style.visibility="hidden";
@@ -999,15 +999,15 @@ function enableDocument(window){
 }
 
 /** 
- * ÅÐ¶ÏÒ³ÃæÊÇ·ñÓÐÐ§
+ * ï¿½Ð¶ï¿½Ò³ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð§
  */
 function isDocumentEnable(){
 	return (!isTrue(document.body._documentDisabled));
 }
 
 /**
- * ÀûÓÃÔªËØÖÐµÄdatasetÊôÐÔ£¬³õÊ¼»¯ÔªËØµÄdataset
- * @param element Òª³õÊ¼»¯µÄÔªËØ
+ * ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ðµï¿½datasetï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ôªï¿½Øµï¿½dataset
+ * @param element Òªï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
  */
 function initElementDataset(element){
 	var dataset=element.getAttribute("dataset");
@@ -1016,7 +1016,7 @@ function initElementDataset(element){
 
 /**
  * init one element
- * @param element Òª³õÊ¼»¯µÄÒ³ÃæÔªËØ
+ * @param element Òªï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ôªï¿½ï¿½
  */
 function initElement(element){
 //	alert(element.value);
@@ -1068,13 +1068,13 @@ function initElement(element){
 			case "editor":{
 				if(compareText(element.getAttribute("dropDown_mode"), "sql")){
 				}
-				/** commented by steve_gu at 2004-05-24 ÏÖÔÚÒÑ²»ÐèÒª
+				/** commented by steve_gu at 2004-05-24 ï¿½ï¿½ï¿½ï¿½ï¿½Ñ²ï¿½ï¿½ï¿½Òª
 				// changed by jdh  at 20040202 for init icon
 				if(element.dropdown_mode){
-					// ÅÐ¶Ï¶ÔÓÚÏÂÀ­¿òÊÇ·ñ³õÊ¼ÏÔÊ¾ÏÂÀ­Í¼Æ¬
+					// ï¿½Ð¶Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ê¼ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
 					if(_show_drop_down_btn=="true"){
 						if (typeof(showDropDownBtn)!="undefined"){
-							// ÕâÀïÖ´ÐÐÏÔÊ¾ÏÂÀ­°´Å¥²Ù×÷
+							// ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½
 							_showDropDownBtn(element);							
 						}	
 					}
@@ -1084,12 +1084,12 @@ function initElement(element){
 				
 				//-----------------------
 				// changed by jdh from ztp at 20040202
-				// ´¦Àí¾²Ì¬ÏÂÀ­¿ò£¬°ó¶¨Ò»¸öÒþ²ØÓò£¬²¢Ê¹ÓÃ¿ËÂ¡¼¼Êõ¿ËÂ¡ÊôÐÔ¡£
+				// ï¿½ï¿½ï¿½?Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ò£¬°ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò£¬²ï¿½Ê¹ï¿½Ã¿ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½Ô¡ï¿½
 				if (element.getAttribute("isTwin") == null && element.getAttribute("binded") == null && (element.getAttribute("dropdown_mode")!=null) ){
 					//added by jdh at 20040212
 					//hide dropdownbtn
 					/*
-					// Òþ²ØÒÑ¾­×Ô¶¯ÏÔÊ¾µÄÏÂÀ­°´Å¥£¬×Ô¶¯ÏÔÊ¾¹¦ÄÜÔÚºóÐø°æ±¾ÖÐÒÑ¾­²»ÍÆ¼öÊ¹ÓÃ£¬¹ÊÕâ¸ö²Ù×÷»ù±¾Ã»ÓÃ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½æ±¾ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½Ê¹ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½
 					if(_show_drop_down_btn=="true"){
 						if(element.bind_btn){
 							//hideDropDownBtn(element);
@@ -1098,19 +1098,19 @@ function initElement(element){
 					}
 					*/
 					var twin_element = document.createElement("<input>");
-					// ¿ËÂ¡
+					// ï¿½ï¿½Â¡
 					twin_element = element.cloneNode(true);
-					// ÂÏÉúÐÖµÜ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½
 					twin_element.isTwin = true;	
 					with (twin_element){	
-						//°ó¶¨Á½¸öÔªËØ
+						//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 						setAttribute("twins", element);
-						// Æä¿ËÂ¡Õß£¬Ïàµ±ÓÚËüµÄ¸¸Ç×, added by steve_gu at 2004-05-13£¬Ô¤ÁôÊôÐÔ
+						// ï¿½ï¿½ï¿½Â¡ï¿½ß£ï¿½ï¿½àµ±ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½, added by steve_gu at 2004-05-13ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						setAttribute("cloner", element);
-						// added for readonly£¬if user
+						// added for readonlyï¿½ï¿½if user
 						// set attribute readOnly,mute all key event,
 						// but ,cannot mute "Ctrl+v" and Chinese input
-						// ²»ÐèÒªÕâ¸öÊôÐÔÁË£¬ÒªÏëÖ»¶Á£¬ÓÃdropDown_fixedÊôÐÔÌæ´ú¼´¿É
+						// ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½Òªï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½dropDown_fixedï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if(element.readOnly){
 							removeAttribute("readOnly");
 							setAttribute("read",true);
@@ -1120,8 +1120,8 @@ function initElement(element){
 						//style.posLeft = 100;
 						//style.posTop = pos[1] + 1 ;
 
-						// ÒÔÇ°µÄ°æ±¾ modified by steve_gu at 2004-05-24 
-						// ¸ù¾ÝÅäÖÃÎÄ¼þ¾ö¶¨ÊÇÓÃÐÂ°æ±¾»¹ÊÇÀÏ°æ±¾
+						// ï¿½ï¿½Ç°ï¿½Ä°æ±¾ modified by steve_gu at 2004-05-24 
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°æ±¾ï¿½ï¿½ï¿½ï¿½ï¿½Ï°æ±¾
 						if (typeof(cescomGlobalConfig) == "undefined" || typeof (cescomGlobalConfig.needCompatibility) == "undefined" || cescomGlobalConfig.needCompatibility == true) {
 							id = element.id + "_ces";	
 						}
@@ -1129,30 +1129,30 @@ function initElement(element){
 							id = element.id + "_displayValue";
 						}
 						if(element.name) {
-							removeAttribute("name");// ·ÀÖ¹Ìá½»Ê±³åÍ»
+							removeAttribute("name");// ï¿½ï¿½Ö¹ï¿½á½»Ê±ï¿½ï¿½Í»
 							setAttribute("name", element.name + "_displayValue");
 						}
 						// end modify
-						// added by steve_gu at 2004-05-19 ´¦ÀíÄ¬ÈÏÖµ						
+						// added by steve_gu at 2004-05-19 ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Öµ						
 						if (element.dropdown_defaultValue) {							
 							var defaultValue = element.dropdown_defaultValue;
 							var arrayDefaultValue = defaultValue.split("=");
 							if (arrayDefaultValue && arrayDefaultValue.length == 2) {		
-								element.setAttribute("displayValue", arrayDefaultValue[0]);// ÏÔÊ¾Öµ
-								element.setAttribute("value", arrayDefaultValue[1]);// ÄÚ²¿Öµ
+								element.setAttribute("displayValue", arrayDefaultValue[0]);// ï¿½ï¿½Ê¾Öµ
+								element.setAttribute("value", arrayDefaultValue[1]);// ï¿½Ú²ï¿½Öµ
 								setAttribute("value", arrayDefaultValue[0]);
 							}
 						}
 						else {
-							element.setAttribute("displayValue", "");// ÏÔÊ¾Öµ
-							element.setAttribute("value", "");// ÄÚ²¿Öµ
+							element.setAttribute("displayValue", "");// ï¿½ï¿½Ê¾Öµ
+							element.setAttribute("value", "");// ï¿½Ú²ï¿½Öµ
 						}
 						// end add
 					}
-					// Ò³ÃæÉÏÔ­ÓÐµÄÔªËØÓÃbindedÊôÐÔ´ú±íËü¿ËÂ¡µÄÔªËØ
-					// ±»¿ËÂ¡µÄÔªËØÓÃtwinsÊôÐÔ´ú±íÒ³ÃæÉÏÔ­ÓÐµÄÔªËØ
+					// Ò³ï¿½ï¿½ï¿½ï¿½Ô­ï¿½Ðµï¿½Ôªï¿½ï¿½ï¿½ï¿½bindedï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½Ôªï¿½ï¿½
+					// ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½twinsï¿½ï¿½ï¿½Ô´ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ô­ï¿½Ðµï¿½Ôªï¿½ï¿½
 					element.setAttribute("binded", twin_element);
-					// ±»¿ËÂ¡Õß£¬Ïàµ±ÓÚËüµÄ¶ù×Ó, added by steve_gu at 2004-05-13£¬Ô¤ÁôÊôÐÔ,ÕâÑùµÄÊôÐÔ¸üÈÝÒ×Àí½â
+					// ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ß£ï¿½ï¿½àµ±ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½, added by steve_gu at 2004-05-13ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					element.setAttribute("clonee", twin_element);
 					if(compareText(element.getAttribute("dropDown_mode"), "list")){						
 						setElementValue(twin_element, element.value);
@@ -1160,11 +1160,11 @@ function initElement(element){
 						//twin_element.value="";
 						setSqlElementValue(twin_element,element.value);
 					}
-					// Òþ²ØÒ³ÃæÔ­ÓÐµÄÔªËØ
-					// modified by steve_gu at 2004-06-01£¬½«visibility¸ÄÎªdisplay£¬·ÀÖ¹»ñµÃ½¹µã
+					// ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ô­ï¿½Ðµï¿½Ôªï¿½ï¿½
+					// modified by steve_gu at 2004-06-01ï¿½ï¿½ï¿½ï¿½visibilityï¿½ï¿½Îªdisplayï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Ã½ï¿½ï¿½ï¿½
 					element.style.display = "none";
-					// µ÷ÕûÎ»ÖÃ
-					element.style.width=0;// ´Ë´¦¿É½«Ô­ÓÐµÄÔªËØ»¹Ô­³öÀ´
+					// ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+					element.style.width=0;// ï¿½Ë´ï¿½ï¿½É½ï¿½Ô­ï¿½Ðµï¿½Ôªï¿½Ø»ï¿½Ô­ï¿½ï¿½ï¿½ï¿½
 					element.insertAdjacentElement("afterEnd",twin_element);
 				}
 				//-----------------------
@@ -1173,11 +1173,11 @@ function initElement(element){
 				if (element.getAttribute("datatype") == "date" || element.getAttribute("datatype") == "datetime") {
 				}
 				if (element.getAttribute("noempty") != null) {
-					// ÔÚ·Ç¿Õ×Ö¶ÎºóÃæ¼ÓÒ»ºìÉ«*ºÅ
+					// ï¿½Ú·Ç¿ï¿½ï¿½Ö¶Îºï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½É«*ï¿½ï¿½
 					if(element.binded){
 					}else{
 						if(element.getAttribute("bind_btn")==null){
-							// µÚÒ»´Î³õÊ¼»¯Ò³ÃæÊ±
+							// ï¿½ï¿½Ò»ï¿½Î³ï¿½Ê¼ï¿½ï¿½Ò³ï¿½ï¿½Ê±
 							//if (!_document_loaded) element.insertAdjacentHTML("afterEnd","<font color=red>&nbsp;&nbsp;*</font>"); 
 							if (element.nextSibling && element.nextSibling.tagName == "FONT") {
 							}
@@ -1193,18 +1193,18 @@ function initElement(element){
 				// end add
 				// added by steve_gu at 2004-03-25
 				if (element.getAttribute("datatype") == "int" || element.getAttribute("datatype") == "float" || element.getAttribute("datatype") == "date" || element.getAttribute("datatype") == "datetime" || element.getAttribute("datatype") == "yearmonth") {
-					// ÆÁ±ÎÊäÈë·¨					
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë·¨					
 					element.style.imeMode = "disabled";
 				}
 				// end add
 				//alert("id = " + element.id + " | element.dropdown_items = " + element.dropdown_items);
-				// ×¢ÒâÕâÀïÃ»ÓÐ¼Óbreak
+				// ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð¼ï¿½break
 			}
 			case "dockeditor":{				
 				if (!element.className) element.className=_attrib;
 				if (getValidStr(element.getAttribute("dropdown_cached"))=="" && getIEVersion()>"5.0")
 					element.dropdown_cached=true;
-				// Èç¹ûÓÐdatasetÊôÐÔµÄ»°£¬³õÊ¼»¯Dataset
+				// ï¿½ï¿½ï¿½ï¿½ï¿½datasetï¿½ï¿½ï¿½ÔµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Dataset
 				initElementDataset(element);
 				with (element){
 					if (tagName.toLowerCase()=="input" && compareText(type, "checkbox")){
@@ -1212,7 +1212,7 @@ function initElement(element){
 						onclick=_checkbox_onclick;
 					}
 					language="javascript";
-					// ×¢²áÊÂ¼þ
+					// ×¢ï¿½ï¿½ï¿½Â¼ï¿½
 					onkeydown=_control_onkeydown;
 					onkeypress=_editor_onkeypress;
 					onpropertychange=_editor_onpropertychange;
@@ -1279,9 +1279,9 @@ function initElement(element){
 				break;
 			}
 		}
-		// ¸¸window
+		// ï¿½ï¿½window
 		element.window=window;
-		// Ã»ÓÐ¶¨Òådocument_onInitElementÕâ¸öº¯Êý£¬Ô¤Áô
+		// Ã»ï¿½Ð¶ï¿½ï¿½ï¿½document_onInitElementï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½
 		fireUserEvent("document_onInitElement", [element, _attrib]);
 	}	
 	return initChildren;
@@ -1292,11 +1292,11 @@ function initElement(element){
  */ 
 function initElements(element){
 	if (compareText(element.getAttribute("attrib"), "tabpage")){
-		// ¼ÓÈëµ½_tabpage_listÊý×éÖÐ
+		// ï¿½ï¿½ï¿½ëµ½_tabpage_listï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		_tabpage_list[_tabpage_list.length]=element;
 	}
 	else{
-		if (!initElement(element)) return;// Ã»ÓÐ×Ó½Úµã£¬²»ÓÃµÝ¹é
+		if (!initElement(element)) return;// Ã»ï¿½ï¿½ï¿½Ó½Úµã£¬ï¿½ï¿½ï¿½ÃµÝ¹ï¿½
 	}
 	// recursive
 	for (var i=0; i<element.children.length; i++){
@@ -1305,7 +1305,7 @@ function initElements(element){
 }
 
 /**
- * ³õÊ¼»¯ÔªËØµÄÄæ²Ù×÷£¬Ö÷ÒªÊÇ½«ÓÐdatasetÊôÐÔ°î¶¨µÄdatasetÖÃ¿Õ
+ * ï¿½ï¿½Ê¼ï¿½ï¿½Ôªï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ç½ï¿½ï¿½ï¿½datasetï¿½ï¿½ï¿½Ô°î¶¨ï¿½ï¿½datasetï¿½Ã¿ï¿½
  * @param element 
  */
 function uninitElement(element){
@@ -1342,14 +1342,14 @@ function uninitElements(element){
 }
 
 /**
- * window onunloadÊ±Ö´ÐÐuninitElements()²Ù×÷
+ * window onunloadÊ±Ö´ï¿½ï¿½uninitElements()ï¿½ï¿½ï¿½ï¿½
  */
 function _window_onunload() {
 	uninitElements();
 }
 
 /**
- * ³õÊ¼»¯ËùÓÐtabpase
+ * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tabpase
  */
 function initTabPages(){
 	for (var i=0; i<_tabpage_list.length; i++){
@@ -1358,20 +1358,20 @@ function initTabPages(){
 }
 
 /**
- * ³õÊ¼»¯Õû¸öÒ³Ãæ
+ * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
  */
 function initDocument() {
-	if (getIEVersion()<"5.0") alert(constErrUnsupportBrowser);
+//	if (getIEVersion()<"5.0") alert(constErrUnsupportBrowser);
 	_document_loading=true;
 	try{
-		// ¸Ä±ä×÷ÓÃÓòÁ´
+		// ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		with (document){			
 			for(var i=0; i<_array_dataset.length; i++){
 				initDataset(_array_dataset[i]);
 			}
 			if (typeof(_setElementsProperties)!="undefined") _setElementsProperties();
 	
-			// ³õÊ¼»¯Ò³ÃæÉÏµÄËùÓÐÔªËØ
+			// ï¿½ï¿½Ê¼ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 			initElements(body);
 
 			for(var i=0; i<_array_dataset.length; i++){
@@ -1385,28 +1385,28 @@ function initDocument() {
 			setTimeout("initTabPages()", 0);
 
 			language = "javascript";
-			// ×¢²áÒ³ÃæÉÏËùÓÐÔªËØÊôÐÔ¸Ä±äµÄÊÂ¼þ
+			// ×¢ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½Ô¸Ä±ï¿½ï¿½ï¿½Â¼ï¿½
 			onpropertychange = _document_onpropertychange;
-			// ×¢²áÒ³ÃæÉÏÔÚËùÓÐÔªËØÉÏ°´¼üÊÂ¼þ
+			// ×¢ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 			onkeydown = _document_onkeydown;
 			//oncontextmenu = _document_oncontextmenu;
 		}
-		// Èç¹ûÃ»ÓÐÔÚ<body>ÔªËØÀïÏÔÊ½µØÉèÖÃ£¬Ôò×¢²áÄ¬ÈÏonunloadÊÂ¼þ
+		// ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½<body>Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½×¢ï¿½ï¿½Ä¬ï¿½ï¿½onunloadï¿½Â¼ï¿½
 		if (!window.onunload) window.onunload=_window_onunload;
 
 		if (typeof(sizeDockEditor)!="undefined")  {
 			setInterval("adjustControlsSize();", 300);
 		}
-		// µÚÒ»´Îdocument.activeElement.tagNameÎªbody;
+		// ï¿½ï¿½Ò»ï¿½ï¿½document.activeElement.tagNameÎªbody;
 		processActiveElementChanged(document.activeElement);
 	}
 	finally{
 		_document_loading=false;
 		_document_loaded = true;	
-		// added by steve_gu at 2004-05-25 ´¦ÀícustomÏÂÀ­¿ò, ÔÚÏÂÀ­³ö¸ÃjspÒ³Ãæ×°ÔØºó
-		// ±ØÐëÒªÖ´ÐÐinitDropDownBox·½·¨£¬µ«ÒòÎªcustomÏÂÀ­¿òÊÇÁíÍâÒ»¸öÒ³Ãæ£¬±ØÐëÏÔÊ½
-		// µØÖ´ÐÐ£¬ÓÐÈßÓà£¬µ«²»²»ÖªµÀÔÚÓÃ<iframe src="xxx.jsp"></iframe>Ê±ºò£¬ÈçºÎ
-		// ÔÚxxx.jspÖÐµÃµ½¸¸´°ÌåÒýÓÃ¸ÃjspÒ³ÃæµÄiframe¶ÔÏó¡£
+		// added by steve_gu at 2004-05-25 ï¿½ï¿½ï¿½ï¿½customï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jspÒ³ï¿½ï¿½×°ï¿½Øºï¿½
+		// ï¿½ï¿½ï¿½ï¿½ÒªÖ´ï¿½ï¿½initDropDownBoxï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªcustomï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ò³ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
+		// ï¿½ï¿½Ö´ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<iframe src="xxx.jsp"></iframe>Ê±ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½xxx.jspï¿½ÐµÃµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½jspÒ³ï¿½ï¿½ï¿½iframeï¿½ï¿½ï¿½ï¿½
 		/*
 		if(compareText(element.getAttribute("dropDown_mode"), "custom")){			
 			initDropDownBox("custom");
@@ -1421,7 +1421,7 @@ var _ad_box = null;
 var _ad_interval = 50;
 var _ad_count = _ad_interval;
 
-// ²»Öª¸Ãº¯ÊýÓÐÊ²Ã´ÓÃ
+// ï¿½ï¿½Öªï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½Ê²Ã´ï¿½ï¿½
 
 function adjustControlsSize(){
 	function showAD(){
@@ -1449,9 +1449,9 @@ function adjustControlsSize(){
 }
 
 /**
- * µÃµ½ÔªËØµÄ¼ÇÂ¼¼¯
- * param element ÔªËØ
- * return ¼ÇÂ¼¼¯
+ * ï¿½Ãµï¿½Ôªï¿½ØµÄ¼ï¿½Â¼ï¿½ï¿½
+ * param element Ôªï¿½ï¿½
+ * return ï¿½ï¿½Â¼ï¿½ï¿½
  */
 function getElementDataset(element){
 	switch (element.getAttribute("attrib")){
@@ -1484,7 +1484,7 @@ function getElementDataset(element){
 }
 
 /**
- * µÃµ½editorÖÐ¶ÔÓ¦µÄdatasetÖÐµÄdataField
+ * ï¿½Ãµï¿½editorï¿½Ð¶ï¿½Ó¦ï¿½ï¿½datasetï¿½Ðµï¿½dataField
  */
 function getElementField(element){
 	var dataset = getElementDataset(element);
@@ -1539,13 +1539,13 @@ function getElementValue(element){
 
 // added by jdh at 20040216 for sql
 /**
- * @param value ÄÚ²¿Öµ
+ * @param value ï¿½Ú²ï¿½Öµ
  */
 function setSqlElementValue(element,value){
 	if (compareText(element.getAttribute("dropDown_mode"), "sql")){
-		// ´¦Àí¾²Ì¬ÏÂÀ­¿ò£¬µ±ÓÃ»§Ñ¡ÔñµÄÖµÃ»ÓÐ±ä»¯Ê±£¬²»Ö´ÐÐ¸³Öµ²Ù×÷£¬
-		// ´Ó¶øÒ²¾Í²»»á´¥·¢propertychangeÊÂ¼þ£¬ÕâÊÇÎªÁË½â¾öonchangde
-		// µÄÎÊÌâ¡£
+		// ï¿½ï¿½ï¿½?Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ò£¬µï¿½ï¿½Ã»ï¿½Ñ¡ï¿½ï¿½ï¿½ÖµÃ»ï¿½Ð±ä»¯Ê±ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð¸ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½Ó¶ï¿½Ò²ï¿½Í²ï¿½ï¿½á´¥ï¿½ï¿½propertychangeï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ë½ï¿½ï¿½onchangde
+		// ï¿½ï¿½ï¿½ï¿½ï¿½â¡£
 		if(element.getAttribute("isTwin") != null){		
 			var cloner = element.cloner; // modified by steve_gu at 2004-05-18
 			if (cloner) {
@@ -1562,15 +1562,15 @@ function setSqlElementValue(element,value){
 //end added
 
 /**
- * @param value ÄÚ²¿Öµ
+ * @param value ï¿½Ú²ï¿½Öµ
  */
 function setElementValue(element, value){
-	// ÄÚ²¿º¯Êý£¬µÃµ½ÏÔÊ¾µÄÖµ
+	// ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Öµ
 	function getEditorValue(element, value){
-		// ¾ßÓÐÄÚ²¿ÖµµÄ¾²Ì¬ÏÂÀ­¿ò
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½Öµï¿½Ä¾ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (compareText(element.getAttribute("dropDown_mode"), "list")
 			&& isTrue(element.getAttribute("dropDown_mapValue")) ){
-			// ÕâÀïµÄvalue¸üÈ·ÇÐµÄËµÊÇkeyValue
+			// ï¿½ï¿½ï¿½ï¿½ï¿½valueï¿½ï¿½È·ï¿½Ðµï¿½Ëµï¿½ï¿½keyValue
 			element.keyValue=value;
 			//alert("value = " + value);
 			var result = (value==null)?"":value;
@@ -1582,16 +1582,16 @@ function setElementValue(element, value){
 			}
 			//-----------------------
 			// changed by jdh from ztp at 20040202
-			// ´¦Àí¾²Ì¬ÏÂÀ­¿ò£¬µ±ÓÃ»§Ñ¡ÔñµÄÖµÃ»ÓÐ±ä»¯Ê±£¬²»Ö´ÐÐ¸³Öµ²Ù×÷£¬
-			// ´Ó¶øÒ²¾Í²»»á´¥·¢propertychangeÊÂ¼þ£¬ÕâÊÇÎªÁË½â¾öonchange
-			// µÄÎÊÌâ¡£
+			// ï¿½ï¿½ï¿½?Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ò£¬µï¿½ï¿½Ã»ï¿½Ñ¡ï¿½ï¿½ï¿½ÖµÃ»ï¿½Ð±ä»¯Ê±ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð¸ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			// ï¿½Ó¶ï¿½Ò²ï¿½Í²ï¿½ï¿½á´¥ï¿½ï¿½propertychangeï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ë½ï¿½ï¿½onchange
+			// ï¿½ï¿½ï¿½ï¿½ï¿½â¡£
 			if(element.getAttribute("isTwin") != null){
 				var cloner = element.cloner;
 				//alert(value);
 				if (cloner){
-					// added by steve_gu at 2004-06-17£¬
-					// ½â¾ö×Ô¶¨ÒåµÄid¼Ó_onChangeµÄÊÂ¼þÖÐÖ»ÄÜµÃµ½Ñ¡ÖÐºóµÄÄÚ²¿Öµ
-					// ¶ø×ÖÃæÖµ»¹ÊÇÒÔÇ°µÄÖµÎÊÌâ
+					// added by steve_gu at 2004-06-17ï¿½ï¿½
+					// ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½_onChangeï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ö»ï¿½ÜµÃµï¿½Ñ¡ï¿½Ðºï¿½ï¿½ï¿½Ú²ï¿½Öµ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
 					if (cloner.clonee && cloner.clonee.value) {
 						cloner.clonee.value = result;
 						cloner.displayValue = result;
@@ -1605,7 +1605,7 @@ function setElementValue(element, value){
 			// end changed by jdh 
 			return result;
 		}else if (compareText(element.getAttribute("datatype"), "date")){
-			return getValidStr(value);// added by steve_gu at 2004-03-07 ºÜÆæ¹ÖµÄÏÖÏó
+			return getValidStr(value);// added by steve_gu at 2004-03-07 ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
 		}
 		else return getValidStr(value);
 	}
@@ -1740,8 +1740,8 @@ function setElementValue(element, value){
 }
 
 /**
- * ¸üÐÂÔªËØµÄÖµ
- * @param element ´ý¸üÐÂµÄÔªËØ
+ * ï¿½ï¿½ï¿½ï¿½Ôªï¿½Øµï¿½Öµ
+ * @param element ï¿½ï¿½ï¿½ï¿½Âµï¿½Ôªï¿½ï¿½
  */
 function refreshElementValue(element){
 	var dataset;
@@ -1848,7 +1848,7 @@ function refreshElementValue(element){
 }
 
 /**
- * ÉèÖÃbuttonµÄÏÔÊ¾
+ * ï¿½ï¿½ï¿½ï¿½buttonï¿½ï¿½ï¿½ï¿½Ê¾
  */
 function refreshButtonColor(button){
 	if (isTrue(button.getAttribute("down"))){
@@ -1860,7 +1860,7 @@ function refreshButtonColor(button){
 }
 
 /**
- * ÉèÖÃbutton
+ * ï¿½ï¿½ï¿½ï¿½button
  */
 function setButtonDown(button, down){
 	button.down=isTrue(down);
@@ -1868,7 +1868,7 @@ function setButtonDown(button, down){
 }
 
 /**
- * buttonµÄonmousedownÊÂ¼þ£¬ÓÃÓÚÏÂÀ­²Ëµ¥£¬Õâ¸ö¹¦ÄÜÎÒÃÇ²»ÓÃ
+ * buttonï¿½ï¿½onmousedownï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½
  */
 function _button_onmousedown(){
 	var button=event.srcElement;
@@ -1885,7 +1885,7 @@ function _button_onmousedown(){
 }
 
 /**
- * buttonµÄonmouseoverÊÂ¼þ
+ * buttonï¿½ï¿½onmouseoverï¿½Â¼ï¿½
  */
 function _button_onmouseover(){
 	try{
@@ -1917,7 +1917,7 @@ function _button_onmouseover(){
 }
 
 /**
- * buttonµÄonmouseoutÊÂ¼þ
+ * buttonï¿½ï¿½onmouseoutï¿½Â¼ï¿½
  */
 function _button_onmouseout(){
 //	return;
@@ -1934,7 +1934,7 @@ function _button_onmouseout(){
 }
 
 /**
- * ¹ö¶¯ÌõÒÆ¶¯ÊÂ¼þ
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Â¼ï¿½
  */
 function _scrollbar_change() {
 	var scrollbar=event.srcElement;
@@ -1947,8 +1947,8 @@ function _scrollbar_change() {
 }
 
 /**
- * µÃµ½dropdownitemsÄÚÈÝ
- * @param editor ±à¼­¿ò
+ * ï¿½Ãµï¿½dropdownitemsï¿½ï¿½ï¿½ï¿½
+ * @param editor ï¿½à¼­ï¿½ï¿½
  */
 function getDropDownItems(editor){
 	var items=editor._dropDown_items;
@@ -1960,21 +1960,21 @@ function getDropDownItems(editor){
 }
 
 /**
- * ÉèÖÃdropdownitemsÄÚÈÝ
- * @param editor ±à¼­¿ò
- * @param items  ´ýÉèÖÃµÄÄÚÈÝ
+ * ï¿½ï¿½ï¿½ï¿½dropdownitemsï¿½ï¿½ï¿½ï¿½
+ * @param editor ï¿½à¼­ï¿½ï¿½
+ * @param items  ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½
  */
 function setDropDownItems(editor, items){
-	// ÖØÐÂÉèÖÃÍâ²¿ÊôÐÔ£¨dropDown_items£¬¶þ´Î¿ª·¢ÖÐÉæ¼°µ½µÄ£©£¬²¢½«ÄÚ²¿ÊôÐÔ£¨_dropDown_items£©
-	// ÖÃ¿Õ£¬ÒÔ±ãÔÚÒÔºóµ÷ÓÃgetDropDownItems(editor)Ê±È¡¸üÐÂ¹ýµÄÖµ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²¿ï¿½ï¿½ï¿½Ô£ï¿½dropDown_itemsï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¼°ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½Ô£ï¿½_dropDown_itemsï¿½ï¿½
+	// ï¿½Ã¿Õ£ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½getDropDownItems(editor)Ê±È¡ï¿½ï¿½ï¿½Â¹ï¿½ï¿½Öµ
 	editor.dropDown_items=items;
 	editor._dropDown_items=null;
 }
 
 /**
- * ÄÚ²¿·½·¨£¬¹©initDropDownItems£¨£©µ÷ÓÃ
- * @param itemsStr ÓÉÍâ²¿ÊôÐÔdropDown_itemsµÃµ½µÄÒ»×Ö·û´®
- * @param mapValue ÊÇ·ñÎª¼üÖµÓ³Éä
+ * ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½initDropDownItemsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param itemsStr ï¿½ï¿½ï¿½â²¿ï¿½ï¿½ï¿½ï¿½dropDown_itemsï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½Ö·ï¿½
+ * @param mapValue ï¿½Ç·ï¿½Îªï¿½ï¿½ÖµÓ³ï¿½ï¿½
  */
 function _initDropDownItems(itemsStr, mapValue) {
 	if (!itemsStr) return null;
@@ -2014,8 +2014,8 @@ function _initDropDownItems(itemsStr, mapValue) {
 }
 
 /**
- * ½«dropDown_itemsÊôÐÔµÄÄÚÈÝ(ÈôÓÐÖµ)¼Óµ½editor._dropDown_itemsÊôÐÔÖÐ
- * @param editor ´ý¼ÓÈëµÄeditorÔªËØ
+ * ï¿½ï¿½dropDown_itemsï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Öµ)ï¿½Óµï¿½editor._dropDown_itemsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param editor ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½editorÔªï¿½ï¿½
  */
 function initDropDownItems(editor){
 	var dropDown_items = editor.getAttribute("dropDown_items");
@@ -2027,7 +2027,7 @@ function initDropDownItems(editor){
 }
 
 /**
- * dropdownboxÊÇ·ñ¿É¼û
+ * dropdownboxï¿½Ç·ï¿½É¼ï¿½
  */
 function isDropdownBoxVisible() {
 	if (typeof(_dropdown_box)!="undefined" && _dropdown_box)
@@ -2037,7 +2037,7 @@ function isDropdownBoxVisible() {
 }
 
 /**
- * µÃµ½×´Ì¬ÐÅÏ¢
+ * ï¿½Ãµï¿½×´Ì¬ï¿½ï¿½Ï¢
  */
 function getStatusLabel(text) {
 	if (typeof(_status_label)=="undefined"){
@@ -2048,10 +2048,10 @@ function getStatusLabel(text) {
 }
 
 /**
- * ÏÔÊ¾×´Ì¬ÐÅÏ¢
+ * ï¿½ï¿½Ê¾×´Ì¬ï¿½ï¿½Ï¢
  * @param parent_window window
- * @param text ×´Ì¬ÐÅÏ¢
- * @param control ×´Ì¬ÐÅÏ¢·ÅÖÃµÄÈÝÆ÷
+ * @param text ×´Ì¬ï¿½ï¿½Ï¢
+ * @param control ×´Ì¬ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½
  */
 function showStatusLabel(parent_window, text, control){
 	parent_window.getStatusLabel(text);
@@ -2069,7 +2069,7 @@ function showStatusLabel(parent_window, text, control){
 }
 
 /**
- * Òþ²Ø×´Ì¬ÐÅÏ¢
+ * ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ï¢
  */
 function hideStatusLabel(parent_window){
 	if (!parent_window.closed && parent_window._status_label){
@@ -2459,7 +2459,7 @@ function _setActiveTab(cell){
 		if (selectCell == cell) return;
 		var oldCode = (selectCell)?selectCell.tab_code:"";
 		var newCode = cell.tab_code;
-		// Ô¤ÁôµÄÒ»¸öÊÂ¼þ
+		// Ô¤ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¼ï¿½
 		var eventName = getElementEventName(tabpage, "beforeTabChange");
 		var event_result = fireUserEvent(eventName, [tabpage, oldCode, newCode]);
 		if (event_result) throw event_result;
@@ -2491,7 +2491,7 @@ function _setActiveTab(cell){
 		tabpage.selectTab = cell;
 		tabpage.selectCode = cell.tab_code;
 		tabpage.selectIndex = cell.tab_index;
-		// Ô¤ÁôµÄÒ»¸öÊÂ¼þ
+		// Ô¤ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¼ï¿½
 		var eventName = getElementEventName(tabpage, "afterTabChange");
 		fireUserEvent(eventName, [tabpage, oldCode, newCode]);
 		// added by steve_gu at 2004-06-07
@@ -2599,27 +2599,27 @@ function _tabpage_onmouseout(){
 }
 
 /**
- * ÔÚformÌá½»Ö®Ç°¶ÔËùÓÐµÄÔªËØ½øÐÐÍ³Ò»ÓÐÐ§ÐÔÐ£Ñé£¬×î³£¼ûµÄÓÃ·¨ÊÇformµÄ
- * onsubmit="return cescom_js_global_validate(this,true);",±íÊ¾¶ÔformµÄËùÓÐÊäÈë¿ò½øÐÐÍ³Ò»Ð£Ñé
- * @param htmlControl Òª¼ìÑéµÄÊäÈë¿òµÄ¸¸ÔªËØÈÝÆ÷£¨html¶ÔÏó£©£¬Èçform£¬bodyµÈ
- * @param displayAllError ÈôÓÐ¶à¸öÐ£ÑéÎ´Í¨¹ýµÄÊäÈë¿ò£¬true±íÊ¾Ò»´ÎÏÔÊ¾ËùÓÐµÄ·Ç·¨ÊäÈëÐÅÏ¢£¬false
- *       ±íÊ¾Öð¸öÏÔÊ¾£¬Öð¸ö¾ÀÕý
- * @return true or false true:ÑéÖ¤Í¨¹ý£¬Ìá½»±íµ¥£»false:ÑéÖ¤Î´Í¨¹ý£¬²»Ìá½»±íµ¥
+ * ï¿½ï¿½formï¿½á½»Ö®Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ôªï¿½Ø½ï¿½ï¿½ï¿½Í³Ò»ï¿½ï¿½Ð§ï¿½ï¿½Ð£ï¿½é£¬ï¿½î³£ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½formï¿½ï¿½
+ * onsubmit="return cescom_js_global_validate(this,true);",ï¿½ï¿½Ê¾ï¿½ï¿½formï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³Ò»Ð£ï¿½ï¿½
+ * @param htmlControl Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½htmlï¿½ï¿½ï¿½ó£©£ï¿½ï¿½ï¿½formï¿½ï¿½bodyï¿½ï¿½
+ * @param displayAllError ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ð£ï¿½ï¿½Î´Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½trueï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ÐµÄ·Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½false
+ *       ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @return true or false true:ï¿½ï¿½Ö¤Í¨ï¿½ï¿½ï¿½á½»ï¿½?ï¿½ï¿½false:ï¿½ï¿½Ö¤Î´Í¨ï¿½ï¿½ï¿½á½»ï¿½?
  */
 function cescom_js_global_validate(htmlControl, displayAllError) {
 	if (!displayAllError) {
 		displayAllError = validateConfig.displayAllErrorMessage;
 	}
-	// Ä¬ÈÏÈÏÎªËùÓÐµÄÌá½»Êý¾ÝÓÐÐ§
+	// Ä¬ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ðµï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
 	var dataValid = true;
-	// ´íÎóÐÅÏ¢
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	var errorMessage = "";
-	// ´íÎóÐòºÅ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	var errorId = 0;
-	// ´æ·ÅpasswordµÄÄÚÈÝ£¬ÎªÁËÑéÖ¤¶à¸öpasswordÄÚÈÝÊÇ·ñÆ¥Åä
+	// ï¿½ï¿½ï¿½passwordï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Îªï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½passwordï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Æ¥ï¿½ï¿½
 	var passTextArray = new Array();
 	var passNO = 0;
-	// µÚÒ»¸ö´íÎóÊäÈë¿ò¶ÔÏó£¬µ±µÚ¶þ¸ö²ÎÊýdisplayAllErrorÎªtrueÊ±£¬×îºóµ¯³öÈ«²¿´íÎóÐÅÏ¢ºó½¹µã×ªÒÆµ½¸Ã¶ÔÏó
+	// ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬µï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½displayAllErrorÎªtrueÊ±ï¿½ï¿½ï¿½ï¿½óµ¯³ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ó½¹µï¿½×ªï¿½Æµï¿½ï¿½Ã¶ï¿½ï¿½ï¿½
 	var firstErrorControl;
 	for (var i = 0; i < htmlControl.all.length; i++) {
 		var eachChild = htmlControl.all[i];		
@@ -2627,23 +2627,23 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 
 			if (eachChild.getAttribute("noempty") != null && eachChild.value.length==0) {				
 				if (!displayAllError) {
-					// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+					// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 					alert(constErrNoEmpty);					
 					eachChild.focus();				
 					return false;	
 				}
-				// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+				// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if (dataValid == true) firstErrorControl = eachChild;
-				// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 				dataValid = false;
-				// ´íÎóÐòºÅµÝÔö
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 				errorId++;
-				// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+				// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 				var label = eachChild.getAttribute("label");
 				if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrNoEmpty + "\n";
 				else errorMessage = errorMessage + errorId + ". " + constErrNoEmpty + "\n";
 			}
-			// added by steve_gu at 2004-05-24 ÃÜÂëÆ¥ÅäÐ£Ñé
+			// added by steve_gu at 2004-05-24 ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ð£ï¿½ï¿½
 			if (eachChild.getAttribute("type") == "password") {
 				var passText = eachChild.value;
 				passTextArray[passNO] = passText;
@@ -2651,18 +2651,18 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 				for (var j = 0; j < passTextArray.length; j++) {
 					if (passText != passTextArray[j]) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrPasswordNotMatchable);					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrPasswordNotMatchable + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrPasswordNotMatchable + "\n";
@@ -2675,9 +2675,9 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 				var datatype = eachChild.getAttribute("datatype");
 				if (datatype == "int"){							
 					var intValue = eachChild.value;
-					// Ã¿Ò»¶Î×Ö·û´®¶¼ÄÜ½âÎö³ÉÕûÊý
+					// Ã¿Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					var validInt = true;
-					// modified by steve_gu at 2004-05-21,²ÉÓÃÕýÔò±í´ïÊ½ÖÐµÄÄ£Ê½Æ¥Åä,Ìæ»»¡±Ã¿Ò»¶Î×Ö·û´®¶¼ÄÜ½âÎö³ÉÕûÊý¡°·½·¨
+					// modified by steve_gu at 2004-05-21,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ðµï¿½Ä£Ê½Æ¥ï¿½ï¿½,ï¿½æ»»ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					var pattern = /[^0-9]/;
 					if (pattern.exec(intValue) != null) {
 						validInt = false;
@@ -2686,18 +2686,18 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 
 					if (validInt == false) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrInt);					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrInt + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrInt + "\n";
@@ -2706,7 +2706,7 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 				if (datatype == "float") {	
 					var floatValue = eachChild.value;
 					var validFloat = true;
-					// modified by steve_gu at 2004-05-21,²ÉÓÃÕýÔò±í´ïÊ½ÖÐµÄÄ£Ê½Æ¥Åä,Ìæ»»¡±Ã¿Ò»¶Î×Ö·û´®¶¼ÄÜ½âÎö³ÉÐ¡Êý¡°·½·¨
+					// modified by steve_gu at 2004-05-21,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ðµï¿½Ä£Ê½Æ¥ï¿½ï¿½,ï¿½æ»»ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½
 					var pattern = /[^01234569789.]/;
 					if (pattern.exec(floatValue) != null) {
 						validFloat = false;
@@ -2714,18 +2714,18 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 					// end modify
 					if (validFloat == false) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrFloat);					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;				
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrFloat + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrFloat + "\n";
@@ -2735,35 +2735,35 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 							var arrInputValue = eachChild.value.split(".");	
 							var floatFormat = eachChild.getAttribute("format");
 							var arrFloatFormat = floatFormat.split(".");
-							// ¶àÓÚÒ»¸ö"."						
+							// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½"."						
 							if (arrInputValue.length >= 3) {
 
 								if (!displayAllError) {
-									// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+									// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 									alert(constErrFloatType);					
 									eachChild.focus();				
 									return false;	
 								}
-								// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+								// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 								if (dataValid == true) firstErrorControl = eachChild;				
-								// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+								// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 								dataValid = false;
-								// ´íÎóÐòºÅµÝÔö
+								// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 								errorId++;
-								// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+								// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 								var label = eachChild.getAttribute("label");
 								if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrFloatType + "\n";
 								else errorMessage = errorMessage + errorId + ". " + constErrFloatType + "\n";
-								// Èç¹ûÐ¡ÊýÎ»¹Ì¶¨£¬×Ô¶¯²¹×ã»ò½ØÈ¡
+								// ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡
 								if (arrFloatFormat[1].substring(0,1) == "?") {
-									// Ã»ÓÐÐ¡ÊýÎ»,×Ô¶¯²¹×ã
+									// Ã»ï¿½ï¿½Ð¡ï¿½ï¿½Î»,ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 									if (arrInputValue.length == 1) {
 										eachChild.value += "." ;
 										for (var i = 0; i <= arrFloatFormat[1].length - 1; i++) {
 											eachChild.value += "0";
 										}
 									}
-									// ÓÐÐ¡ÊýÎ»£¬µ«¿ÉÄÜ²»È«£¬×Ô¶¯²¹×ã£»»ò¹ý¶à£¬Ôò½ØÈ¡
+									// ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½È«ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ã£»ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½È¡
 									if (arrInputValue.length == 2) {
 										if ( arrInputValue[1].length < arrFloatFormat[1].length) {
 											for (var i = 0; i < arrFloatFormat[1].length - arrInputValue[1].length;i++) {
@@ -2778,25 +2778,25 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 								}
 						    }
 
-							// ²¹×ã»ò½ØÈ¡ÒÔºóÔÙÅÐ¶ÏÕûÊýÎ»ºÍÐ¡ÊýÎ»Îª?»¹ÊÇ*
-							// Èç¹ûÕûÊýÎ»ºÍÐ¡ÊýÎ»¸ñÊ½¾ùÎª???
+							// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ð¡ï¿½ï¿½Î»Îª?ï¿½ï¿½ï¿½ï¿½*
+							// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½ï¿½Ê½ï¿½ï¿½Îª???
 							if (arrFloatFormat[0].substring(0,1) == "?" && arrFloatFormat[1].substring(0,1) == "?") {
 								if (eachChild.value.split(".")[0].length != arrFloatFormat[0].length || eachChild.value.split(".")[1].length != arrFloatFormat[1].length) {
 									var temp = constErrFloatFormat.replace("%intCount", arrFloatFormat[0].length);
 									temp = temp.replace("%decimalCount", arrFloatFormat[1].length);
 									if (!displayAllError) {
-										// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+										// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 										alert(temp);					
 										eachChild.focus();				
 										return false;	
 									}
-									// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+									// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 									if (dataValid == true) firstErrorControl = eachChild;				
-									// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 									dataValid = false;
-									// ´íÎóÐòºÅµÝÔö
+									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 									errorId++;
-									// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+									// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 									var label = eachChild.getAttribute("label");
 									if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + temp + "\n";
 									else errorMessage = errorMessage + errorId + ". " + temp + "\n";
@@ -2805,26 +2805,26 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 							if (arrFloatFormat[0].substring(0,1) == "?" && arrFloatFormat[1].substring(0,1) == "*") {
 								if (eachChild.value.split(".")[0].length != arrFloatFormat[0].length) {
 									var temp = constErrFloatFormat.replace("%intCount", arrFloatFormat[0].length);
-									temp = temp.replace("%decimalCount", "²»ÏÞ");
+									temp = temp.replace("%decimalCount", "ï¿½ï¿½ï¿½ï¿½");
 									if (!displayAllError) {
-										// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+										// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 										alert(temp);					
 										eachChild.focus();				
 										return false;	
 									}
-									// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+									// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 									if (dataValid == true) firstErrorControl = eachChild;				
-									// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 									dataValid = false;
-									// ´íÎóÐòºÅµÝÔö
+									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 									errorId++;
-									// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+									// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 									var label = eachChild.getAttribute("label");
 									if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + temp + "\n";
 									else errorMessage = errorMessage + errorId + ". " + temp + "\n";
 								}
 							}
-							// ÒòÎª¹Ì¶¨µÄÐ¡ÊýÎ»ÒÑ²¹×ã»ò½ØÈ¡£¬ËùÒÔ²»¿ÉÄÜ³öÏÖ¸ñÊ½Îª£¨²»¹Ì¶¨µÄÕûÊýÎ»£¬¹Ì¶¨µÄÐ¡ÊýÎ»£©¶ø³¤¶È²»Âú×ãµÄÇé¿ö
+							// ï¿½ï¿½Îªï¿½Ì¶ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½Ñ²ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½Ü³ï¿½ï¿½Ö¸ï¿½Ê½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						}						
 					}					
 				}
@@ -2833,25 +2833,25 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 					var emailValue = eachChild.value;
 					if (emailValue.indexOf("@") == -1 || emailValue.indexOf("@") == 0 || emailValue.indexOf(".") == -1 || emailValue.lastIndexOf(".") == emailValue.length - 1 || emailValue.split("@").length > 2) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrEmail);					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;				
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrEmail + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrEmail + "\n";
 					}
 				}
 				
-				// ÈÕÆÚÊ±¼äÑéÖ¤
+				// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ö¤
 				if (eachChild.getAttribute("datatype") == "date" && eachChild.value != "" && eachChild.value != null) {
 					if (eachChild.getAttribute("separator")) {				
 						var tmpValue = eachChild.value.replace(eachChild.getAttribute("separator"), "/");
@@ -2864,38 +2864,38 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 					var _date = new Date(tmpValue);
 					if (isNaN(_date)) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrTypeDate.replace("%s", _activeElement.value));					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;				
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrTypeDate.replace("%s", _activeElement.value) + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrTypeDate.replace("%s", _activeElement.value) + "\n";
 					}
 
-					// added by steve_gu at 2004-01-30£¬ÒòÎªjsÖÐÅÐ¶ÏÒ»¸ö×Ö·û´®ÊÇ·ñÎªÓÐÐ§ÈÕÆÚÐÍºÜ¿íËÉ£¬ËùÒÔÒªÏÞÖÆÈÕÆÚÊäÈëµÄ³¤¶È
+					// added by steve_gu at 2004-01-30ï¿½ï¿½ï¿½ï¿½Îªjsï¿½ï¿½ï¿½Ð¶ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ÍºÜ¿ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
 					if (tmpValue.length != 0 && tmpValue.length > 10) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrTypeDate.replace("%s", _activeElement.value));					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;				
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrTypeDate.replace("%s", _activeElement.value) + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrTypeDate.replace("%s", _activeElement.value) + "\n";
@@ -2915,36 +2915,36 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 					var _date = new Date(tmpValue);
 					if (isNaN(_date)) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrTypeDateTime.replace("%s", _activeElement.value));					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;				
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrTypeDateTime.replace("%s", _activeElement.value) + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrTypeDateTime.replace("%s", _activeElement.value) + "\n";
 					} 
 					if (tmpValue.length != 0 && tmpValue.length > 19) {
 						if (!displayAllError) {
-							// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+							// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 							alert(constErrTypeDate.replace("%s", _activeElement.value));					
 							eachChild.focus();				
 							return false;	
 						}
-						// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+						// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (dataValid == true) firstErrorControl = eachChild;				
-						// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 						dataValid = false;
-						// ´íÎóÐòºÅµÝÔö
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 						errorId++;
-						// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+						// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 						var label = eachChild.getAttribute("label");
 						if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrTypeDate.replace("%s", _activeElement.value) + "\n";
 						else errorMessage = errorMessage + errorId + ". " + constErrTypeDate.replace("%s", _activeElement.value) + "\n";
@@ -2952,46 +2952,46 @@ function cescom_js_global_validate(htmlControl, displayAllError) {
 				}
 			}// end datatype
 
-			// ×îÐ¡³¤¶ÈÑéÖ¤
+			// ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
 			if (eachChild.getAttribute("minlength")) {
 				var minLength = eachChild.getAttribute("minlength");
 				if (eachChild.value.length < minLength) {
 					if (!displayAllError) {
-						// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+						// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 						alert(constErrMinlength.replace("%minLength",minLength));					
 						eachChild.focus();				
 						return false;	
 					}
-					// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+					// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					if (dataValid == true) firstErrorControl = eachChild;				
-					// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 					dataValid = false;
-					// ´íÎóÐòºÅµÝÔö
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 					errorId++;
-					// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+					// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 					var label = eachChild.getAttribute("label");
 					if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrMinlength.replace("%minLength",minLength) + "\n";
 					else errorMessage = errorMessage + errorId + ". " + constErrMinlength.replace("%minLength",minLength) + "\n";
 				}
 			}
 
-			// ×î´ó³¤¶ÈÑéÖ¤
+			// ï¿½ï¿½ó³¤¶ï¿½ï¿½ï¿½Ö¤
 			if (eachChild.getAttribute("maxlength")) {
 				var maxLength = eachChild.getAttribute("maxlength");
 				if (eachChild.value.length > maxLength) {			
 					if (!displayAllError) {
-						// Ö±½Ó·µ»Ø£¬½¹µãÒÆµ½¸ÃÎÞÐ§ÊäÈë¿ò
+						// Ö±ï¿½Ó·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½
 						alert(constErrMaxlength.replace("%maxLength",maxLength));					
 						eachChild.focus();				
 						return false;	
 					}
-					// Èç¹û»¹Ã»ÓÐ³öÏÖÎÞÐ§ÊäÈë£¬¸Ã¶ÔÏóÎªµÚÒ»¸öÊäÈë
+					// ï¿½ï¿½ï¿½Ã»ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ë£¬ï¿½Ã¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					if (dataValid == true) firstErrorControl = eachChild;				
-					// ±ê¼ÇÓÐÎÞÐ§Êý¾Ý³öÏÖ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 					dataValid = false;
-					// ´íÎóÐòºÅµÝÔö
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½
 					errorId++;
-					// µÃµ½¸ÃÊäÈë¿òµÄ±êÇ©
+					// ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 					var label = eachChild.getAttribute("label");
 					if (label) errorMessage = errorMessage + errorId + ". " + "[" + label + "] " + constErrMaxlength.replace("%maxLength",maxLength) + "\n";
 					else errorMessage = errorMessage + errorId + ". " + constErrMaxlength.replace("%maxLength",maxLength) + "\n";
