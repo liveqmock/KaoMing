@@ -1,6 +1,6 @@
 package com.dne.sie.support.action;
 
-//Java »ù´¡Àà
+//Java ï¿½ï¿½ï¿½ï¿½
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,19 +15,19 @@ import com.dne.sie.support.form.SubjectTreeForm;
 import com.dne.sie.util.action.ControlAction;
 
 /**
- * ¶ÔÕËµ¥Action´¦ÀíÀà
+ * ï¿½ï¿½ï¿½Ëµï¿½Actionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * @author xt
  * @version 1.1.5.6
- * @see AccountAction.java <br>
+ * @see AccountAction <br>
  */
 public class AccountAction  extends ControlAction{
 	
 
 	/**
-	* ¿ÆÄ¿Ê÷frame
+	* ï¿½ï¿½Ä¿ï¿½ï¿½frame
 	* @param request HttpServletRequest
-	* @param form ±íµ¥Êý¾Ý
-	* @return Ò³Ãæ
+	* @param form ï¿½?ï¿½ï¿½ï¿½
+	* @return Ò³ï¿½ï¿½
 	*/
 	public String subjectTree(HttpServletRequest request, ActionForm form) {
 		
@@ -35,10 +35,10 @@ public class AccountAction  extends ControlAction{
 	}
 
 	/**
-	 * ¿ÆÄ¿Ê÷³õÊ¼»¯Ò³Ãæ
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ò³ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */
 	public String treeInit(HttpServletRequest request,ActionForm form) {
 		String forward = "treeInit";	
@@ -55,10 +55,10 @@ public class AccountAction  extends ControlAction{
 	}
 
 	/**
-	 * ¿ÆÄ¿Ê÷ÐÂÔöÒ³Ãæ
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */
 	public String addInit(HttpServletRequest request,ActionForm form) {
 		String forward = "subjectEdit";	
@@ -91,10 +91,10 @@ public class AccountAction  extends ControlAction{
 	
 
 	/**
-	 * ¿ÆÄ¿Ê÷ÐÞ¸ÄºÍÏêÏ¸µÄÏÔÊ¾Ò³Ãæ
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Þ¸Äºï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ï¿½Ê¾Ò³ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form  ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */	
 	public String subDetail(HttpServletRequest request,ActionForm form) {
 		String forward = "subjectEdit";
@@ -125,10 +125,10 @@ public class AccountAction  extends ControlAction{
 
 	   
 	/**
-	 * ¿ÆÄ¿Ìí¼ÓÊý¾Ý
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form  ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */	
 	public String subAdd(HttpServletRequest request,ActionForm form) {
 		String forward = "subAlert";
@@ -151,10 +151,10 @@ public class AccountAction  extends ControlAction{
 	
 
 	/**
-	 * ¿ÆÄ¿Ê÷ÐÞ¸ÄÊý¾Ý
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form  ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */	
 	public String subModify(HttpServletRequest request,ActionForm form) {
 		String forward = "subAlert";
@@ -182,10 +182,10 @@ public class AccountAction  extends ControlAction{
 	
 
 	/**
-	 * ¿ÆÄ¿¼ÇÂ¼É¾³ý
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½Â¼É¾ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form  ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */	
 	public String subDelete(HttpServletRequest request,ActionForm form) {
 		String forward = "subAlert";
@@ -207,10 +207,10 @@ public class AccountAction  extends ControlAction{
 	}	
 	
 	/**
-	 * ¿ÆÄ¿¼ÇÂ¼É¾³ý
+	 * ï¿½ï¿½Ä¿ï¿½ï¿½Â¼É¾ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form  ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */	
 	public String circleTree(HttpServletRequest request,ActionForm form) {
 		String forward = "subAlert";
@@ -234,10 +234,10 @@ public class AccountAction  extends ControlAction{
 	
 
 	/**
-	 * Ð£Ñé¿ÆÄ¿Ãû³ÆÊÇ·ñ´æÔÚ
+	 * Ð£ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êý¾Ý
-	 * @return Ò³Ãæ
+	 * @param form  ï¿½?ï¿½ï¿½ï¿½
+	 * @return Ò³ï¿½ï¿½
 	 */	
 	public void ajaxChk(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
 		
@@ -251,9 +251,9 @@ public class AccountAction  extends ControlAction{
 			if("null".equals(subId)) subId=null;
 			boolean ifUse=abo.chkSubName(subId, subName);
 	
-			PrintWriter writer = response.getWriter();				  //½«´ÓÊý¾Ý¿âÖÐÈ¡À´µÄÊý¾Ý·ÅÈëXML×Ö·û´®ÖÐ
-			response.setContentType("text/xml");						  //½«´ÓÊý¾Ý¿âÖÐÈ¡À´µÄÊý¾Ý·ÅÈëXML×Ö·û´®ÖÐ
-			response.setHeader("Cache-Control", "no-cache");             //½«´ÓÊý¾Ý¿âÖÐÈ¡À´µÄÊý¾Ý·ÅÈëXML×Ö·û´®ÖÐ
+			PrintWriter writer = response.getWriter();				  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½XMLï¿½Ö·ï¿½ï¿½ï¿½
+			response.setContentType("text/xml");						  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½XMLï¿½Ö·ï¿½ï¿½ï¿½
+			response.setHeader("Cache-Control", "no-cache");             //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½XMLï¿½Ö·ï¿½ï¿½ï¿½
 			writer.println("<xml>");
 		
 			writer.println("<ifUse>"+ifUse+"</ifUse>");
