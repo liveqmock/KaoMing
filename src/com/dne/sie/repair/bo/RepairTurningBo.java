@@ -22,556 +22,556 @@ import com.dne.sie.repair.form.RepairServiceStatusForm;
 import com.dne.sie.util.bo.CommBo;
 
 public class RepairTurningBo extends CommBo {
-	private static Logger logger = Logger.getLogger(RepairTurningBo.class);
+    private static Logger logger = Logger.getLogger(RepairTurningBo.class);
 
-	private static final RepairTurningBo INSTANCE = new RepairTurningBo();
-		
-	private RepairTurningBo(){
-	}
-	
-	public static final RepairTurningBo getInstance() {
-	   return INSTANCE;
-	}
-	
-	public List getAtDispatchList(RepairSearchForm rsForm){
-		
-		return null;
-	}
-	
-	
-	/**
-	 * Œ¨–ﬁµ•¬º»Î
-	 * @param searchForm
-	 * @return
-	 * @throws Exception
-	 */
-	public RepairServiceForm addTurningService(RepairSearchForm searchForm) throws ComException,Exception {
-		RepairServiceForm rsf = new RepairServiceForm();
-		searchForm.setServiceSheetNo(FormNumberBuilder.getNewServiveSheetNo());
-		PropertyUtils.copyProperties(rsf, searchForm);
-		
-		//…Ë÷√Œ¨–ﬁ◊¥Ã¨
-		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
-		rssf.setRepairStatus(rsf.getCurrentStatus());
-		rssf.setBeginDate(new Date());
-		rssf.setCreateBy(rsf.getCreateBy());
-		rssf.setRepairServiceForm(rsf);
-		rsf.getServiceStatusSet().add(rssf);
-		
-		CustomerInfoForm cif = (CustomerInfoForm)this.getDao().findById(CustomerInfoForm.class, searchForm.getCustomerId());
-		rsf.setCustomInfoForm(cif);
-		
-		this.getDao().insert(rsf);
-		
-		//æÕŒªµ«º« ±£¨◊‘∂ØΩ´ª˙–Õª˙…Ì∫≈–≈œ¢£¨Õ¨≤ΩµΩª˙¥≤–≈œ¢±Ì
-		if(MachineToolBo.getInstance().chkSerial(null, rsf.getSerialNo())){
-			MachineToolForm mtf = new MachineToolForm();
-			mtf.setMachineName(rsf.getServiceSheetNo());
-			mtf.setCustomerId(cif.getCustomerId());
-			mtf.setCustomerName(cif.getCustomerName());
-			mtf.setModelCode(rsf.getModelCode());
-			mtf.setSerialNo(rsf.getSerialNo());
-			mtf.setWarrantyCardNo(rsf.getWarrantyCardNo());
-			mtf.setCreateBy(rsf.getCreateBy());
-			
-			if(rsf.getPurchaseDate()!=null){
-				mtf.setPurchaseDate(rsf.getPurchaseDate());
-			}
-			if(rsf.getExtendedWarrantyDate()!=null){
-				mtf.setExtendedWarrantyDate(rsf.getExtendedWarrantyDate());
-			}
-			this.getDao().insert(mtf);
-			
-		}
-		
-		
-		return rsf;
-	}
-	
+    private static final RepairTurningBo INSTANCE = new RepairTurningBo();
 
-	/**
-	 * Œ¨–ﬁ≈…π§
-	 * @param searchForm
-	 * @throws Exception
-	 */
-	public void dispatch(RepairSearchForm searchForm,String repairMan) throws Exception {
-		ArrayList al = new ArrayList();
-		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
-			
-		rsf.setDzLinkman(searchForm.getDzLinkman());
-		rsf.setDzPhone(searchForm.getDzPhone());
-		rsf.setExpectedDuration(searchForm.getExpectedDuration());
-		rsf.setDzRemark(searchForm.getDzRemark());
-		rsf.setCurrentStatus(searchForm.getCurrentStatus()); //“—≈…π§
-		rsf.setUpdateBy(searchForm.getUpdateBy());
-		rsf.setUpdateDate(searchForm.getUpdateDate());
-		rsf.setOperaterId(searchForm.getUpdateBy());
-//		if(rsf.getWarrantyType().equals("B") || rsf.getWarrantyType().equals("C")){	//∞≤µ˜,Œ¨–ﬁ
+    private RepairTurningBo(){
+    }
+
+    public static final RepairTurningBo getInstance() {
+        return INSTANCE;
+    }
+
+    public List getAtDispatchList(RepairSearchForm rsForm){
+
+        return null;
+    }
+
+
+    /**
+     * Áª¥‰øÆÂçïÂΩïÂÖ•
+     * @param searchForm
+     * @return
+     * @throws Exception
+     */
+    public RepairServiceForm addTurningService(RepairSearchForm searchForm) throws ComException,Exception {
+        RepairServiceForm rsf = new RepairServiceForm();
+        searchForm.setServiceSheetNo(FormNumberBuilder.getNewServiveSheetNo());
+        PropertyUtils.copyProperties(rsf, searchForm);
+
+        //ËÆæÁΩÆÁª¥‰øÆÁä∂ÊÄÅ
+        RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+        rssf.setRepairStatus(rsf.getCurrentStatus());
+        rssf.setBeginDate(new Date());
+        rssf.setCreateBy(rsf.getCreateBy());
+        rssf.setRepairServiceForm(rsf);
+        rsf.getServiceStatusSet().add(rssf);
+
+        CustomerInfoForm cif = (CustomerInfoForm)this.getDao().findById(CustomerInfoForm.class, searchForm.getCustomerId());
+        rsf.setCustomInfoForm(cif);
+
+        this.getDao().insert(rsf);
+
+        //Â∞±‰ΩçÁôªËÆ∞Êó∂ÔºåËá™Âä®Â∞ÜÊú∫ÂûãÊú∫Ë∫´Âè∑‰ø°ÊÅØÔºåÂêåÊ≠•Âà∞Êú∫Â∫ä‰ø°ÊÅØË°®
+        if(MachineToolBo.getInstance().chkSerial(null, rsf.getSerialNo())){
+            MachineToolForm mtf = new MachineToolForm();
+            mtf.setMachineName(rsf.getServiceSheetNo());
+            mtf.setCustomerId(cif.getCustomerId());
+            mtf.setCustomerName(cif.getCustomerName());
+            mtf.setModelCode(rsf.getModelCode());
+            mtf.setSerialNo(rsf.getSerialNo());
+            mtf.setWarrantyCardNo(rsf.getWarrantyCardNo());
+            mtf.setCreateBy(rsf.getCreateBy());
+
+            if(rsf.getPurchaseDate()!=null){
+                mtf.setPurchaseDate(rsf.getPurchaseDate());
+            }
+            if(rsf.getExtendedWarrantyDate()!=null){
+                mtf.setExtendedWarrantyDate(rsf.getExtendedWarrantyDate());
+            }
+            this.getDao().insert(mtf);
+
+        }
+
+
+        return rsf;
+    }
+
+
+    /**
+     * Áª¥‰øÆÊ¥æÂ∑•
+     * @param searchForm
+     * @throws Exception
+     */
+    public void dispatch(RepairSearchForm searchForm,String repairMan) throws Exception {
+        ArrayList al = new ArrayList();
+        RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+
+        rsf.setDzLinkman(searchForm.getDzLinkman());
+        rsf.setDzPhone(searchForm.getDzPhone());
+        rsf.setExpectedDuration(searchForm.getExpectedDuration());
+        rsf.setDzRemark(searchForm.getDzRemark());
+        rsf.setCurrentStatus(searchForm.getCurrentStatus()); //Â∑≤Ê¥æÂ∑•
+        rsf.setUpdateBy(searchForm.getUpdateBy());
+        rsf.setUpdateDate(searchForm.getUpdateDate());
+        rsf.setOperaterId(searchForm.getUpdateBy());
+//		if(rsf.getWarrantyType().equals("B") || rsf.getWarrantyType().equals("C")){	//ÂÆâË∞É,Áª¥‰øÆ
 //			RepairSearchForm lastRsf = RepairListBo.getInstance().findById(rsf.getLastRepairNo());
 //			lastRsf.setUnCompleteQuickStatus("Y");
 //			lastRsf.setUpdateBy(rsf.getUpdateBy());
 //			lastRsf.setUpdateDate(rsf.getUpdateDate());
 //			al.add(lastRsf);
 //		}
-		//…Ë÷√Œ¨–ﬁ◊¥Ã¨
-		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
-		rssf.setRepairStatus(rsf.getCurrentStatus());
-		rssf.setBeginDate(new Date());
-		rssf.setCreateBy(rsf.getUpdateBy());
-		rssf.setRepairServiceForm(rsf);
-		rsf.getServiceStatusSet().add(rssf);
-		
-		//≈…π§Œ¨–ﬁ‘±
-		if(repairMan!=null && !repairMan.equals("")){
-			String[] rows = repairMan.split("@");
-			//…Ë÷√Œ¨–ﬁ‘±
-			for(String row : rows){
-				//System.out.println("--row="+row);
-				String[] repairManInfo = row.split("#");
-				RepairManInfoForm rmif =  new RepairManInfoForm();
-				rmif.setRepairNo(rsf.getRepairNo());
-				rmif.setRepairMan(Long.parseLong(repairManInfo[0]));
-				rmif.setDepartDate(Operate.toSqlDate(repairManInfo[1]));
-				if(repairManInfo[2]!=null&&!repairManInfo[2].equals(""))
-					rmif.setWorkingHours(new Integer(repairManInfo[2]));
-				if(repairManInfo[3]!=null&&!repairManInfo[3].equals(""))
-					rmif.setTravelFee(new Double(repairManInfo[3]));
-				if(repairManInfo[4]!=null&&!repairManInfo[4].equals(""))
-					rmif.setLaborCosts(new Double(repairManInfo[4]));
-				
-				if(repairManInfo.length>=6) rmif.setRemark(repairManInfo[5]);
-				rmif.setCreateDate(new Date());
-				rmif.setCreateBy(rsf.getUpdateBy());
-				
-				rmif.setRepairServiceForm(rsf);
-				rsf.getRepairManSetInfo().add(rmif);
-			
-			}
-		}
-		al.add(rsf);
-		
-		
-		this.getBatchDao().saveOrUpdateBatch(al);
-		
-	}
-	
-	/**
-	 * æÕŒªΩ· ¯≤Ÿ◊˜
-	 * @param searchForm
-	 * @throws Exception
-	 */
-	public void jwComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
-		ArrayList<Object[]> al = new ArrayList<Object[]>();
-		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
-		if(rsf.getVersion()!=searchForm.getVersion()){
-			throw new VersionException(" ˝æ›“—±ª∆‰À˚”√ªß∏¸–¬π˝£¨«Î÷ÿ–¬¥Úø™∫Û‘ŸÃ·Ωª£°");
-		}
+        //ËÆæÁΩÆÁª¥‰øÆÁä∂ÊÄÅ
+        RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+        rssf.setRepairStatus(rsf.getCurrentStatus());
+        rssf.setBeginDate(new Date());
+        rssf.setCreateBy(rsf.getUpdateBy());
+        rssf.setRepairServiceForm(rsf);
+        rsf.getServiceStatusSet().add(rssf);
+
+        //Ê¥æÂ∑•Áª¥‰øÆÂëò
+        if(repairMan!=null && !repairMan.equals("")){
+            String[] rows = repairMan.split("@");
+            //ËÆæÁΩÆÁª¥‰øÆÂëò
+            for(String row : rows){
+                //System.out.println("--row="+row);
+                String[] repairManInfo = row.split("#");
+                RepairManInfoForm rmif =  new RepairManInfoForm();
+                rmif.setRepairNo(rsf.getRepairNo());
+                rmif.setRepairMan(Long.parseLong(repairManInfo[0]));
+                rmif.setDepartDate(Operate.toSqlDate(repairManInfo[1]));
+                if(repairManInfo[2]!=null&&!repairManInfo[2].equals(""))
+                    rmif.setWorkingHours(new Integer(repairManInfo[2]));
+                if(repairManInfo[3]!=null&&!repairManInfo[3].equals(""))
+                    rmif.setTravelFee(new Double(repairManInfo[3]));
+                if(repairManInfo[4]!=null&&!repairManInfo[4].equals(""))
+                    rmif.setLaborCosts(new Double(repairManInfo[4]));
+
+                if(repairManInfo.length>=6) rmif.setRemark(repairManInfo[5]);
+                rmif.setCreateDate(new Date());
+                rmif.setCreateBy(rsf.getUpdateBy());
+
+                rmif.setRepairServiceForm(rsf);
+                rsf.getRepairManSetInfo().add(rmif);
+
+            }
+        }
+        al.add(rsf);
+
+
+        this.getBatchDao().saveOrUpdateBatch(al);
+
+    }
+
+    /**
+     * Â∞±‰ΩçÁªìÊùüÊìç‰Ωú
+     * @param searchForm
+     * @throws Exception
+     */
+    public void jwComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
+        ArrayList<Object[]> al = new ArrayList<Object[]>();
+        RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+        if(rsf.getVersion()!=searchForm.getVersion()){
+            throw new VersionException("Êï∞ÊçÆÂ∑≤Ë¢´ÂÖ∂‰ªñÁî®Êà∑Êõ¥Êñ∞ËøáÔºåËØ∑ÈáçÊñ∞ÊâìÂºÄÂêéÂÜçÊèê‰∫§ÔºÅ");
+        }
 
 //		rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
-		rsf.setJwFoundation(searchForm.getJwFoundation());
-		rsf.setJwDoc(searchForm.getJwDoc());
-		rsf.setJwDocMissing(searchForm.getJwDocMissing());
-		rsf.setTurningDate(searchForm.getTurningDate());
-		rsf.setJwServiceCharge(searchForm.getJwServiceCharge());
-		rsf.setJwCarfare(searchForm.getJwCarfare());
-		
-		rsf.setCurrentStatus(searchForm.getCurrentStatus()); //“—≈…π§
-		rsf.setUpdateBy(searchForm.getUpdateBy());
-		rsf.setUpdateDate(searchForm.getUpdateDate());
-		rsf.setActualRepairedDate(searchForm.getUpdateDate());
+        rsf.setJwFoundation(searchForm.getJwFoundation());
+        rsf.setJwDoc(searchForm.getJwDoc());
+        rsf.setJwDocMissing(searchForm.getJwDocMissing());
+        rsf.setTurningDate(searchForm.getTurningDate());
+        rsf.setJwServiceCharge(searchForm.getJwServiceCharge());
+        rsf.setJwCarfare(searchForm.getJwCarfare());
 
-		//…Ë÷√Œ¨–ﬁ◊¥Ã¨
-		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
-		rssf.setRepairStatus(rsf.getCurrentStatus());
-		rssf.setBeginDate(new Date());
-		rssf.setCreateBy(rsf.getUpdateBy());
-		rssf.setRepairServiceForm(rsf);
-		rsf.getServiceStatusSet().add(rssf);
-		
-		
-		String[] travelId = repairManInfo.get(0);
-		String[] arrivalDate = repairManInfo.get(1);
-		String[] returnDate = repairManInfo.get(2);
-		String[] travelFee = repairManInfo.get(3);
-		String[] laborCosts = repairManInfo.get(4);
-		String[] repairCondition = repairManInfo.get(5);
-		
-		Set rmiSet = rsf.getRepairManSetInfo();
-		ArrayList rimList = new ArrayList(rmiSet);
-		int repairmanNum=0,workhour=0;
-		double travelFeeAll=0,laborCostsAll=0;
-		//≈…π§Œ¨–ﬁ‘±
-		for(int i=0;i<rimList.size();i++){
-			//…Ë÷√Œ¨–ﬁ‘±
-			RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
-			for(int j=0;j<travelId.length;j++){
-				if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
-					rsf.getRepairManSetInfo().remove(rmif);
-					
-					rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
-					rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
-					rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
-					rmif.setTravelFee(new Double(travelFee[j]));
-					rmif.setLaborCostsActual(new Double(laborCosts[j]));
-					rmif.setRepairCondition(repairCondition[j]);
-					
-					rmif.setUpdateDate(new Date());
-					rmif.setUpdateBy(rsf.getUpdateBy());
-					
-					//rmif.setRepairServiceForm(rsf);
-					
-					rsf.getRepairManSetInfo().add(rmif);
-					
-					repairmanNum++;
-					if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
-					travelFeeAll+=rmif.getTravelFee();
-					laborCostsAll+=rmif.getLaborCostsActual();
-					
-					break;
-				}
-			}
-		}
-		al.add(new Object[]{rsf,"u"});
-		
-		
-		//¥¥Ω®∞≤µ˜µ•
-		RepairServiceForm atRsf = new RepairServiceForm();
-		atRsf.setServiceSheetNo(FormNumberBuilder.getNewServiveSheetNo("turning"));
-		atRsf.setLastRepairNo(rsf.getRepairNo());
-		atRsf.setOperaterId(rsf.getOperaterId());
-		atRsf.setCreateBy(rsf.getUpdateBy());
-		atRsf.setCreateDate(new Date());
-		atRsf.setCurrentStatus("T");		//◊º±∏≈…π§
-		atRsf.setRepairProperites("T");		//∞≤µ˜
-		atRsf.setWarrantyType("B");			//∞≤µ˜
-		atRsf.setModelCode(rsf.getModelCode());
-		atRsf.setSerialNo(rsf.getSerialNo());
-		atRsf.setPurchaseDate(rsf.getPurchaseDate());
-		atRsf.setWarrantyCardNo(rsf.getWarrantyCardNo());
-		atRsf.setManufacture(rsf.getManufacture());
-		atRsf.setCustomerTrouble(rsf.getCustomerTrouble());
-		atRsf.setLinkman(rsf.getLinkman());
-		atRsf.setPhone(rsf.getPhone());
-		atRsf.setCustomerVisitDate(rsf.getTurningDate());
-		atRsf.setTurningDate(rsf.getTurningDate());
+        rsf.setCurrentStatus(searchForm.getCurrentStatus()); //Â∑≤Ê¥æÂ∑•
+        rsf.setUpdateBy(searchForm.getUpdateBy());
+        rsf.setUpdateDate(searchForm.getUpdateDate());
+        rsf.setActualRepairedDate(searchForm.getUpdateDate());
 
-		RepairServiceStatusForm atRssf = new RepairServiceStatusForm();
-		atRssf.setRepairStatus(atRsf.getCurrentStatus());
-		atRssf.setBeginDate(atRsf.getCreateDate());
-		atRssf.setCreateBy(rsf.getCreateBy());
-		atRssf.setRepairServiceForm(atRsf);
-		atRsf.getServiceStatusSet().add(atRssf);
-		
-		atRsf.setCustomInfoForm(rsf.getCustomInfoForm());
-		
-		al.add(new Object[]{atRsf,"i"});
-		
-		this.getBatchDao().allDMLBatch(al);
-		
-	}
-	
-	
+        //ËÆæÁΩÆÁª¥‰øÆÁä∂ÊÄÅ
+        RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+        rssf.setRepairStatus(rsf.getCurrentStatus());
+        rssf.setBeginDate(new Date());
+        rssf.setCreateBy(rsf.getUpdateBy());
+        rssf.setRepairServiceForm(rsf);
+        rsf.getServiceStatusSet().add(rssf);
 
-	/**
-	 * ∞≤µ˜Ω· ¯≤Ÿ◊˜
-	 * @param searchForm
-	 * @throws Exception
-	 */
-	public void atComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
-		ArrayList<Object[]> al = new ArrayList<Object[]>();
-		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
-		if(rsf.getVersion()!=searchForm.getVersion()){
-			throw new VersionException(" ˝æ›“—±ª∆‰À˚”√ªß∏¸–¬π˝£¨«Î÷ÿ–¬¥Úø™∫Û‘ŸÃ·Ωª£°");
-		}
 
-//		rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
-		rsf.setAtPlc(searchForm.getAtPlc());
-		rsf.setAtMissParts(searchForm.getAtMissParts());
-		rsf.setAtCircuit(searchForm.getAtCircuit());
-		rsf.setAtOthers(searchForm.getAtOthers());
-		rsf.setAtPrecision(searchForm.getAtPrecision());
-		rsf.setAtUHW0(searchForm.getAtUHW0());
-		rsf.setAtSHW0(searchForm.getAtSHW0());
-		rsf.setAtUHW90(searchForm.getAtUHW90());
-		rsf.setAtSHW90(searchForm.getAtSHW90());
-		rsf.setAtUHW180(searchForm.getAtUHW180());
-		rsf.setAtSHW180(searchForm.getAtSHW180());
-		rsf.setAtUHW270(searchForm.getAtUHW270());
-		rsf.setAtSHW270(searchForm.getAtSHW270());
-		rsf.setAtTrain(searchForm.getAtTrain());
-		rsf.setAtSign(searchForm.getAtSign());
-		rsf.setAtUnsignRemark(searchForm.getAtUnsignRemark());
-		rsf.setActualDuration(searchForm.getActualDuration());
-		
-		
-		rsf.setCurrentStatus(searchForm.getCurrentStatus()); //“—≈…π§
-		rsf.setUpdateBy(searchForm.getUpdateBy());
-		rsf.setUpdateDate(searchForm.getUpdateDate());
-		rsf.setActualRepairedDate(searchForm.getUpdateDate());
+        String[] travelId = repairManInfo.get(0);
+        String[] arrivalDate = repairManInfo.get(1);
+        String[] returnDate = repairManInfo.get(2);
+        String[] travelFee = repairManInfo.get(3);
+        String[] laborCosts = repairManInfo.get(4);
+        String[] repairCondition = repairManInfo.get(5);
 
-		//…Ë÷√Œ¨–ﬁ◊¥Ã¨
-		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
-		rssf.setRepairStatus(rsf.getCurrentStatus());
-		rssf.setBeginDate(new Date());
-		rssf.setCreateBy(rsf.getUpdateBy());
-		rssf.setRepairServiceForm(rsf);
-		rsf.getServiceStatusSet().add(rssf);
-		
-		
-		String[] travelId = repairManInfo.get(0);
-		String[] arrivalDate = repairManInfo.get(1);
-		String[] returnDate = repairManInfo.get(2);
-		String[] travelFee = repairManInfo.get(3);
-		String[] laborCosts = repairManInfo.get(4);
-		String[] repairCondition = repairManInfo.get(5);
-		
-		Set rmiSet = rsf.getRepairManSetInfo();
-		ArrayList rimList = new ArrayList(rmiSet);
-		int repairmanNum=0,workhour=0;
-		double travelFeeAll=0,laborCostsAll=0;
-		//≈…π§Œ¨–ﬁ‘±
-		for(int i=0;i<rimList.size();i++){
-			//…Ë÷√Œ¨–ﬁ‘±
-			RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
-			for(int j=0;j<travelId.length;j++){
-				if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
-					rsf.getRepairManSetInfo().remove(rmif);
-					
-					rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
-					rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
-					rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
-					rmif.setTravelFee(new Double(travelFee[j]));
-					rmif.setLaborCostsActual(new Double(laborCosts[j]));
-					rmif.setRepairCondition(repairCondition[j]);
-					
-					rmif.setUpdateDate(new Date());
-					rmif.setUpdateBy(rsf.getUpdateBy());
-					
-					//rmif.setRepairServiceForm(rsf);
-					
-					rsf.getRepairManSetInfo().add(rmif);
-					
-					repairmanNum++;
-					if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
-					travelFeeAll+=rmif.getTravelFee();
-					laborCostsAll+=rmif.getLaborCostsActual();
-					
-					break;
-				}
-			}
-		}
-		al.add(new Object[]{rsf,"u"});
-		
-		
-		//¥¥Ω®∞≤µ˜µ•
-		RepairServiceForm atRsf = new RepairServiceForm();
-		atRsf.setServiceSheetNo(FormNumberBuilder.getNewServiveSheetNo("turning"));
-		atRsf.setLastRepairNo(rsf.getRepairNo());
-		atRsf.setOperaterId(rsf.getOperaterId());
-		atRsf.setCreateBy(rsf.getUpdateBy());
-		atRsf.setCreateDate(new Date());
-		atRsf.setCurrentStatus("T");		//◊º±∏≈…π§
-		atRsf.setRepairProperites("T");		//∞≤µ˜
-		atRsf.setWarrantyType("C");			//ºÏ≤‚
-		atRsf.setModelCode(rsf.getModelCode());
-		atRsf.setSerialNo(rsf.getSerialNo());
-		atRsf.setPurchaseDate(rsf.getPurchaseDate());
-		atRsf.setWarrantyCardNo(rsf.getWarrantyCardNo());
-		atRsf.setManufacture(rsf.getManufacture());
-		atRsf.setCustomerTrouble(rsf.getCustomerTrouble());
-		atRsf.setLinkman(rsf.getLinkman());
-		atRsf.setPhone(rsf.getPhone());
-		atRsf.setCustomerVisitDate(rsf.getTurningDate());
-		atRsf.setTurningDate(rsf.getTurningDate());
+        Set rmiSet = rsf.getRepairManSetInfo();
+        ArrayList rimList = new ArrayList(rmiSet);
+        int repairmanNum=0,workhour=0;
+        double travelFeeAll=0,laborCostsAll=0;
+        //Ê¥æÂ∑•Áª¥‰øÆÂëò
+        for(int i=0;i<rimList.size();i++){
+            //ËÆæÁΩÆÁª¥‰øÆÂëò
+            RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
+            for(int j=0;j<travelId.length;j++){
+                if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
+                    rsf.getRepairManSetInfo().remove(rmif);
 
-		RepairServiceStatusForm atRssf = new RepairServiceStatusForm();
-		atRssf.setRepairStatus(atRsf.getCurrentStatus());
-		atRssf.setBeginDate(atRsf.getCreateDate());
-		atRssf.setCreateBy(rsf.getCreateBy());
-		atRssf.setRepairServiceForm(atRsf);
-		atRsf.getServiceStatusSet().add(atRssf);
-		
-		atRsf.setCustomInfoForm(rsf.getCustomInfoForm());
-		
-		al.add(new Object[]{atRsf,"i"});
-		
-		this.getBatchDao().allDMLBatch(al);
-		
-	}
-	
-	public void atNotComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
-		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
-		if(rsf.getVersion()!=searchForm.getVersion()){
-			throw new VersionException(" ˝æ›“—±ª∆‰À˚”√ªß∏¸–¬π˝£¨«Î÷ÿ–¬¥Úø™∫Û‘ŸÃ·Ωª£°");
-		}
+                    rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
+                    rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
+                    rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
+                    rmif.setTravelFee(new Double(travelFee[j]));
+                    rmif.setLaborCostsActual(new Double(laborCosts[j]));
+                    rmif.setRepairCondition(repairCondition[j]);
+
+                    rmif.setUpdateDate(new Date());
+                    rmif.setUpdateBy(rsf.getUpdateBy());
+
+                    //rmif.setRepairServiceForm(rsf);
+
+                    rsf.getRepairManSetInfo().add(rmif);
+
+                    repairmanNum++;
+                    if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
+                    travelFeeAll+=rmif.getTravelFee();
+                    laborCostsAll+=rmif.getLaborCostsActual();
+
+                    break;
+                }
+            }
+        }
+        al.add(new Object[]{rsf,"u"});
+
+
+        //ÂàõÂª∫ÂÆâË∞ÉÂçï
+        RepairServiceForm atRsf = new RepairServiceForm();
+        atRsf.setServiceSheetNo(FormNumberBuilder.getNewServiveSheetNo("turning"));
+        atRsf.setLastRepairNo(rsf.getRepairNo());
+        atRsf.setOperaterId(rsf.getOperaterId());
+        atRsf.setCreateBy(rsf.getUpdateBy());
+        atRsf.setCreateDate(new Date());
+        atRsf.setCurrentStatus("T");		//ÂáÜÂ§áÊ¥æÂ∑•
+        atRsf.setRepairProperites("T");		//ÂÆâË∞É
+        atRsf.setWarrantyType("B");			//ÂÆâË∞É
+        atRsf.setModelCode(rsf.getModelCode());
+        atRsf.setSerialNo(rsf.getSerialNo());
+        atRsf.setPurchaseDate(rsf.getPurchaseDate());
+        atRsf.setWarrantyCardNo(rsf.getWarrantyCardNo());
+        atRsf.setManufacture(rsf.getManufacture());
+        atRsf.setCustomerTrouble(rsf.getCustomerTrouble());
+        atRsf.setLinkman(rsf.getLinkman());
+        atRsf.setPhone(rsf.getPhone());
+        atRsf.setCustomerVisitDate(rsf.getTurningDate());
+        atRsf.setTurningDate(rsf.getTurningDate());
+
+        RepairServiceStatusForm atRssf = new RepairServiceStatusForm();
+        atRssf.setRepairStatus(atRsf.getCurrentStatus());
+        atRssf.setBeginDate(atRsf.getCreateDate());
+        atRssf.setCreateBy(rsf.getCreateBy());
+        atRssf.setRepairServiceForm(atRsf);
+        atRsf.getServiceStatusSet().add(atRssf);
+
+        atRsf.setCustomInfoForm(rsf.getCustomInfoForm());
+
+        al.add(new Object[]{atRsf,"i"});
+
+        this.getBatchDao().allDMLBatch(al);
+
+    }
+
+
+
+    /**
+     * ÂÆâË∞ÉÁªìÊùüÊìç‰Ωú
+     * @param searchForm
+     * @throws Exception
+     */
+    public void atComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
+        ArrayList<Object[]> al = new ArrayList<Object[]>();
+        RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+        if(rsf.getVersion()!=searchForm.getVersion()){
+            throw new VersionException("Êï∞ÊçÆÂ∑≤Ë¢´ÂÖ∂‰ªñÁî®Êà∑Êõ¥Êñ∞ËøáÔºåËØ∑ÈáçÊñ∞ÊâìÂºÄÂêéÂÜçÊèê‰∫§ÔºÅ");
+        }
 
 //		rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
-		rsf.setAtPlc(searchForm.getAtPlc());
-		rsf.setAtMissParts(searchForm.getAtMissParts());
-		rsf.setAtCircuit(searchForm.getAtCircuit());
-		rsf.setAtOthers(searchForm.getAtOthers());
-		rsf.setAtPrecision(searchForm.getAtPrecision());
-		rsf.setAtUHW0(searchForm.getAtUHW0());
-		rsf.setAtSHW0(searchForm.getAtSHW0());
-		rsf.setAtUHW90(searchForm.getAtUHW90());
-		rsf.setAtSHW90(searchForm.getAtSHW90());
-		rsf.setAtUHW180(searchForm.getAtUHW180());
-		rsf.setAtSHW180(searchForm.getAtSHW180());
-		rsf.setAtUHW270(searchForm.getAtUHW270());
-		rsf.setAtSHW270(searchForm.getAtSHW270());
-		rsf.setAtTrain(searchForm.getAtTrain());
-		rsf.setAtSign(searchForm.getAtSign());
-		rsf.setAtUnsignRemark(searchForm.getAtUnsignRemark());
-		rsf.setActualDuration(searchForm.getActualDuration());
-		
-		
-		rsf.setCurrentStatus(searchForm.getCurrentStatus()); //“—≈…π§
-		rsf.setUpdateBy(searchForm.getUpdateBy());
-		rsf.setUpdateDate(searchForm.getUpdateDate());
-		rsf.setActualRepairedDate(searchForm.getUpdateDate());
+        rsf.setAtPlc(searchForm.getAtPlc());
+        rsf.setAtMissParts(searchForm.getAtMissParts());
+        rsf.setAtCircuit(searchForm.getAtCircuit());
+        rsf.setAtOthers(searchForm.getAtOthers());
+        rsf.setAtPrecision(searchForm.getAtPrecision());
+        rsf.setAtUHW0(searchForm.getAtUHW0());
+        rsf.setAtSHW0(searchForm.getAtSHW0());
+        rsf.setAtUHW90(searchForm.getAtUHW90());
+        rsf.setAtSHW90(searchForm.getAtSHW90());
+        rsf.setAtUHW180(searchForm.getAtUHW180());
+        rsf.setAtSHW180(searchForm.getAtSHW180());
+        rsf.setAtUHW270(searchForm.getAtUHW270());
+        rsf.setAtSHW270(searchForm.getAtSHW270());
+        rsf.setAtTrain(searchForm.getAtTrain());
+        rsf.setAtSign(searchForm.getAtSign());
+        rsf.setAtUnsignRemark(searchForm.getAtUnsignRemark());
+        rsf.setActualDuration(searchForm.getActualDuration());
 
-		//…Ë÷√Œ¨–ﬁ◊¥Ã¨
-		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
-		rssf.setRepairStatus(rsf.getCurrentStatus());
-		rssf.setBeginDate(new Date());
-		rssf.setCreateBy(rsf.getUpdateBy());
-		rssf.setRepairServiceForm(rsf);
-		rsf.getServiceStatusSet().add(rssf);
-		
-		
-		String[] travelId = repairManInfo.get(0);
-		String[] arrivalDate = repairManInfo.get(1);
-		String[] returnDate = repairManInfo.get(2);
-		String[] travelFee = repairManInfo.get(3);
-		String[] laborCosts = repairManInfo.get(4);
-		String[] repairCondition = repairManInfo.get(5);
-		
-		if(travelId!=null && travelId.length>0){
-			Set rmiSet = rsf.getRepairManSetInfo();
-			ArrayList rimList = new ArrayList(rmiSet);
-			int repairmanNum=0,workhour=0;
-			double travelFeeAll=0,laborCostsAll=0;
-			//≈…π§Œ¨–ﬁ‘±
-			for(int i=0;i<rimList.size();i++){
-				//…Ë÷√Œ¨–ﬁ‘±
-				RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
-				for(int j=0;j<travelId.length;j++){
-					if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
-						if(arrivalDate[j]==null || returnDate[j]==null || travelFee[j]==null || laborCosts[j]==null || repairCondition[j]==null
-								|| arrivalDate[j].isEmpty() || returnDate[j].isEmpty() || travelFee[j].isEmpty() || laborCosts[j].isEmpty() || repairCondition[j].isEmpty()){
-							continue;
-						}
-				
-						rsf.getRepairManSetInfo().remove(rmif);
-						
-						rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
-						rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
-						rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
-						rmif.setTravelFee(new Double(travelFee[j]));
-						rmif.setLaborCostsActual(new Double(laborCosts[j]));
-						rmif.setRepairCondition(repairCondition[j]);
-						
-						rmif.setUpdateDate(new Date());
-						rmif.setUpdateBy(rsf.getUpdateBy());
-						
-						//rmif.setRepairServiceForm(rsf);
-						
-						rsf.getRepairManSetInfo().add(rmif);
-						
-						repairmanNum++;
-						if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
-						travelFeeAll+=rmif.getTravelFee();
-						laborCostsAll+=rmif.getLaborCostsActual();
-						
-						break;
-					}
-				}
-			}
-		}
-		this.getDao().update(rsf);
-		
-	}
-	
 
-	/**
-	 * ºÏ≤‚Ω· ¯≤Ÿ◊˜
-	 * @param searchForm
-	 * @throws Exception
-	 */
-	public void jcComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
-		ArrayList<Object[]> al = new ArrayList<Object[]>();
-		RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
-		if(rsf.getVersion()!=searchForm.getVersion()){
-			throw new VersionException(" ˝æ›“—±ª∆‰À˚”√ªß∏¸–¬π˝£¨«Î÷ÿ–¬¥Úø™∫Û‘ŸÃ·Ωª£°");
-		}
+        rsf.setCurrentStatus(searchForm.getCurrentStatus()); //Â∑≤Ê¥æÂ∑•
+        rsf.setUpdateBy(searchForm.getUpdateBy());
+        rsf.setUpdateDate(searchForm.getUpdateDate());
+        rsf.setActualRepairedDate(searchForm.getUpdateDate());
+
+        //ËÆæÁΩÆÁª¥‰øÆÁä∂ÊÄÅ
+        RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+        rssf.setRepairStatus(rsf.getCurrentStatus());
+        rssf.setBeginDate(new Date());
+        rssf.setCreateBy(rsf.getUpdateBy());
+        rssf.setRepairServiceForm(rsf);
+        rsf.getServiceStatusSet().add(rssf);
+
+
+        String[] travelId = repairManInfo.get(0);
+        String[] arrivalDate = repairManInfo.get(1);
+        String[] returnDate = repairManInfo.get(2);
+        String[] travelFee = repairManInfo.get(3);
+        String[] laborCosts = repairManInfo.get(4);
+        String[] repairCondition = repairManInfo.get(5);
+
+        Set rmiSet = rsf.getRepairManSetInfo();
+        ArrayList rimList = new ArrayList(rmiSet);
+        int repairmanNum=0,workhour=0;
+        double travelFeeAll=0,laborCostsAll=0;
+        //Ê¥æÂ∑•Áª¥‰øÆÂëò
+        for(int i=0;i<rimList.size();i++){
+            //ËÆæÁΩÆÁª¥‰øÆÂëò
+            RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
+            for(int j=0;j<travelId.length;j++){
+                if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
+                    rsf.getRepairManSetInfo().remove(rmif);
+
+                    rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
+                    rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
+                    rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
+                    rmif.setTravelFee(new Double(travelFee[j]));
+                    rmif.setLaborCostsActual(new Double(laborCosts[j]));
+                    rmif.setRepairCondition(repairCondition[j]);
+
+                    rmif.setUpdateDate(new Date());
+                    rmif.setUpdateBy(rsf.getUpdateBy());
+
+                    //rmif.setRepairServiceForm(rsf);
+
+                    rsf.getRepairManSetInfo().add(rmif);
+
+                    repairmanNum++;
+                    if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
+                    travelFeeAll+=rmif.getTravelFee();
+                    laborCostsAll+=rmif.getLaborCostsActual();
+
+                    break;
+                }
+            }
+        }
+        al.add(new Object[]{rsf,"u"});
+
+
+        //ÂàõÂª∫ÂÆâË∞ÉÂçï
+        RepairServiceForm atRsf = new RepairServiceForm();
+        atRsf.setServiceSheetNo(FormNumberBuilder.getNewServiveSheetNo("turning"));
+        atRsf.setLastRepairNo(rsf.getRepairNo());
+        atRsf.setOperaterId(rsf.getOperaterId());
+        atRsf.setCreateBy(rsf.getUpdateBy());
+        atRsf.setCreateDate(new Date());
+        atRsf.setCurrentStatus("T");		//ÂáÜÂ§áÊ¥æÂ∑•
+        atRsf.setRepairProperites("T");		//ÂÆâË∞É
+        atRsf.setWarrantyType("C");			//Ê£ÄÊµã
+        atRsf.setModelCode(rsf.getModelCode());
+        atRsf.setSerialNo(rsf.getSerialNo());
+        atRsf.setPurchaseDate(rsf.getPurchaseDate());
+        atRsf.setWarrantyCardNo(rsf.getWarrantyCardNo());
+        atRsf.setManufacture(rsf.getManufacture());
+        atRsf.setCustomerTrouble(rsf.getCustomerTrouble());
+        atRsf.setLinkman(rsf.getLinkman());
+        atRsf.setPhone(rsf.getPhone());
+        atRsf.setCustomerVisitDate(rsf.getTurningDate());
+        atRsf.setTurningDate(rsf.getTurningDate());
+
+        RepairServiceStatusForm atRssf = new RepairServiceStatusForm();
+        atRssf.setRepairStatus(atRsf.getCurrentStatus());
+        atRssf.setBeginDate(atRsf.getCreateDate());
+        atRssf.setCreateBy(rsf.getCreateBy());
+        atRssf.setRepairServiceForm(atRsf);
+        atRsf.getServiceStatusSet().add(atRssf);
+
+        atRsf.setCustomInfoForm(rsf.getCustomInfoForm());
+
+        al.add(new Object[]{atRsf,"i"});
+
+        this.getBatchDao().allDMLBatch(al);
+
+    }
+
+    public void atNotComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
+        RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+        if(rsf.getVersion()!=searchForm.getVersion()){
+            throw new VersionException("Êï∞ÊçÆÂ∑≤Ë¢´ÂÖ∂‰ªñÁî®Êà∑Êõ¥Êñ∞ËøáÔºåËØ∑ÈáçÊñ∞ÊâìÂºÄÂêéÂÜçÊèê‰∫§ÔºÅ");
+        }
 
 //		rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
-		rsf.setCrReason(searchForm.getCrReason());
-		
-		
-		rsf.setCurrentStatus(searchForm.getCurrentStatus()); //“—≈…π§
-		rsf.setUpdateBy(searchForm.getUpdateBy());
-		rsf.setUpdateDate(searchForm.getUpdateDate());
-		rsf.setActualRepairedDate(searchForm.getUpdateDate());
+        rsf.setAtPlc(searchForm.getAtPlc());
+        rsf.setAtMissParts(searchForm.getAtMissParts());
+        rsf.setAtCircuit(searchForm.getAtCircuit());
+        rsf.setAtOthers(searchForm.getAtOthers());
+        rsf.setAtPrecision(searchForm.getAtPrecision());
+        rsf.setAtUHW0(searchForm.getAtUHW0());
+        rsf.setAtSHW0(searchForm.getAtSHW0());
+        rsf.setAtUHW90(searchForm.getAtUHW90());
+        rsf.setAtSHW90(searchForm.getAtSHW90());
+        rsf.setAtUHW180(searchForm.getAtUHW180());
+        rsf.setAtSHW180(searchForm.getAtSHW180());
+        rsf.setAtUHW270(searchForm.getAtUHW270());
+        rsf.setAtSHW270(searchForm.getAtSHW270());
+        rsf.setAtTrain(searchForm.getAtTrain());
+        rsf.setAtSign(searchForm.getAtSign());
+        rsf.setAtUnsignRemark(searchForm.getAtUnsignRemark());
+        rsf.setActualDuration(searchForm.getActualDuration());
 
-		//…Ë÷√Œ¨–ﬁ◊¥Ã¨
-		RepairServiceStatusForm rssf = new RepairServiceStatusForm();
-		rssf.setRepairStatus(rsf.getCurrentStatus());
-		rssf.setBeginDate(new Date());
-		rssf.setCreateBy(rsf.getUpdateBy());
-		rssf.setRepairServiceForm(rsf);
-		rsf.getServiceStatusSet().add(rssf);
-		
-		
-		String[] travelId = repairManInfo.get(0);
-		String[] arrivalDate = repairManInfo.get(1);
-		String[] returnDate = repairManInfo.get(2);
-		String[] travelFee = repairManInfo.get(3);
-		String[] laborCosts = repairManInfo.get(4);
-		String[] repairCondition = repairManInfo.get(5);
-		
-		Set rmiSet = rsf.getRepairManSetInfo();
-		ArrayList rimList = new ArrayList(rmiSet);
-		int repairmanNum=0,workhour=0;
-		double travelFeeAll=0,laborCostsAll=0;
-		//≈…π§Œ¨–ﬁ‘±
-		for(int i=0;i<rimList.size();i++){
-			//…Ë÷√Œ¨–ﬁ‘±
-			RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
-			for(int j=0;j<travelId.length;j++){
-				if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
-					rsf.getRepairManSetInfo().remove(rmif);
-					
-					rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
-					rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
-					rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
-					rmif.setTravelFee(new Double(travelFee[j]));
-					rmif.setLaborCostsActual(new Double(laborCosts[j]));
-					rmif.setRepairCondition(repairCondition[j]);
-					
-					rmif.setUpdateDate(new Date());
-					rmif.setUpdateBy(rsf.getUpdateBy());
-					
-					//rmif.setRepairServiceForm(rsf);
-					
-					rsf.getRepairManSetInfo().add(rmif);
-					
-					repairmanNum++;
-					if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
-					travelFeeAll+=rmif.getTravelFee();
-					laborCostsAll+=rmif.getLaborCostsActual();
-					
-					break;
-				}
-			}
-		}
-		al.add(new Object[]{rsf,"u"});
-		
-		
-		
-		this.getBatchDao().allDMLBatch(al);
-		
-	}
-	
+
+        rsf.setCurrentStatus(searchForm.getCurrentStatus()); //Â∑≤Ê¥æÂ∑•
+        rsf.setUpdateBy(searchForm.getUpdateBy());
+        rsf.setUpdateDate(searchForm.getUpdateDate());
+        rsf.setActualRepairedDate(searchForm.getUpdateDate());
+
+        //ËÆæÁΩÆÁª¥‰øÆÁä∂ÊÄÅ
+        RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+        rssf.setRepairStatus(rsf.getCurrentStatus());
+        rssf.setBeginDate(new Date());
+        rssf.setCreateBy(rsf.getUpdateBy());
+        rssf.setRepairServiceForm(rsf);
+        rsf.getServiceStatusSet().add(rssf);
+
+
+        String[] travelId = repairManInfo.get(0);
+        String[] arrivalDate = repairManInfo.get(1);
+        String[] returnDate = repairManInfo.get(2);
+        String[] travelFee = repairManInfo.get(3);
+        String[] laborCosts = repairManInfo.get(4);
+        String[] repairCondition = repairManInfo.get(5);
+
+        if(travelId!=null && travelId.length>0){
+            Set rmiSet = rsf.getRepairManSetInfo();
+            ArrayList rimList = new ArrayList(rmiSet);
+            int repairmanNum=0,workhour=0;
+            double travelFeeAll=0,laborCostsAll=0;
+            //Ê¥æÂ∑•Áª¥‰øÆÂëò
+            for(int i=0;i<rimList.size();i++){
+                //ËÆæÁΩÆÁª¥‰øÆÂëò
+                RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
+                for(int j=0;j<travelId.length;j++){
+                    if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
+                        if(arrivalDate[j]==null || returnDate[j]==null || travelFee[j]==null || laborCosts[j]==null || repairCondition[j]==null
+                                || arrivalDate[j].isEmpty() || returnDate[j].isEmpty() || travelFee[j].isEmpty() || laborCosts[j].isEmpty() || repairCondition[j].isEmpty()){
+                            continue;
+                        }
+
+                        rsf.getRepairManSetInfo().remove(rmif);
+
+                        rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
+                        rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
+                        rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
+                        rmif.setTravelFee(new Double(travelFee[j]));
+                        rmif.setLaborCostsActual(new Double(laborCosts[j]));
+                        rmif.setRepairCondition(repairCondition[j]);
+
+                        rmif.setUpdateDate(new Date());
+                        rmif.setUpdateBy(rsf.getUpdateBy());
+
+                        //rmif.setRepairServiceForm(rsf);
+
+                        rsf.getRepairManSetInfo().add(rmif);
+
+                        repairmanNum++;
+                        if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
+                        travelFeeAll+=rmif.getTravelFee();
+                        laborCostsAll+=rmif.getLaborCostsActual();
+
+                        break;
+                    }
+                }
+            }
+        }
+        this.getDao().update(rsf);
+
+    }
+
+
+    /**
+     * Ê£ÄÊµãÁªìÊùüÊìç‰Ωú
+     * @param searchForm
+     * @throws Exception
+     */
+    public void jcComplete(RepairSearchForm searchForm,ArrayList<String[]> repairManInfo) throws VersionException,Exception {
+        ArrayList<Object[]> al = new ArrayList<Object[]>();
+        RepairServiceForm rsf = (RepairServiceForm)this.getDao().findById(RepairServiceForm.class, searchForm.getRepairNo());
+        if(rsf.getVersion()!=searchForm.getVersion()){
+            throw new VersionException("Êï∞ÊçÆÂ∑≤Ë¢´ÂÖ∂‰ªñÁî®Êà∑Êõ¥Êñ∞ËøáÔºåËØ∑ÈáçÊñ∞ÊâìÂºÄÂêéÂÜçÊèê‰∫§ÔºÅ");
+        }
+
+//		rsf.setActualRepairedDate((Operate.toDate(searchForm.getActualRepairedDateStr())));
+        rsf.setCrReason(searchForm.getCrReason());
+
+
+        rsf.setCurrentStatus(searchForm.getCurrentStatus()); //Â∑≤Ê¥æÂ∑•
+        rsf.setUpdateBy(searchForm.getUpdateBy());
+        rsf.setUpdateDate(searchForm.getUpdateDate());
+        rsf.setActualRepairedDate(searchForm.getUpdateDate());
+
+        //ËÆæÁΩÆÁª¥‰øÆÁä∂ÊÄÅ
+        RepairServiceStatusForm rssf = new RepairServiceStatusForm();
+        rssf.setRepairStatus(rsf.getCurrentStatus());
+        rssf.setBeginDate(new Date());
+        rssf.setCreateBy(rsf.getUpdateBy());
+        rssf.setRepairServiceForm(rsf);
+        rsf.getServiceStatusSet().add(rssf);
+
+
+        String[] travelId = repairManInfo.get(0);
+        String[] arrivalDate = repairManInfo.get(1);
+        String[] returnDate = repairManInfo.get(2);
+        String[] travelFee = repairManInfo.get(3);
+        String[] laborCosts = repairManInfo.get(4);
+        String[] repairCondition = repairManInfo.get(5);
+
+        Set rmiSet = rsf.getRepairManSetInfo();
+        ArrayList rimList = new ArrayList(rmiSet);
+        int repairmanNum=0,workhour=0;
+        double travelFeeAll=0,laborCostsAll=0;
+        //Ê¥æÂ∑•Áª¥‰øÆÂëò
+        for(int i=0;i<rimList.size();i++){
+            //ËÆæÁΩÆÁª¥‰øÆÂëò
+            RepairManInfoForm rmif = (RepairManInfoForm)rimList.get(i);
+            for(int j=0;j<travelId.length;j++){
+                if(rmif.getTravelId().longValue() == new Long(travelId[j]).longValue()){
+                    rsf.getRepairManSetInfo().remove(rmif);
+
+                    rmif.setArrivalDate(Operate.toSqlDate(arrivalDate[j]));
+                    rmif.setReturnDate(Operate.toSqlDate(returnDate[j]));
+                    rmif.setWorkingHoursActual(Operate.getSpacingDay(rmif.getArrivalDate(), rmif.getReturnDate()));
+                    rmif.setTravelFee(new Double(travelFee[j]));
+                    rmif.setLaborCostsActual(new Double(laborCosts[j]));
+                    rmif.setRepairCondition(repairCondition[j]);
+
+                    rmif.setUpdateDate(new Date());
+                    rmif.setUpdateBy(rsf.getUpdateBy());
+
+                    //rmif.setRepairServiceForm(rsf);
+
+                    rsf.getRepairManSetInfo().add(rmif);
+
+                    repairmanNum++;
+                    if(rmif.getWorkingHoursActual() > workhour) workhour = rmif.getWorkingHoursActual();
+                    travelFeeAll+=rmif.getTravelFee();
+                    laborCostsAll+=rmif.getLaborCostsActual();
+
+                    break;
+                }
+            }
+        }
+        al.add(new Object[]{rsf,"u"});
+
+
+
+        this.getBatchDao().allDMLBatch(al);
+
+    }
+
 
 }

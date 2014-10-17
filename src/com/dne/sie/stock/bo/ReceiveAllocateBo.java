@@ -12,235 +12,235 @@ import com.dne.sie.util.bo.CommBo;
 import com.dne.sie.util.query.QueryParameter;
 
 public class ReceiveAllocateBo extends CommBo{
-	
-	
-	
-	
-	private ArrayList<SaleDetailForm> reqAll=new ArrayList<SaleDetailForm>();
-	private String tempStat;
-	private ArrayList<String> updateSaleList=new ArrayList<String>();
-   /**
-    * µ½»õ·ÖÅä¡£
-    * @param stockList µ½»õ½ÓÊÕÈë¿âµÄform
-    * @return int 
-    */
-	public synchronized int allocate(ArrayList stockList){
-		int flag=-1;
-		
-		try{
-			for (int i=0;i<stockList.size();i++) {
-				StockInfoForm sif = (StockInfoForm)stockList.get(i);
-				if(!"X".equals(sif.getStockStatus())) continue;
-				
-				//ÊÕ»õÁã¼ş±ØĞëÔÚPartInfoFormÖĞÓĞĞ§
-	//			PartInfoForm pi=PartInfoBo.getInstance().find(sif.getStuffNo());
-	//			if(pi==null){
-	//				continue; 
-	//			}
-				
-				/* PO¶ÔPO µÄ·ÖÅä */
-				SaleDetailForm sdfQuery=new SaleDetailForm();
-				sdfQuery.setSaleDetailId(sif.getRequestId());
-				sdfQuery.setStuffNo(sif.getStuffNo());
-				reqAll = this.getDetailForm(sdfQuery);
-				
-				flag = this.allocateJob(sif);
-				if(flag == 0){
-					continue;
-				}else{
-					sdfQuery.setSaleDetailId(null);
-					sif.setSkuNum(new Integer(flag));
-				}
-				/* PO¶ÔPO ·ÖÅä½áÊø */
-				
-				
-				/* ¶àÓà¿â´æ µÄ·ÖÅä */
-				//sdfQuery.setReqType("repair");
-				reqAll = this.getDetailForm(sdfQuery);
-				
-				flag = this.allocateJob(sif);
-				if(flag == 0){
-					continue;
-				}else{
-					sif.setSkuNum(new Integer(flag));
-				}
-				/* ¶àÓà¿â´æ ·ÖÅä½áÊø */
-				
-				/* °ÑÁÙÊ±×´Ì¬Î´·ÖÅäµÄ¿â´æ¸ÄÎª¿ÉÓÃ¿â´æ */
-				this.getDao().execute("update StockInfoForm as si set si.stockStatus='A' " +
-					" where si.stockStatus='X' and si.stockId="+sif.getStockId());
-				
-			}
-			
-			SaleInfoBo.getInstance().renewSaleStatus(updateSaleList);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return flag;
-	}
-	
 
-   /**
-    * ²éÑ¯¶ÔÓ¦µÄrequest
-    * @param pk
-    * @return SaleDetailForm 
-    */
-	private ArrayList<SaleDetailForm> getDetailForm(SaleDetailForm sdfQuery) throws Exception{
-		ArrayList<SaleDetailForm> requestList = null;
-		String where="";
-		ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
-		
-		//²éÑ¯¶©¹ºÖĞµÄÏúÊÛÁã¼ş
-		String strHql="from SaleDetailForm as pa where pa.partStatus='H' ";
-		
-		where += " and pa.stuffNo = :stuffNo ";
-		QueryParameter param0 = new QueryParameter();
-		param0.setName("stuffNo");
-		param0.setValue(sdfQuery.getStuffNo());
-		param0.setHbType(Hibernate.STRING);
-		paramList.add(param0);
-		
-		if(sdfQuery.getSaleDetailId()!=null){
-			where += " and pa.saleDetailId = :saleDetailId ";
-			QueryParameter param = new QueryParameter();
-			param.setName("saleDetailId");
-			param.setValue(sdfQuery.getSaleDetailId());
-			param.setHbType(Hibernate.LONG);
-			paramList.add(param);
-		}
-		
-		strHql += where+" order by pa.saleDetailId ";
+
+
+
+    private ArrayList<SaleDetailForm> reqAll=new ArrayList<SaleDetailForm>();
+    private String tempStat;
+    private ArrayList<String> updateSaleList=new ArrayList<String>();
+    /**
+     * åˆ°è´§åˆ†é…ã€‚
+     * @param stockList åˆ°è´§æ¥æ”¶å…¥åº“çš„form
+     * @return int
+     */
+    public synchronized int allocate(ArrayList stockList){
+        int flag=-1;
+
+        try{
+            for (int i=0;i<stockList.size();i++) {
+                StockInfoForm sif = (StockInfoForm)stockList.get(i);
+                if(!"X".equals(sif.getStockStatus())) continue;
+
+                //æ”¶è´§é›¶ä»¶å¿…é¡»åœ¨PartInfoFormä¸­æœ‰æ•ˆ
+                //			PartInfoForm pi=PartInfoBo.getInstance().find(sif.getStuffNo());
+                //			if(pi==null){
+                //				continue;
+                //			}
+
+				/* POå¯¹PO çš„åˆ†é… */
+                SaleDetailForm sdfQuery=new SaleDetailForm();
+                sdfQuery.setSaleDetailId(sif.getRequestId());
+                sdfQuery.setStuffNo(sif.getStuffNo());
+                reqAll = this.getDetailForm(sdfQuery);
+
+                flag = this.allocateJob(sif);
+                if(flag == 0){
+                    continue;
+                }else{
+                    sdfQuery.setSaleDetailId(null);
+                    sif.setSkuNum(new Integer(flag));
+                }
+				/* POå¯¹PO åˆ†é…ç»“æŸ */
+
+
+				/* å¤šä½™åº“å­˜ çš„åˆ†é… */
+                //sdfQuery.setReqType("repair");
+                reqAll = this.getDetailForm(sdfQuery);
+
+                flag = this.allocateJob(sif);
+                if(flag == 0){
+                    continue;
+                }else{
+                    sif.setSkuNum(new Integer(flag));
+                }
+				/* å¤šä½™åº“å­˜ åˆ†é…ç»“æŸ */
+
+				/* æŠŠä¸´æ—¶çŠ¶æ€æœªåˆ†é…çš„åº“å­˜æ”¹ä¸ºå¯ç”¨åº“å­˜ */
+                this.getDao().execute("update StockInfoForm as si set si.stockStatus='A' " +
+                        " where si.stockStatus='X' and si.stockId="+sif.getStockId());
+
+            }
+
+            SaleInfoBo.getInstance().renewSaleStatus(updateSaleList);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return flag;
+    }
+
+
+    /**
+     * æŸ¥è¯¢å¯¹åº”çš„request
+     * @param sdfQuery
+     * @return SaleDetailForm
+     */
+    private ArrayList<SaleDetailForm> getDetailForm(SaleDetailForm sdfQuery) throws Exception{
+        ArrayList<SaleDetailForm> requestList = null;
+        String where="";
+        ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
+
+        //æŸ¥è¯¢è®¢è´­ä¸­çš„é”€å”®é›¶ä»¶
+        String strHql="from SaleDetailForm as pa where pa.partStatus='H' ";
+
+        where += " and pa.stuffNo = :stuffNo ";
+        QueryParameter param0 = new QueryParameter();
+        param0.setName("stuffNo");
+        param0.setValue(sdfQuery.getStuffNo());
+        param0.setHbType(Hibernate.STRING);
+        paramList.add(param0);
+
+        if(sdfQuery.getSaleDetailId()!=null){
+            where += " and pa.saleDetailId = :saleDetailId ";
+            QueryParameter param = new QueryParameter();
+            param.setName("saleDetailId");
+            param.setValue(sdfQuery.getSaleDetailId());
+            param.setHbType(Hibernate.LONG);
+            paramList.add(param);
+        }
+
+        strHql += where+" order by pa.saleDetailId ";
 //		System.out.println("--xx---strHql="+strHql);
-		requestList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
-		//»ñÈ¡Ëù·ÖÅäµÄÏúÊÛµ¥ºÅ
-		for(int j=0;j<requestList.size();j++){
-			String saleNo=requestList.get(j).getSaleNo();
-			if(!updateSaleList.contains(saleNo)){
-				updateSaleList.add(saleNo);
-			}
-		}
-		return requestList;
-	}
-	
-	private int allocateJob(StockInfoForm sif) throws Exception{
-		int restStockNum = sif.getSkuNum().intValue();
-		int rang = 0 ;
-		
-		boolean t = false;
-		
-		for (int j=0;j<reqAll.size();j++) {
-			SaleDetailForm reqForm = reqAll.get(j);
-			rang = restStockNum - reqForm.getPartNum().intValue();
-			
-			if(rang > 0){ 	//·ÖÅäºóÓĞÊ£Óà£¬²ğ·Ö¿â´æ
-				restStockNum = rang;
-				
-				reqForm.setPartStatus("L");		//ÒÑ·ÖÅä´ıÁìÈ¡
-				reqForm.setUpdateBy(new Long(-1));
-				reqForm.setUpdateDate(new Date());
-				t = this.getDao().update(reqForm);
-				
-				if(t){
-					sif.setSkuNum(reqForm.getPartNum());
-					sif.setStockStatus("R");	//±£Áô×´Ì¬
-					sif.setRequestId(reqForm.getSaleDetailId());
-					sif.setSkuType("S");
-					sif.setUpdateBy(new Long(-1));
-					sif.setUpdateDate(new Date());
-					t = this.getDao().update(sif);
-			
-					if(t){
-						sif.setSkuNum(new Integer(restStockNum));
-						sif.setStockStatus("A");
-						sif.setStockId(null);
-						sif.setRequestId(null);
-						sif.setUpdateBy(null);
-						sif.setUpdateDate(null);
-						//sif.setCreateBy(new Long(-1));
-						sif.setCreateDate(new Date());
-						t = this.getDao().insert(sif);
-					}
-				}
-				
-			}else if(rang < 0 ){	//¿â´æ²»¹»·ÖÅä£¬²ğ·Örequest
-				tempStat = reqForm.getPartStatus();
-				reqForm.setPartStatus("L");
-				reqForm.setPartNum(new Integer(restStockNum));
-				reqForm.setUpdateBy(new Long(-1));
-				reqForm.setUpdateDate(new Date());
-				
-				t = this.getDao().update(reqForm);
-				
-				if(t){
-					sif.setStockStatus("R");
-					sif.setRequestId(reqForm.getSaleDetailId());
-					sif.setUpdateBy(new Long(-1));
-					sif.setUpdateDate(new Date());
-					//sif.setCreateBy(null);
-					t = this.getDao().update(sif);
-					
-					if(t){
-						reqForm.setPartStatus(tempStat);
-						
-						reqForm.setPartNum(new Integer(-rang));
-						reqForm.setUpdateBy(null);
-						reqForm.setUpdateDate(null);
-						//reqForm.setCreateBy(new Long(-1));
-						
-						if(reqForm.getRootId()==null||reqForm.getRootId().longValue() == 0){
-							reqForm.setRootId(reqForm.getSaleDetailId());
-							reqForm.setSaleDetailId(null);
-						}else{
-							reqForm.setSaleDetailId(null);
-						}
-						t = this.getDao().insert(reqForm);
-					}
-				}
-				restStockNum = 0;
-				
-				
-			}else{	//¿â´æÕıºÃ·ÖÅä
-				reqForm.setPartStatus("L");
-				reqForm.setUpdateBy(new Long(-1));
-				reqForm.setUpdateDate(new Date());
-				t = this.getDao().update(reqForm);
-				
-				if(t){
-					sif.setStockStatus("R");
-					sif.setRequestId(reqForm.getSaleDetailId());
-					sif.setUpdateBy(new Long(-1));
-					sif.setUpdateDate(new Date());
-					//sif.setCreateBy(null);
-					t = this.getDao().update(sif);
-					
-				}
-				restStockNum= 0;
-				
-			}
-		}
-		
-		
-		return restStockNum;
-	}
-	
-	public ArrayList getStockList() throws Exception{
-		//sale_detail_id in(7,8,9,17,18,20,22);
-		ArrayList stockList = (ArrayList)this.getDao().list("from StockInfoForm as sif where sif.stockId in (200,201,202)");
-		
-		return stockList;
-	}
-	
-	public static void main(String[] args) {
-		try{
-			
-			ReceiveAllocateBo rab=new ReceiveAllocateBo();
-			
-			rab.allocate(rab.getStockList());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	
+        requestList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
+        //è·å–æ‰€åˆ†é…çš„é”€å”®å•å·
+        for(int j=0;j<requestList.size();j++){
+            String saleNo=requestList.get(j).getSaleNo();
+            if(!updateSaleList.contains(saleNo)){
+                updateSaleList.add(saleNo);
+            }
+        }
+        return requestList;
+    }
+
+    private int allocateJob(StockInfoForm sif) throws Exception{
+        int restStockNum = sif.getSkuNum().intValue();
+        int rang = 0 ;
+
+        boolean t = false;
+
+        for (int j=0;j<reqAll.size();j++) {
+            SaleDetailForm reqForm = reqAll.get(j);
+            rang = restStockNum - reqForm.getPartNum().intValue();
+
+            if(rang > 0){ 	//åˆ†é…åæœ‰å‰©ä½™ï¼Œæ‹†åˆ†åº“å­˜
+                restStockNum = rang;
+
+                reqForm.setPartStatus("L");		//å·²åˆ†é…å¾…é¢†å–
+                reqForm.setUpdateBy(new Long(-1));
+                reqForm.setUpdateDate(new Date());
+                t = this.getDao().update(reqForm);
+
+                if(t){
+                    sif.setSkuNum(reqForm.getPartNum());
+                    sif.setStockStatus("R");	//ä¿ç•™çŠ¶æ€
+                    sif.setRequestId(reqForm.getSaleDetailId());
+                    sif.setSkuType("S");
+                    sif.setUpdateBy(new Long(-1));
+                    sif.setUpdateDate(new Date());
+                    t = this.getDao().update(sif);
+
+                    if(t){
+                        sif.setSkuNum(new Integer(restStockNum));
+                        sif.setStockStatus("A");
+                        sif.setStockId(null);
+                        sif.setRequestId(null);
+                        sif.setUpdateBy(null);
+                        sif.setUpdateDate(null);
+                        //sif.setCreateBy(new Long(-1));
+                        sif.setCreateDate(new Date());
+                        t = this.getDao().insert(sif);
+                    }
+                }
+
+            }else if(rang < 0 ){	//åº“å­˜ä¸å¤Ÿåˆ†é…ï¼Œæ‹†åˆ†request
+                tempStat = reqForm.getPartStatus();
+                reqForm.setPartStatus("L");
+                reqForm.setPartNum(new Integer(restStockNum));
+                reqForm.setUpdateBy(new Long(-1));
+                reqForm.setUpdateDate(new Date());
+
+                t = this.getDao().update(reqForm);
+
+                if(t){
+                    sif.setStockStatus("R");
+                    sif.setRequestId(reqForm.getSaleDetailId());
+                    sif.setUpdateBy(new Long(-1));
+                    sif.setUpdateDate(new Date());
+                    //sif.setCreateBy(null);
+                    t = this.getDao().update(sif);
+
+                    if(t){
+                        reqForm.setPartStatus(tempStat);
+
+                        reqForm.setPartNum(new Integer(-rang));
+                        reqForm.setUpdateBy(null);
+                        reqForm.setUpdateDate(null);
+                        //reqForm.setCreateBy(new Long(-1));
+
+                        if(reqForm.getRootId()==null||reqForm.getRootId().longValue() == 0){
+                            reqForm.setRootId(reqForm.getSaleDetailId());
+                            reqForm.setSaleDetailId(null);
+                        }else{
+                            reqForm.setSaleDetailId(null);
+                        }
+                        t = this.getDao().insert(reqForm);
+                    }
+                }
+                restStockNum = 0;
+
+
+            }else{	//åº“å­˜æ­£å¥½åˆ†é…
+                reqForm.setPartStatus("L");
+                reqForm.setUpdateBy(new Long(-1));
+                reqForm.setUpdateDate(new Date());
+                t = this.getDao().update(reqForm);
+
+                if(t){
+                    sif.setStockStatus("R");
+                    sif.setRequestId(reqForm.getSaleDetailId());
+                    sif.setUpdateBy(new Long(-1));
+                    sif.setUpdateDate(new Date());
+                    //sif.setCreateBy(null);
+                    t = this.getDao().update(sif);
+
+                }
+                restStockNum= 0;
+
+            }
+        }
+
+
+        return restStockNum;
+    }
+
+    public ArrayList getStockList() throws Exception{
+        //sale_detail_id in(7,8,9,17,18,20,22);
+        ArrayList stockList = (ArrayList)this.getDao().list("from StockInfoForm as sif where sif.stockId in (200,201,202)");
+
+        return stockList;
+    }
+
+    public static void main(String[] args) {
+        try{
+
+            ReceiveAllocateBo rab=new ReceiveAllocateBo();
+
+            rab.allocate(rab.getStockList());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 }

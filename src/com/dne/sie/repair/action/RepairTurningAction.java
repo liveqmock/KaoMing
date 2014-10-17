@@ -19,502 +19,502 @@ import com.dne.sie.repair.form.RepairServiceForm;
 import com.dne.sie.util.action.ControlAction;
 
 public class RepairTurningAction extends ControlAction {
-	
 
-	/**
-	 *	≥ı ºªØ£¨°∞∞≤µ˜°±->°∞∞≤µ˜µ«º«°±
-	 *	@param request HttpServletRequest
-	 *	@param form ActionForm
-	 *	@return 
-	 */
-	public String jwReceiveInit(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "jwReceiveInit";
-		
-		//∑µªÿœ‘ æœ¬∏ˆŒ¨–ﬁµ•∫≈
-		request.setAttribute("serviceSheetNo",FormNumberBuilder.findNewServiveSheetNo());
-			
-		return forward;
-	}
-	
 
-	/**
-	 *	æÕŒªµ«º«
-	 *	@param request HttpServletRequest
-	 *	@param form ActionForm
-	 *	@return 
-	 */
-	public String turningAdd(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
+    /**
+     *	ÂàùÂßãÂåñÔºå‚ÄúÂÆâË∞É‚Äù->‚ÄúÂÆâË∞ÉÁôªËÆ∞‚Äù
+     *	@param request HttpServletRequest
+     *	@param form ActionForm
+     *	@return
+     */
+    public String jwReceiveInit(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "jwReceiveInit";
 
-		String tempAttache = request.getParameter("attacheIds");
-		
-		RepairTurningBo rtb = RepairTurningBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		searchForm.setCurrentStatus("T");	//◊º±∏≈…π§
-		searchForm.setRepairProperites("T");	//∞≤µ˜
-		searchForm.setCreateBy(userId);
-		searchForm.setCreateDate(new Date());
-		searchForm.setOperaterId(userId);
-		searchForm.setRr90("");
-		searchForm.setPurchaseDate(Operate.toDate(searchForm.getPurchaseDateStr()));
-		searchForm.setCustomerVisitDate(Operate.toDate(searchForm.getCustomerVisitDateStr()));
-		searchForm.setEstimateRepairDate(Operate.toDate(searchForm.getEstimateRepairDateStr()));
-		searchForm.setExtendedWarrantyDate(Operate.toDate(searchForm.getExtendedWarrantyDateStr()));
-		
-		RepairServiceForm rsf=null;
-		
-		rsf =rtb.addTurningService(searchForm);
-	
-		//±£¥Êµ•æ›
-		Long repairNo = rsf.getRepairNo();
-			
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),repairNo,userId);
-		}
-		
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "turningAdd");
-		
-		return forward;
-	}
-	
-	/**
-	 * °∞∞≤µ˜°±->°∞æÕŒª≈…π§≤È‘É°±
-	 * @param request HttpServletRequest
-	 * @param form ActionForm
-	 * @return String ∑µªÿ–Ë“™forward÷¡µƒµÿ÷∑
-	 */
-	public String jwDispatchList(HttpServletRequest request,ActionForm form) throws Exception{  
-		String forward = "jwDispatchList";
-		
-		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("T");	//◊º±∏≈…π§
-		rsForm.setWarrantyType("A"); //æÕŒª
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		request.setAttribute("atDispatchList",rlBo.getRepairList(rsForm));
-	
-		return forward;
-	}
-	
-	
-	
-	public String jwDispatchDetail(HttpServletRequest request,ActionForm form) throws Exception{ 
-		String forward = "jwDispatchDetail";
-		
-		String repairNo = request.getParameter("repairNo");
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
-		
-		request.setAttribute("repairServiceForm", rsf);
-		request.setAttribute("repairSearchForm", rsf);
-		
-		request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
-		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+        //ËøîÂõûÊòæÁ§∫‰∏ã‰∏™Áª¥‰øÆÂçïÂè∑
+        request.setAttribute("serviceSheetNo",FormNumberBuilder.findNewServiveSheetNo());
 
-		//»°¥ÀŒ¨–ﬁµ•µƒ∏Ωº˛
-		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
-		
-		
-		return forward;
-	}
-	
-	
+        return forward;
+    }
 
-	/**
-	 * ≈…π§ -- æÕŒª≈…π§ or ∞≤µ˜≈…π§ or æÕŒª≈…π§
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String dispatch(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setCurrentStatus("D"); //“—≈…π§
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		String tempData="jwDispatchList";
-		if(searchForm.getWarrantyType().equals("B")){
-			tempData="atDispatchList";
-		}else if(searchForm.getWarrantyType().equals("C")){
-			tempData="jcDispatchList";
-		}
-		
-		String repairMans = request.getParameter("repairMans");
-		
-		if(repairMans!=null && repairMans.startsWith("@")){
-			repairMans=repairMans.substring(1)+" ";
-		}
-		RepairTurningBo.getInstance().dispatch(searchForm,repairMans);
-		
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "turningList");
-		request.setAttribute("tempData",tempData);
-		
-		return forward;
-	}
-	
-	
-	public String jwCompleteList(HttpServletRequest request,ActionForm form) throws Exception{  
-		String forward = "jwCompleteList";
-		
-		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("D");	//“—≈…π§
-		rsForm.setWarrantyType("A"); //æÕŒª
-		
-		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
-		String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
-		rsForm.setCurrentUserId(employeeId);
-		rsForm.setRoleIds(roleIds);
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		request.setAttribute("jwCompleteList",rlBo.getRepairList(rsForm));
-	
-		return forward;
-	}
-	
-	
-	
-	public String jwCompleteDetail(HttpServletRequest request,ActionForm form) throws Exception{ 
-		String forward = "jwCompleteDetail";
-		
-		String repairNo = request.getParameter("repairNo");
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
-		
-		request.setAttribute("repairServiceForm", rsf);
-		request.setAttribute("repairSearchForm", rsf);
-		
-		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
 
-		//»°¥ÀŒ¨–ﬁµ•µƒ∏Ωº˛
-		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
-		
-		
-		return forward;
-	}
-	
+    /**
+     *	Â∞±‰ΩçÁôªËÆ∞
+     *	@param request HttpServletRequest
+     *	@param form ActionForm
+     *	@return
+     */
+    public String turningAdd(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
 
-	/**
-	 * ≈…π§ -- æÕŒª≈…π§ or ∞≤µ˜≈…π§ or æÕŒª≈…π§
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String atComplete(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		RepairTurningBo rtb = RepairTurningBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-	
-		searchForm.setCurrentStatus("E"); //±®∏ÊÕÍ≥…
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		String tempData="jwCompleteList";
-		if(searchForm.getWarrantyType().equals("B")){
-			tempData="atCompleteList";
-		}else if(searchForm.getWarrantyType().equals("C")){
-			tempData="jcCompleteList";
-		}else if(searchForm.getWarrantyType().equals("A")){
-			if(searchForm.getExtendedWarrantyDateStr()!=null)
-				searchForm.setExtendedWarrantyDate(Operate.toDate(searchForm.getExtendedWarrantyDateStr()));
-		}
-		
+        String tempAttache = request.getParameter("attacheIds");
 
-		String[] arrivalDate = request.getParameterValues("arrivalDate");
-		String[] returnDate = request.getParameterValues("returnDate");
-		String[] travelFee = request.getParameterValues("travelFee");
-		String[] laborCosts = request.getParameterValues("laborCosts");
-		String[] repairCondition = request.getParameterValues("repairCondition");
-		String[] travelId = request.getParameterValues("travelId");
-		
-		if(travelId==null){
-			throw new Exception("travelId null!");
-		}
-		
-		ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
-		repairManInfo.add(travelId);
-		repairManInfo.add(arrivalDate);
-		repairManInfo.add(returnDate);
-		repairManInfo.add(travelFee);
-		repairManInfo.add(laborCosts);
-		repairManInfo.add(repairCondition);
-		
-		try{
-			if(searchForm.getWarrantyType().equals("A")){
-				rtb.jwComplete(searchForm,repairManInfo);
-			}else if(searchForm.getWarrantyType().equals("B")){
-				rtb.atComplete(searchForm,repairManInfo);
-			}else if(searchForm.getWarrantyType().equals("C")){
-				rtb.jcComplete(searchForm,repairManInfo);
-			}
-		}catch(VersionException ve){
-			return "versionErr";
-		}
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "turningList");
-		request.setAttribute("tempData",tempData);
-		
-		return forward;
-	}
-	
-	
-	public String atNotComplete(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		RepairTurningBo rtb = RepairTurningBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-	
-		searchForm.setCurrentStatus("W"); //Œ¥ÕÍ≥…
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		String[] arrivalDate = request.getParameterValues("arrivalDate");
-		String[] returnDate = request.getParameterValues("returnDate");
-		String[] travelFee = request.getParameterValues("travelFee");
-		String[] laborCosts = request.getParameterValues("laborCosts");
-		String[] repairCondition = request.getParameterValues("repairCondition");
-		String[] travelId = request.getParameterValues("travelId");
-		
-		if(travelId==null){
-			throw new Exception("travelId null!");
-		}
-		
-		ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
-		repairManInfo.add(travelId);
-		repairManInfo.add(arrivalDate);
-		repairManInfo.add(returnDate);
-		repairManInfo.add(travelFee);
-		repairManInfo.add(laborCosts);
-		repairManInfo.add(repairCondition);
-		
-		try{
-			rtb.atNotComplete(searchForm,repairManInfo);
-		}catch(VersionException ve){
-			return "versionErr";
-		}
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "turningList");
-		request.setAttribute("tempData","atCompleteList");
-		
-		return forward;
-	}
+        RepairTurningBo rtb = RepairTurningBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
 
-	/**
-	 * °∞∞≤µ˜°±->°∞∞≤µ˜≈…π§≤È‘É°±
-	 * @param request HttpServletRequest
-	 * @param form ActionForm
-	 * @return String ∑µªÿ–Ë“™forward÷¡µƒµÿ÷∑
-	 */
-	public String atDispatchList(HttpServletRequest request,ActionForm form) throws Exception{  
-		String forward = "atDispatchList";
-		
-		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("T");	//◊º±∏≈…π§
-		rsForm.setWarrantyType("B"); //∞≤µ˜
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		request.setAttribute("atDispatchList",rlBo.getRepairList(rsForm));
-		
-	
-		return forward;
-	}
-	
-	
-	
-	public String atDispatchDetail(HttpServletRequest request,ActionForm form) throws Exception{ 
-		String forward = "atDispatchDetail";
-		
-		String repairNo = request.getParameter("repairNo");
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
-		
-		request.setAttribute("repairServiceForm", rsf);
-		request.setAttribute("repairSearchForm", rsf);
-		
-		request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
-		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        searchForm.setCurrentStatus("T");	//ÂáÜÂ§áÊ¥æÂ∑•
+        searchForm.setRepairProperites("T");	//ÂÆâË∞É
+        searchForm.setCreateBy(userId);
+        searchForm.setCreateDate(new Date());
+        searchForm.setOperaterId(userId);
+        searchForm.setRr90("");
+        searchForm.setPurchaseDate(Operate.toDate(searchForm.getPurchaseDateStr()));
+        searchForm.setCustomerVisitDate(Operate.toDate(searchForm.getCustomerVisitDateStr()));
+        searchForm.setEstimateRepairDate(Operate.toDate(searchForm.getEstimateRepairDateStr()));
+        searchForm.setExtendedWarrantyDate(Operate.toDate(searchForm.getExtendedWarrantyDateStr()));
 
-		//»°¥ÀŒ¨–ﬁµ•µƒ∏Ωº˛
-		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
-		
-		RepairSearchForm lastForm = new RepairSearchForm();
-		lastForm.setSerialNo(rsf.getSerialNo());
-		lastForm.setTxtNumPerPage("1000");
-		lastForm.setRr90("serial");
-		lastForm.setRepairNo(rsf.getRepairNo());
-		request.setAttribute("historyRepairList",rlBo.getRepairQueryList(lastForm));
-		
-		return forward;
-	}
-	
-	
+        RepairServiceForm rsf=null;
 
-	public String atCompleteList(HttpServletRequest request,ActionForm form) throws Exception{  
-		String forward = "atCompleteList";
-		
-		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("AT");	//“—≈…π§°¢Œ¥ÕÍ≥…
-		rsForm.setWarrantyType("B"); //∞≤µ˜
-		
+        rsf =rtb.addTurningService(searchForm);
 
-		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
-		String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
-		rsForm.setCurrentUserId(employeeId);
-		rsForm.setRoleIds(roleIds);
-		
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		request.setAttribute("atCompleteList",rlBo.getRepairList(rsForm));
-	
-		return forward;
-	}
-	
-	
-	
-	public String atCompleteDetail(HttpServletRequest request,ActionForm form) throws Exception{ 
-		String forward = "atCompleteDetail";
-		
-		String repairNo = request.getParameter("repairNo");
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
-		
-		request.setAttribute("repairServiceForm", rsf);
-		request.setAttribute("repairSearchForm", rsf);
-		
-		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+        //‰øùÂ≠òÂçïÊçÆ
+        Long repairNo = rsf.getRepairNo();
 
-		//»°¥ÀŒ¨–ﬁµ•µƒ∏Ωº˛
-		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
-		
-		
-		return forward;
-	}
-	
-	
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),repairNo,userId);
+        }
 
-	/**
-	 * °∞∞≤µ˜°±->°∞ºÏ≤‚≈…π§≤È‘É°±
-	 * @param request HttpServletRequest
-	 * @param form ActionForm
-	 * @return String ∑µªÿ–Ë“™forward÷¡µƒµÿ÷∑
-	 */
-	public String jcDispatchList(HttpServletRequest request,ActionForm form) throws Exception{  
-		String forward = "jcDispatchList";
-		
-		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("T");	//◊º±∏≈…π§
-		rsForm.setWarrantyType("C"); //ºÏ≤‚
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		request.setAttribute("jcDispatchList",rlBo.getRepairList(rsForm));
-	
-		return forward;
-	}
-	
-	
-	
-	public String jcDispatchDetail(HttpServletRequest request,ActionForm form) throws Exception{ 
-		String forward = "jcDispatchDetail";
-		
-		String repairNo = request.getParameter("repairNo");
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
-		
-		request.setAttribute("repairServiceForm", rsf);
-		request.setAttribute("repairSearchForm", rsf);
-		
-		request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
-		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "turningAdd");
 
-		//»°¥ÀŒ¨–ﬁµ•µƒ∏Ωº˛
-		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
-		
-		
-		return forward;
-	}
-	
-	
+        return forward;
+    }
 
-	public String jcCompleteList(HttpServletRequest request,ActionForm form) throws Exception{  
-		String forward = "jcCompleteList";
-		
-		RepairSearchForm rsForm = (RepairSearchForm) form;
-		rsForm.setRepairProperites("T");
-		rsForm.setCurrentStatus("D");	//“—≈…π§
-		rsForm.setWarrantyType("C"); //ºÏ≤‚
-		
+    /**
+     * ‚ÄúÂÆâË∞É‚Äù->‚ÄúÂ∞±‰ΩçÊ¥æÂ∑•Êü•Ë©¢‚Äù
+     * @param request HttpServletRequest
+     * @param form ActionForm
+     * @return String ËøîÂõûÈúÄË¶ÅforwardËá≥ÁöÑÂú∞ÂùÄ
+     */
+    public String jwDispatchList(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jwDispatchList";
 
-		Long employeeId = (Long)request.getSession().getAttribute("employeeId");
-		String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
-		rsForm.setCurrentUserId(employeeId);
-		rsForm.setRoleIds(roleIds);
-		
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		request.setAttribute("jcCompleteList",rlBo.getRepairList(rsForm));
-	
-		return forward;
-	}
-	
-	
-	
-	public String jcCompleteDetail(HttpServletRequest request,ActionForm form) throws Exception{ 
-		String forward = "jcCompleteDetail";
-		
-		String repairNo = request.getParameter("repairNo");
-		
-		RepairListBo rlBo = RepairListBo.getInstance();
-		RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
-		
-		request.setAttribute("repairServiceForm", rsf);
-		request.setAttribute("repairSearchForm", rsf);
-		
-		request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+        RepairSearchForm rsForm = (RepairSearchForm) form;
+        rsForm.setRepairProperites("T");
+        rsForm.setCurrentStatus("T");	//ÂáÜÂ§áÊ¥æÂ∑•
+        rsForm.setWarrantyType("A"); //Â∞±‰Ωç
 
-		//»°¥ÀŒ¨–ﬁµ•µƒ∏Ωº˛
-		request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
-		
-		
-		return forward;
-	}
-	
+        RepairListBo rlBo = RepairListBo.getInstance();
+        request.setAttribute("atDispatchList",rlBo.getRepairList(rsForm));
+
+        return forward;
+    }
+
+
+
+    public String jwDispatchDetail(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jwDispatchDetail";
+
+        String repairNo = request.getParameter("repairNo");
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+
+        request.setAttribute("repairServiceForm", rsf);
+        request.setAttribute("repairSearchForm", rsf);
+
+        request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
+        request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+
+        //ÂèñÊ≠§Áª¥‰øÆÂçïÁöÑÈôÑ‰ª∂
+        request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
+
+
+        return forward;
+    }
+
+
+
+    /**
+     * Ê¥æÂ∑• -- Â∞±‰ΩçÊ¥æÂ∑• or ÂÆâË∞ÉÊ¥æÂ∑• or Â∞±‰ΩçÊ¥æÂ∑•
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String dispatch(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("D"); //Â∑≤Ê¥æÂ∑•
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        String tempData="jwDispatchList";
+        if(searchForm.getWarrantyType().equals("B")){
+            tempData="atDispatchList";
+        }else if(searchForm.getWarrantyType().equals("C")){
+            tempData="jcDispatchList";
+        }
+
+        String repairMans = request.getParameter("repairMans");
+
+        if(repairMans!=null && repairMans.startsWith("@")){
+            repairMans=repairMans.substring(1)+" ";
+        }
+        RepairTurningBo.getInstance().dispatch(searchForm,repairMans);
+
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "turningList");
+        request.setAttribute("tempData",tempData);
+
+        return forward;
+    }
+
+
+    public String jwCompleteList(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jwCompleteList";
+
+        RepairSearchForm rsForm = (RepairSearchForm) form;
+        rsForm.setRepairProperites("T");
+        rsForm.setCurrentStatus("D");	//Â∑≤Ê¥æÂ∑•
+        rsForm.setWarrantyType("A"); //Â∞±‰Ωç
+
+        Long employeeId = (Long)request.getSession().getAttribute("employeeId");
+        String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
+        rsForm.setCurrentUserId(employeeId);
+        rsForm.setRoleIds(roleIds);
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        request.setAttribute("jwCompleteList",rlBo.getRepairList(rsForm));
+
+        return forward;
+    }
+
+
+
+    public String jwCompleteDetail(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jwCompleteDetail";
+
+        String repairNo = request.getParameter("repairNo");
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+
+        request.setAttribute("repairServiceForm", rsf);
+        request.setAttribute("repairSearchForm", rsf);
+
+        request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+
+        //ÂèñÊ≠§Áª¥‰øÆÂçïÁöÑÈôÑ‰ª∂
+        request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
+
+
+        return forward;
+    }
+
+
+    /**
+     * Ê¥æÂ∑• -- Â∞±‰ΩçÊ¥æÂ∑• or ÂÆâË∞ÉÊ¥æÂ∑• or Â∞±‰ΩçÊ¥æÂ∑•
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String atComplete(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        RepairTurningBo rtb = RepairTurningBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("E"); //Êä•ÂëäÂÆåÊàê
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        String tempData="jwCompleteList";
+        if(searchForm.getWarrantyType().equals("B")){
+            tempData="atCompleteList";
+        }else if(searchForm.getWarrantyType().equals("C")){
+            tempData="jcCompleteList";
+        }else if(searchForm.getWarrantyType().equals("A")){
+            if(searchForm.getExtendedWarrantyDateStr()!=null)
+                searchForm.setExtendedWarrantyDate(Operate.toDate(searchForm.getExtendedWarrantyDateStr()));
+        }
+
+
+        String[] arrivalDate = request.getParameterValues("arrivalDate");
+        String[] returnDate = request.getParameterValues("returnDate");
+        String[] travelFee = request.getParameterValues("travelFee");
+        String[] laborCosts = request.getParameterValues("laborCosts");
+        String[] repairCondition = request.getParameterValues("repairCondition");
+        String[] travelId = request.getParameterValues("travelId");
+
+        if(travelId==null){
+            throw new Exception("travelId null!");
+        }
+
+        ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
+        repairManInfo.add(travelId);
+        repairManInfo.add(arrivalDate);
+        repairManInfo.add(returnDate);
+        repairManInfo.add(travelFee);
+        repairManInfo.add(laborCosts);
+        repairManInfo.add(repairCondition);
+
+        try{
+            if(searchForm.getWarrantyType().equals("A")){
+                rtb.jwComplete(searchForm,repairManInfo);
+            }else if(searchForm.getWarrantyType().equals("B")){
+                rtb.atComplete(searchForm,repairManInfo);
+            }else if(searchForm.getWarrantyType().equals("C")){
+                rtb.jcComplete(searchForm,repairManInfo);
+            }
+        }catch(VersionException ve){
+            return "versionErr";
+        }
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "turningList");
+        request.setAttribute("tempData",tempData);
+
+        return forward;
+    }
+
+
+    public String atNotComplete(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        RepairTurningBo rtb = RepairTurningBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("W"); //Êú™ÂÆåÊàê
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        String[] arrivalDate = request.getParameterValues("arrivalDate");
+        String[] returnDate = request.getParameterValues("returnDate");
+        String[] travelFee = request.getParameterValues("travelFee");
+        String[] laborCosts = request.getParameterValues("laborCosts");
+        String[] repairCondition = request.getParameterValues("repairCondition");
+        String[] travelId = request.getParameterValues("travelId");
+
+        if(travelId==null){
+            throw new Exception("travelId null!");
+        }
+
+        ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
+        repairManInfo.add(travelId);
+        repairManInfo.add(arrivalDate);
+        repairManInfo.add(returnDate);
+        repairManInfo.add(travelFee);
+        repairManInfo.add(laborCosts);
+        repairManInfo.add(repairCondition);
+
+        try{
+            rtb.atNotComplete(searchForm,repairManInfo);
+        }catch(VersionException ve){
+            return "versionErr";
+        }
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "turningList");
+        request.setAttribute("tempData","atCompleteList");
+
+        return forward;
+    }
+
+    /**
+     * ‚ÄúÂÆâË∞É‚Äù->‚ÄúÂÆâË∞ÉÊ¥æÂ∑•Êü•Ë©¢‚Äù
+     * @param request HttpServletRequest
+     * @param form ActionForm
+     * @return String ËøîÂõûÈúÄË¶ÅforwardËá≥ÁöÑÂú∞ÂùÄ
+     */
+    public String atDispatchList(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "atDispatchList";
+
+        RepairSearchForm rsForm = (RepairSearchForm) form;
+        rsForm.setRepairProperites("T");
+        rsForm.setCurrentStatus("T");	//ÂáÜÂ§áÊ¥æÂ∑•
+        rsForm.setWarrantyType("B"); //ÂÆâË∞É
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        request.setAttribute("atDispatchList",rlBo.getRepairList(rsForm));
+
+
+        return forward;
+    }
+
+
+
+    public String atDispatchDetail(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "atDispatchDetail";
+
+        String repairNo = request.getParameter("repairNo");
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+
+        request.setAttribute("repairServiceForm", rsf);
+        request.setAttribute("repairSearchForm", rsf);
+
+        request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
+        request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+
+        //ÂèñÊ≠§Áª¥‰øÆÂçïÁöÑÈôÑ‰ª∂
+        request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
+
+        RepairSearchForm lastForm = new RepairSearchForm();
+        lastForm.setSerialNo(rsf.getSerialNo());
+        lastForm.setTxtNumPerPage("1000");
+        lastForm.setRr90("serial");
+        lastForm.setRepairNo(rsf.getRepairNo());
+        request.setAttribute("historyRepairList",rlBo.getRepairQueryList(lastForm));
+
+        return forward;
+    }
+
+
+
+    public String atCompleteList(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "atCompleteList";
+
+        RepairSearchForm rsForm = (RepairSearchForm) form;
+        rsForm.setRepairProperites("T");
+        rsForm.setCurrentStatus("AT");	//Â∑≤Ê¥æÂ∑•„ÄÅÊú™ÂÆåÊàê
+        rsForm.setWarrantyType("B"); //ÂÆâË∞É
+
+
+        Long employeeId = (Long)request.getSession().getAttribute("employeeId");
+        String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
+        rsForm.setCurrentUserId(employeeId);
+        rsForm.setRoleIds(roleIds);
+
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        request.setAttribute("atCompleteList",rlBo.getRepairList(rsForm));
+
+        return forward;
+    }
+
+
+
+    public String atCompleteDetail(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "atCompleteDetail";
+
+        String repairNo = request.getParameter("repairNo");
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+
+        request.setAttribute("repairServiceForm", rsf);
+        request.setAttribute("repairSearchForm", rsf);
+
+        request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+
+        //ÂèñÊ≠§Áª¥‰øÆÂçïÁöÑÈôÑ‰ª∂
+        request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
+
+
+        return forward;
+    }
+
+
+
+    /**
+     * ‚ÄúÂÆâË∞É‚Äù->‚ÄúÊ£ÄÊµãÊ¥æÂ∑•Êü•Ë©¢‚Äù
+     * @param request HttpServletRequest
+     * @param form ActionForm
+     * @return String ËøîÂõûÈúÄË¶ÅforwardËá≥ÁöÑÂú∞ÂùÄ
+     */
+    public String jcDispatchList(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jcDispatchList";
+
+        RepairSearchForm rsForm = (RepairSearchForm) form;
+        rsForm.setRepairProperites("T");
+        rsForm.setCurrentStatus("T");	//ÂáÜÂ§áÊ¥æÂ∑•
+        rsForm.setWarrantyType("C"); //Ê£ÄÊµã
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        request.setAttribute("jcDispatchList",rlBo.getRepairList(rsForm));
+
+        return forward;
+    }
+
+
+
+    public String jcDispatchDetail(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jcDispatchDetail";
+
+        String repairNo = request.getParameter("repairNo");
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+
+        request.setAttribute("repairServiceForm", rsf);
+        request.setAttribute("repairSearchForm", rsf);
+
+        request.setAttribute("repairManList", EmployeeInfoBo.getInstance().getRepairManList());
+        request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+
+        //ÂèñÊ≠§Áª¥‰øÆÂçïÁöÑÈôÑ‰ª∂
+        request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
+
+
+        return forward;
+    }
+
+
+
+    public String jcCompleteList(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jcCompleteList";
+
+        RepairSearchForm rsForm = (RepairSearchForm) form;
+        rsForm.setRepairProperites("T");
+        rsForm.setCurrentStatus("D");	//Â∑≤Ê¥æÂ∑•
+        rsForm.setWarrantyType("C"); //Ê£ÄÊµã
+
+
+        Long employeeId = (Long)request.getSession().getAttribute("employeeId");
+        String roleIds = (String)request.getSession().getAttribute("sessionRoleIds");
+        rsForm.setCurrentUserId(employeeId);
+        rsForm.setRoleIds(roleIds);
+
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        request.setAttribute("jcCompleteList",rlBo.getRepairList(rsForm));
+
+        return forward;
+    }
+
+
+
+    public String jcCompleteDetail(HttpServletRequest request,ActionForm form) throws Exception{
+        String forward = "jcCompleteDetail";
+
+        String repairNo = request.getParameter("repairNo");
+
+        RepairListBo rlBo = RepairListBo.getInstance();
+        RepairServiceForm rsf = rlBo.getRepairDetail(new Long(repairNo));
+
+        request.setAttribute("repairServiceForm", rsf);
+        request.setAttribute("repairSearchForm", rsf);
+
+        request.setAttribute("toolsList", rlBo.getToolsList(rsf.getRepairNo()));
+
+        //ÂèñÊ≠§Áª¥‰øÆÂçïÁöÑÈôÑ‰ª∂
+        request.setAttribute("repairAttachment", rlBo.getRepairAttachment(new Long(repairNo)));
+
+
+        return forward;
+    }
+
 
 }

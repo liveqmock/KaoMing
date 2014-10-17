@@ -21,647 +21,647 @@ import com.dne.sie.util.bo.CommBo;
 
 
 /**
- * ø‚¥Ê–≈œ¢π‹¿ÌBO¥¶¿Ì¿‡
+ * Â∫ìÂ≠ò‰ø°ÊÅØÁÆ°ÁêÜBOÂ§ÑÁêÜÁ±ª
  * @author xt
  * @version 1.1.5.6
- * @see StockInfoListBo.java <br>
+ * @see StockInfoListBo <br>
  */
 public class StockInfoListBo extends CommBo {
-	private static Logger logger = Logger.getLogger(StockInfoListBo.class);
+    private static Logger logger = Logger.getLogger(StockInfoListBo.class);
 
-	private static final StockInfoListBo INSTANCE = new StockInfoListBo();
-		
-	private StockInfoListBo(){
-	}
-	
-	public static final StockInfoListBo getInstance() {
-	   return INSTANCE;
-	}
-	
-	/**
-	 * ≤È—Ø∞¥’’skuCode∑÷¿‡µƒº«¬º
-	 * @param StockInfoForm ≤È—ØÃıº˛
-	 * @return ArrayList ≤È—ØΩ·π˚
-	 */
-	public ArrayList stockInfoList(StockInfoForm sifQuery) {
-		
-		ArrayList alData = new ArrayList();
-		StockInfoListQuery uq = new StockInfoListQuery(sifQuery);
-		int count = 0;
-		try {
-			List dataList = uq.doListQuery();
-			//count = uq.doCountQuery();
-			count = dataList.size();
-			for (int i = 0; i < dataList.size(); i++) {
-				Object[] obj = (Object[])dataList.get(i);
-				String[] data = new String[6];
-				data[0] = obj[0]==null?"":obj[0].toString();
-				data[1] = obj[1]==null?"":obj[1].toString();
-				data[2] = obj[2]==null?"":obj[2].toString();
-				data[3] = obj[3]==null?"":Operate.roundF(Float.parseFloat(obj[3].toString()),2)+"";
-				data[4] = obj[4]==null?"":Operate.roundF(Float.parseFloat(obj[4].toString()),2)+"";
-				data[5] = DicInit.getSystemName("SKU_TYPE",(String)obj[5]);
-				
-				alData.add(data);
-			}
-			alData.add(0, count + "");
+    private static final StockInfoListBo INSTANCE = new StockInfoListBo();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return alData;
-	}
-	
+    private StockInfoListBo(){
+    }
 
-	/**
-	 * ≤È—Øƒ≥skuCode‘⁄ø‚¥Ê÷–µƒæﬂÃÂº«¬º
-	 * @param StockInfoForm ≤È—ØÃıº˛
-	 * @return ArrayList[] ≤È—ØΩ·π˚
-	 */
-	public ArrayList[] skuViewList(StockInfoForm sifQuery) {
-		
-		ArrayList alData[] = new ArrayList[2];
-		ArrayList viewList = new ArrayList();
-		ArrayList skuInfoList = new ArrayList();
-		StockInfoQuery siq = new StockInfoQuery(sifQuery);
+    public static final StockInfoListBo getInstance() {
+        return INSTANCE;
+    }
 
-		int count = 0;
-		try {
-			List dataList = siq.doListQuery();
-			//count = siq.doCountQuery();
-			if(dataList!=null){
-				count = dataList.size();
-				StockInfoForm sif=new StockInfoForm();
-				for (int i = 0; i < dataList.size(); i++) {
-					sif = (StockInfoForm)dataList.get(i);
-					String[] data = new String[19];
-					data[0] = sif.getStockId().toString();
-					data[1] = sif.getSkuCode();
-					data[2] = sif.getShortCode();
-					data[3] = sif.getStuffNo();
-					data[4] = sif.getSkuNum()==null?"0":sif.getSkuNum().toString();
-					data[5] = sif.getSkuUnit();
-					data[6] = sif.getPerCost()==null?"":Operate.roundF(sif.getPerCost(),2)+"";
-					data[7] = sif.getStandard();
-					data[8] = sif.getCreateDate()==null?"":sif.getCreateDate().toString();
-					//if(data[8].indexOf(" ")!=-1) data[8] = data[8].substring(0,data[8].indexOf(" "));
-					data[9] = DicInit.getSystemName("STOCK_STATUS",sif.getStockStatus());
-					data[10] = sif.getRemark();
-					data[11] = sif.getSkuType();
-					data[12] = "";
-					data[13] = "";
-					data[14] = sif.getOrderDollar()==null?"":Operate.roundF(sif.getOrderDollar(),2)+"";
-					data[15] = sif.getInvoiceNo();
-					data[16] = sif.getSkuNumTax()==null?"":sif.getSkuNumTax()+"";
-					data[17] = sif.getPerCostTax()==null?"":Operate.roundF(sif.getPerCostTax(),2)+"";
-					data[18] = sif.getBinCode();
-					
-					if("R".equals(sif.getStockStatus())) {
-						if("S".equals(sif.getSkuType())){	//œ˙ €±£¡Ù¡„º˛
-							Object[] temps = this.getFormNo(sif.getRequestId());
-							if(temps!=null){
-								data[12]=(String)temps[0];
-								data[13]=(String)temps[1];
-							}
-						}else if("L".equals(sif.getSkuType())){	//–Ø¥¯±£¡Ù¡„º˛
-							Object[] temps = this.getRepairFormNo(sif.getRequestId());
-							if(temps!=null){
-								data[12]=(String)temps[0];
-								data[13]=(String)temps[1];
-							}
-						}
-					}
-					
-					if(i==0){
-						String[] skuInfo=new String[3];
-						skuInfo[0]=sif.getSkuCode();
-						skuInfo[1]=DicInit.getSystemName("SKU_TYPE",sif.getSkuType());
-						skuInfo[2]=sif.getStuffNo();
-						skuInfoList.add(skuInfo);
-					}
-					
-					viewList.add(data);
-				}
-				viewList.add(0, count + "");
-				alData[0]=viewList;
-				alData[1]=skuInfoList;
+    /**
+     * Êü•ËØ¢ÊåâÁÖßskuCodeÂàÜÁ±ªÁöÑËÆ∞ÂΩï
+     * @param sifQuery Êü•ËØ¢Êù°‰ª∂
+     * @return ArrayList Êü•ËØ¢ÁªìÊûú
+     */
+    public ArrayList stockInfoList(StockInfoForm sifQuery) {
 
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return alData;
-	}
-	
-	
+        ArrayList alData = new ArrayList();
+        StockInfoListQuery uq = new StockInfoListQuery(sifQuery);
+        int count = 0;
+        try {
+            List dataList = uq.doListQuery();
+            //count = uq.doCountQuery();
+            count = dataList.size();
+            for (int i = 0; i < dataList.size(); i++) {
+                Object[] obj = (Object[])dataList.get(i);
+                String[] data = new String[6];
+                data[0] = obj[0]==null?"":obj[0].toString();
+                data[1] = obj[1]==null?"":obj[1].toString();
+                data[2] = obj[2]==null?"":obj[2].toString();
+                data[3] = obj[3]==null?"":Operate.roundF(Float.parseFloat(obj[3].toString()),2)+"";
+                data[4] = obj[4]==null?"":Operate.roundF(Float.parseFloat(obj[4].toString()),2)+"";
+                data[5] = DicInit.getSystemName("SKU_TYPE",(String)obj[5]);
 
-	/**
-	 * ≤È—Øƒ≥skuCode‘⁄ø‚¥Ê÷–µƒæﬂÃÂº«¬º
-	 * @param StockInfoForm ≤È—ØÃıº˛
-	 * @return ArrayList[] ≤È—ØΩ·π˚
-	 */
-	public ArrayList[] skuFlowList(StockFlowForm sffQuery) {
-		
-		ArrayList alData[] = new ArrayList[2];
-		ArrayList viewList = new ArrayList();
-		ArrayList skuInfoList = new ArrayList();
-		StockFlowQuery sfq = new StockFlowQuery(sffQuery);
+                alData.add(data);
+            }
+            alData.add(0, count + "");
 
-		int count = 0;
-		try {
-			List dataList = sfq.doListQuery();
-			//count = siq.doCountQuery();
-			if(dataList!=null){
-				count = dataList.size();
-				StockFlowForm sff=null;
-				for (int i = 0; i < dataList.size(); i++) {
-					sff = (StockFlowForm)dataList.get(i);
-					String[] data = new String[10];
-					data[0] = sff.getFlowId().toString();
-					data[1] = sff.getCreateDate().toString();
-					data[2] = sff.getSkuUnit();
-					data[3] = sff.getPerCost()==null?"":Operate.roundF(sff.getPerCost(),2)+"";
-					data[4] = sff.getRemark();
-					data[5] = "";
-					data[6] = "";
-					if(sff.getFlowType().equals("I"))
-						data[5] = sff.getSkuNum()==null?"":sff.getSkuNum().toString();
-					else if(sff.getFlowType().equals("O"))
-						data[6] = sff.getSkuNum()==null?"":sff.getSkuNum().toString();
-					data[7] = sff.getRestNum()==null?"":sff.getRestNum().toString();
-					data[8] = sff.getSkuType();
-					data[9] = sff.getOrderDollar()==null?"":Operate.roundF(sff.getOrderDollar(),2)+"";
-					
-					if(i==0){
-						String[] skuInfo=new String[3];
-						skuInfo[0]=sff.getSkuCode();
-						skuInfo[1]=DicInit.getSystemName("SKU_TYPE",sff.getSkuType());
-						skuInfo[2]=sff.getStuffNo();
-						skuInfoList.add(skuInfo);
-					}
-					
-					viewList.add(data);
-				}
-				viewList.add(0, count + "");
-				alData[0]=viewList;
-				alData[1]=skuInfoList;
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return alData;
-	}
-	
-
-	/**
-	 *  ªÒµ√±£¡Ù¡„º˛µƒœ˙ €µ•∫≈∫ÕøÕªß
-	 * @param Long œ˙ €µ•pk
-	 * @return String ≤È—ØΩ·π˚
-	 */
-	public Object[] getFormNo(Long request) {
-		Object[] obj=null;
-		try {
-			obj=(Object[])this.getDao().uniqueResult("select si.saleNo,si.customerName " +
-				"from SaleInfoForm si,SaleDetailForm sdf where si.saleNo=sdf.saleNo " +
-				" and sdf.saleDetailId="+request);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return obj;
-
-	}
-	public Object[] getRepairFormNo(Long request) {
-		Object[] obj=null;
-		try {
-			obj=(Object[])this.getDao().uniqueResult("select si.serviceSheetNo,si.customerName " +
-				"from RepairSearchForm si,RepairPartForm sdf where si.repairNo=sdf.repairNo " +
-				" and sdf.partsId="+request);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return obj;
-
-	}
-	
-	
-	
-	/**
-	 * Ω‚Œˆµº»Îµƒø‚¥ÊexcelŒƒº˛£¨‘Ÿ≤Â»Î ˝æ›ø‚
-	 * @param String Œƒº˛√˚
-	 * @param String ≤Ÿ◊˜”√ªßµƒid
-	 * @return ≥…π¶º∞¥ÌŒÛ–– ˝
-	 */
-	public ArrayList stockInitialParse(String strPath, Long user) {
-		ArrayList alRet = new ArrayList();
-		ArrayList parseData = new ArrayList();
-		int tag = -1;
-		try {
-			ExcelEdit ee = new ExcelEdit();
-
-			strPath = Operate.getSysPath() + "affix/upTemp/" + strPath;
-			//logger.error("-----------op.getSysPath()="+strPath);
-
-			ArrayList alData = ee.excelParse(strPath)[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return alData;
+    }
 
 
-			String[] dataNull = new String[7];
-			String[] dataErr = new String[2];
-			
-			for (int i = 0; i < alData.size(); i++) {
+    /**
+     * Êü•ËØ¢ÊüêskuCodeÂú®Â∫ìÂ≠ò‰∏≠ÁöÑÂÖ∑‰ΩìËÆ∞ÂΩï
+     * @param sifQuery Êü•ËØ¢Êù°‰ª∂
+     * @return ArrayList[] Êü•ËØ¢ÁªìÊûú
+     */
+    public ArrayList[] skuViewList(StockInfoForm sifQuery) {
 
-				String[] temp = (String[]) alData.get(i);
+        ArrayList alData[] = new ArrayList[2];
+        ArrayList viewList = new ArrayList();
+        ArrayList skuInfoList = new ArrayList();
+        StockInfoQuery siq = new StockInfoQuery(sifQuery);
 
-				if (!temp[0].equals("")) {
-					//System.out.println("----"+i+"--------temp="+temp[0]);
-					StockInfoForm ppf = new StockInfoForm();
+        int count = 0;
+        try {
+            List dataList = siq.doListQuery();
+            //count = siq.doCountQuery();
+            if(dataList!=null){
+                count = dataList.size();
+                StockInfoForm sif=new StockInfoForm();
+                for (int i = 0; i < dataList.size(); i++) {
+                    sif = (StockInfoForm)dataList.get(i);
+                    String[] data = new String[19];
+                    data[0] = sif.getStockId().toString();
+                    data[1] = sif.getSkuCode();
+                    data[2] = sif.getShortCode();
+                    data[3] = sif.getStuffNo();
+                    data[4] = sif.getSkuNum()==null?"0":sif.getSkuNum().toString();
+                    data[5] = sif.getSkuUnit();
+                    data[6] = sif.getPerCost()==null?"":Operate.roundF(sif.getPerCost(),2)+"";
+                    data[7] = sif.getStandard();
+                    data[8] = sif.getCreateDate()==null?"":sif.getCreateDate().toString();
+                    //if(data[8].indexOf(" ")!=-1) data[8] = data[8].substring(0,data[8].indexOf(" "));
+                    data[9] = DicInit.getSystemName("STOCK_STATUS",sif.getStockStatus());
+                    data[10] = sif.getRemark();
+                    data[11] = sif.getSkuType();
+                    data[12] = "";
+                    data[13] = "";
+                    data[14] = sif.getOrderDollar()==null?"":Operate.roundF(sif.getOrderDollar(),2)+"";
+                    data[15] = sif.getInvoiceNo();
+                    data[16] = sif.getSkuNumTax()==null?"":sif.getSkuNumTax()+"";
+                    data[17] = sif.getPerCostTax()==null?"":Operate.roundF(sif.getPerCostTax(),2)+"";
+                    data[18] = sif.getBinCode();
+
+                    if("R".equals(sif.getStockStatus())) {
+                        if("S".equals(sif.getSkuType())){	//ÈîÄÂîÆ‰øùÁïôÈõ∂‰ª∂
+                            Object[] temps = this.getFormNo(sif.getRequestId());
+                            if(temps!=null){
+                                data[12]=(String)temps[0];
+                                data[13]=(String)temps[1];
+                            }
+                        }else if("L".equals(sif.getSkuType())){	//Êê∫Â∏¶‰øùÁïôÈõ∂‰ª∂
+                            Object[] temps = this.getRepairFormNo(sif.getRequestId());
+                            if(temps!=null){
+                                data[12]=(String)temps[0];
+                                data[13]=(String)temps[1];
+                            }
+                        }
+                    }
+
+                    if(i==0){
+                        String[] skuInfo=new String[3];
+                        skuInfo[0]=sif.getSkuCode();
+                        skuInfo[1]=DicInit.getSystemName("SKU_TYPE",sif.getSkuType());
+                        skuInfo[2]=sif.getStuffNo();
+                        skuInfoList.add(skuInfo);
+                    }
+
+                    viewList.add(data);
+                }
+                viewList.add(0, count + "");
+                alData[0]=viewList;
+                alData[1]=skuInfoList;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return alData;
+    }
 
 
-					//temp[0]-¡„º˛√˚≥∆
-					if (!temp[0].equals("")) {
-						ppf.setSkuCode(temp[0]);
-					} else {
-						if(dataNull[0]==null) dataNull[0] = (i + 2)+"";
-						else dataNull[0] += "," + (i + 2);
-					}
-					//temp[1]-¡„º˛ ˝¡ø
-					if (!"".equals(temp[1])) {
-						if (Operate.isPositiveInteger(temp[1])) {
-							if (Integer.parseInt(temp[1])>=0)
-								ppf.setSkuNum(new Integer(temp[1]));
-							else{
-								if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
-								else dataErr[0] += "," + (i + 2);
-							}
-						} else {
-							if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
-							else dataErr[0] += "," + (i + 2);
-						}
-					} else {
+
+    /**
+     * Êü•ËØ¢ÊüêskuCodeÂú®Â∫ìÂ≠ò‰∏≠ÁöÑÂÖ∑‰ΩìËÆ∞ÂΩï
+     * @param sffQuery Êü•ËØ¢Êù°‰ª∂
+     * @return ArrayList[] Êü•ËØ¢ÁªìÊûú
+     */
+    public ArrayList[] skuFlowList(StockFlowForm sffQuery) {
+
+        ArrayList alData[] = new ArrayList[2];
+        ArrayList viewList = new ArrayList();
+        ArrayList skuInfoList = new ArrayList();
+        StockFlowQuery sfq = new StockFlowQuery(sffQuery);
+
+        int count = 0;
+        try {
+            List dataList = sfq.doListQuery();
+            //count = siq.doCountQuery();
+            if(dataList!=null){
+                count = dataList.size();
+                StockFlowForm sff=null;
+                for (int i = 0; i < dataList.size(); i++) {
+                    sff = (StockFlowForm)dataList.get(i);
+                    String[] data = new String[10];
+                    data[0] = sff.getFlowId().toString();
+                    data[1] = sff.getCreateDate().toString();
+                    data[2] = sff.getSkuUnit();
+                    data[3] = sff.getPerCost()==null?"":Operate.roundF(sff.getPerCost(),2)+"";
+                    data[4] = sff.getRemark();
+                    data[5] = "";
+                    data[6] = "";
+                    if(sff.getFlowType().equals("I"))
+                        data[5] = sff.getSkuNum()==null?"":sff.getSkuNum().toString();
+                    else if(sff.getFlowType().equals("O"))
+                        data[6] = sff.getSkuNum()==null?"":sff.getSkuNum().toString();
+                    data[7] = sff.getRestNum()==null?"":sff.getRestNum().toString();
+                    data[8] = sff.getSkuType();
+                    data[9] = sff.getOrderDollar()==null?"":Operate.roundF(sff.getOrderDollar(),2)+"";
+
+                    if(i==0){
+                        String[] skuInfo=new String[3];
+                        skuInfo[0]=sff.getSkuCode();
+                        skuInfo[1]=DicInit.getSystemName("SKU_TYPE",sff.getSkuType());
+                        skuInfo[2]=sff.getStuffNo();
+                        skuInfoList.add(skuInfo);
+                    }
+
+                    viewList.add(data);
+                }
+                viewList.add(0, count + "");
+                alData[0]=viewList;
+                alData[1]=skuInfoList;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return alData;
+    }
+
+
+    /**
+     *  Ëé∑Âæó‰øùÁïôÈõ∂‰ª∂ÁöÑÈîÄÂîÆÂçïÂè∑ÂíåÂÆ¢Êà∑
+     * @param request ÈîÄÂîÆÂçïpk
+     * @return String Êü•ËØ¢ÁªìÊûú
+     */
+    public Object[] getFormNo(Long request) {
+        Object[] obj=null;
+        try {
+            obj=(Object[])this.getDao().uniqueResult("select si.saleNo,si.customerName " +
+                    "from SaleInfoForm si,SaleDetailForm sdf where si.saleNo=sdf.saleNo " +
+                    " and sdf.saleDetailId="+request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+
+    }
+    public Object[] getRepairFormNo(Long request) {
+        Object[] obj=null;
+        try {
+            obj=(Object[])this.getDao().uniqueResult("select si.serviceSheetNo,si.customerName " +
+                    "from RepairSearchForm si,RepairPartForm sdf where si.repairNo=sdf.repairNo " +
+                    " and sdf.partsId="+request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+
+    }
+
+
+
+    /**
+     * Ëß£ÊûêÂØºÂÖ•ÁöÑÂ∫ìÂ≠òexcelÊñá‰ª∂ÔºåÂÜçÊèíÂÖ•Êï∞ÊçÆÂ∫ì
+     * @param strPath Êñá‰ª∂Âêç
+     * @param user Êìç‰ΩúÁî®Êà∑ÁöÑid
+     * @return ÊàêÂäüÂèäÈîôËØØË°åÊï∞
+     */
+    public ArrayList stockInitialParse(String strPath, Long user) {
+        ArrayList alRet = new ArrayList();
+        ArrayList parseData = new ArrayList();
+        int tag = -1;
+        try {
+            ExcelEdit ee = new ExcelEdit();
+
+            strPath = Operate.getSysPath() + "affix/upTemp/" + strPath;
+            //logger.error("-----------op.getSysPath()="+strPath);
+
+            ArrayList alData = ee.excelParse(strPath)[0];
+
+
+            String[] dataNull = new String[7];
+            String[] dataErr = new String[2];
+
+            for (int i = 0; i < alData.size(); i++) {
+
+                String[] temp = (String[]) alData.get(i);
+
+                if (!temp[0].equals("")) {
+                    //System.out.println("----"+i+"--------temp="+temp[0]);
+                    StockInfoForm ppf = new StockInfoForm();
+
+
+                    //temp[0]-Èõ∂‰ª∂ÂêçÁß∞
+                    if (!temp[0].equals("")) {
+                        ppf.setSkuCode(temp[0]);
+                    } else {
+                        if(dataNull[0]==null) dataNull[0] = (i + 2)+"";
+                        else dataNull[0] += "," + (i + 2);
+                    }
+                    //temp[1]-Èõ∂‰ª∂Êï∞Èáè
+                    if (!"".equals(temp[1])) {
+                        if (Operate.isPositiveInteger(temp[1])) {
+                            if (Integer.parseInt(temp[1])>=0)
+                                ppf.setSkuNum(new Integer(temp[1]));
+                            else{
+                                if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
+                                else dataErr[0] += "," + (i + 2);
+                            }
+                        } else {
+                            if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
+                            else dataErr[0] += "," + (i + 2);
+                        }
+                    } else {
 //						if(dataNull[5]==null) dataNull[5] = (i + 2)+"";
 //						else dataNull[5] += "," + (i + 2);
-						ppf.setSkuNum(new Integer(0));
-					}
-					
-					
-					//temp[2]-¡œ∫≈
-					if (!temp[2].equals("")) {
-						ppf.setStuffNo(temp[2]);
-					} else {
+                        ppf.setSkuNum(new Integer(0));
+                    }
+
+
+                    //temp[2]-ÊñôÂè∑
+                    if (!temp[2].equals("")) {
+                        ppf.setStuffNo(temp[2]);
+                    } else {
 //						if(dataNull[3]==null) dataNull[3] = (i + 2)+"";
 //						else dataNull[3] += "," + (i + 2);
-						ppf.setStuffNo("N");
-					}
-					//temp[3]-º€∏Ò£®US£©
-					if (!"".equals(temp[3])) {
-						if (Operate.isNumeric(temp[3])) {
-							ppf.setPerCost(new Float(temp[3]));
-						} else {
-							if(dataErr[1]==null) dataErr[1] = (i + 2)+"";
-							else dataErr[1] += "," + (i + 2);
-						}
-					} 
-					
+                        ppf.setStuffNo("N");
+                    }
+                    //temp[3]-‰ª∑Ê†ºÔºàUSÔºâ
+                    if (!"".equals(temp[3])) {
+                        if (Operate.isNumeric(temp[3])) {
+                            ppf.setPerCost(new Float(temp[3]));
+                        } else {
+                            if(dataErr[1]==null) dataErr[1] = (i + 2)+"";
+                            else dataErr[1] += "," + (i + 2);
+                        }
+                    }
 
-					//temp[4]-±∏◊¢
-					if (!temp[4].equals("")) {
-						ppf.setRemark(temp[4]);
-					} 
-					//temp[5]-µ•Œª
-					if (!temp[5].equals("")) {
-						ppf.setSkuUnit(temp[5]);
-					} 
-					
-					ppf.setStockStatus("A");
-					ppf.setCreateBy(user);
 
-					parseData.add(ppf);
-				} else {
-					continue;
-				}
+                    //temp[4]-Â§áÊ≥®
+                    if (!temp[4].equals("")) {
+                        ppf.setRemark(temp[4]);
+                    }
+                    //temp[5]-Âçï‰Ωç
+                    if (!temp[5].equals("")) {
+                        ppf.setSkuUnit(temp[5]);
+                    }
 
-			} //end for
+                    ppf.setStockStatus("A");
+                    ppf.setCreateBy(user);
 
-			boolean chkNull = false;
-			
-			//–£—È…œ¥´ ˝æ›µƒ∫œ∑®–‘
-			for(int i=0;i<dataNull.length;i++){
-				if (dataNull[i]!=null) {
-					chkNull = true;
-					break;
-				}
-			}
-			
-			if (chkNull) { //”–ø’÷µ
-				tag = -2;
-				alRet.add(new Integer(tag));
-				alRet.add(dataNull);
-			} else if (dataErr[0]!=null) { // ˝¡ø≤ª∫œ∑®
-				tag = -3;
-				alRet.add(new Integer(tag));
-				alRet.add(dataErr);
-			} else if (this.parseInsert(parseData)) { //≤Â»Î ˝æ›ø‚≥…π¶
-				tag  = parseData.size();
-				alRet.add(new Integer(tag));
-			} else { //≤Â»Î ˝æ›ø‚ ß∞‹
-				tag  = -1;
-				alRet.add(new Integer(tag));
-			}
-		} catch (Exception e) {
-			alRet.add(new Integer(-1));
-			e.printStackTrace();
-		} finally {
-			//…æ≥˝…œ¥´µƒexcelŒƒº˛
-			String[] filePath = { strPath };
-			Operate.fileDelete(filePath);
-		}
+                    parseData.add(ppf);
+                } else {
+                    continue;
+                }
 
-		return alRet;
-	}
-	
-	/**
-	 * …æ≥˝π˝»•µƒø‚¥Ê ˝æ›£¨≤Â»Î–¬µƒ
-	 * @param ArrayList –¬µƒ ˝æ›
-	 * @return  «∑Ò≥…π¶
-	 */
-	public boolean parseInsert(ArrayList parseData) throws Exception{
-		boolean booRet = false;
-		ArrayList al = new ArrayList();
-		
-		Object[] obj1={"delete from StockInfoForm","e"};
-		al.add(obj1);
-		for(int i=0;i<parseData.size();i++){
-			Object[] obj={parseData.get(i),"i"};
-			al.add(obj);
-		}
-		booRet = this.getBatchDao().allDMLBatch(al);
-		return booRet;
-	}
-	
-	
+            } //end for
 
-	/**
-	 * Ω‚Œˆµº»Îµƒø‚¥Ê¡˜ÀÆexcelŒƒº˛£¨‘Ÿ≤Â»Î ˝æ›ø‚
-	 * @param String Œƒº˛√˚
-	 * @param String ≤Ÿ◊˜”√ªßµƒid
-	 * @return ≥…π¶º∞¥ÌŒÛ–– ˝
-	 */
-	public ArrayList stockFlowInitialParse(String strPath, Long user) {
-		ArrayList alRet = new ArrayList();
-		ArrayList parseData = new ArrayList();
-		int tag = -1;
-		try {
-			ExcelEdit ee = new ExcelEdit();
+            boolean chkNull = false;
 
-			strPath = Operate.getSysPath() + "affix/upTemp/" + strPath;
-			//logger.error("-----------op.getSysPath()="+strPath);
+            //Ê†°È™å‰∏ä‰º†Êï∞ÊçÆÁöÑÂêàÊ≥ïÊÄß
+            for(int i=0;i<dataNull.length;i++){
+                if (dataNull[i]!=null) {
+                    chkNull = true;
+                    break;
+                }
+            }
 
-			ArrayList[] alData = ee.excelParse(strPath);
+            if (chkNull) { //ÊúâÁ©∫ÂÄº
+                tag = -2;
+                alRet.add(new Integer(tag));
+                alRet.add(dataNull);
+            } else if (dataErr[0]!=null) { //Êï∞Èáè‰∏çÂêàÊ≥ï
+                tag = -3;
+                alRet.add(new Integer(tag));
+                alRet.add(dataErr);
+            } else if (this.parseInsert(parseData)) { //ÊèíÂÖ•Êï∞ÊçÆÂ∫ìÊàêÂäü
+                tag  = parseData.size();
+                alRet.add(new Integer(tag));
+            } else { //ÊèíÂÖ•Êï∞ÊçÆÂ∫ìÂ§±Ë¥•
+                tag  = -1;
+                alRet.add(new Integer(tag));
+            }
+        } catch (Exception e) {
+            alRet.add(new Integer(-1));
+            e.printStackTrace();
+        } finally {
+            //Âà†Èô§‰∏ä‰º†ÁöÑexcelÊñá‰ª∂
+            String[] filePath = { strPath };
+            Operate.fileDelete(filePath);
+        }
 
-			String[] dataNull = new String[5];
-			String[] dataErr = new String[1];
-			
-			if(alData.length>0&&alData[0].size()>0){
-				this.getDao().execute("delete from FormNumber t where t.formType='F'");
-			}
-			int count=10;
-			//alData[0]:»Îø‚¡˜ÀÆ£ªalData[1]:≥ˆø‚¡˜ÀÆ
-			for(int x=0;x<alData.length;x++){	
-				for (int i = 0; i < alData[x].size(); i++) {
-					String[] temp = (String[]) alData[x].get(i);
-					
-					//–Ú∫≈,»’∆⁄”– ˝æ›£¨±Ì æ¥À––”––ß£¨◊ˆµº»Î
-					if (!temp[0].equals("")&&!temp[1].equals("")) {
-						//System.out.println("----"+i+"--------temp="+temp[0]);
-						StockFlowForm sff = new StockFlowForm();
-						
-	
-						//temp[1]-»’∆⁄
-						if (!temp[1].equals("")) {
-							sff.setCreateDate(Operate.toDate(temp[1]));
-						} else {
-							if(dataNull[0]==null) dataNull[0] = (i + 2)+"";
-							else dataNull[0] += "," + (i + 2);
-						}
-						//temp[2]-øÕªß
-						if (!temp[2].equals("")) {
-							sff.setCustomerName(temp[2]);
-						} else {
-							if(dataNull[1]==null) dataNull[1] = (i + 2)+"";
-							else dataNull[1] += "," + (i + 2);
-						}
-						//temp[3]-¡„º˛√˚≥∆
-						if (!temp[3].equals("")) {
-							sff.setSkuCode(temp[3]);
-						} else {
-							if(dataNull[2]==null) dataNull[2] = (i + 2)+"";
-							else dataNull[2] += "," + (i + 2);
-						}
-						//temp[4]-¡œ∫≈
-						if (!temp[4].equals("")) {
-							sff.setStuffNo(temp[4]);
-						} else {
+        return alRet;
+    }
+
+    /**
+     * Âà†Èô§ËøáÂéªÁöÑÂ∫ìÂ≠òÊï∞ÊçÆÔºåÊèíÂÖ•Êñ∞ÁöÑ
+     * @param parseData Êñ∞ÁöÑÊï∞ÊçÆ
+     * @return ÊòØÂê¶ÊàêÂäü
+     */
+    public boolean parseInsert(ArrayList parseData) throws Exception{
+        boolean booRet = false;
+        ArrayList al = new ArrayList();
+
+        Object[] obj1={"delete from StockInfoForm","e"};
+        al.add(obj1);
+        for(int i=0;i<parseData.size();i++){
+            Object[] obj={parseData.get(i),"i"};
+            al.add(obj);
+        }
+        booRet = this.getBatchDao().allDMLBatch(al);
+        return booRet;
+    }
+
+
+
+    /**
+     * Ëß£ÊûêÂØºÂÖ•ÁöÑÂ∫ìÂ≠òÊµÅÊ∞¥excelÊñá‰ª∂ÔºåÂÜçÊèíÂÖ•Êï∞ÊçÆÂ∫ì
+     * @param strPath Êñá‰ª∂Âêç
+     * @param user Êìç‰ΩúÁî®Êà∑ÁöÑid
+     * @return ÊàêÂäüÂèäÈîôËØØË°åÊï∞
+     */
+    public ArrayList stockFlowInitialParse(String strPath, Long user) {
+        ArrayList alRet = new ArrayList();
+        ArrayList parseData = new ArrayList();
+        int tag = -1;
+        try {
+            ExcelEdit ee = new ExcelEdit();
+
+            strPath = Operate.getSysPath() + "affix/upTemp/" + strPath;
+            //logger.error("-----------op.getSysPath()="+strPath);
+
+            ArrayList[] alData = ee.excelParse(strPath);
+
+            String[] dataNull = new String[5];
+            String[] dataErr = new String[1];
+
+            if(alData.length>0&&alData[0].size()>0){
+                this.getDao().execute("delete from FormNumber t where t.formType='F'");
+            }
+            int count=10;
+            //alData[0]:ÂÖ•Â∫ìÊµÅÊ∞¥ÔºõalData[1]:Âá∫Â∫ìÊµÅÊ∞¥
+            for(int x=0;x<alData.length;x++){
+                for (int i = 0; i < alData[x].size(); i++) {
+                    String[] temp = (String[]) alData[x].get(i);
+
+                    //Â∫èÂè∑,Êó•ÊúüÊúâÊï∞ÊçÆÔºåË°®Á§∫Ê≠§Ë°åÊúâÊïàÔºåÂÅöÂØºÂÖ•
+                    if (!temp[0].equals("")&&!temp[1].equals("")) {
+                        //System.out.println("----"+i+"--------temp="+temp[0]);
+                        StockFlowForm sff = new StockFlowForm();
+
+
+                        //temp[1]-Êó•Êúü
+                        if (!temp[1].equals("")) {
+                            sff.setCreateDate(Operate.toDate(temp[1]));
+                        } else {
+                            if(dataNull[0]==null) dataNull[0] = (i + 2)+"";
+                            else dataNull[0] += "," + (i + 2);
+                        }
+                        //temp[2]-ÂÆ¢Êà∑
+                        if (!temp[2].equals("")) {
+                            sff.setCustomerName(temp[2]);
+                        } else {
+                            if(dataNull[1]==null) dataNull[1] = (i + 2)+"";
+                            else dataNull[1] += "," + (i + 2);
+                        }
+                        //temp[3]-Èõ∂‰ª∂ÂêçÁß∞
+                        if (!temp[3].equals("")) {
+                            sff.setSkuCode(temp[3]);
+                        } else {
+                            if(dataNull[2]==null) dataNull[2] = (i + 2)+"";
+                            else dataNull[2] += "," + (i + 2);
+                        }
+                        //temp[4]-ÊñôÂè∑
+                        if (!temp[4].equals("")) {
+                            sff.setStuffNo(temp[4]);
+                        } else {
 //							if(dataNull[3]==null) dataNull[3] = (i + 2)+"";
 //							else dataNull[3] += "," + (i + 2);
-							sff.setStuffNo("N");
-						}
-						
-						//temp[5]-¡„º˛ ˝¡ø
-						if (!"".equals(temp[5])) {
-							if (Operate.isPositiveInteger(temp[5])) {
-								if (Integer.parseInt(temp[5])>=0)
-									sff.setSkuNum(new Integer(temp[5]));
-								else{
-									if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
-									else dataErr[0] += "," + (i + 2);
-								}
-							} else {
-								if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
-								else dataErr[0] += "," + (i + 2);
-							}
-						} else {
+                            sff.setStuffNo("N");
+                        }
+
+                        //temp[5]-Èõ∂‰ª∂Êï∞Èáè
+                        if (!"".equals(temp[5])) {
+                            if (Operate.isPositiveInteger(temp[5])) {
+                                if (Integer.parseInt(temp[5])>=0)
+                                    sff.setSkuNum(new Integer(temp[5]));
+                                else{
+                                    if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
+                                    else dataErr[0] += "," + (i + 2);
+                                }
+                            } else {
+                                if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
+                                else dataErr[0] += "," + (i + 2);
+                            }
+                        } else {
 //							if(dataNull[4]==null) dataNull[4] = (i + 2)+"";
 //							else dataNull[4] += "," + (i + 2);
-							sff.setSkuNum(new Integer(0));
-						}
-	
-						//temp[6]-µ•Œª
-						sff.setSkuUnit(temp[6]);
-						//temp[7]-±∏◊¢
-						sff.setRemark(temp[7]);
-						
-						if(x==0){
-							sff.setFlowType("I");
-						}else{
-							sff.setFlowType("O");
-						}
-						sff.setFlowItem("H");	//¿˙ ∑¡˜ÀÆ
-						sff.setCreateBy(user);
-						sff.setFlowId(new Long(count++));
-						
-	
-						parseData.add(sff);
-					} else {
-						continue;
-					}
-	
-				} //end for
-			}
-			boolean chkNull = false;
-			
-			//–£—È…œ¥´ ˝æ›µƒ∫œ∑®–‘
-			for(int i=0;i<dataNull.length;i++){
-				if (dataNull[i]!=null) {
-					chkNull = true;
-					break;
-				}
-			}
-			
-			if (chkNull) { //”–ø’÷µ
-				tag = -2;
-				alRet.add(new Integer(tag));
-				alRet.add(dataNull);
-			} else if (dataErr[0]!=null) { // ˝¡ø≤ª∫œ∑®
-				tag = -3;
-				alRet.add(new Integer(tag));
-				alRet.add(dataErr);
-			} else if (this.parseFlowInsert(parseData,count)) { //≤Â»Î ˝æ›ø‚≥…π¶
-				tag  = parseData.size();
-				alRet.add(new Integer(tag));
-			} else { //≤Â»Î ˝æ›ø‚ ß∞‹
-				tag  = -1;
-				alRet.add(new Integer(tag));
-			}
-		} catch (Exception e) {
-			alRet.add(new Integer(-1));
-			e.printStackTrace();
-		} finally {
-			//…æ≥˝…œ¥´µƒexcelŒƒº˛
-			String[] filePath = { strPath };
-			Operate.fileDelete(filePath);
-		}
+                            sff.setSkuNum(new Integer(0));
+                        }
 
-		return alRet;
-	}
-	
-	
+                        //temp[6]-Âçï‰Ωç
+                        sff.setSkuUnit(temp[6]);
+                        //temp[7]-Â§áÊ≥®
+                        sff.setRemark(temp[7]);
 
-	/**
-	 * …æ≥˝π˝»•µƒø‚¥Ê¡˜ÀÆ ˝æ›£¨≤Â»Î–¬µƒ
-	 * @param ArrayList –¬µƒø‚¥Ê¡˜ÀÆ ˝æ›
-	 * @return  «∑Ò≥…π¶
-	 */
-	public boolean parseFlowInsert(ArrayList parseData,int count) throws Exception{
-		boolean booRet = false;
-		ArrayList al = new ArrayList();
-		
-
-		FormNumber fn = new FormNumber();
-		fn.setFormType("F");
-		fn.setFormDate(Operate.getDate("yyMMdd"));
-		fn.setFormSeq(new Integer(count));
-		Object[] obj1={fn,"i"};
-		al.add(obj1);
-		
-		Object[] obj2={"delete from StockFlowForm","e"};
-		al.add(obj2);
-		
-		for(int i=0;i<parseData.size();i++){
-			Object[] obj={parseData.get(i),"i"};
-			al.add(obj);
-		}
-		
-		booRet = this.getBatchDao().allDMLBatch(al);
-		return booRet;
-	}
-	
-
-	/**
-	 * Ω‚Œˆµº»Îµƒ¡„º˛excelŒƒº˛£¨‘Ÿ≤Â»Î ˝æ›ø‚
-	 * @param String Œƒº˛√˚
-	 * @return ≥…π¶º∞¥ÌŒÛ–– ˝
-	 */
-	public ArrayList partInitialParse(String strPath) {
-		ArrayList alRet = new ArrayList();
-		ArrayList parseData = new ArrayList();
-		int tag = -1;
-		try {
-			ExcelEdit ee = new ExcelEdit();
-
-			strPath = Operate.getSysPath() + "affix/upTemp/" + strPath;
-
-			ArrayList alData = ee.excelParse(strPath)[0];
+                        if(x==0){
+                            sff.setFlowType("I");
+                        }else{
+                            sff.setFlowType("O");
+                        }
+                        sff.setFlowItem("H");	//ÂéÜÂè≤ÊµÅÊ∞¥
+                        sff.setCreateBy(user);
+                        sff.setFlowId(new Long(count++));
 
 
-			String[] dataNull = new String[8];
-			String[] dataErr = new String[2];
-			ArrayList stuffList=new ArrayList();
-			int repeatCount=1;
-			for (int i = 0; i < alData.size(); i++) {
+                        parseData.add(sff);
+                    } else {
+                        continue;
+                    }
 
-				String[] temp = (String[]) alData.get(i);
-				if (!temp[0].equals("")) {
-					PartInfoForm ppf = new PartInfoForm();
+                } //end for
+            }
+            boolean chkNull = false;
 
-					//temp[0]-¡œ∫≈
-					if (!temp[0].equals("")) {
-						if(!stuffList.contains(temp[0])){
-							stuffList.add(temp[0]);
-						}else{
-							temp[0]=temp[0]+"-"+(repeatCount++);
-							stuffList.add(temp[0]);
-							//System.out.println("-------temp[0]="+temp[0]);
-						}
-						ppf.setStuffNo(temp[0]);
-					} else {
-						if(dataNull[0]==null) dataNull[0] = (i + 2)+"";
-						else dataNull[0] += "," + (i + 2);
-					}
-					//temp[1]-¡„º˛√˚≥∆
-					if (!temp[1].equals("")) {
-						ppf.setSkuCode(temp[1]);
-					} else {
-						if(dataNull[1]==null) dataNull[1] = (i + 2)+"";
-						else dataNull[1] += "," + (i + 2);
-					}
-					//temp[2]-µ•Œª
-					ppf.setSkuUnit(temp[2]);
-					//temp[3]-Ω¯º€
-					if (!"".equals(temp[3])) {
-						if (Operate.isNumeric(temp[3])) {
-							if (Double.parseDouble(temp[3])>=0)
-								ppf.setBuyCost(new Double(temp[3]));
-							else{
-								if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
-								else dataErr[0] += "," + (i + 2);
-							}
-						} else {
-							if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
-							else dataErr[0] += "," + (i + 2);
-						}
-					} 
-					//temp[4]-±∏◊¢ 
-					ppf.setRemark(temp[4]);
-					
+            //Ê†°È™å‰∏ä‰º†Êï∞ÊçÆÁöÑÂêàÊ≥ïÊÄß
+            for(int i=0;i<dataNull.length;i++){
+                if (dataNull[i]!=null) {
+                    chkNull = true;
+                    break;
+                }
+            }
+
+            if (chkNull) { //ÊúâÁ©∫ÂÄº
+                tag = -2;
+                alRet.add(new Integer(tag));
+                alRet.add(dataNull);
+            } else if (dataErr[0]!=null) { //Êï∞Èáè‰∏çÂêàÊ≥ï
+                tag = -3;
+                alRet.add(new Integer(tag));
+                alRet.add(dataErr);
+            } else if (this.parseFlowInsert(parseData,count)) { //ÊèíÂÖ•Êï∞ÊçÆÂ∫ìÊàêÂäü
+                tag  = parseData.size();
+                alRet.add(new Integer(tag));
+            } else { //ÊèíÂÖ•Êï∞ÊçÆÂ∫ìÂ§±Ë¥•
+                tag  = -1;
+                alRet.add(new Integer(tag));
+            }
+        } catch (Exception e) {
+            alRet.add(new Integer(-1));
+            e.printStackTrace();
+        } finally {
+            //Âà†Èô§‰∏ä‰º†ÁöÑexcelÊñá‰ª∂
+            String[] filePath = { strPath };
+            Operate.fileDelete(filePath);
+        }
+
+        return alRet;
+    }
+
+
+
+    /**
+     * Âà†Èô§ËøáÂéªÁöÑÂ∫ìÂ≠òÊµÅÊ∞¥Êï∞ÊçÆÔºåÊèíÂÖ•Êñ∞ÁöÑ
+     * @param parseData Êñ∞ÁöÑÂ∫ìÂ≠òÊµÅÊ∞¥Êï∞ÊçÆ
+     * @return ÊòØÂê¶ÊàêÂäü
+     */
+    public boolean parseFlowInsert(ArrayList parseData,int count) throws Exception{
+        boolean booRet = false;
+        ArrayList al = new ArrayList();
+
+
+        FormNumber fn = new FormNumber();
+        fn.setFormType("F");
+        fn.setFormDate(Operate.getDate("yyMMdd"));
+        fn.setFormSeq(new Integer(count));
+        Object[] obj1={fn,"i"};
+        al.add(obj1);
+
+        Object[] obj2={"delete from StockFlowForm","e"};
+        al.add(obj2);
+
+        for(int i=0;i<parseData.size();i++){
+            Object[] obj={parseData.get(i),"i"};
+            al.add(obj);
+        }
+
+        booRet = this.getBatchDao().allDMLBatch(al);
+        return booRet;
+    }
+
+
+    /**
+     * Ëß£ÊûêÂØºÂÖ•ÁöÑÈõ∂‰ª∂excelÊñá‰ª∂ÔºåÂÜçÊèíÂÖ•Êï∞ÊçÆÂ∫ì
+     * @param strPath Êñá‰ª∂Âêç
+     * @return ÊàêÂäüÂèäÈîôËØØË°åÊï∞
+     */
+    public ArrayList partInitialParse(String strPath) {
+        ArrayList alRet = new ArrayList();
+        ArrayList parseData = new ArrayList();
+        int tag = -1;
+        try {
+            ExcelEdit ee = new ExcelEdit();
+
+            strPath = Operate.getSysPath() + "affix/upTemp/" + strPath;
+
+            ArrayList alData = ee.excelParse(strPath)[0];
+
+
+            String[] dataNull = new String[8];
+            String[] dataErr = new String[2];
+            ArrayList stuffList=new ArrayList();
+            int repeatCount=1;
+            for (int i = 0; i < alData.size(); i++) {
+
+                String[] temp = (String[]) alData.get(i);
+                if (!temp[0].equals("")) {
+                    PartInfoForm ppf = new PartInfoForm();
+
+                    //temp[0]-ÊñôÂè∑
+                    if (!temp[0].equals("")) {
+                        if(!stuffList.contains(temp[0])){
+                            stuffList.add(temp[0]);
+                        }else{
+                            temp[0]=temp[0]+"-"+(repeatCount++);
+                            stuffList.add(temp[0]);
+                            //System.out.println("-------temp[0]="+temp[0]);
+                        }
+                        ppf.setStuffNo(temp[0]);
+                    } else {
+                        if(dataNull[0]==null) dataNull[0] = (i + 2)+"";
+                        else dataNull[0] += "," + (i + 2);
+                    }
+                    //temp[1]-Èõ∂‰ª∂ÂêçÁß∞
+                    if (!temp[1].equals("")) {
+                        ppf.setSkuCode(temp[1]);
+                    } else {
+                        if(dataNull[1]==null) dataNull[1] = (i + 2)+"";
+                        else dataNull[1] += "," + (i + 2);
+                    }
+                    //temp[2]-Âçï‰Ωç
+                    ppf.setSkuUnit(temp[2]);
+                    //temp[3]-Ëøõ‰ª∑
+                    if (!"".equals(temp[3])) {
+                        if (Operate.isNumeric(temp[3])) {
+                            if (Double.parseDouble(temp[3])>=0)
+                                ppf.setBuyCost(new Double(temp[3]));
+                            else{
+                                if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
+                                else dataErr[0] += "," + (i + 2);
+                            }
+                        } else {
+                            if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
+                            else dataErr[0] += "," + (i + 2);
+                        }
+                    }
+                    //temp[4]-Â§áÊ≥®
+                    ppf.setRemark(temp[4]);
+
 					/*
-					//temp[2]-ºÚ≥∆
+					//temp[2]-ÁÆÄÁß∞
 					if (!temp[2].equals("")) {
 						ppf.setShortCode(temp[2]);
 					} else {
 						if(dataNull[2]==null) dataNull[2] = (i + 2)+"";
 						else dataNull[2] += "," + (i + 2);
 					}
-					//temp[3]-πÊ∏Ò
+					//temp[3]-ËßÑÊ†º
 					ppf.setStandard(temp[3]);
-					//temp[4]-µ•Œª
+					//temp[4]-Âçï‰Ωç
 					ppf.setSkuUnit(temp[4]);
-					
-					//temp[5]-Ω¯º€
+
+					//temp[5]-Ëøõ‰ª∑
 					if (!"".equals(temp[5])) {
 						if (Operate.isNumeric(temp[5])) {
 							if (Double.parseDouble(temp[5])>=0)
@@ -674,9 +674,9 @@ public class StockInfoListBo extends CommBo {
 							if(dataErr[0]==null) dataErr[0] = (i + 2)+"";
 							else dataErr[0] += "," + (i + 2);
 						}
-					} 
-					
-					//temp[6]-±®º€	
+					}
+
+					//temp[6]-Êä•‰ª∑
 					if (!"".equals(temp[6])) {
 						if (Operate.isNumeric(temp[6])) {
 							if (Double.parseDouble(temp[6])>=0)
@@ -689,120 +689,120 @@ public class StockInfoListBo extends CommBo {
 							if(dataErr[1]==null) dataErr[1] = (i + 2)+"";
 							else dataErr[1] += "," + (i + 2);
 						}
-					} 
+					}
 
-					//temp[7]-±∏◊¢ 
+					//temp[7]-Â§áÊ≥®
 					ppf.setRemark(temp[7]);
 					*/
-					parseData.add(ppf);
-				} else {
-					continue;
-				}
+                    parseData.add(ppf);
+                } else {
+                    continue;
+                }
 
-			} //end for
+            } //end for
 
-			boolean chkNull = false,chkErr=false;
-			
-			//–£—È…œ¥´ ˝æ›µƒ∫œ∑®–‘
-			for(int i=0;i<dataNull.length;i++){
-				if (dataNull[i]!=null) {
-					chkNull = true;
-					break;
-				}
-			}
-			for(int i=0;i<dataErr.length;i++){
-				if (dataErr[i]!=null) {
-					chkErr = true;
-					break;
-				}
-			}
-			if (chkNull) { //”–ø’÷µ
-				tag = -2;
-				alRet.add(new Integer(tag));
-				alRet.add(dataNull);
-			} else if (chkErr) { //º€∏Ò≤ª∫œ∑®
-				tag = -3;
-				alRet.add(new Integer(tag));
-				alRet.add(dataErr);
-			} else if (this.parseInsertPart(parseData)) { //≤Â»Î ˝æ›ø‚≥…π¶
-				tag  = parseData.size();
-				alRet.add(new Integer(tag));
-			} else { //≤Â»Î ˝æ›ø‚ ß∞‹
-				tag  = -1;
-				alRet.add(new Integer(tag));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			alRet.add(new Integer(-1));
-		} finally {
-			//…æ≥˝…œ¥´µƒexcelŒƒº˛
-			String[] filePath = { strPath };
-			Operate.fileDelete(filePath);
-		}
+            boolean chkNull = false,chkErr=false;
 
-		return alRet;
-	}
-	
-	/**
-	 * …æ≥˝π˝»•µƒø‚¥Ê ˝æ›£¨≤Â»Î–¬µƒ
-	 * @param ArrayList –¬µƒ ˝æ›
-	 * @return  «∑Ò≥…π¶
-	 */
-	public boolean parseInsertPart(ArrayList parseData) throws Exception{
-		boolean booRet = false;
-		ArrayList al = new ArrayList();
-		
-		Object[] obj1={"delete from PartInfoForm","e"};
-		al.add(obj1);
-		for(int i=0;i<parseData.size();i++){
-			Object[] obj={parseData.get(i),"i"};
-			al.add(obj);
-		}
-		booRet = this.getBatchDao().allDMLBatch(al);
-		return booRet;
-	}
-		
-	public ArrayList stockInfoTaxList(StockInfoForm sifQuery) {
-		
-		ArrayList alData = new ArrayList();
-		StockTaxInfoListQuery uq = new StockTaxInfoListQuery(sifQuery);
-		int count = 0;
-		float allCost = 0;
-		try {
-			List dataList = uq.doListQuery();
-			//count = uq.doCountQuery();
-			count = dataList.size();
-			for (int i = 0; i < dataList.size(); i++) {
-				Object[] obj = (Object[])dataList.get(i);
-				String[] data = new String[4];
-				data[0] = obj[0]==null?"":obj[0].toString();
-				data[1] = obj[1]==null?"":obj[1].toString();
-				data[2] = obj[2]==null?"":obj[2].toString();
-				if(obj[3]!=null){
-					data[3] = Operate.roundF(Float.parseFloat(obj[3].toString()),2)+"";
-					allCost+=Float.parseFloat(obj[3].toString());
-				}
-				alData.add(data);
-			}
-			alData.add(0, count + "");
-			alData.add(1, Operate.roundF(allCost,2) + "");
+            //Ê†°È™å‰∏ä‰º†Êï∞ÊçÆÁöÑÂêàÊ≥ïÊÄß
+            for(int i=0;i<dataNull.length;i++){
+                if (dataNull[i]!=null) {
+                    chkNull = true;
+                    break;
+                }
+            }
+            for(int i=0;i<dataErr.length;i++){
+                if (dataErr[i]!=null) {
+                    chkErr = true;
+                    break;
+                }
+            }
+            if (chkNull) { //ÊúâÁ©∫ÂÄº
+                tag = -2;
+                alRet.add(new Integer(tag));
+                alRet.add(dataNull);
+            } else if (chkErr) { //‰ª∑Ê†º‰∏çÂêàÊ≥ï
+                tag = -3;
+                alRet.add(new Integer(tag));
+                alRet.add(dataErr);
+            } else if (this.parseInsertPart(parseData)) { //ÊèíÂÖ•Êï∞ÊçÆÂ∫ìÊàêÂäü
+                tag  = parseData.size();
+                alRet.add(new Integer(tag));
+            } else { //ÊèíÂÖ•Êï∞ÊçÆÂ∫ìÂ§±Ë¥•
+                tag  = -1;
+                alRet.add(new Integer(tag));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            alRet.add(new Integer(-1));
+        } finally {
+            //Âà†Èô§‰∏ä‰º†ÁöÑexcelÊñá‰ª∂
+            String[] filePath = { strPath };
+            Operate.fileDelete(filePath);
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return alData;
-	}
+        return alRet;
+    }
+
+    /**
+     * Âà†Èô§ËøáÂéªÁöÑÂ∫ìÂ≠òÊï∞ÊçÆÔºåÊèíÂÖ•Êñ∞ÁöÑ
+     * @param parseData Êñ∞ÁöÑÊï∞ÊçÆ
+     * @return ÊòØÂê¶ÊàêÂäü
+     */
+    public boolean parseInsertPart(ArrayList parseData) throws Exception{
+        boolean booRet = false;
+        ArrayList al = new ArrayList();
+
+        Object[] obj1={"delete from PartInfoForm","e"};
+        al.add(obj1);
+        for(int i=0;i<parseData.size();i++){
+            Object[] obj={parseData.get(i),"i"};
+            al.add(obj);
+        }
+        booRet = this.getBatchDao().allDMLBatch(al);
+        return booRet;
+    }
+
+    public ArrayList stockInfoTaxList(StockInfoForm sifQuery) {
+
+        ArrayList alData = new ArrayList();
+        StockTaxInfoListQuery uq = new StockTaxInfoListQuery(sifQuery);
+        int count = 0;
+        float allCost = 0;
+        try {
+            List dataList = uq.doListQuery();
+            //count = uq.doCountQuery();
+            count = dataList.size();
+            for (int i = 0; i < dataList.size(); i++) {
+                Object[] obj = (Object[])dataList.get(i);
+                String[] data = new String[4];
+                data[0] = obj[0]==null?"":obj[0].toString();
+                data[1] = obj[1]==null?"":obj[1].toString();
+                data[2] = obj[2]==null?"":obj[2].toString();
+                if(obj[3]!=null){
+                    data[3] = Operate.roundF(Float.parseFloat(obj[3].toString()),2)+"";
+                    allCost+=Float.parseFloat(obj[3].toString());
+                }
+                alData.add(data);
+            }
+            alData.add(0, count + "");
+            alData.add(1, Operate.roundF(allCost,2) + "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return alData;
+    }
 
 
-	public Long getAvailableStockNum(String stuffNo) throws Exception{
-		String hql = "select sum(si.skuNum) from StockInfoForm si where si.stuffNo=? and si.stockStatus='A'";
-		return (Long)this.getDao().uniqueResult(hql,stuffNo);
-	}
-	public Long getAvailableStockToolsNum(String stuffNo) throws Exception{
-		String hql = "select sum(si.skuNum) from StockToolsInfoForm si where si.stuffNo=? and si.stockStatus='A'";
-		return (Long)this.getDao().uniqueResult(hql,stuffNo);
-	}
-	
-	
+    public Long getAvailableStockNum(String stuffNo) throws Exception{
+        String hql = "select sum(si.skuNum) from StockInfoForm si where si.stuffNo=? and si.stockStatus='A'";
+        return (Long)this.getDao().uniqueResult(hql,stuffNo);
+    }
+    public Long getAvailableStockToolsNum(String stuffNo) throws Exception{
+        String hql = "select sum(si.skuNum) from StockToolsInfoForm si where si.stuffNo=? and si.stockStatus='A'";
+        return (Long)this.getDao().uniqueResult(hql,stuffNo);
+    }
+
+
 }

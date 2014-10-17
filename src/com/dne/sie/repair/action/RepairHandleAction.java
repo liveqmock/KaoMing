@@ -26,1144 +26,1144 @@ import com.dne.sie.repair.form.RepairServiceForm;
 import com.dne.sie.util.action.ControlAction;
 
 public class RepairHandleAction extends ControlAction {
-	
 
-	/**
-	 *	Œ¨–ﬁµ•¬º»Î
-	 *	@param request HttpServletRequest
-	 *	@param form ActionForm
-	 *	@return 
-	 */
-	public String serviceAdd(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
 
-		String tempAttache = request.getParameter("attacheIds");
-		
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		searchForm.setCurrentStatus("A");
-		//searchForm.setOperaterId(userId);
-		searchForm.setCreateBy(userId);
-		searchForm.setCreateDate(new Date());
-		
-		searchForm.setPurchaseDate(Operate.toDate(searchForm.getPurchaseDateStr()));
-		searchForm.setCustomerVisitDate(Operate.toDate(searchForm.getCustomerVisitDateStr()));
-		searchForm.setEstimateRepairDate(Operate.toDate(searchForm.getEstimateRepairDateStr()));
-		searchForm.setActualOnsiteDate(Operate.toDate(searchForm.getActualOnsiteDateStr()));
-		searchForm.setActualRepairedDate(Operate.toDate(searchForm.getActualRepairedDateStr()));
-		//searchForm.setExtendedWarrantyDate(Operate.toDate(searchForm.getExtendedWarrantyDateStr()));
-		
-		RepairServiceForm rsf=null;
-		try{
-			rsf =rhb.addService(searchForm);
-		}catch (ComException ce) {
-			ce.printStackTrace();
-			request.setAttribute("tag", "-1");
-			request.setAttribute("tempData", ce.getMessage());
-			request.setAttribute("businessFlag", "RR90Err");
-			return forward;
-		}
-		//±£¥Êµ•æ›
-		Long repairNo = rsf.getRepairNo();
-			
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),repairNo,userId);
-		}
-		
-		
-		//Ã·Ωª∫Û≤ª‘Ÿœ‘ æ¥Ú”°“≤“≥√Ê
-		//request.setAttribute("partsList",SaleInfoBo.getInstance().getSalePartsListByNo(searchForm.getSaleNo()));
-		//request.setAttribute("repair", rsf);
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "receiveAdd");
-		
-		return forward;
-	}
-	
-	
-	/**
-	 * µÁ’Ô◊™œ˙ €
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String transferSale(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setCurrentStatus("S"); //¡„º˛œ˙ €÷–
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-	
-		rhb.transferSale(searchForm);
-		
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "transferSale");
-		
-		return forward;
-	}
-	
-	/**
-	 * –ﬁ∏¥Ã·Ωª…Û≈˙
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String repairEnd(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-	
-		searchForm.setCurrentStatus("F"); //Ã·Ωª…Û≈˙
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		try{
-			rhb.repairEnd(searchForm);
-		}catch(VersionException ve){
-			return "versionErr";
-		}
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "repairEnd");
-		
-		return forward;
-	}
-	
-	/**
-	 * µÁ’Ô--≤ª–ﬁ¿Ì
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String doNotRepair(HttpServletRequest request, ActionForm form) throws Exception {
+    /**
+     *	Áª¥‰øÆÂçïÂΩïÂÖ•
+     *	@param request HttpServletRequest
+     *	@param form ActionForm
+     *	@return
+     */
+    public String serviceAdd(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
 
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setCurrentStatus("N");
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		rhb.repairOperate(searchForm);
-		
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "doNotRepair");
-		
-		
-		return "resultMessage";
-	}
-	
+        String tempAttache = request.getParameter("attacheIds");
 
-	/**
-	 * µÁ’Ô -- ‘›¥Ê
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String saveRepair(HttpServletRequest request, ActionForm form) throws Exception {
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
 
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		try{
-			rhb.repairOperate(searchForm);
-		}catch(VersionException ve){
-			return "versionErr";
-		}
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "doNotRepair");
-		
-		
-		return "resultMessage";
-	}
-	
-	
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        searchForm.setCurrentStatus("A");
+        //searchForm.setOperaterId(userId);
+        searchForm.setCreateBy(userId);
+        searchForm.setCreateDate(new Date());
 
-	/**
-	 * Cancel repair sheet
-	 * @param request HttpServletRequest
-	 * @param form ActionForm
-	 * @return String Return forward path,resultMessage Message page
-	 */
-	public String cancelRepair(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "resultMessage";
-		int tag = -1;
-		
-		RepairHandleBo rhBo = RepairHandleBo.getInstance();
-		
-		Long userId = (Long)request.getSession().getAttribute("userId");
-		String strRepairNos = request.getParameter("repairNos");
+        searchForm.setPurchaseDate(Operate.toDate(searchForm.getPurchaseDateStr()));
+        searchForm.setCustomerVisitDate(Operate.toDate(searchForm.getCustomerVisitDateStr()));
+        searchForm.setEstimateRepairDate(Operate.toDate(searchForm.getEstimateRepairDateStr()));
+        searchForm.setActualOnsiteDate(Operate.toDate(searchForm.getActualOnsiteDateStr()));
+        searchForm.setActualRepairedDate(Operate.toDate(searchForm.getActualRepairedDateStr()));
+        //searchForm.setExtendedWarrantyDate(Operate.toDate(searchForm.getExtendedWarrantyDateStr()));
+
+        RepairServiceForm rsf=null;
+        try{
+            rsf =rhb.addService(searchForm);
+        }catch (ComException ce) {
+            ce.printStackTrace();
+            request.setAttribute("tag", "-1");
+            request.setAttribute("tempData", ce.getMessage());
+            request.setAttribute("businessFlag", "RR90Err");
+            return forward;
+        }
+        //‰øùÂ≠òÂçïÊçÆ
+        Long repairNo = rsf.getRepairNo();
+
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),repairNo,userId);
+        }
+
+
+        //Êèê‰∫§Âêé‰∏çÂÜçÊòæÁ§∫ÊâìÂç∞‰πüÈ°µÈù¢
+        //request.setAttribute("partsList",SaleInfoBo.getInstance().getSalePartsListByNo(searchForm.getSaleNo()));
+        //request.setAttribute("repair", rsf);
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "receiveAdd");
+
+        return forward;
+    }
+
+
+    /**
+     * ÁîµËØäËΩ¨ÈîÄÂîÆ
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String transferSale(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("S"); //Èõ∂‰ª∂ÈîÄÂîÆ‰∏≠
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+
+        rhb.transferSale(searchForm);
+
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "transferSale");
+
+        return forward;
+    }
+
+    /**
+     * ‰øÆÂ§çÊèê‰∫§ÂÆ°Êâπ
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String repairEnd(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("F"); //Êèê‰∫§ÂÆ°Êâπ
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        try{
+            rhb.repairEnd(searchForm);
+        }catch(VersionException ve){
+            return "versionErr";
+        }
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "repairEnd");
+
+        return forward;
+    }
+
+    /**
+     * ÁîµËØä--‰∏ç‰øÆÁêÜ
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String doNotRepair(HttpServletRequest request, ActionForm form) throws Exception {
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("N");
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        rhb.repairOperate(searchForm);
+
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "doNotRepair");
+
+
+        return "resultMessage";
+    }
+
+
+    /**
+     * ÁîµËØä -- ÊöÇÂ≠ò
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String saveRepair(HttpServletRequest request, ActionForm form) throws Exception {
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        try{
+            rhb.repairOperate(searchForm);
+        }catch(VersionException ve){
+            return "versionErr";
+        }
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "doNotRepair");
+
+
+        return "resultMessage";
+    }
+
+
+
+    /**
+     * Cancel repair sheet
+     * @param request HttpServletRequest
+     * @param form ActionForm
+     * @return String Return forward path,resultMessage Message page
+     */
+    public String cancelRepair(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "resultMessage";
+        int tag = -1;
+
+        RepairHandleBo rhBo = RepairHandleBo.getInstance();
+
+        Long userId = (Long)request.getSession().getAttribute("userId");
+        String strRepairNos = request.getParameter("repairNos");
 //		String remark = request.getParameter("cancelRemark");
-		
-		tag=rhBo.cancelRepair(strRepairNos,userId);
-		
 
-		request.setAttribute("tag",Integer.toString(tag));
-		request.setAttribute("businessFlag","cancelRepair");
-		
-		return forward;
-	}	
-	
-	/**
-	 * µÁ’Ô -- µÁ’ÔΩ‚æˆ
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String repairDZComplete(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setCurrentStatus("P"); //µÁ’ÔΩ‚æˆ
-		searchForm.setOperaterId(userId);	//µÁ’Ô‘±
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
+        tag=rhBo.cancelRepair(strRepairNos,userId);
 
-		rhb.repairOperate(searchForm);
-		
+
+        request.setAttribute("tag",Integer.toString(tag));
+        request.setAttribute("businessFlag","cancelRepair");
+
+        return forward;
+    }
+
+    /**
+     * ÁîµËØä -- ÁîµËØäËß£ÂÜ≥
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String repairDZComplete(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("P"); //ÁîµËØäËß£ÂÜ≥
+        searchForm.setOperaterId(userId);	//ÁîµËØäÂëò
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+
+        rhb.repairOperate(searchForm);
+
 //		String tempAttache = request.getParameter("attacheIds");
 //		if (tempAttache!=null&&!tempAttache.equals("")) {
 //			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
 //		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "repairDZComplete");
-		
-		return forward;
-	}
-	
-	
-	
-	/**
-	 * °∞Œ¨–ﬁ°±->°∞µÁª∞’Ô∂œ°±->°∞√˜œ∏°±->Œ¨–ﬁ¡„º˛ÃÌº”
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 */
-	public void insertRepairPartInfo(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response){
-		try{
-			Long userId = (Long)request.getSession().getAttribute("userId");
-			
-			String repairNo = request.getParameter("repairNo");
-			String stuffNo = request.getParameter("stuffNo");
-			String warrantyType = request.getParameter("warrantyType");
-			String applyQty = request.getParameter("applyQty");
-			
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			List<RepairPartForm> returnFormList = null;
-			
-			//¡„º˛ÃÌº” ±‘ˆº”¡„º˛ «∑Òø…”√
-			boolean chk = PartInfoBo.getInstance().chkStuffNo(stuffNo);
-			if(!chk){
-				
-				//wubin at 20110401 ‘ˆº”–¬µƒ∑—”√¿‡±RR90£¨ƒ¨»œ∏√¿‡± « ’∑—µƒ
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "repairDZComplete");
+
+        return forward;
+    }
+
+
+
+    /**
+     * ‚ÄúÁª¥‰øÆ‚Äù->‚ÄúÁîµËØùËØäÊñ≠‚Äù->‚ÄúÊòéÁªÜ‚Äù->Áª¥‰øÆÈõ∂‰ª∂Ê∑ªÂä†
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     */
+    public void insertRepairPartInfo(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response){
+        try{
+            Long userId = (Long)request.getSession().getAttribute("userId");
+
+            String repairNo = request.getParameter("repairNo");
+            String stuffNo = request.getParameter("stuffNo");
+            String warrantyType = request.getParameter("warrantyType");
+            String applyQty = request.getParameter("applyQty");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+            List<RepairPartForm> returnFormList = null;
+
+            //Èõ∂‰ª∂Ê∑ªÂä†Êó∂Â¢ûÂä†Èõ∂‰ª∂ÊòØÂê¶ÂèØÁî®
+            boolean chk = PartInfoBo.getInstance().chkStuffNo(stuffNo);
+            if(!chk){
+
+                //wubin at 20110401 Â¢ûÂä†Êñ∞ÁöÑË¥πÁî®Á±ªÂà´RR90ÔºåÈªòËÆ§ËØ•Á±ªÂà´ÊòØÊî∂Ë¥πÁöÑ
 //				if("R".equals(partFeeType)){
 //					partFeeType = "Y";
 //					isRR90PartType = "Y";
 //				}
-				
-				
-				//add end 
-				List<RepairPartForm> rpfList = new ArrayList<RepairPartForm>();
-				
-						
-				RepairPartForm rpf = new RepairPartForm();
-				rpf.setRepairNo(new Long(repairNo));
-				rpf.setStuffNo(stuffNo);
-				rpf.setWarrantyType(warrantyType);
-				rpf.setApplyQty(new Integer(applyQty));
-				rpf.setRepairPartStatus("A");	//…Í«Î÷–
-				rpf.setRepairPartType("W");		//Œ¨–ﬁ…Í«Î
-				rpf.setCreateBy(userId);
-				rpf.setCreateDate(new java.util.Date());
-				
-				rpfList.add(rpf);
-						
-				returnFormList = rhBo.insertPartInfo(rpfList);
-			}
 
-			PrintWriter writer = response.getWriter();
-			response.setContentType("text/xml");
-			response.setHeader("Cache-Control", "no-cache");
-			if(null !=returnFormList  && returnFormList.size()>0){
-				writer.println("<xml>");
-				writer.println("<flag>true</flag>");
-				for(int i=0;i<returnFormList.size();i++){
-					RepairPartForm aPartForm = (RepairPartForm)returnFormList.get(i);
-					writer.println("<partRow id=\""+aPartForm.getPartsId()+"\">");
-					writer.println("  <partsId>"+aPartForm.getPartsId()+"</partsId>");
-					writer.println("  <stuffNo>"+aPartForm.getStuffNo()+"</stuffNo>");
-					writer.println("  <skuCode>"+EscapeUnescape.escape(aPartForm.getSkuCode())+"</skuCode>");
-					String standard = aPartForm.getStandard()==null?"":EscapeUnescape.escape(aPartForm.getStandard());
-					writer.println("  <standard>"+(standard.equals("")?"..":standard)+"</standard>");
-					writer.println("  <skuUnit>"+EscapeUnescape.escape(aPartForm.getSkuUnit())+"</skuUnit>");
-					writer.println("  <warrantyType>"+EscapeUnescape.escape(DicInit.getSystemName("WARRANTY_TYPE",aPartForm.getWarrantyType()))+"</warrantyType>");
-					writer.println("  <applyQty>"+aPartForm.getApplyQty()+"</applyQty>");
-					
-					writer.println("</partRow>");
-				}
-				writer.println("</xml>");
-			}else{
-				writer.println("<xml>");
-				writer.println("<flag>false</flag>");
-				if(chk){
-					writer.println("<result>part</result>");
-				}else{
-					writer.println("<result>error</result>");
-				}
-				
-				
-				writer.println("</xml>");
-			}
-			writer.flush();
-			writer.close();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	
-	/**
-	 * °∞Œ¨–ﬁ°±->°∞µÁª∞’Ô∂œ°±->°∞√˜œ∏°±->Œ¨–ﬁPart…æ≥˝
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 */
-	public void deletePartStatus(ActionMapping mapping,
-										ActionForm form,
-										HttpServletRequest request,
-										HttpServletResponse response) throws Exception{
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		try{
-			String partsId = request.getParameter("partsId");
-					
-			RepairPartForm rpf = new RepairPartForm();
-			rpf.setPartsId(new Long(partsId));
-			
-			boolean deleteFlag = RepairHandleBo.getInstance().deletePartInfo(rpf);
-			
-			
-			
-			if(deleteFlag){
-				writer.println("<xml>");
-				writer.println("<flag>true</flag>");
-				writer.println("<partsId>"+partsId+"</partsId>");
-				writer.println("</xml>");
-			}else{
-				writer.println("<xml>");
-				writer.println("<flag>false</flag>");
-				writer.println("</xml>");
-			}
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-	}
-	
-	
 
-	/**
-	 * °∞Œ¨–ﬁ°±->°∞–ﬁ¿Ì°±->°∞–ﬁ¿Ì√˜œ∏°±->“—±£¥Ê¡„º˛»∑∂®…Í«Î
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 */
-	public void insertLoanPartInfo(ActionMapping mapping,
-									ActionForm form,
-									HttpServletRequest request,
-									HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		try{
-			Long userId = (Long)request.getSession().getAttribute("userId");
-			
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			
-			String repairNo = request.getParameter("repairNo");
-			String stuffNo = request.getParameter("stuffNo");
-			String warrantyType = request.getParameter("warrantyType");
-			String applyQty = request.getParameter("applyQty");
-			
-			RepairPartForm rpf = new RepairPartForm();
-			
-			rpf.setRepairNo(new Long(repairNo));
-			rpf.setStuffNo(stuffNo);
-			rpf.setWarrantyType(warrantyType);
-			rpf.setApplyQty(new Integer(applyQty));
-			rpf.setRepairPartStatus("L");	//“—∑÷≈‰¥˝¡Ï»°
-			rpf.setRepairPartType("X");		//–Ø¥¯¡„º˛
-			rpf.setCreateBy(userId);
-			rpf.setCreateDate(new java.util.Date());
-			
-		    RepairPartForm returnRpf = rhBo.submitLoanPart(rpf);
-		    
-		    
-			
-			if(returnRpf != null){
-				String skuCode = returnRpf.getSkuCode()==null?"":EscapeUnescape.escape(returnRpf.getSkuCode());
-				String standard = returnRpf.getStandard()==null?"":EscapeUnescape.escape(returnRpf.getStandard());
-				
-				writer.println("<xml>");
-				writer.println("<flag>true</flag>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getPartsId():"+returnRpf.getPartsId());
-				writer.println("<partsId>"+returnRpf.getPartsId()+"</partsId>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getStuffNo():"+returnRpf.getStuffNo());
-				writer.println("<stuffNo>"+returnRpf.getStuffNo()+"</stuffNo>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getSkuCode():"+returnRpf.getSkuCode());
-				writer.println("<skuCode>"+(skuCode.equals("")?"..":skuCode)+"</skuCode>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getStandard():"+returnRpf.getStandard());
-				writer.println("<standard>"+(standard.equals("")?"..":standard)+"</standard>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getSkuUnit():"+returnRpf.getSkuUnit());
-				writer.println("  <skuUnit>"+EscapeUnescape.escape(returnRpf.getSkuUnit())+"</skuUnit>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getRepairPartStatus():"+DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()));
-				writer.println("<repairPartStatus>"+EscapeUnescape.escape(DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()))+"</repairPartStatus>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getApplyQty():"+returnRpf.getApplyQty());
-				writer.println("<applyQty>"+returnRpf.getApplyQty()+"</applyQty>");
-				writer.println("<partVersion>"+returnRpf.getVersion()+"</partVersion>");
-				
-				writer.println("</xml>");
-			}else{
-				writer.println("<xml>");
-				writer.println("<flag>false</flag>");
-				writer.println("<result>part</result>");
-				writer.println("</xml>");
-			}
-		
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("<result>part</result>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-	}
-	
-	
-	public void cancelLoanPart(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			
-			Long userId = (Long)request.getSession().getAttribute("userId");
-			String partsId = request.getParameter("partsId");
-			//String partStatusCode = request.getParameter("partStatusCode");
-			String version = request.getParameter("version");
-				
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-				
-			boolean flag = false;
-			//‘ˆº”»°œ˚¡„º˛µƒ∞Ê±æ–£—È added by xt 2007-09-08
-			if(partsId != null && rhBo.checkPartVersion(new Long(partsId),version)){
-					
-				RepairPartForm rpf = new RepairPartForm();
-				rpf.setPartsId(new Long(partsId));
-				rpf.setUpdateBy(userId);
-				
-				flag = rhBo.cancelLoanPart(rpf);
-					
-			}
+                //add end
+                List<RepairPartForm> rpfList = new ArrayList<RepairPartForm>();
 
-			if(flag){
-				writer.println("<xml>");
-				writer.println("<flag>true</flag>");
-				writer.println("<partsId>"+partsId+"</partsId>");
-				writer.println("</xml>");
-			}else{
-				writer.println("<xml>");
-				writer.println("<flag>false</flag>");
-				writer.println("</xml>");
-			}
-			
-			
-		}catch(VersionException ve){
-			ve.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>versionErr</flag>");
-			writer.println("</xml>");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	public void insertLoanToolInfo(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-			
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		try{
-			Long userId = (Long)request.getSession().getAttribute("userId");
-			
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			
-			String repairNo = request.getParameter("repairNo");
-			String stuffNo = request.getParameter("stuffNo");
-			String warrantyType = request.getParameter("warrantyType");
-			String applyQty = request.getParameter("applyQty");
-			
-			RepairPartForm rpf = new RepairPartForm();
-			
-			rpf.setRepairNo(new Long(repairNo));
-			rpf.setStuffNo(stuffNo);
-			rpf.setWarrantyType(warrantyType);
-			rpf.setApplyQty(new Integer(applyQty));
-			rpf.setRepairPartStatus("L");	//“—∑÷≈‰¥˝¡Ï»°
-			rpf.setRepairPartType("T");		//–Ø¥¯π§æﬂ
-			rpf.setCreateBy(userId);
-			rpf.setCreateDate(new java.util.Date());
-			
-		    RepairPartForm returnRpf = rhBo.submitLoanTool(rpf);
-		    
-		    
-			
-			if(returnRpf != null){
-				String skuCode = returnRpf.getSkuCode()==null?"":EscapeUnescape.escape(returnRpf.getSkuCode());
-				String standard = returnRpf.getStandard()==null?"":EscapeUnescape.escape(returnRpf.getStandard());
-				String owner = returnRpf.getOwner()==null?"":EscapeUnescape.escape(returnRpf.getOwner());
-				
-				writer.println("<xml>");
-				writer.println("<flag>true</flag>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getPartsId():"+returnRpf.getPartsId());
-				writer.println("<partsId>"+returnRpf.getPartsId()+"</partsId>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getStuffNo():"+returnRpf.getStuffNo());
-				writer.println("<stuffNo>"+returnRpf.getStuffNo()+"</stuffNo>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getSkuCode():"+returnRpf.getSkuCode());
-				writer.println("<skuCode>"+(skuCode.equals("")?"..":skuCode)+"</skuCode>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getStandard():"+returnRpf.getStandard());
-				writer.println("<standard>"+(standard.equals("")?"..":standard)+"</standard>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getSkuUnit():"+returnRpf.getSkuUnit());
-				writer.println("<skuUnit>"+EscapeUnescape.escape(returnRpf.getSkuUnit())+"</skuUnit>");
-				writer.println("<owner>"+(owner.equals("")?"..":standard)+"</owner>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getRepairPartStatus():"+DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()));
-				writer.println("<repairPartStatus>"+EscapeUnescape.escape(DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()))+"</repairPartStatus>");
-				//System.out.println("-=-=-=-=sunhj returnRpf.getApplyQty():"+returnRpf.getApplyQty());
-				writer.println("<applyQty>"+returnRpf.getApplyQty()+"</applyQty>");
-				writer.println("<partVersion>"+returnRpf.getVersion()+"</partVersion>");
-				
-				writer.println("</xml>");
-			}else{
-				writer.println("<xml>");
-				writer.println("<flag>false</flag>");
-				writer.println("<result>part</result>");
-				writer.println("</xml>");
-			}
-		
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("<result>part</result>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-	}
-	
-	
-	public void cancelLoanTool(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			
-			Long userId = (Long)request.getSession().getAttribute("userId");
-			String partsId = request.getParameter("partsId");
-			//String partStatusCode = request.getParameter("partStatusCode");
-			String version = request.getParameter("version");
-				
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-				
-			boolean flag = false;
-			//‘ˆº”»°œ˚¡„º˛µƒ∞Ê±æ–£—È added by xt 2007-09-08
-			if(partsId != null && rhBo.checkPartVersion(new Long(partsId),version)){
-					
-				RepairPartForm rpf = new RepairPartForm();
-				rpf.setPartsId(new Long(partsId));
-				rpf.setUpdateBy(userId);
-				
-				flag = rhBo.cancelLoanPart(rpf);
-					
-			}
 
-			if(flag){
-				writer.println("<xml>");
-				writer.println("<flag>true</flag>");
-				writer.println("<partsId>"+partsId+"</partsId>");
-				writer.println("</xml>");
-			}else{
-				writer.println("<xml>");
-				writer.println("<flag>false</flag>");
-				writer.println("</xml>");
-			}
-			
-			
-		}catch(VersionException ve){
-			ve.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>versionErr</flag>");
-			writer.println("</xml>");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
+                RepairPartForm rpf = new RepairPartForm();
+                rpf.setRepairNo(new Long(repairNo));
+                rpf.setStuffNo(stuffNo);
+                rpf.setWarrantyType(warrantyType);
+                rpf.setApplyQty(new Integer(applyQty));
+                rpf.setRepairPartStatus("A");	//Áî≥ËØ∑‰∏≠
+                rpf.setRepairPartType("W");		//Áª¥‰øÆÁî≥ËØ∑
+                rpf.setCreateBy(userId);
+                rpf.setCreateDate(new java.util.Date());
 
-	
+                rpfList.add(rpf);
 
-	/**
-	 * ≈…π§ -- Œ¨–ﬁ≈…π§
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String dispatch(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setCurrentStatus("D"); //“—≈…π§
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		String repairMans = request.getParameter("repairMans");
-		
-		if(repairMans!=null && repairMans.startsWith("@")){
-			repairMans=repairMans.substring(1)+" ";
-		}
-		rhb.dispatch(searchForm,repairMans);
-		
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "repairDispatch");
-		
-		return forward;
-	}
-	
-	
-	/**
-	 * ≈…π§«∞–£—È£¨–Ø¥¯µƒ¡„º˛∫Õπ§æﬂ∂º±ÿ–Î≥ˆø‚
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @throws Exception
-	 */
-	public void checkDispatchPart(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			
-			String repairNo = request.getParameter("repairNo");
-				
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-				
-			String flag = rhBo.checkDispatchPart(new Long(repairNo));
+                returnFormList = rhBo.insertPartInfo(rpfList);
+            }
 
-			
-			writer.println("<xml>");
-			writer.println("<flag>"+flag+"</flag>");
-			writer.println("</xml>");
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	
-	
+            PrintWriter writer = response.getWriter();
+            response.setContentType("text/xml");
+            response.setHeader("Cache-Control", "no-cache");
+            if(null !=returnFormList  && returnFormList.size()>0){
+                writer.println("<xml>");
+                writer.println("<flag>true</flag>");
+                for(int i=0;i<returnFormList.size();i++){
+                    RepairPartForm aPartForm = (RepairPartForm)returnFormList.get(i);
+                    writer.println("<partRow id=\""+aPartForm.getPartsId()+"\">");
+                    writer.println("  <partsId>"+aPartForm.getPartsId()+"</partsId>");
+                    writer.println("  <stuffNo>"+aPartForm.getStuffNo()+"</stuffNo>");
+                    writer.println("  <skuCode>"+EscapeUnescape.escape(aPartForm.getSkuCode())+"</skuCode>");
+                    String standard = aPartForm.getStandard()==null?"":EscapeUnescape.escape(aPartForm.getStandard());
+                    writer.println("  <standard>"+(standard.equals("")?"..":standard)+"</standard>");
+                    writer.println("  <skuUnit>"+EscapeUnescape.escape(aPartForm.getSkuUnit())+"</skuUnit>");
+                    writer.println("  <warrantyType>"+EscapeUnescape.escape(DicInit.getSystemName("WARRANTY_TYPE",aPartForm.getWarrantyType()))+"</warrantyType>");
+                    writer.println("  <applyQty>"+aPartForm.getApplyQty()+"</applyQty>");
 
-	/**
-	 * –Ø¥¯¡„º˛◊™œ˙ €
-	 * Œ¨–ﬁ∑µªπ ±ø…≤Ÿ◊˜
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @throws Exception
-	 */
-	public void transferLoanPart(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			Long userId = (Long)request.getSession().getAttribute("userId");
-			String partsId = request.getParameter("partsId");
-			String version = request.getParameter("version");
-				
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			String flag = "false";
-			if(partsId != null && rhBo.checkPartVersion(new Long(partsId),version)){
-				
-				RepairPartForm rpf = new RepairPartForm();
-				rpf.setPartsId(new Long(partsId));
-				rpf.setUpdateBy(userId);
-				rpf.setUpdateDate(new Date());
-				
-				if(rhBo.transferLoanPart(rpf)){
-					flag="true";
-				}
-					
-			}
-			
-			writer.println("<xml>");
-			writer.println("<flag>"+flag+"</flag>");
-			writer.println("<partsId>"+partsId+"</partsId>");
-			writer.println("</xml>");
-			
+                    writer.println("</partRow>");
+                }
+                writer.println("</xml>");
+            }else{
+                writer.println("<xml>");
+                writer.println("<flag>false</flag>");
+                if(chk){
+                    writer.println("<result>part</result>");
+                }else{
+                    writer.println("<result>error</result>");
+                }
 
-		}catch(VersionException ve){
-			ve.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>versionErr</flag>");
-			writer.println("</xml>");
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	
-	
 
-	/**
-	 * ∑µªπÕÍ≥…«∞–£—È£¨ªµº˛°¢–Ø¥¯µƒ¡„º˛∫Õπ§æﬂ∂º±ÿ–Î∑µªπ
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @throws Exception
-	 */
-	public void checkReturnPart(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			
-			String repairNo = request.getParameter("repairNo");
-				
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-				
-			String flag = rhBo.checkReturnPart(new Long(repairNo));
+                writer.println("</xml>");
+            }
+            writer.flush();
+            writer.close();
 
-			
-			writer.println("<xml>");
-			writer.println("<flag>"+flag+"</flag>");
-			writer.println("</xml>");
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
-	
-	/**
-	 * ∑µªπ -- ∑µªπÕÍ≥…
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String repairReturnEnd(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		searchForm.setCurrentStatus("R"); //“—∑µªπ
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		String[] arrivalDate = request.getParameterValues("arrivalDate");
-		String[] returnDate = request.getParameterValues("returnDate");
-		String[] travelFee = request.getParameterValues("travelFee");
-		String[] laborCosts = request.getParameterValues("laborCosts");
-		String[] repairCondition = request.getParameterValues("repairCondition");
-		String[] travelId = request.getParameterValues("travelId");
-		
-		String[] travelIdAjaxAdd = request.getParameterValues("travelIdAjaxAdd");
-		String[] repairManAjaxAdd = request.getParameterValues("repairManAjaxAdd");
-		String[] departDateAjaxAdd = request.getParameterValues("departDateAjaxAdd");
-		String[] arrivalDateAjaxAdd = request.getParameterValues("arrivalDateAjaxAdd");
-		String[] returnDateAjaxAdd = request.getParameterValues("returnDateAjaxAdd");
-		String[] travelFeeAjaxAdd = request.getParameterValues("travelFeeAjaxAdd");
-		String[] laborCostsAjaxAdd = request.getParameterValues("laborCostsAjaxAdd");
-		String[] repairConditionAjaxAdd = request.getParameterValues("repairConditionAjaxAdd");
-		String[] remarkAjaxAdd = request.getParameterValues("remarkAjaxAdd");
-		
-		
-		if(travelId==null){
-			throw new Exception("travelId null!");
-		}
-		
-		ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
-		repairManInfo.add(travelId);
-		repairManInfo.add(arrivalDate);
-		repairManInfo.add(returnDate);
-		repairManInfo.add(travelFee);
-		repairManInfo.add(laborCosts);
-		repairManInfo.add(repairCondition);
-		
-		ArrayList<String[]> repairManInfoAdd = new ArrayList<String[]>();
-		repairManInfoAdd.add(travelIdAjaxAdd);
-		repairManInfoAdd.add(repairManAjaxAdd);
-		repairManInfoAdd.add(departDateAjaxAdd);
-		repairManInfoAdd.add(arrivalDateAjaxAdd);
-		repairManInfoAdd.add(returnDateAjaxAdd);
-		repairManInfoAdd.add(travelFeeAjaxAdd);
-		repairManInfoAdd.add(laborCostsAjaxAdd);
-		repairManInfoAdd.add(repairConditionAjaxAdd);
-		repairManInfoAdd.add(remarkAjaxAdd);
-		
-		rhb.returnEnd(searchForm,repairManInfo,repairManInfoAdd);
-		
-		
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "repairReturnEnd");
-		
-		return forward;
-	}
-	
-	
-	/**
-	 * –ﬁ∏¥£®±®∏Ê£©…Û≈˙
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String repairEndApprove(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "resultMessage";
-		
-		RepairSearchForm searchForm=(RepairSearchForm) form;
-		RepairHandleBo rhb = RepairHandleBo.getInstance();
-		Long userId=(Long) request.getSession().getAttribute("userId");
-		
-		String result = request.getParameter("result");
-	
-		if("Y".equals(result)){
-			searchForm.setCurrentStatus("E"); //–ﬁ∏¥
-		}else if("N".equals(result)){
-			searchForm.setCurrentStatus("X"); //…Û≈˙æ‹æ¯
-		}
-		
-		searchForm.setUpdateBy(userId);
-		searchForm.setUpdateDate(new Date());
-		
-		try{
-			rhb.repairApprove(searchForm);
-		}catch(VersionException ve){
-			return "versionErr";
-		}
-		String tempAttache = request.getParameter("attacheIds");
-		if (tempAttache!=null&&!tempAttache.equals("")) {
-			rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
-		}
-		request.setAttribute("tag", "1");
-		request.setAttribute("businessFlag", "repairEnd");
-		
-		return forward;
-	}
-	
-	
-	
-	
-	public void saveRepairManAjax(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			Long userId=(Long) request.getSession().getAttribute("userId");
-			
-			String repairNo = request.getParameter("repairNo");
-			String repairManAjaxAdd = request.getParameter("repairManAjaxAdd");
-			String departDateAjaxAdd = request.getParameter("departDateAjaxAdd");
-			String arrivalDateAjaxAdd = request.getParameter("arrivalDateAjaxAdd");
-			String returnDateAjaxAdd = request.getParameter("returnDateAjaxAdd");
-			String workingHoursActualAjaxAdd = request.getParameter("workingHoursActualAjaxAdd");
-			String travelFeeAjaxAdd = request.getParameter("travelFeeAjaxAdd");
-			String laborCostsActualAjaxAdd = request.getParameter("laborCostsActualAjaxAdd");
-			String repairConditionAjaxAdd = request.getParameter("repairConditionAjaxAdd");
-			String remarkAjaxAdd = request.getParameter("remarkAjaxAdd");
-			
-			RepairManInfoForm rmi = new RepairManInfoForm();
-			rmi.setRepairNo(new Long(repairNo));
-			rmi.setRepairMan(new Long(repairManAjaxAdd));
-			rmi.setDepartDate(Operate.toSqlDate(departDateAjaxAdd));
-			rmi.setArrivalDate(Operate.toSqlDate(arrivalDateAjaxAdd));
-			rmi.setReturnDate(Operate.toSqlDate(returnDateAjaxAdd));
-			rmi.setWorkingHours(0);
-			rmi.setWorkingHoursActual(new Integer(workingHoursActualAjaxAdd));
-			rmi.setTravelFee(new Double(travelFeeAjaxAdd));
-			rmi.setLaborCosts(0D);
-			rmi.setLaborCostsActual(new Double(laborCostsActualAjaxAdd));
-			rmi.setRepairCondition(repairConditionAjaxAdd);
-			rmi.setRemark(remarkAjaxAdd);
-			
-			rmi.setCreateBy(userId);
-			rmi.setCreateDate(new Date());
-			
-				
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			rhBo.addRepairManAgain(rmi);
-			
-			writer.println("<xml>");
-			writer.println("<flag>true</flag>");
-			writer.println("</xml>");
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	
-	
-	public void delRepairManAjax(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			String id = request.getParameter("id");
-			
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			rhBo.deleteRepairManAgain(new Long(id));
-			
-			writer.println("<xml>");
-			writer.println("<flag>true</flag>");
-			writer.println("</xml>");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	
-	public void updateRepairManAjax(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		
-		PrintWriter writer = response.getWriter();
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		try{
-			Long userId=(Long) request.getSession().getAttribute("userId");
-			
-			String id = request.getParameter("id");
-			String repairMan = request.getParameter("repairMan");
-			String arrivalDate = request.getParameter("arrivalDate");
-			String returnDate = request.getParameter("returnDate");
-			String workingHoursActual = request.getParameter("workingHoursActual");
-			String travelFee = request.getParameter("travelFee");
-			String laborCostsActual = request.getParameter("laborCostsActual");
-			String repairCondition = request.getParameter("repairCondition");
-			String remark = request.getParameter("remark");
-			
-			RepairManInfoForm rmi = (RepairManInfoForm)RepairListBo.getInstance().getRepairManInfo(new Long(id));
-			
-			rmi.setRepairMan(new Long(repairMan));
-			rmi.setArrivalDate(Operate.toSqlDate(arrivalDate));
-			rmi.setReturnDate(Operate.toSqlDate(returnDate));
-			rmi.setWorkingHoursActual(new Integer(workingHoursActual));
-			rmi.setTravelFee(new Double(travelFee));
-			rmi.setLaborCostsActual(new Double(laborCostsActual));
-			rmi.setRepairCondition(repairCondition);
-			rmi.setRemark(remark);
-			
-			rmi.setUpdateBy(userId);
-			rmi.setUpdateDate(new Date());
-			
-			RepairHandleBo rhBo=RepairHandleBo.getInstance();
-			rhBo.updateRepairMan(rmi);
-			
-			writer.println("<xml>");
-			writer.println("<flag>true</flag>");
-			writer.println("</xml>");
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			
-			writer.println("<xml>");
-			writer.println("<flag>false</flag>");
-			writer.println("</xml>");
-		}finally{
-			writer.flush();
-			writer.close();
-		}
-		
-	}
-	
-	
+
+    /**
+     * ‚ÄúÁª¥‰øÆ‚Äù->‚ÄúÁîµËØùËØäÊñ≠‚Äù->‚ÄúÊòéÁªÜ‚Äù->Áª¥‰øÆPartÂà†Èô§
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     */
+    public void deletePartStatus(ActionMapping mapping,
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception{
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        try{
+            String partsId = request.getParameter("partsId");
+
+            RepairPartForm rpf = new RepairPartForm();
+            rpf.setPartsId(new Long(partsId));
+
+            boolean deleteFlag = RepairHandleBo.getInstance().deletePartInfo(rpf);
+
+
+
+            if(deleteFlag){
+                writer.println("<xml>");
+                writer.println("<flag>true</flag>");
+                writer.println("<partsId>"+partsId+"</partsId>");
+                writer.println("</xml>");
+            }else{
+                writer.println("<xml>");
+                writer.println("<flag>false</flag>");
+                writer.println("</xml>");
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+    }
+
+
+
+    /**
+     * ‚ÄúÁª¥‰øÆ‚Äù->‚Äú‰øÆÁêÜ‚Äù->‚Äú‰øÆÁêÜÊòéÁªÜ‚Äù->Â∑≤‰øùÂ≠òÈõ∂‰ª∂Á°ÆÂÆöÁî≥ËØ∑
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     */
+    public void insertLoanPartInfo(ActionMapping mapping,
+                                   ActionForm form,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        try{
+            Long userId = (Long)request.getSession().getAttribute("userId");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+
+            String repairNo = request.getParameter("repairNo");
+            String stuffNo = request.getParameter("stuffNo");
+            String warrantyType = request.getParameter("warrantyType");
+            String applyQty = request.getParameter("applyQty");
+
+            RepairPartForm rpf = new RepairPartForm();
+
+            rpf.setRepairNo(new Long(repairNo));
+            rpf.setStuffNo(stuffNo);
+            rpf.setWarrantyType(warrantyType);
+            rpf.setApplyQty(new Integer(applyQty));
+            rpf.setRepairPartStatus("L");	//Â∑≤ÂàÜÈÖçÂæÖÈ¢ÜÂèñ
+            rpf.setRepairPartType("X");		//Êê∫Â∏¶Èõ∂‰ª∂
+            rpf.setCreateBy(userId);
+            rpf.setCreateDate(new java.util.Date());
+
+            RepairPartForm returnRpf = rhBo.submitLoanPart(rpf);
+
+
+
+            if(returnRpf != null){
+                String skuCode = returnRpf.getSkuCode()==null?"":EscapeUnescape.escape(returnRpf.getSkuCode());
+                String standard = returnRpf.getStandard()==null?"":EscapeUnescape.escape(returnRpf.getStandard());
+
+                writer.println("<xml>");
+                writer.println("<flag>true</flag>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getPartsId():"+returnRpf.getPartsId());
+                writer.println("<partsId>"+returnRpf.getPartsId()+"</partsId>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getStuffNo():"+returnRpf.getStuffNo());
+                writer.println("<stuffNo>"+returnRpf.getStuffNo()+"</stuffNo>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getSkuCode():"+returnRpf.getSkuCode());
+                writer.println("<skuCode>"+(skuCode.equals("")?"..":skuCode)+"</skuCode>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getStandard():"+returnRpf.getStandard());
+                writer.println("<standard>"+(standard.equals("")?"..":standard)+"</standard>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getSkuUnit():"+returnRpf.getSkuUnit());
+                writer.println("  <skuUnit>"+EscapeUnescape.escape(returnRpf.getSkuUnit())+"</skuUnit>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getRepairPartStatus():"+DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()));
+                writer.println("<repairPartStatus>"+EscapeUnescape.escape(DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()))+"</repairPartStatus>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getApplyQty():"+returnRpf.getApplyQty());
+                writer.println("<applyQty>"+returnRpf.getApplyQty()+"</applyQty>");
+                writer.println("<partVersion>"+returnRpf.getVersion()+"</partVersion>");
+
+                writer.println("</xml>");
+            }else{
+                writer.println("<xml>");
+                writer.println("<flag>false</flag>");
+                writer.println("<result>part</result>");
+                writer.println("</xml>");
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("<result>part</result>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+    }
+
+
+    public void cancelLoanPart(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+
+            Long userId = (Long)request.getSession().getAttribute("userId");
+            String partsId = request.getParameter("partsId");
+            //String partStatusCode = request.getParameter("partStatusCode");
+            String version = request.getParameter("version");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+
+            boolean flag = false;
+            //Â¢ûÂä†ÂèñÊ∂àÈõ∂‰ª∂ÁöÑÁâàÊú¨Ê†°È™å added by xt 2007-09-08
+            if(partsId != null && rhBo.checkPartVersion(new Long(partsId),version)){
+
+                RepairPartForm rpf = new RepairPartForm();
+                rpf.setPartsId(new Long(partsId));
+                rpf.setUpdateBy(userId);
+
+                flag = rhBo.cancelLoanPart(rpf);
+
+            }
+
+            if(flag){
+                writer.println("<xml>");
+                writer.println("<flag>true</flag>");
+                writer.println("<partsId>"+partsId+"</partsId>");
+                writer.println("</xml>");
+            }else{
+                writer.println("<xml>");
+                writer.println("<flag>false</flag>");
+                writer.println("</xml>");
+            }
+
+
+        }catch(VersionException ve){
+            ve.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>versionErr</flag>");
+            writer.println("</xml>");
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+    public void insertLoanToolInfo(ActionMapping mapping,
+                                   ActionForm form,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        try{
+            Long userId = (Long)request.getSession().getAttribute("userId");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+
+            String repairNo = request.getParameter("repairNo");
+            String stuffNo = request.getParameter("stuffNo");
+            String warrantyType = request.getParameter("warrantyType");
+            String applyQty = request.getParameter("applyQty");
+
+            RepairPartForm rpf = new RepairPartForm();
+
+            rpf.setRepairNo(new Long(repairNo));
+            rpf.setStuffNo(stuffNo);
+            rpf.setWarrantyType(warrantyType);
+            rpf.setApplyQty(new Integer(applyQty));
+            rpf.setRepairPartStatus("L");	//Â∑≤ÂàÜÈÖçÂæÖÈ¢ÜÂèñ
+            rpf.setRepairPartType("T");		//Êê∫Â∏¶Â∑•ÂÖ∑
+            rpf.setCreateBy(userId);
+            rpf.setCreateDate(new java.util.Date());
+
+            RepairPartForm returnRpf = rhBo.submitLoanTool(rpf);
+
+
+
+            if(returnRpf != null){
+                String skuCode = returnRpf.getSkuCode()==null?"":EscapeUnescape.escape(returnRpf.getSkuCode());
+                String standard = returnRpf.getStandard()==null?"":EscapeUnescape.escape(returnRpf.getStandard());
+                String owner = returnRpf.getOwner()==null?"":EscapeUnescape.escape(returnRpf.getOwner());
+
+                writer.println("<xml>");
+                writer.println("<flag>true</flag>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getPartsId():"+returnRpf.getPartsId());
+                writer.println("<partsId>"+returnRpf.getPartsId()+"</partsId>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getStuffNo():"+returnRpf.getStuffNo());
+                writer.println("<stuffNo>"+returnRpf.getStuffNo()+"</stuffNo>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getSkuCode():"+returnRpf.getSkuCode());
+                writer.println("<skuCode>"+(skuCode.equals("")?"..":skuCode)+"</skuCode>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getStandard():"+returnRpf.getStandard());
+                writer.println("<standard>"+(standard.equals("")?"..":standard)+"</standard>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getSkuUnit():"+returnRpf.getSkuUnit());
+                writer.println("<skuUnit>"+EscapeUnescape.escape(returnRpf.getSkuUnit())+"</skuUnit>");
+                writer.println("<owner>"+(owner.equals("")?"..":standard)+"</owner>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getRepairPartStatus():"+DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()));
+                writer.println("<repairPartStatus>"+EscapeUnescape.escape(DicInit.getSystemName("LOAN_STATUS",returnRpf.getRepairPartStatus()))+"</repairPartStatus>");
+                //System.out.println("-=-=-=-=sunhj returnRpf.getApplyQty():"+returnRpf.getApplyQty());
+                writer.println("<applyQty>"+returnRpf.getApplyQty()+"</applyQty>");
+                writer.println("<partVersion>"+returnRpf.getVersion()+"</partVersion>");
+
+                writer.println("</xml>");
+            }else{
+                writer.println("<xml>");
+                writer.println("<flag>false</flag>");
+                writer.println("<result>part</result>");
+                writer.println("</xml>");
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("<result>part</result>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+    }
+
+
+    public void cancelLoanTool(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+
+            Long userId = (Long)request.getSession().getAttribute("userId");
+            String partsId = request.getParameter("partsId");
+            //String partStatusCode = request.getParameter("partStatusCode");
+            String version = request.getParameter("version");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+
+            boolean flag = false;
+            //Â¢ûÂä†ÂèñÊ∂àÈõ∂‰ª∂ÁöÑÁâàÊú¨Ê†°È™å added by xt 2007-09-08
+            if(partsId != null && rhBo.checkPartVersion(new Long(partsId),version)){
+
+                RepairPartForm rpf = new RepairPartForm();
+                rpf.setPartsId(new Long(partsId));
+                rpf.setUpdateBy(userId);
+
+                flag = rhBo.cancelLoanPart(rpf);
+
+            }
+
+            if(flag){
+                writer.println("<xml>");
+                writer.println("<flag>true</flag>");
+                writer.println("<partsId>"+partsId+"</partsId>");
+                writer.println("</xml>");
+            }else{
+                writer.println("<xml>");
+                writer.println("<flag>false</flag>");
+                writer.println("</xml>");
+            }
+
+
+        }catch(VersionException ve){
+            ve.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>versionErr</flag>");
+            writer.println("</xml>");
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
+
+    /**
+     * Ê¥æÂ∑• -- Áª¥‰øÆÊ¥æÂ∑•
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String dispatch(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("D"); //Â∑≤Ê¥æÂ∑•
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        String repairMans = request.getParameter("repairMans");
+
+        if(repairMans!=null && repairMans.startsWith("@")){
+            repairMans=repairMans.substring(1)+" ";
+        }
+        rhb.dispatch(searchForm,repairMans);
+
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "repairDispatch");
+
+        return forward;
+    }
+
+
+    /**
+     * Ê¥æÂ∑•ÂâçÊ†°È™åÔºåÊê∫Â∏¶ÁöÑÈõ∂‰ª∂ÂíåÂ∑•ÂÖ∑ÈÉΩÂøÖÈ°ªÂá∫Â∫ì
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    public void checkDispatchPart(ActionMapping mapping,
+                                  ActionForm form,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+
+            String repairNo = request.getParameter("repairNo");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+
+            String flag = rhBo.checkDispatchPart(new Long(repairNo));
+
+
+            writer.println("<xml>");
+            writer.println("<flag>"+flag+"</flag>");
+            writer.println("</xml>");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
+
+
+    /**
+     * Êê∫Â∏¶Èõ∂‰ª∂ËΩ¨ÈîÄÂîÆ
+     * Áª¥‰øÆËøîËøòÊó∂ÂèØÊìç‰Ωú
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    public void transferLoanPart(ActionMapping mapping,
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+            Long userId = (Long)request.getSession().getAttribute("userId");
+            String partsId = request.getParameter("partsId");
+            String version = request.getParameter("version");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+            String flag = "false";
+            if(partsId != null && rhBo.checkPartVersion(new Long(partsId),version)){
+
+                RepairPartForm rpf = new RepairPartForm();
+                rpf.setPartsId(new Long(partsId));
+                rpf.setUpdateBy(userId);
+                rpf.setUpdateDate(new Date());
+
+                if(rhBo.transferLoanPart(rpf)){
+                    flag="true";
+                }
+
+            }
+
+            writer.println("<xml>");
+            writer.println("<flag>"+flag+"</flag>");
+            writer.println("<partsId>"+partsId+"</partsId>");
+            writer.println("</xml>");
+
+
+        }catch(VersionException ve){
+            ve.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>versionErr</flag>");
+            writer.println("</xml>");
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
+
+
+    /**
+     * ËøîËøòÂÆåÊàêÂâçÊ†°È™åÔºåÂùè‰ª∂„ÄÅÊê∫Â∏¶ÁöÑÈõ∂‰ª∂ÂíåÂ∑•ÂÖ∑ÈÉΩÂøÖÈ°ªËøîËøò
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    public void checkReturnPart(ActionMapping mapping,
+                                ActionForm form,
+                                HttpServletRequest request,
+                                HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+
+            String repairNo = request.getParameter("repairNo");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+
+            String flag = rhBo.checkReturnPart(new Long(repairNo));
+
+
+            writer.println("<xml>");
+            writer.println("<flag>"+flag+"</flag>");
+            writer.println("</xml>");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
+
+
+    /**
+     * ËøîËøò -- ËøîËøòÂÆåÊàê
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String repairReturnEnd(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        searchForm.setCurrentStatus("R"); //Â∑≤ËøîËøò
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        String[] arrivalDate = request.getParameterValues("arrivalDate");
+        String[] returnDate = request.getParameterValues("returnDate");
+        String[] travelFee = request.getParameterValues("travelFee");
+        String[] laborCosts = request.getParameterValues("laborCosts");
+        String[] repairCondition = request.getParameterValues("repairCondition");
+        String[] travelId = request.getParameterValues("travelId");
+
+        String[] travelIdAjaxAdd = request.getParameterValues("travelIdAjaxAdd");
+        String[] repairManAjaxAdd = request.getParameterValues("repairManAjaxAdd");
+        String[] departDateAjaxAdd = request.getParameterValues("departDateAjaxAdd");
+        String[] arrivalDateAjaxAdd = request.getParameterValues("arrivalDateAjaxAdd");
+        String[] returnDateAjaxAdd = request.getParameterValues("returnDateAjaxAdd");
+        String[] travelFeeAjaxAdd = request.getParameterValues("travelFeeAjaxAdd");
+        String[] laborCostsAjaxAdd = request.getParameterValues("laborCostsAjaxAdd");
+        String[] repairConditionAjaxAdd = request.getParameterValues("repairConditionAjaxAdd");
+        String[] remarkAjaxAdd = request.getParameterValues("remarkAjaxAdd");
+
+
+        if(travelId==null){
+            throw new Exception("travelId null!");
+        }
+
+        ArrayList<String[]> repairManInfo = new ArrayList<String[]>();
+        repairManInfo.add(travelId);
+        repairManInfo.add(arrivalDate);
+        repairManInfo.add(returnDate);
+        repairManInfo.add(travelFee);
+        repairManInfo.add(laborCosts);
+        repairManInfo.add(repairCondition);
+
+        ArrayList<String[]> repairManInfoAdd = new ArrayList<String[]>();
+        repairManInfoAdd.add(travelIdAjaxAdd);
+        repairManInfoAdd.add(repairManAjaxAdd);
+        repairManInfoAdd.add(departDateAjaxAdd);
+        repairManInfoAdd.add(arrivalDateAjaxAdd);
+        repairManInfoAdd.add(returnDateAjaxAdd);
+        repairManInfoAdd.add(travelFeeAjaxAdd);
+        repairManInfoAdd.add(laborCostsAjaxAdd);
+        repairManInfoAdd.add(repairConditionAjaxAdd);
+        repairManInfoAdd.add(remarkAjaxAdd);
+
+        rhb.returnEnd(searchForm,repairManInfo,repairManInfoAdd);
+
+
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "repairReturnEnd");
+
+        return forward;
+    }
+
+
+    /**
+     * ‰øÆÂ§çÔºàÊä•ÂëäÔºâÂÆ°Êâπ
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String repairEndApprove(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "resultMessage";
+
+        RepairSearchForm searchForm=(RepairSearchForm) form;
+        RepairHandleBo rhb = RepairHandleBo.getInstance();
+        Long userId=(Long) request.getSession().getAttribute("userId");
+
+        String result = request.getParameter("result");
+
+        if("Y".equals(result)){
+            searchForm.setCurrentStatus("E"); //‰øÆÂ§ç
+        }else if("N".equals(result)){
+            searchForm.setCurrentStatus("X"); //ÂÆ°ÊâπÊãíÁªù
+        }
+
+        searchForm.setUpdateBy(userId);
+        searchForm.setUpdateDate(new Date());
+
+        try{
+            rhb.repairApprove(searchForm);
+        }catch(VersionException ve){
+            return "versionErr";
+        }
+        String tempAttache = request.getParameter("attacheIds");
+        if (tempAttache!=null&&!tempAttache.equals("")) {
+            rhb.updateAttacheByAttacheIdsAndSheetNo(tempAttache.split(","),searchForm.getRepairNo(),userId);
+        }
+        request.setAttribute("tag", "1");
+        request.setAttribute("businessFlag", "repairEnd");
+
+        return forward;
+    }
+
+
+
+
+    public void saveRepairManAjax(ActionMapping mapping,
+                                  ActionForm form,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+            Long userId=(Long) request.getSession().getAttribute("userId");
+
+            String repairNo = request.getParameter("repairNo");
+            String repairManAjaxAdd = request.getParameter("repairManAjaxAdd");
+            String departDateAjaxAdd = request.getParameter("departDateAjaxAdd");
+            String arrivalDateAjaxAdd = request.getParameter("arrivalDateAjaxAdd");
+            String returnDateAjaxAdd = request.getParameter("returnDateAjaxAdd");
+            String workingHoursActualAjaxAdd = request.getParameter("workingHoursActualAjaxAdd");
+            String travelFeeAjaxAdd = request.getParameter("travelFeeAjaxAdd");
+            String laborCostsActualAjaxAdd = request.getParameter("laborCostsActualAjaxAdd");
+            String repairConditionAjaxAdd = request.getParameter("repairConditionAjaxAdd");
+            String remarkAjaxAdd = request.getParameter("remarkAjaxAdd");
+
+            RepairManInfoForm rmi = new RepairManInfoForm();
+            rmi.setRepairNo(new Long(repairNo));
+            rmi.setRepairMan(new Long(repairManAjaxAdd));
+            rmi.setDepartDate(Operate.toSqlDate(departDateAjaxAdd));
+            rmi.setArrivalDate(Operate.toSqlDate(arrivalDateAjaxAdd));
+            rmi.setReturnDate(Operate.toSqlDate(returnDateAjaxAdd));
+            rmi.setWorkingHours(0);
+            rmi.setWorkingHoursActual(new Integer(workingHoursActualAjaxAdd));
+            rmi.setTravelFee(new Double(travelFeeAjaxAdd));
+            rmi.setLaborCosts(0D);
+            rmi.setLaborCostsActual(new Double(laborCostsActualAjaxAdd));
+            rmi.setRepairCondition(repairConditionAjaxAdd);
+            rmi.setRemark(remarkAjaxAdd);
+
+            rmi.setCreateBy(userId);
+            rmi.setCreateDate(new Date());
+
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+            rhBo.addRepairManAgain(rmi);
+
+            writer.println("<xml>");
+            writer.println("<flag>true</flag>");
+            writer.println("</xml>");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
+
+    public void delRepairManAjax(ActionMapping mapping,
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+            String id = request.getParameter("id");
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+            rhBo.deleteRepairManAgain(new Long(id));
+
+            writer.println("<xml>");
+            writer.println("<flag>true</flag>");
+            writer.println("</xml>");
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
+    public void updateRepairManAjax(ActionMapping mapping,
+                                    ActionForm form,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception{
+
+        PrintWriter writer = response.getWriter();
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+
+        try{
+            Long userId=(Long) request.getSession().getAttribute("userId");
+
+            String id = request.getParameter("id");
+            String repairMan = request.getParameter("repairMan");
+            String arrivalDate = request.getParameter("arrivalDate");
+            String returnDate = request.getParameter("returnDate");
+            String workingHoursActual = request.getParameter("workingHoursActual");
+            String travelFee = request.getParameter("travelFee");
+            String laborCostsActual = request.getParameter("laborCostsActual");
+            String repairCondition = request.getParameter("repairCondition");
+            String remark = request.getParameter("remark");
+
+            RepairManInfoForm rmi = (RepairManInfoForm)RepairListBo.getInstance().getRepairManInfo(new Long(id));
+
+            rmi.setRepairMan(new Long(repairMan));
+            rmi.setArrivalDate(Operate.toSqlDate(arrivalDate));
+            rmi.setReturnDate(Operate.toSqlDate(returnDate));
+            rmi.setWorkingHoursActual(new Integer(workingHoursActual));
+            rmi.setTravelFee(new Double(travelFee));
+            rmi.setLaborCostsActual(new Double(laborCostsActual));
+            rmi.setRepairCondition(repairCondition);
+            rmi.setRemark(remark);
+
+            rmi.setUpdateBy(userId);
+            rmi.setUpdateDate(new Date());
+
+            RepairHandleBo rhBo=RepairHandleBo.getInstance();
+            rhBo.updateRepairMan(rmi);
+
+            writer.println("<xml>");
+            writer.println("<flag>true</flag>");
+            writer.println("</xml>");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+
+            writer.println("<xml>");
+            writer.println("<flag>false</flag>");
+            writer.println("</xml>");
+        }finally{
+            writer.flush();
+            writer.close();
+        }
+
+    }
+
+
 }

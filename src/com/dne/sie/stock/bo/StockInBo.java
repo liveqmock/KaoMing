@@ -1,6 +1,6 @@
 package com.dne.sie.stock.bo;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,438 +25,438 @@ import com.dne.sie.util.query.QueryParameter;
 
 
 /**
- * Èë¿â¹ÜÀíBO´¦ÀíÀà
+ * å…¥åº“ç®¡ç†BOå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
- * @see StockInBo.java <br>
+ * @see StockInBo <br>
  */
 public class StockInBo extends CommBo{
-	//private static Logger logger = Logger.getLogger(StockInBo.class);
+    //private static Logger logger = Logger.getLogger(StockInBo.class);
 
-	private static final StockInBo INSTANCE = new StockInBo();
-		
-	private StockInBo(){
-	}
-	
-	public static final StockInBo getInstance() {
-	   return INSTANCE;
-	}
-	
-	
+    private static final StockInBo INSTANCE = new StockInBo();
 
-	/**
-	  * ³öÈë¿â½çÃæÏÔÊ¾Êı¾İ
-	  * @param sif - Èë¿âĞÅÏ¢£»
-	  * @return ·µ»ØList
-	  */
-	public ArrayList stockInOutList(StockFlowForm sffQuery)  throws Exception{
+    private StockInBo(){
+    }
 
-		ArrayList alData = new ArrayList();
-		StockFlowQuery uq = new StockFlowQuery(sffQuery);
-		int count = 0;
-		
-		List dataList = uq.doListQuery(sffQuery.getFromPage(),sffQuery.getToPage());
-		count = uq.doCountQuery();
-		
-		StockFlowForm sff=null;
-		for (int i = 0; i < dataList.size(); i++) {
-			sff = (StockFlowForm)dataList.get(i);
-			String[] data = new String[15];
-			data[0] = sff.getFlowId().toString();
-			data[1] = DicInit.getSystemName("SKU_TYPE",sff.getSkuType());
-			data[2] = sff.getSkuCode();
-			data[3] = sff.getStuffNo();
-			data[4] = sff.getSkuNum()==null?"":sff.getSkuNum().toString();
-			data[5] = sff.getSkuUnit();
-			data[6] = sff.getPerCost()==null?"":sff.getPerCost().toString();
-			data[7] = sff.getCustomerName();
-			data[8] = DicInit.getSystemName("FLOW_ITEM",sff.getFlowItem());
-			data[9] = sff.getRemark();
-			data[10] = sff.getCreateDate()==null?"":Operate.trimDate(sff.getCreateDate()).toString();
-			data[11] = sff.getFormNo()==null?"":sff.getFormNo();
-			data[12] = sff.getOrderDollar()==null?"":sff.getOrderDollar().toString();
-			data[13] = DicInit.getSystemName("TRANSPORT_MODE",sff.getTransportMode());
-			data[14] = sff.getBinCode();
-			
-			alData.add(data);
-		}
-		alData.add(0, count + "");
-	
-		return alData;	     	
-	}
-	
-	
-	
-	public StockFlowForm flowDetail(Long flowId)  throws Exception{
-		return (StockFlowForm)this.getDao().findById(StockFlowForm.class, flowId);
-	}
-	
-	
-	public void updateInvoiceNo(StockFlowForm sff)  throws Exception{
-		StockFlowForm inFlow = this.flowDetail(sff.getFlowId());
-		inFlow.setInvoiceNo(sff.getInvoiceNo());
-		inFlow.setUpdateBy(sff.getUpdateBy());
-		inFlow.setUpdateDate(sff.getUpdateDate());
-		
-		this.getDao().update(inFlow);
-		
-	}
-	
-	/**
-	  * ¿â´æµ÷ÕûÈë¿âÈ·ÈÏ
-	  * 	²åÈë¿â´æĞÅÏ¢±í(TD_STOCK_INFO)ĞÅÏ¢£¬
-	  * 	²åÈë³öÈë¿âÁ÷Ë®±í(td_stock_flow)Ò»Ìõ³ö¿â¼ÇÂ¼
-	  * @param sif - Èë¿âĞÅÏ¢£»
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
-	public int stockAdjustIn(StockFlowForm sff)  throws Exception{
-		int tag=-1;
-		StockInfoForm sif=flowToInfo(sff);
-		StockOutBo sob=StockOutBo.getInstance();
-		sff.setRestNum(sob.getRestStock(sif.getStuffNo(), sff.getSkuNum(), "I"));
-		ArrayList al=new ArrayList();
-		al.add(sif);
-		al.add(sff);
-		if(this.getBatchDao().insertBatch(al)){
-			tag=1;
-			//°ÑÔ­ÏÈ0ÊıÁ¿µÄ¸ÃÁã¼şÉ¾³ı
+    public static final StockInBo getInstance() {
+        return INSTANCE;
+    }
+
+
+
+    /**
+     * å‡ºå…¥åº“ç•Œé¢æ˜¾ç¤ºæ•°æ®
+     * @param sif - å…¥åº“ä¿¡æ¯ï¼›
+     * @return è¿”å›List
+     */
+    public ArrayList stockInOutList(StockFlowForm sffQuery)  throws Exception{
+
+        ArrayList alData = new ArrayList();
+        StockFlowQuery uq = new StockFlowQuery(sffQuery);
+        int count = 0;
+
+        List dataList = uq.doListQuery(sffQuery.getFromPage(),sffQuery.getToPage());
+        count = uq.doCountQuery();
+
+        StockFlowForm sff=null;
+        for (int i = 0; i < dataList.size(); i++) {
+            sff = (StockFlowForm)dataList.get(i);
+            String[] data = new String[15];
+            data[0] = sff.getFlowId().toString();
+            data[1] = DicInit.getSystemName("SKU_TYPE",sff.getSkuType());
+            data[2] = sff.getSkuCode();
+            data[3] = sff.getStuffNo();
+            data[4] = sff.getSkuNum()==null?"":sff.getSkuNum().toString();
+            data[5] = sff.getSkuUnit();
+            data[6] = sff.getPerCost()==null?"":sff.getPerCost().toString();
+            data[7] = sff.getCustomerName();
+            data[8] = DicInit.getSystemName("FLOW_ITEM",sff.getFlowItem());
+            data[9] = sff.getRemark();
+            data[10] = sff.getCreateDate()==null?"":Operate.trimDate(sff.getCreateDate()).toString();
+            data[11] = sff.getFormNo()==null?"":sff.getFormNo();
+            data[12] = sff.getOrderDollar()==null?"":sff.getOrderDollar().toString();
+            data[13] = DicInit.getSystemName("TRANSPORT_MODE",sff.getTransportMode());
+            data[14] = sff.getBinCode();
+
+            alData.add(data);
+        }
+        alData.add(0, count + "");
+
+        return alData;
+    }
+
+
+
+    public StockFlowForm flowDetail(Long flowId)  throws Exception{
+        return (StockFlowForm)this.getDao().findById(StockFlowForm.class, flowId);
+    }
+
+
+    public void updateInvoiceNo(StockFlowForm sff)  throws Exception{
+        StockFlowForm inFlow = this.flowDetail(sff.getFlowId());
+        inFlow.setInvoiceNo(sff.getInvoiceNo());
+        inFlow.setUpdateBy(sff.getUpdateBy());
+        inFlow.setUpdateDate(sff.getUpdateDate());
+
+        this.getDao().update(inFlow);
+
+    }
+
+    /**
+     * åº“å­˜è°ƒæ•´å…¥åº“ç¡®è®¤
+     * 	æ’å…¥åº“å­˜ä¿¡æ¯è¡¨(TD_STOCK_INFO)ä¿¡æ¯ï¼Œ
+     * 	æ’å…¥å‡ºå…¥åº“æµæ°´è¡¨(td_stock_flow)ä¸€æ¡å‡ºåº“è®°å½•
+     * @param sif - å…¥åº“ä¿¡æ¯ï¼›
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int stockAdjustIn(StockFlowForm sff)  throws Exception{
+        int tag=-1;
+        StockInfoForm sif=flowToInfo(sff);
+        StockOutBo sob=StockOutBo.getInstance();
+        sff.setRestNum(sob.getRestStock(sif.getStuffNo(), sff.getSkuNum(), "I"));
+        ArrayList al=new ArrayList();
+        al.add(sif);
+        al.add(sff);
+        if(this.getBatchDao().insertBatch(al)){
+            tag=1;
+            //æŠŠåŸå…ˆ0æ•°é‡çš„è¯¥é›¶ä»¶åˆ é™¤
 //			sob.inMerge(sff.getStuffNo());
-		}
-		
-		return tag;	   	     	
-	}
+        }
 
-	/**
-	  * »ñÈ¡³öÈë¿â´òÓ¡Êı¾İ
-	  * @param sif - Á÷Ë®id£»
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
-	public ArrayList getFlowPrint(String ids)  throws Exception{
-		String strHql="from StockFlowForm as sff where sff.flowId in ("+ids+")";
-		ArrayList al=(ArrayList)this.getDao().list(strHql);
-		return al;
-	}
-	
-	/**
-	  * »ñÈ¡µ±Ç°½á´æ¿â´æ
-	  * @param sif - Á÷Ë®id£»
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
-	public int getNowSkuNum(String skuCode)  throws Exception{
-		String strHql="select sum(sif.skuNum) from StockInfoForm as sif where sif.skuCode='"+skuCode+"'";
-		Long sum=(Long)this.getDao().uniqueResult(strHql);
-		return sum==null?0:sum.intValue();
-	}
-	
+        return tag;
+    }
 
-	/**
-	 * Á÷Ë®±íÈë¿âµÄµ¼Èë
-	 * @param StockFlowForm ²éÑ¯Ìõ¼ş
-	 * @return µ¼³ö½á¹ûÊı¾İ
-	 */
-	public String stockFlowTxt(StockFlowForm sfQuery){
-		String strRet=null;
+    /**
+     * è·å–å‡ºå…¥åº“æ‰“å°æ•°æ®
+     * @param sif - æµæ°´idï¼›
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public ArrayList getFlowPrint(String ids)  throws Exception{
+        String strHql="from StockFlowForm as sff where sff.flowId in ("+ids+")";
+        ArrayList al=(ArrayList)this.getDao().list(strHql);
+        return al;
+    }
 
-		try {
-			StockFlowQuery sfq = new StockFlowQuery(sfQuery);
-			Object[] paraObj=sfq.queryCondition(sfQuery);
-			String strHql="select trim(pa.createDate),pa.customerName," +
-				"pa.shortCode,pa.skuCode,pa.standard,pa.skuNum,pa.skuUnit," +
-				"pa.perCost,pa.remark from StockFlowForm as pa "+(String)paraObj[0];
-			
-			ArrayList alData = new ArrayList(this.getDao().parameterQuery(strHql,(ArrayList)paraObj[1]));
-			
-			String[] colName =
-				{
-					"ĞòºÅ",
-					"ÈÕÆÚ",
-					"¹«Ë¾Ãû³Æ",
-					"¼ò³Æ",
-					"Áã¼şÃû³Æ",
-					"¹æ¸ñ",
-					"ÊıÁ¿",
-					"µ¥Î»",
-					"µ¥¼Û",
-					"±¸×¢"
-				};
-			alData.add(0, colName);
+    /**
+     * è·å–å½“å‰ç»“å­˜åº“å­˜
+     * @param sif - æµæ°´idï¼›
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int getNowSkuNum(String skuCode)  throws Exception{
+        String strHql="select sum(sif.skuNum) from StockInfoForm as sif where sif.skuCode='"+skuCode+"'";
+        Long sum=(Long)this.getDao().uniqueResult(strHql);
+        return sum==null?0:sum.intValue();
+    }
 
-			StringBuffer strSource=new StringBuffer();
-							
-			for(int i=0;i<alData.size();i++){
-				Object[] temp=(Object[])alData.get(i);
-				if(i>0) strSource.append(i).append("\t");
-				for(int j=0;j<temp.length;j++){
-					if(j==0) strSource.append(temp[j]);
-					else strSource.append("\t").append(temp[j]==null?"":temp[j]);
-				}
-				strSource.append("\r\n");
-			}
-			strRet=strSource.toString();
-			
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return strRet;
+    /**
+     * æµæ°´è¡¨å…¥åº“çš„å¯¼å…¥
+     * @param StockFlowForm æŸ¥è¯¢æ¡ä»¶
+     * @return å¯¼å‡ºç»“æœæ•°æ®
+     */
+    public String stockFlowTxt(StockFlowForm sfQuery){
+        String strRet=null;
 
-	}
-	
-	/**
-	 * »ñÈ¡²ÖÎ»ºÅ
-	 * @return ²ÖÎ»µÄlist
-	 */
-	public ArrayList getStockList() throws Exception{
-		ArrayList binCode = (ArrayList) this.getDao().listAll(
-				"select sbf.binCode from StationBinForm as sbf " +
-				"where sbf.delFlag=0 order by  sbf.binCode");
-		
-		return binCode;
-	}
-	
-	
+        try {
+            StockFlowQuery sfq = new StockFlowQuery(sfQuery);
+            Object[] paraObj=sfq.queryCondition(sfQuery);
+            String strHql="select trim(pa.createDate),pa.customerName," +
+                    "pa.shortCode,pa.skuCode,pa.standard,pa.skuNum,pa.skuUnit," +
+                    "pa.perCost,pa.remark from StockFlowForm as pa "+(String)paraObj[0];
 
-	/**
-	 * ¶©¹ºÈë¿âÁĞ±í²éÑ¯
-	 * @param orderNo
-	 * @return List ²éÑ¯½á¹û
-	 */
-	public List orderInList(String orderNo) {
-		List<String[]> orderInfoList = new ArrayList<String[]>();
-		try {
-			//²éÑ¯¶©¹ºÖĞµÄÄ³¶©µ¥Áã¼şPOĞÅÏ¢
-			String strHql ="from PoForm as po where po.orderNo= :orderNo and po.orderStatus='B'";
-			ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
-			QueryParameter param = new QueryParameter();
-			param.setName("orderNo");
-			param.setValue(orderNo);
-			param.setHbType(Hibernate.STRING);
-			paramList.add(param);
-		
-			List<PoForm> orderList = this.getDao().parameterQuery(strHql, paramList);
-			for(int i=0;orderList!=null&&i<orderList.size();i++){
-				PoForm pf=orderList.get(i);
-				String[] temp = new String[13];
-				temp[0]=pf.getPoNo().toString();
-				temp[1]=pf.getStuffNo();
-				temp[2]=pf.getModelCode();
-				temp[3]=pf.getSaleNo();
-				temp[4]=pf.getCustomerName();
-				temp[5]=pf.getDeliveryTime();
-				temp[6]=pf.getShippingAddress();
-				temp[7]=pf.getOrderNum().toString();
-				temp[8]=Operate.toFix(pf.getPerQuote(), 2);
-				temp[9]=pf.getCreateDate().toLocaleString();
-				temp[10]=Operate.toFix(pf.getPerQuote() * CommonSearch.getInstance().getExchangeRate(pf.getSaleNo()), 2);
-				temp[11]=pf.getTransportMode();
-				temp[12]=pf.getSkuCode();
-				
-				orderInfoList.add(temp);
-			}
-			
+            ArrayList alData = new ArrayList(this.getDao().parameterQuery(strHql,(ArrayList)paraObj[1]));
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return orderInfoList;
-	}
-	
-	
-	/**
-	 * ¶©¹ºÈë¿â ½ÓÊÕ
-	 * 1.ÏÈ½«Êµ¼ÊÊÕµ½Áã¼şÈ«²¿Èë¿â£¨ÁÙÊ±¿â´æX£©£¬²åÈëStockInfoFormºÍStockFlowForm£¬¸÷recevieÌõ¡£
-	 * 2.ĞŞ¸ÄPO×´Ì¬£¬ÒÔ¼°²ğ·ÖPO
-	 * 		·ÖÎöPOÊıÁ¿ºÍµ½»õrecevieÊıÁ¿:
-	 * 		a. PO<=recevie	: 
-	 * 			½«¶ÔÓ¦POÖ±½ÓĞŞ¸Ä×´Ì¬£¨ÒÑµ½»õ/ÒÑ·ÖÅä´ıÁìÈ¡£©£»
-	 * 		b. PO>recevie	: 
-	 * 			²ğ·ÖPO£¬Ô­À´¼ÇÂ¼µÄnum¸ÄÎªPO-recevie£¬×´Ì¬²»±ä£»
-	 * 			ĞÂÔörecevieÌõ£¬²¢ĞŞ¸Ä×´Ì¬£¨ÒÑµ½»õ/ÒÑ·ÖÅä´ıÁìÈ¡£©£»
-	 * 3.µ÷ÓÃ·ÖÅäÂß¼­
-	 * 		a. ½«ÏúÊÛÁã¼ş½øĞĞ×´Ì¬ĞŞ¸Ä»ò²ğ·Ö£¬ÔÙÅĞ¶ÏÏúÊÛµ¥×´Ì¬ÊÇ·ñĞèÒªĞŞ¸Ä£»
-	 * 		b. ½«ÏúÊÛÁã¼şµÄdetailId¸³Öµ¸ø¿â´ærequestId£¬±£Áô¸Ã¿â´æÁã¼ş£¨ÒÑ·ÖÅä´ıÁìÈ¡£© £»
-	 * 		c. ÈôÈë¿âÓĞÊ£Óà£¬½«Ê£ÓàÁã¼şÔÙ·ÖÅä¸øÆäËûĞèÒª¸ÃÁã¼şµÄµ¥×Ó£»
-	 * @param ÊÕ»õĞÅÏ¢£¬ÏúÊÛµ¥ºÅ£¬²Ù×÷ÈË 
-	 * @return tag
-	 */
-   public synchronized int orderInReceive(String[][] para,String saleNo,Long userId,String transportMode) throws Exception {
-	   int tag = -1;
+            String[] colName =
+                    {
+                            "åºå·",
+                            "æ—¥æœŸ",
+                            "å…¬å¸åç§°",
+                            "ç®€ç§°",
+                            "é›¶ä»¶åç§°",
+                            "è§„æ ¼",
+                            "æ•°é‡",
+                            "å•ä½",
+                            "å•ä»·",
+                            "å¤‡æ³¨"
+                    };
+            alData.add(0, colName);
 
-	   ArrayList poList=new ArrayList();
-	   ArrayList<StockInfoForm> stockList=new ArrayList<StockInfoForm>();
-	   PartPoBo ppb=PartPoBo.getInstance();
-	   PartInfoBo pib=PartInfoBo.getInstance();
-	   //SaleInfoBo sib=SaleInfoBo.getInstance();
-	   StockOutBo sob=StockOutBo.getInstance();
-	   String inStuffNo="";
-	   for(int i=0;i<para[0].length;i++){
-		   PoForm pf=ppb.findById(new Long(para[0][i]));
-		   PartInfoForm pi=pib.find(pf.getStuffNo());
-		   //Áã¼şÁÏºÅ·Ç·¨
-		   if(pi==null){
-			   throw new IllegalPoException(pf.getStuffNo());
-		   }
-		   
-		   int intPoNum = pf.getOrderNum();
-		   int intReceiveNum = Integer.parseInt(para[1][i]);
-		   
-		   if(intReceiveNum>0){
-			    //²åÈë¿â´æĞÅÏ¢±í
-			    StockInfoForm sif = new StockInfoForm();
-			    
-				sif.setCreateBy(userId);
-				sif.setStuffNo(pf.getStuffNo());
-				sif.setSkuCode(pf.getSkuCode());
-				sif.setShortCode(pi.getShortCode());
-				sif.setStandard(pi.getStandard());
-				sif.setSkuUnit(pf.getSkuUnit());
-				sif.setSkuNum(intReceiveNum);
-				sif.setPerCost(calculatePerCost(new Float(para[2][i]),new Float(para[4][i]),new Float(para[6][i])));
-				sif.setOrderDollar(new Float(para[3][i]));
-				sif.setFreightTW(new Float(para[4][i]));
-				sif.setInvoiceNo(para[5][i]);
-				sif.setBinCode(para[7][i]);
-				sif.setSkuType("A");	//Ä¬ÈÏ
-				sif.setStockStatus("X");	//ÁÙÊ±×´Ì¬£¬µÈ´ıµ½»õ·ÖÅäÊ±ĞŞ¸Ä
-				sif.setRequestId(pf.getRequestId());	//ÉêÇëÁã¼şÊ±µÄsaleDetailId£¬µ½»õ·ÖÅäÊ±µ÷ÓÃ
-				sif.setSkuType("S");
-				sif.setCreateBy(userId);
-				sif.setCreateDate(new Date());
-				sif.setFlowNo(FormNumberBuilder.getStockFlowId());		//Á÷Ë®ºÅfk
-				sif.setTransportMode(transportMode);
-				stockList.add(sif);
-				
-				inStuffNo+=","+sif.getStuffNo();
-				
-				//²åÈë³öÈë¿âÁ÷Ë®±í
-				StockFlowForm sff = this.infoToFlow(sif);
-				sff.setSkuNum(intReceiveNum);
-				sff.setRestNum(sob.getRestStock(sif.getStuffNo(), intReceiveNum, "I"));
-				
-				sff.setCustomerName(pf.getCustomerName());
-				sff.setFlowType("I");
-				sff.setFlowItem("D");	//¶©¹ºÈë¿â
-				sff.setFeeType(pf.getOrderType());
-				sff.setRequestId(pf.getPoNo());
-				sff.setFormNo(pf.getSaleNo());
-				sff.setOrderDollar(sif.getOrderDollar());
-				sff.setFreightTW(sif.getFreightTW());
-				sff.setInvoiceNo(sif.getInvoiceNo());
-				sff.setTransportMode(sif.getTransportMode());
-				sff.setBinCode(sif.getBinCode());
-				
-				poList.add(sff);
-				
-				if(intPoNum<=intReceiveNum){	//a. PO<=recevie
-					pf.setOrderStatus("C");	//ÒÑµ½»õ
-					pf.setUpdateBy(userId);
-					pf.setUpdateDate(new Date());
-					poList.add(pf);
-				}else{	//b. PO>recevie
-					//Ô­À´¼ÇÂ¼µÄnum¸ÄÎªPO-recevie£¬ÈÔÈ»µÈ´ıPO
-					pf.setOrderNum(intPoNum-intReceiveNum);
-					pf.setUpdateBy(userId);
-					pf.setUpdateDate(new Date());
-					poList.add(pf);
-					
-					//²ğ·Ö³örecevieÌõ£¬×´Ì¬ÒÑµ½»õ
-					PoForm newPo=new PoForm();
-					BeanUtils.copyProperties(newPo, pf);
-					newPo.setPoNo(null);
-					newPo.setOrderNum(intReceiveNum);
-					newPo.setOrderStatus("C");	//ÒÑµ½»õ
-					newPo.setCreateBy(userId);
-					newPo.setCreateDate(new Date());
-					poList.add(newPo);
-					
-				}
-		   }
-	   }
-	   
-	   if(poList.size()>0&&this.getBatchDao().saveOrUpdateBatch(poList)){
-		   if (this.getBatchDao().insertBatch(stockList)) {
-			   tag = new ReceiveAllocateBo().allocate(stockList);
+            StringBuffer strSource=new StringBuffer();
+
+            for(int i=0;i<alData.size();i++){
+                Object[] temp=(Object[])alData.get(i);
+                if(i>0) strSource.append(i).append("\t");
+                for(int j=0;j<temp.length;j++){
+                    if(j==0) strSource.append(temp[j]);
+                    else strSource.append("\t").append(temp[j]==null?"":temp[j]);
+                }
+                strSource.append("\r\n");
+            }
+            strRet=strSource.toString();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strRet;
+
+    }
+
+    /**
+     * è·å–ä»“ä½å·
+     * @return ä»“ä½çš„list
+     */
+    public ArrayList getStockList() throws Exception{
+        ArrayList binCode = (ArrayList) this.getDao().listAll(
+                "select sbf.binCode from StationBinForm as sbf " +
+                        "where sbf.delFlag=0 order by  sbf.binCode");
+
+        return binCode;
+    }
+
+
+
+    /**
+     * è®¢è´­å…¥åº“åˆ—è¡¨æŸ¥è¯¢
+     * @param orderNo
+     * @return List æŸ¥è¯¢ç»“æœ
+     */
+    public List orderInList(String orderNo) {
+        List<String[]> orderInfoList = new ArrayList<String[]>();
+        try {
+            //æŸ¥è¯¢è®¢è´­ä¸­çš„æŸè®¢å•é›¶ä»¶POä¿¡æ¯
+            String strHql ="from PoForm as po where po.orderNo= :orderNo and po.orderStatus='B'";
+            ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
+            QueryParameter param = new QueryParameter();
+            param.setName("orderNo");
+            param.setValue(orderNo);
+            param.setHbType(Hibernate.STRING);
+            paramList.add(param);
+
+            List<PoForm> orderList = this.getDao().parameterQuery(strHql, paramList);
+            for(int i=0;orderList!=null&&i<orderList.size();i++){
+                PoForm pf=orderList.get(i);
+                String[] temp = new String[13];
+                temp[0]=pf.getPoNo().toString();
+                temp[1]=pf.getStuffNo();
+                temp[2]=pf.getModelCode();
+                temp[3]=pf.getSaleNo();
+                temp[4]=pf.getCustomerName();
+                temp[5]=pf.getDeliveryTime();
+                temp[6]=pf.getShippingAddress();
+                temp[7]=pf.getOrderNum().toString();
+                temp[8]=Operate.toFix(pf.getPerQuote(), 2);
+                temp[9]=pf.getCreateDate().toLocaleString();
+                temp[10]=Operate.toFix(pf.getPerQuote() * CommonSearch.getInstance().getExchangeRate(pf.getSaleNo()), 2);
+                temp[11]=pf.getTransportMode();
+                temp[12]=pf.getSkuCode();
+
+                orderInfoList.add(temp);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderInfoList;
+    }
+
+
+    /**
+     * è®¢è´­å…¥åº“ æ¥æ”¶
+     * 1.å…ˆå°†å®é™…æ”¶åˆ°é›¶ä»¶å…¨éƒ¨å…¥åº“ï¼ˆä¸´æ—¶åº“å­˜Xï¼‰ï¼Œæ’å…¥StockInfoFormå’ŒStockFlowFormï¼Œå„recevieæ¡ã€‚
+     * 2.ä¿®æ”¹POçŠ¶æ€ï¼Œä»¥åŠæ‹†åˆ†PO
+     * 		åˆ†æPOæ•°é‡å’Œåˆ°è´§recevieæ•°é‡:
+     * 		a. PO<=recevie	:
+     * 			å°†å¯¹åº”POç›´æ¥ä¿®æ”¹çŠ¶æ€ï¼ˆå·²åˆ°è´§/å·²åˆ†é…å¾…é¢†å–ï¼‰ï¼›
+     * 		b. PO>recevie	:
+     * 			æ‹†åˆ†POï¼ŒåŸæ¥è®°å½•çš„numæ”¹ä¸ºPO-recevieï¼ŒçŠ¶æ€ä¸å˜ï¼›
+     * 			æ–°å¢recevieæ¡ï¼Œå¹¶ä¿®æ”¹çŠ¶æ€ï¼ˆå·²åˆ°è´§/å·²åˆ†é…å¾…é¢†å–ï¼‰ï¼›
+     * 3.è°ƒç”¨åˆ†é…é€»è¾‘
+     * 		a. å°†é”€å”®é›¶ä»¶è¿›è¡ŒçŠ¶æ€ä¿®æ”¹æˆ–æ‹†åˆ†ï¼Œå†åˆ¤æ–­é”€å”®å•çŠ¶æ€æ˜¯å¦éœ€è¦ä¿®æ”¹ï¼›
+     * 		b. å°†é”€å”®é›¶ä»¶çš„detailIdèµ‹å€¼ç»™åº“å­˜requestIdï¼Œä¿ç•™è¯¥åº“å­˜é›¶ä»¶ï¼ˆå·²åˆ†é…å¾…é¢†å–ï¼‰ ï¼›
+     * 		c. è‹¥å…¥åº“æœ‰å‰©ä½™ï¼Œå°†å‰©ä½™é›¶ä»¶å†åˆ†é…ç»™å…¶ä»–éœ€è¦è¯¥é›¶ä»¶çš„å•å­ï¼›
+     * @param æ”¶è´§ä¿¡æ¯ï¼Œé”€å”®å•å·ï¼Œæ“ä½œäºº
+     * @return tag
+     */
+    public synchronized int orderInReceive(String[][] para,String saleNo,Long userId,String transportMode) throws Exception {
+        int tag = -1;
+
+        ArrayList poList=new ArrayList();
+        ArrayList<StockInfoForm> stockList=new ArrayList<StockInfoForm>();
+        PartPoBo ppb=PartPoBo.getInstance();
+        PartInfoBo pib=PartInfoBo.getInstance();
+        //SaleInfoBo sib=SaleInfoBo.getInstance();
+        StockOutBo sob=StockOutBo.getInstance();
+        String inStuffNo="";
+        for(int i=0;i<para[0].length;i++){
+            PoForm pf=ppb.findById(new Long(para[0][i]));
+            PartInfoForm pi=pib.find(pf.getStuffNo());
+            //é›¶ä»¶æ–™å·éæ³•
+            if(pi==null){
+                throw new IllegalPoException(pf.getStuffNo());
+            }
+
+            int intPoNum = pf.getOrderNum();
+            int intReceiveNum = Integer.parseInt(para[1][i]);
+
+            if(intReceiveNum>0){
+                //æ’å…¥åº“å­˜ä¿¡æ¯è¡¨
+                StockInfoForm sif = new StockInfoForm();
+
+                sif.setCreateBy(userId);
+                sif.setStuffNo(pf.getStuffNo());
+                sif.setSkuCode(pf.getSkuCode());
+                sif.setShortCode(pi.getShortCode());
+                sif.setStandard(pi.getStandard());
+                sif.setSkuUnit(pf.getSkuUnit());
+                sif.setSkuNum(intReceiveNum);
+                sif.setPerCost(calculatePerCost(new Float(para[2][i]),new Float(para[4][i]),new Float(para[6][i])));
+                sif.setOrderDollar(new Float(para[3][i]));
+                sif.setFreightTW(new Float(para[4][i]));
+                sif.setInvoiceNo(para[5][i]);
+                sif.setBinCode(para[7][i]);
+                sif.setSkuType("A");	//é»˜è®¤
+                sif.setStockStatus("X");	//ä¸´æ—¶çŠ¶æ€ï¼Œç­‰å¾…åˆ°è´§åˆ†é…æ—¶ä¿®æ”¹
+                sif.setRequestId(pf.getRequestId());	//ç”³è¯·é›¶ä»¶æ—¶çš„saleDetailIdï¼Œåˆ°è´§åˆ†é…æ—¶è°ƒç”¨
+                sif.setSkuType("S");
+                sif.setCreateBy(userId);
+                sif.setCreateDate(new Date());
+                sif.setFlowNo(FormNumberBuilder.getStockFlowId());		//æµæ°´å·fk
+                sif.setTransportMode(transportMode);
+                stockList.add(sif);
+
+                inStuffNo+=","+sif.getStuffNo();
+
+                //æ’å…¥å‡ºå…¥åº“æµæ°´è¡¨
+                StockFlowForm sff = this.infoToFlow(sif);
+                sff.setSkuNum(intReceiveNum);
+                sff.setRestNum(sob.getRestStock(sif.getStuffNo(), intReceiveNum, "I"));
+
+                sff.setCustomerName(pf.getCustomerName());
+                sff.setFlowType("I");
+                sff.setFlowItem("D");	//è®¢è´­å…¥åº“
+                sff.setFeeType(pf.getOrderType());
+                sff.setRequestId(pf.getPoNo());
+                sff.setFormNo(pf.getSaleNo());
+                sff.setOrderDollar(sif.getOrderDollar());
+                sff.setFreightTW(sif.getFreightTW());
+                sff.setInvoiceNo(sif.getInvoiceNo());
+                sff.setTransportMode(sif.getTransportMode());
+                sff.setBinCode(sif.getBinCode());
+
+                poList.add(sff);
+
+                if(intPoNum<=intReceiveNum){	//a. PO<=recevie
+                    pf.setOrderStatus("C");	//å·²åˆ°è´§
+                    pf.setUpdateBy(userId);
+                    pf.setUpdateDate(new Date());
+                    poList.add(pf);
+                }else{	//b. PO>recevie
+                    //åŸæ¥è®°å½•çš„numæ”¹ä¸ºPO-recevieï¼Œä»ç„¶ç­‰å¾…PO
+                    pf.setOrderNum(intPoNum-intReceiveNum);
+                    pf.setUpdateBy(userId);
+                    pf.setUpdateDate(new Date());
+                    poList.add(pf);
+
+                    //æ‹†åˆ†å‡ºrecevieæ¡ï¼ŒçŠ¶æ€å·²åˆ°è´§
+                    PoForm newPo=new PoForm();
+                    BeanUtils.copyProperties(newPo, pf);
+                    newPo.setPoNo(null);
+                    newPo.setOrderNum(intReceiveNum);
+                    newPo.setOrderStatus("C");	//å·²åˆ°è´§
+                    newPo.setCreateBy(userId);
+                    newPo.setCreateDate(new Date());
+                    poList.add(newPo);
+
+                }
+            }
+        }
+
+        if(poList.size()>0&&this.getBatchDao().saveOrUpdateBatch(poList)){
+            if (this.getBatchDao().insertBatch(stockList)) {
+                tag = new ReceiveAllocateBo().allocate(stockList);
 //			   sob.inMerge(inStuffNo.substring(1).replace(",", "','"));
-		   }
-	   }
-	   
-	   return tag;
-   }
-   
-   private static Float calculatePerCost(Float cost,Float freightTW,Float tariff){
-	   return cost + freightTW + tariff;
-   }
-   
+            }
+        }
 
-	public StockFlowForm infoToFlow(StockInfoForm sif)  throws Exception{
-		StockFlowForm sff=new StockFlowForm();
-		sff.setFlowId(sif.getFlowNo());
-		sff.setSkuCode(sif.getSkuCode());
-		sff.setShortCode(sif.getShortCode());
-		sff.setStandard(sif.getStandard());
-		sff.setStuffNo(sif.getStuffNo());
-		sff.setSkuUnit(sif.getSkuUnit());
-		sff.setSkuNum(sif.getSkuNum());
-		sff.setPerCost(sif.getPerCost());
-		sff.setSkuType(sif.getSkuType());
-		sff.setRemark(sif.getRemark());
-		sff.setCreateBy(sif.getCreateBy());
-		sff.setCreateDate(new Date());
-		sff.setTransportMode(sif.getTransportMode());
-		
-		sff.setOrderDollar(sif.getOrderDollar());
-		sff.setFreightTW(sif.getFreightTW());
-		
-		return sff;	   	     	
-	}
+        return tag;
+    }
 
-	public StockInfoForm flowToInfo(StockFlowForm sff)  throws Exception{
+    private static Float calculatePerCost(Float cost,Float freightTW,Float tariff){
+        return cost + freightTW + tariff;
+    }
 
-		StockInfoForm sif=new StockInfoForm();
-		sif.setFlowNo(sff.getFlowId());
-		sif.setSkuCode(sff.getSkuCode());
-		sif.setShortCode(sff.getShortCode());
-		sif.setStandard(sff.getStandard());
-		sif.setStuffNo(sff.getStuffNo());
-		sif.setSkuUnit(sff.getSkuUnit());
-		sif.setSkuNum(sff.getSkuNum());
-		sif.setPerCost(sff.getPerCost());
-		sif.setSkuType(sff.getSkuType());
-		sif.setRemark(sff.getRemark());
-		sif.setCreateBy(sff.getCreateBy());
-		sif.setCreateDate(new Date());
-		sif.setUpdateDate(sff.getUpdateDate());
 
-		sif.setOrderDollar(sff.getOrderDollar());
-		sif.setFreightTW(sff.getFreightTW());
-		sif.setTransportMode(sff.getTransportMode());
-		
-		return sif;	   	     	
-	}
-	
-	
-	
-	
-	
-	
-	public static void main(String[] args) {
-		//test
-		StockFlowForm sif=new StockFlowForm();
-		sif.setFlowId(new Long(-10));
-		sif.setStuffNo("test1");
-		sif.setSkuCode("aaaa1");
-		try{
-			StockFlowForm newPo=new StockFlowForm();
-			BeanUtils.copyProperties(newPo, sif);
-			
-			System.out.println(newPo.getFlowId());
-			System.out.println(newPo.getStuffNo());
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-	}
+    public StockFlowForm infoToFlow(StockInfoForm sif)  throws Exception{
+        StockFlowForm sff=new StockFlowForm();
+        sff.setFlowId(sif.getFlowNo());
+        sff.setSkuCode(sif.getSkuCode());
+        sff.setShortCode(sif.getShortCode());
+        sff.setStandard(sif.getStandard());
+        sff.setStuffNo(sif.getStuffNo());
+        sff.setSkuUnit(sif.getSkuUnit());
+        sff.setSkuNum(sif.getSkuNum());
+        sff.setPerCost(sif.getPerCost());
+        sff.setSkuType(sif.getSkuType());
+        sff.setRemark(sif.getRemark());
+        sff.setCreateBy(sif.getCreateBy());
+        sff.setCreateDate(new Date());
+        sff.setTransportMode(sif.getTransportMode());
 
-	
+        sff.setOrderDollar(sif.getOrderDollar());
+        sff.setFreightTW(sif.getFreightTW());
+
+        return sff;
+    }
+
+    public StockInfoForm flowToInfo(StockFlowForm sff)  throws Exception{
+
+        StockInfoForm sif=new StockInfoForm();
+        sif.setFlowNo(sff.getFlowId());
+        sif.setSkuCode(sff.getSkuCode());
+        sif.setShortCode(sff.getShortCode());
+        sif.setStandard(sff.getStandard());
+        sif.setStuffNo(sff.getStuffNo());
+        sif.setSkuUnit(sff.getSkuUnit());
+        sif.setSkuNum(sff.getSkuNum());
+        sif.setPerCost(sff.getPerCost());
+        sif.setSkuType(sff.getSkuType());
+        sif.setRemark(sff.getRemark());
+        sif.setCreateBy(sff.getCreateBy());
+        sif.setCreateDate(new Date());
+        sif.setUpdateDate(sff.getUpdateDate());
+
+        sif.setOrderDollar(sff.getOrderDollar());
+        sif.setFreightTW(sff.getFreightTW());
+        sif.setTransportMode(sff.getTransportMode());
+
+        return sif;
+    }
+
+
+
+
+
+
+    public static void main(String[] args) {
+        //test
+        StockFlowForm sif=new StockFlowForm();
+        sif.setFlowId(new Long(-10));
+        sif.setStuffNo("test1");
+        sif.setSkuCode("aaaa1");
+        try{
+            StockFlowForm newPo=new StockFlowForm();
+            BeanUtils.copyProperties(newPo, sif);
+
+            System.out.println(newPo.getFlowId());
+            System.out.println(newPo.getStuffNo());
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 }

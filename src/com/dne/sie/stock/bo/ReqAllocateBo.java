@@ -20,558 +20,558 @@ import com.dne.sie.stock.queryBean.StockInfoQuery;
 import com.dne.sie.util.bo.CommBo;
 
 public class ReqAllocateBo extends CommBo {
-	private static Logger logger = Logger.getLogger(ReqAllocateBo.class);
-	
-	private ArrayList reqAll=new ArrayList();
-	private List stockAll=null;
-	private Long reqID;
-	private SaleDetailForm reqForm;
-	private int reqFlag = 0;				//0Îª×Ô¶¯·ÖÅä1ÎªÊÖ¹¤·ÖÅä
+    private static Logger logger = Logger.getLogger(ReqAllocateBo.class);
 
-	private String oldReqStat;
-	
-	public int allocate(Object[] requestID)  throws VersionException,Exception{
-		//default sales
-		return this.allocate(requestID, "S");
-		
-	}
-	
-	  /**
-	   * ĞèÇó·ÖÅä¡£
-	   * @param requestID   Long[] request±àºÅ
-	   * @return int 
-	   */
-		public synchronized int allocate(Object[] requestID,String type)  throws VersionException,Exception{
-			int flag = 0;
-			int partsNum;
-			int oldNum;
-			
-			boolean t = false;
-			String saleNo=null;
+    private ArrayList reqAll=new ArrayList();
+    private List stockAll=null;
+    private Long reqID;
+    private SaleDetailForm reqForm;
+    private int reqFlag = 0;				//0ä¸ºè‡ªåŠ¨åˆ†é…1ä¸ºæ‰‹å·¥åˆ†é…
 
-			String reqIds=Operate.arrayToString(requestID);
-			
-			List dataList=this.getReqList(reqIds);
-			//System.out.println("ÊÇĞÂĞèÇó·ÖÅä»¹ÊÇÊÖ¹¤·ÖÅä====:"+reqFlag);
-			//System.out.println("----dataList.size()="+dataList.size());
-			for (int i=0;i<dataList.size();i++) {
-				
-				reqForm =(SaleDetailForm)dataList.get(i);
-				if(i==0) saleNo=reqForm.getSaleNo();
-				
-				oldNum = reqForm.getPartNum().intValue();
-				reqID = reqForm.getSaleDetailId();
-				partsNum = oldNum;
-				
-				
-//					System.out.println("¿ªÊ¼·ÖÅä´Ërequest====="+reqForm.getId());
-//					System.out.println("´ËrequestµÄ×´Ì¬ÊÇ======"+reqForm.getPartStatus());
-				
-				if(reqForm.getPartStatus().equals("H")||reqForm.getPartStatus().equals("F")){
-					
-					reqAll.add(reqForm);
-					oldReqStat = reqForm.getPartStatus();
-					
-					//Ö±¹º£¬Ìø¹ı¿â´æÖ±½ÓÏòÌ¨¶©¹º
-					if("D".equals(reqForm.getOrderType())){
+    private String oldReqStat;
+
+    public int allocate(Object[] requestID)  throws VersionException,Exception{
+        //default sales
+        return this.allocate(requestID, "S");
+
+    }
+
+    /**
+     * éœ€æ±‚åˆ†é…ã€‚
+     * @param requestID   Long[] requestç¼–å·
+     * @return int
+     */
+    public synchronized int allocate(Object[] requestID,String type)  throws VersionException,Exception{
+        int flag = 0;
+        int partsNum;
+        int oldNum;
+
+        boolean t = false;
+        String saleNo=null;
+
+        String reqIds=Operate.arrayToString(requestID);
+
+        List dataList=this.getReqList(reqIds);
+        //System.out.println("æ˜¯æ–°éœ€æ±‚åˆ†é…è¿˜æ˜¯æ‰‹å·¥åˆ†é…====:"+reqFlag);
+        //System.out.println("----dataList.size()="+dataList.size());
+        for (int i=0;i<dataList.size();i++) {
+
+            reqForm =(SaleDetailForm)dataList.get(i);
+            if(i==0) saleNo=reqForm.getSaleNo();
+
+            oldNum = reqForm.getPartNum().intValue();
+            reqID = reqForm.getSaleDetailId();
+            partsNum = oldNum;
+
+
+//					System.out.println("å¼€å§‹åˆ†é…æ­¤request====="+reqForm.getId());
+//					System.out.println("æ­¤requestçš„çŠ¶æ€æ˜¯======"+reqForm.getPartStatus());
+
+            if(reqForm.getPartStatus().equals("H")||reqForm.getPartStatus().equals("F")){
+
+                reqAll.add(reqForm);
+                oldReqStat = reqForm.getPartStatus();
+
+                //ç›´è´­ï¼Œè·³è¿‡åº“å­˜ç›´æ¥å‘å°è®¢è´­
+                if("D".equals(reqForm.getOrderType())){
 //							System.out.println("reqFlag>>>>>>>>>>"+reqFlag);
 //							System.out.println("partsNum========="+partsNum);
-						if(this.reqFlag == 0 && partsNum > 0){	
-							reqForm.setPartStatus("H");
-							reqForm.setUpdateBy(new Long(-1));
-							reqForm.setUpdateDate(new Date());
-							//t = this.getDao().update(reqForm);
+                    if(this.reqFlag == 0 && partsNum > 0){
+                        reqForm.setPartStatus("H");
+                        reqForm.setUpdateBy(new Long(-1));
+                        reqForm.setUpdateDate(new Date());
+                        //t = this.getDao().update(reqForm);
 //								
-							t=this.createPlan(reqForm);
-							if(!t){
-								flag = 3;
-							}
-							
-						}else{
-							if(flag == 5 || flag == 0) flag = 5;
-							else flag = 4;
-						}
-						
-					}else{	//ÆÕÍ¨¶©¹º
-						for(int x=0;x<3;x++){
-							StockInfoForm siForm = new StockInfoForm();
-						
-							if(partsNum  <= 0) break;
-							if(x==1){
-								//·ÖÅäÌæ´úÁã¼ş
-								break;
-							}else if(x==2){
-								//·ÖÅä½«À´Ìæ´úÁã¼ş
-								break;
-							}else {
-								//·ÖÅä×ÔÉíÁã¼ş
-								
-								siForm.setStuffNo(reqForm.getStuffNo());
-								siForm.setStockStatus("A");
-//									System.out.println("·ÖÅä×ÔÉíÁã¼ş======="+siForm.getStuffNo());
-								partsNum=this.allocateStart(siForm,partsNum);	
-//									System.out.println("·ÖÅä×ÔÉíÁã¼ş»¹Ê£ÓàÊıÁ¿======"+partsNum);
-							}
-							
-							
-							if(partsNum > 0){
-								if(partsNum == oldNum){
-									if(flag == 5 || flag == 0) flag = 5;
-									else flag = 4;
-								}else{
-									flag = 4;
-								}
-								if(this.reqFlag == 0){	//ÅĞ¶ÏÊÇ·ñÎªĞèÇó·ÖÅä
-									
-									reqForm.setPartStatus("H");
-									reqForm.setUpdateBy(new Long(-1));
-									reqForm.setUpdateDate(new Date());
-									//t = this.getDao().update(reqForm);
-									if(this.createPlan(reqForm)){
-										continue;
-									}else{
-										flag = 3;
-									}		
-								}
-							}else{
-								if(flag == 0 || flag ==1 ){
-									flag = 1;
-								}else{
-									flag = 4;
-								}
-							}	
-						}
-					}
-					
-				}else{
-					flag = 2;
-				}		
-			}
-			//¸üĞÂ´óµ¥×´Ì¬
-			SaleInfoBo.getInstance().renewSaleStatus(saleNo);
-			
-			return flag;
-		}
-		
-		private List getReqList(String ids) throws VersionException,Exception {
-			String versionId = Operate.toVersionData(ids);
-			String strHql="from SaleDetailForm as sdf where CONCAT(sdf.saleDetailId,',',sdf.version) in ("+versionId+")";
-			
-			return this.listVersion(strHql, ids.split(",").length);  	
-		} 
-		
-		/**
-		 * Éú³ÉÁã¼ş¼Æ»®£¬×¼±¸·¢³öPO¡£
-		 * @param requestForm   SaleDetailForm
-		 * @return boolean
-		 */
-		private boolean createPlan(SaleDetailForm sdf) throws Exception{
-			boolean flag = false;
-			if(reqFlag != 0 ) return true;
-			ArrayList al=new ArrayList();
-			PoForm tempPlan = new PoForm();
-			tempPlan.setRequestId(sdf.getSaleDetailId());
-			tempPlan.setOrderType(sdf.getOrderType());
-			tempPlan.setWarrantyType(sdf.getWarrantyType());
-			
-			tempPlan.setStuffNo(sdf.getStuffNo());
-			tempPlan.setSkuCode(sdf.getSkuCode());
-			tempPlan.setSkuUnit(sdf.getSkuUnit());
-			   
-			//purchaseDollarÌ¨ÍåÃÀÔª±¨¼Û(purchasePriceÊÇ¸ù¾İ»ãÂÊexchangeRate×ª»»ºóµÄÌ¨ÍåRMB±¨¼Û)£¬Êµ¼ÊRMBµ¥¼Û(PER_COST)ÔÚÊÕ»õÊ±ÔÙÈ·ÈÏ
-			tempPlan.setPerQuote(sdf.getPurchaseDollar());
-			tempPlan.setOrderNum(sdf.getPartNum());
-			tempPlan.setModelCode(sdf.getModelCode());
-			tempPlan.setModelSerialNo(sdf.getModelSerialNo());
-			tempPlan.setOrderStatus("A");	//µÈ´ı·¢ËÍ
-			tempPlan.setSaleNo(sdf.getSaleNo());
-			
-			SaleInfoForm sif=SaleInfoBo.getInstance().findById(sdf.getSaleNo());
-			tempPlan.setCustomerId(sif.getCustomerId());
-			tempPlan.setCustomerName(sif.getCustomerName());
-			tempPlan.setDeliveryTime((sdf.getDeliveryTimeStart()==null?"":sdf.getDeliveryTimeStart())+"~"+(sdf.getDeliveryTimeEnd()==null?"":sdf.getDeliveryTimeEnd()));
-			tempPlan.setShippingAddress(sif.getShippingAddress());
-			
-			tempPlan.setCreateDate(new Date());
-			tempPlan.setCreateBy(sdf.getCreateBy());	//Áã¼şÊµ¼ÊµÄ¾­°ìÈË
-			
-			Object[] obj1={tempPlan,"i"};
-			al.add(obj1);
-			Object[] obj2={sdf,"u"};
-			al.add(obj2);
-			flag = this.getBatchDao().allDMLBatch(al);
-			
-			return flag;
-		}
-		
+                        t=this.createPlan(reqForm);
+                        if(!t){
+                            flag = 3;
+                        }
 
-		/**
-		 * ·ÖÅä¿ªÊ¼°´ÕÕ²»Í¬µÄÉêÇëÀàĞÍ½øĞĞÏàÓ¦µÄ²ÖÎ»Ë³Ğò·ÖÅä£¬×îºó·µ»Ø·ÖÅäºóÊ£ÓàµÄÁã¼şÉêÇëÊıÁ¿
-		 * @param siForm   StockInfoForm    Ğè·ÖÅäµÄ¿â´æĞÅÏ¢
-		 * @param partsNum   int            Áã¼şÉêÇëÊıÁ¿
-		 * @return int  ·ÖÅäºóÊ£ÓàµÄÁã¼şÉêÇëÊıÁ¿
-		 */
-		private int allocateStart(StockInfoForm siForm,int partsNum ) throws Exception{
-								
-			//ÏúÊÛÁã¼şĞèÇó·ÖÅäÂß¼­(S=ÏúÊÛÁã¼şĞèÇó)
-			if(!reqForm.getOrderType().equals("D") ){
-				//ÏÈ·ÖÅäUNÁã¼ş
+                    }else{
+                        if(flag == 5 || flag == 0) flag = 5;
+                        else flag = 4;
+                    }
+
+                }else{	//æ™®é€šè®¢è´­
+                    for(int x=0;x<3;x++){
+                        StockInfoForm siForm = new StockInfoForm();
+
+                        if(partsNum  <= 0) break;
+                        if(x==1){
+                            //åˆ†é…æ›¿ä»£é›¶ä»¶
+                            break;
+                        }else if(x==2){
+                            //åˆ†é…å°†æ¥æ›¿ä»£é›¶ä»¶
+                            break;
+                        }else {
+                            //åˆ†é…è‡ªèº«é›¶ä»¶
+
+                            siForm.setStuffNo(reqForm.getStuffNo());
+                            siForm.setStockStatus("A");
+//									System.out.println("åˆ†é…è‡ªèº«é›¶ä»¶======="+siForm.getStuffNo());
+                            partsNum=this.allocateStart(siForm,partsNum);
+//									System.out.println("åˆ†é…è‡ªèº«é›¶ä»¶è¿˜å‰©ä½™æ•°é‡======"+partsNum);
+                        }
+
+
+                        if(partsNum > 0){
+                            if(partsNum == oldNum){
+                                if(flag == 5 || flag == 0) flag = 5;
+                                else flag = 4;
+                            }else{
+                                flag = 4;
+                            }
+                            if(this.reqFlag == 0){	//åˆ¤æ–­æ˜¯å¦ä¸ºéœ€æ±‚åˆ†é…
+
+                                reqForm.setPartStatus("H");
+                                reqForm.setUpdateBy(new Long(-1));
+                                reqForm.setUpdateDate(new Date());
+                                //t = this.getDao().update(reqForm);
+                                if(this.createPlan(reqForm)){
+                                    continue;
+                                }else{
+                                    flag = 3;
+                                }
+                            }
+                        }else{
+                            if(flag == 0 || flag ==1 ){
+                                flag = 1;
+                            }else{
+                                flag = 4;
+                            }
+                        }
+                    }
+                }
+
+            }else{
+                flag = 2;
+            }
+        }
+        //æ›´æ–°å¤§å•çŠ¶æ€
+        SaleInfoBo.getInstance().renewSaleStatus(saleNo);
+
+        return flag;
+    }
+
+    private List getReqList(String ids) throws VersionException,Exception {
+        String versionId = Operate.toVersionData(ids);
+        String strHql="from SaleDetailForm as sdf where CONCAT(sdf.saleDetailId,',',sdf.version) in ("+versionId+")";
+
+        return this.listVersion(strHql, ids.split(",").length);
+    }
+
+    /**
+     * ç”Ÿæˆé›¶ä»¶è®¡åˆ’ï¼Œå‡†å¤‡å‘å‡ºPOã€‚
+     * @param sdf
+     * @return boolean
+     */
+    private boolean createPlan(SaleDetailForm sdf) throws Exception{
+        boolean flag = false;
+        if(reqFlag != 0 ) return true;
+        ArrayList al=new ArrayList();
+        PoForm tempPlan = new PoForm();
+        tempPlan.setRequestId(sdf.getSaleDetailId());
+        tempPlan.setOrderType(sdf.getOrderType());
+        tempPlan.setWarrantyType(sdf.getWarrantyType());
+
+        tempPlan.setStuffNo(sdf.getStuffNo());
+        tempPlan.setSkuCode(sdf.getSkuCode());
+        tempPlan.setSkuUnit(sdf.getSkuUnit());
+
+        //purchaseDollarå°æ¹¾ç¾å…ƒæŠ¥ä»·(purchasePriceæ˜¯æ ¹æ®æ±‡ç‡exchangeRateè½¬æ¢åçš„å°æ¹¾RMBæŠ¥ä»·)ï¼Œå®é™…RMBå•ä»·(PER_COST)åœ¨æ”¶è´§æ—¶å†ç¡®è®¤
+        tempPlan.setPerQuote(sdf.getPurchaseDollar());
+        tempPlan.setOrderNum(sdf.getPartNum());
+        tempPlan.setModelCode(sdf.getModelCode());
+        tempPlan.setModelSerialNo(sdf.getModelSerialNo());
+        tempPlan.setOrderStatus("A");	//ç­‰å¾…å‘é€
+        tempPlan.setSaleNo(sdf.getSaleNo());
+
+        SaleInfoForm sif=SaleInfoBo.getInstance().findById(sdf.getSaleNo());
+        tempPlan.setCustomerId(sif.getCustomerId());
+        tempPlan.setCustomerName(sif.getCustomerName());
+        tempPlan.setDeliveryTime((sdf.getDeliveryTimeStart()==null?"":sdf.getDeliveryTimeStart())+"~"+(sdf.getDeliveryTimeEnd()==null?"":sdf.getDeliveryTimeEnd()));
+        tempPlan.setShippingAddress(sif.getShippingAddress());
+
+        tempPlan.setCreateDate(new Date());
+        tempPlan.setCreateBy(sdf.getCreateBy());	//é›¶ä»¶å®é™…çš„ç»åŠäºº
+
+        Object[] obj1={tempPlan,"i"};
+        al.add(obj1);
+        Object[] obj2={sdf,"u"};
+        al.add(obj2);
+        flag = this.getBatchDao().allDMLBatch(al);
+
+        return flag;
+    }
+
+
+    /**
+     * åˆ†é…å¼€å§‹æŒ‰ç…§ä¸åŒçš„ç”³è¯·ç±»å‹è¿›è¡Œç›¸åº”çš„ä»“ä½é¡ºåºåˆ†é…ï¼Œæœ€åè¿”å›åˆ†é…åå‰©ä½™çš„é›¶ä»¶ç”³è¯·æ•°é‡
+     * @param siForm   StockInfoForm    éœ€åˆ†é…çš„åº“å­˜ä¿¡æ¯
+     * @param partsNum   int            é›¶ä»¶ç”³è¯·æ•°é‡
+     * @return int  åˆ†é…åå‰©ä½™çš„é›¶ä»¶ç”³è¯·æ•°é‡
+     */
+    private int allocateStart(StockInfoForm siForm,int partsNum ) throws Exception{
+
+        //é”€å”®é›¶ä»¶éœ€æ±‚åˆ†é…é€»è¾‘(S=é”€å”®é›¶ä»¶éœ€æ±‚)
+        if(!reqForm.getOrderType().equals("D") ){
+            //å…ˆåˆ†é…UNé›¶ä»¶
 //					siForm.setStockType("R");
-				
-				partsNum = this.allocateJob(siForm);
-				if(partsNum > 0){
-					//Èç»¹ÓĞĞè·ÖÅäµÄÁã¼ş,·ÖÅäNN
+
+            partsNum = this.allocateJob(siForm);
+            if(partsNum > 0){
+                //å¦‚è¿˜æœ‰éœ€åˆ†é…çš„é›¶ä»¶,åˆ†é…NN
 //						siForm.setStockType("N");
 //						partsNum = this.allocateJob(siForm);	
-					
-				}
-			//ÆäËûÎ¬ĞŞ½èÓÃÁã¼şĞèÇó·ÖÅä
-			}else{
-				
-			}
-			
-			return partsNum;
-		}
-		
 
-		/**
-		 * ÊäÈë´ı·ÖÅäµÄ¿â´æĞÅÏ¢µÄ²éÑ¯Ìõ¼şform£¬½øĞĞ·ÖÅä
-		 * @param queryForm   StockInfoForm   
-		 * @return int  ·ÖÅäµÄÁã¼şÊıÁ¿
-		 */
-		private int allocateJob(StockInfoForm queryForm) throws Exception{ 
-			int flag = 0 ;
-			int count = 0;
-			int partsNum = 0 ;
-			
-			queryForm.setStrSkuNum("-1");	//²»·ÖÅäÊıÁ¿Îª0µÄ¿â´æÁã¼ş
-			
-			StockInfoQuery prq = new StockInfoQuery(queryForm);
-		
-			partsNum =  reqForm.getPartNum();
-			
-			stockAll = prq.doListQuery();	
-			count = prq.doCountQuery();
-			
-			//Èç¹û²éÑ¯µÄ¿â´æ¼ÇÂ¼ÊıÎª0Ôò·µ»ØÉêÇëÁã¼şĞèÇóµÄÊıÁ¿£¬ÒÔ·½±ã½øĞĞ½ÓÏÂÀ´µÄ·ÖÅäflag¾Í´ú±íĞèÒª½øĞĞ·ÖÅäµÄÊıÁ¿
-			if(count == 0) {
-					flag = partsNum;
-					return flag;
-			}else{
-				
-				partsNum = this.reqAllocate(partsNum,(ArrayList)stockAll);
-				reqForm.setPartNum(new Integer(partsNum));
-				flag = partsNum;
-			}	
-			return flag;
-		}	
-		
+            }
+            //å…¶ä»–ç»´ä¿®å€Ÿç”¨é›¶ä»¶éœ€æ±‚åˆ†é…
+        }else{
 
-		/**
-		 * Ìá¹©ÌØ¶¨Áã¼ş±àºÅ·ûºÏ²ÕÎ»Ìõ¼şµÄ£¨N,U²Ö£©¿â´æĞÅÏ¢µÄarraylistÒÔ¼°ĞèÒª·ÖÅäµÄÊıÁ¿£¬<br>
-		 * ½øĞĞÁã¼ş·ÖÅä£¨arraylistÒÑ°´Èë¿âÊ±¼ä½øĞĞÁËÅÅĞò£©
-		 * @param reqNum   int   
-		 * @param dataArr    ArrayList
-		 * @return int 1=³É¹¦,-1=Ê§°Ü
-		 */
-		private int reqAllocate(int reqNum,ArrayList dataArr) throws Exception{
-			int leftNum = reqNum;
-			int rang;
-			//String allocatePartCode="";		//Êµ¼Ê·ÖÅäÁã¼ş
-			boolean t = false;
-			
-			for (int i=0;i<dataArr.size();i++) {
-				StockInfoForm temp = (StockInfoForm)dataArr.get(i);
-				//allocatePartCode=temp.getSkuCode();
-				reqID = reqForm.getSaleDetailId();
-				rang = temp.getSkuNum().intValue() - leftNum;
-				//Èç¹û¿â´æÊıÁ¿´óÓÚ»òµÈÓÚÉêÇëÊıÁ¿
-				if( rang >= 0 ){
-					//¿â´æÊıÁ¿´óÓÚÉêÇëÊıÁ¿
-					if(rang > 0 ){
-						//ĞŞ¸Ä¿â´æÊıÁ¿Îª·ÖÅäºóÊ£ÓàµÄÊıÁ¿
-						temp.setSkuNum(new Integer(rang));
-						temp.setUpdateBy(new Long(-1));
-						temp.setUpdateDate(new Date());
-						temp.setCreateBy(null);
-						t = this.getDao().update(temp);
-						//²åÈëÒ»ÌõĞÂµÄ¿â´æ¼ÇÂ¼£¬¿â´æ×´Ì¬Îª±£Áô×´Ì¬(R=±£Áô×´Ì¬)						
-						temp.setSkuNum(new Integer(leftNum));
-						temp.setStockStatus("R");
-						temp.setRequestId(reqID);		//±£Áô¸øµ±Ç°Áã¼şÉêÇëµÄrequest
-						temp.setSkuType("S");
-						temp.setStockId(null);
-						temp.setUpdateBy(null);
-						temp.setUpdateDate(null);
-						temp.setCreateBy(new Long(-1));
-						t = t && this.getDao().insert(temp);
-						//¿â´æÊıÁ¿µÈÓÚÉêÇëÊıÁ¿
-					}else{
-						//½«¿â´æ×´Ì¬¸ÄÎª±£Áô×´Ì¬(R=±£Áô×´Ì¬)			
-						temp.setStockStatus("R");
-						temp.setRequestId(reqID);		//±£Áô¸øµ±Ç°Áã¼şÉêÇëµÄrequest
-						temp.setSkuType("S");
-						temp.setCreateBy(null);
-						temp.setUpdateBy(new Long(-1));
-						temp.setUpdateDate(new Date());
-						t = this.getDao().update(temp);
-					}
-						
-					if(t){
-						//Èç¹ûÁã¼şÊÇ±£ÄÚ¶©¹º£¬ÓÃÁËÒ»¸ö¿â´æ£¬ÔòĞèÒªÔÙ²¹¶¨Ò»¸ö²¹¿â
-						if(AtomRoleCheck.checkSaleIW(reqForm.getWarrantyType())){
-							if(this.createIWPlan(leftNum)){
-								System.err.println("ERROR TO CREATE INTERNAL PO!  REQUSET ID:" + reqID + "   PARTS NUM:" + leftNum);
-							}
-						}							
-						leftNum = 0;
-					}
-					//ÉêÇëÒÑ¾­Âú×ãÁËÎŞĞëÔÙ½øĞĞ·ÖÅä£¬ËùÓĞ¾ÍbreakÁË
-					break;
-				//¿â´æÊıÁ¿ÉÙÓÚÉêÇëµÄÊıÁ¿	
-				}else{
-					//²»¹Ü¿â´æÊÇ²»ÊÇ±ÈÉêÇëµÄÉÙÏÈ°Ñ¿ÉÒÔ·ÖÅäµÄÏÈ·ÖÅä			
-					temp.setStockStatus("R");
-					temp.setRequestId(reqID);
-					temp.setUpdateBy(new Long(-1));
-					temp.setUpdateDate(new Date());
-					temp.setCreateBy(null);
-					t = this.getDao().update(temp);
-					if(t){
-						if(AtomRoleCheck.checkSaleIW(reqForm.getWarrantyType())){
-							if(this.createIWPlan(leftNum)){
-								System.err.println("ERROR TO CREATE INTERNAL PO!  REQUSET ID:" + reqID + "   PARTS NUM:" + leftNum);
-							}
-					
-						}
-						//Õâ¸öleftNum¾Í´ú±íÊÇÁã¼şÉêÇë½øĞĞ·ÖÅä¹ıºó»¹È±ÉÙµÄÊıÁ¿
-						leftNum = -(rang);
-					}
-				}
-			}
+        }
 
-			//reqNumÉêÇëÊıÁ¿-leftNumÈ±ÉÙ»òÕß»¹Ğë·ÖÅäµÄÊıÁ¿=ÒÑ¾­·ÖÅäµÄÊıÁ¿
-			reqForm.setPartNum(new Integer(reqNum - leftNum));
-			//L : ÒÑ·ÖÅä´ıÁìÈ¡
-			reqForm.setPartStatus("L");
-			reqForm.setUpdateBy(new Long(-1));
-			reqForm.setUpdateDate(new Date());
-			
-			t = this.getDao().update(reqForm);
-						
-			if(leftNum > 0 ){
-				reqForm.setPartNum(new Integer(leftNum));
-				reqForm.setPartStatus(oldReqStat);
-				
-				reqForm.setUpdateBy(null);
-				reqForm.setUpdateDate(null);
-				
-				if(reqForm.getRootId()==null||reqForm.getRootId().longValue() == 0){
-					reqForm.setRootId(reqForm.getSaleDetailId()) ;
-					reqForm.setSaleDetailId(null);
-				}else{
-					reqForm.setSaleDetailId(null);
-				}
-				t = t && this.getDao().insert(reqForm);
-						
-			}		
-				
-			
-			return  leftNum;
-		}
+        return partsNum;
+    }
 
 
-		/**
-		 * ±£ÄÚ¶©¹º£¬ÓÃÁËÒ»¸ö¿â´æ£¬ÔòĞèÒªÔÙ²¹¶¨Ò»¸ö²¹¿â
-		 * @param partsNum   int   Áã¼şÊıÁ¿
-		 * @return boolean
-		 */
-		private boolean createIWPlan(int partsNum){
-			boolean flag = false;
-			try{
-				
-				
-				
-				PoForm tempPlan = new PoForm();
-				tempPlan.setOrderType("N");	//±£ÄÚ²¹³ä×Ô¶¯¶©¹º
-				tempPlan.setWarrantyType("I");
-				tempPlan.setRequestId(reqForm.getSaleDetailId());
-				
-				tempPlan.setStuffNo(reqForm.getStuffNo());
-				tempPlan.setSkuCode(reqForm.getSkuCode());
-				tempPlan.setSkuUnit(reqForm.getSkuUnit());
-				   
-				//purchaseDollarÌ¨ÍåÃÀÔª±¨¼Û(purchasePriceÊÇ¸ù¾İ»ãÂÊexchangeRate×ª»»ºóµÄÌ¨ÍåRMB±¨¼Û)£¬Êµ¼ÊRMBµ¥¼Û(PER_COST)ÔÚÊÕ»õÊ±ÔÙÈ·ÈÏ
-				tempPlan.setPerQuote(reqForm.getPurchaseDollar());
-				tempPlan.setOrderNum(partsNum);
-				tempPlan.setModelCode(reqForm.getModelCode());
-				tempPlan.setModelSerialNo(reqForm.getModelSerialNo());
-				tempPlan.setOrderStatus("A");	//µÈ´ı·¢ËÍ
-				tempPlan.setSaleNo(reqForm.getSaleNo());
-				
-				SaleInfoForm sif=SaleInfoBo.getInstance().findById(reqForm.getSaleNo());
-				tempPlan.setCustomerId(sif.getCustomerId());
-				tempPlan.setCustomerName(sif.getCustomerName());
-				tempPlan.setDeliveryTime((reqForm.getDeliveryTimeStart()==null?"":reqForm.getDeliveryTimeStart())+"~"+(reqForm.getDeliveryTimeEnd()==null?"":reqForm.getDeliveryTimeEnd()));
-				tempPlan.setShippingAddress(sif.getShippingAddress());
-				
-				tempPlan.setCreateDate(new Date());
-				tempPlan.setCreateBy(reqForm.getCreateBy());	//Áã¼şÊµ¼ÊµÄ¾­°ìÈË
-				
-				flag = this.getDao().insert(tempPlan);
-			}catch(Exception e) {
-				e.printStackTrace();
-			} 
-				
-			return flag;
-		}
-		
-		
-		public synchronized boolean allocateLoan(RepairPartForm rpf,Long stockNum) {
-			try{
-				int leftNum = rpf.getApplyQty();
-				
-				if(stockNum - leftNum<0){
-					return false;
-				}else{
-					int rang;
-					String table=null;
-					if(rpf.getRepairPartType().equals("X")){
-						table="StockInfoForm";
-					}else if(rpf.getRepairPartType().equals("T")){
-						table="StockToolsInfoForm";
-					}
-					List stockInfoList = this.getDao().list("from "+table+" si where si.stuffNo=? and si.stockStatus='A' order by si.stockId",rpf.getStuffNo());
-					reqID = rpf.getPartsId();
-					for (int i=0;i<stockInfoList.size();i++) {
-						if(rpf.getRepairPartType().equals("X")){
-							StockInfoForm temp = (StockInfoForm)stockInfoList.get(i);
-		
-							rang = temp.getSkuNum() - leftNum;
-							//Èç¹û¿â´æÊıÁ¿´óÓÚ»òµÈÓÚÉêÇëÊıÁ¿
-							if( rang >= 0 ){
-								//¿â´æÊıÁ¿´óÓÚÉêÇëÊıÁ¿
-								if(rang > 0 ){
-									//ĞŞ¸Ä¿â´æÊıÁ¿Îª·ÖÅäºóÊ£ÓàµÄÊıÁ¿
-									temp.setSkuNum(new Integer(rang));
-									temp.setUpdateBy(new Long(-1));
-									temp.setUpdateDate(new Date());
-									temp.setCreateBy(null);
-									this.getDao().update(temp);
-									//²åÈëÒ»ÌõĞÂµÄ¿â´æ¼ÇÂ¼£¬¿â´æ×´Ì¬Îª±£Áô×´Ì¬(R=±£Áô×´Ì¬)						
-									temp.setSkuNum(new Integer(leftNum));
-									temp.setStockStatus("R");
-									temp.setRequestId(reqID);		//±£Áô¸øµ±Ç°Áã¼şÉêÇëµÄrequest
-									temp.setSkuType("L");
-									temp.setStockId(null);
-									temp.setUpdateBy(null);
-									temp.setUpdateDate(null);
-									temp.setCreateBy(new Long(-1));
-									this.getDao().insert(temp);
-									//¿â´æÊıÁ¿µÈÓÚÉêÇëÊıÁ¿
-								}else{
-									//½«¿â´æ×´Ì¬¸ÄÎª±£Áô×´Ì¬(R=±£Áô×´Ì¬)			
-									temp.setStockStatus("R");
-									temp.setRequestId(reqID);		//±£Áô¸øµ±Ç°Áã¼şÉêÇëµÄrequest
-									temp.setSkuType("L");
-									temp.setCreateBy(null);
-									temp.setUpdateBy(new Long(-1));
-									temp.setUpdateDate(new Date());
-									this.getDao().update(temp);
-								}
-									
-								//ÉêÇëÒÑ¾­Âú×ãÁËÎŞĞëÔÙ½øĞĞ·ÖÅä£¬ËùÓĞ¾ÍbreakÁË
-								break;
-							//¿â´æÊıÁ¿ÉÙÓÚÉêÇëµÄÊıÁ¿	
-							}else{
-								//²»¹Ü¿â´æÊÇ²»ÊÇ±ÈÉêÇëµÄÉÙÏÈ°Ñ¿ÉÒÔ·ÖÅäµÄÏÈ·ÖÅä			
-								temp.setStockStatus("R");
-								temp.setRequestId(reqID);
-								temp.setUpdateBy(new Long(-1));
-								temp.setUpdateDate(new Date());
-								temp.setCreateBy(null);
-								this.getDao().update(temp);
-							}
-							
-						}else if(rpf.getRepairPartType().equals("T")){	//Tool
-							StockToolsInfoForm temp = (StockToolsInfoForm)stockInfoList.get(i);
-		
-							rang = temp.getSkuNum() - leftNum;
-							//Èç¹û¿â´æÊıÁ¿´óÓÚ»òµÈÓÚÉêÇëÊıÁ¿
-							if( rang >= 0 ){
-								//¿â´æÊıÁ¿´óÓÚÉêÇëÊıÁ¿
-								if(rang > 0 ){
-									//ĞŞ¸Ä¿â´æÊıÁ¿Îª·ÖÅäºóÊ£ÓàµÄÊıÁ¿
-									temp.setSkuNum(new Integer(rang));
-									temp.setUpdateBy(new Long(-1));
-									temp.setUpdateDate(new Date());
-									temp.setCreateBy(null);
-									this.getDao().update(temp);
-									//²åÈëÒ»ÌõĞÂµÄ¿â´æ¼ÇÂ¼£¬¿â´æ×´Ì¬Îª±£Áô×´Ì¬(R=±£Áô×´Ì¬)						
-									temp.setSkuNum(new Integer(leftNum));
-									temp.setStockStatus("R");
-									temp.setRequestId(reqID);		//±£Áô¸øµ±Ç°Áã¼şÉêÇëµÄrequest
-									temp.setSkuType("L");
-									temp.setStockId(null);
-									temp.setUpdateBy(null);
-									temp.setUpdateDate(null);
-									temp.setCreateBy(new Long(-1));
-									this.getDao().insert(temp);
-									//¿â´æÊıÁ¿µÈÓÚÉêÇëÊıÁ¿
-								}else{
-									//½«¿â´æ×´Ì¬¸ÄÎª±£Áô×´Ì¬(R=±£Áô×´Ì¬)			
-									temp.setStockStatus("R");
-									temp.setRequestId(reqID);		//±£Áô¸øµ±Ç°Áã¼şÉêÇëµÄrequest
-									temp.setSkuType("L");
-									temp.setCreateBy(null);
-									temp.setUpdateBy(new Long(-1));
-									temp.setUpdateDate(new Date());
-									this.getDao().update(temp);
-								}
-									
-								//ÉêÇëÒÑ¾­Âú×ãÁËÎŞĞëÔÙ½øĞĞ·ÖÅä£¬ËùÓĞ¾ÍbreakÁË
-								break;
-							//¿â´æÊıÁ¿ÉÙÓÚÉêÇëµÄÊıÁ¿	
-							}else{
-								//²»¹Ü¿â´æÊÇ²»ÊÇ±ÈÉêÇëµÄÉÙÏÈ°Ñ¿ÉÒÔ·ÖÅäµÄÏÈ·ÖÅä			
-								temp.setStockStatus("R");
-								temp.setRequestId(reqID);
-								temp.setUpdateBy(new Long(-1));
-								temp.setUpdateDate(new Date());
-								temp.setCreateBy(null);
-								this.getDao().update(temp);
-							}
-							
-						}
-					}
-					
-				}
-				return true;
-			}catch(Exception e) {
-				e.printStackTrace();
-				return false;
-			} 
-			
-		}
-		
-		
-		public static void main(String[] args) {
-			try{
-				ReqAllocateBo rab=new ReqAllocateBo();
-				//Long[] requestID={new Long(15)};
-				SaleInfoBo.getInstance().renewSaleStatus("PI100619002BBB");
-				
-			}catch(Exception e) {
-				e.printStackTrace();
-			} 
-		}
-		
-		/**
-		 * @param i  ¶©¹ºÀàĞÍ
-		 */
-		public void setReqFlag(int i) {
-			reqFlag = i;
-		}
-	
+    /**
+     * è¾“å…¥å¾…åˆ†é…çš„åº“å­˜ä¿¡æ¯çš„æŸ¥è¯¢æ¡ä»¶formï¼Œè¿›è¡Œåˆ†é…
+     * @param queryForm   StockInfoForm
+     * @return int  åˆ†é…çš„é›¶ä»¶æ•°é‡
+     */
+    private int allocateJob(StockInfoForm queryForm) throws Exception{
+        int flag = 0 ;
+        int count = 0;
+        int partsNum = 0 ;
+
+        queryForm.setStrSkuNum("-1");	//ä¸åˆ†é…æ•°é‡ä¸º0çš„åº“å­˜é›¶ä»¶
+
+        StockInfoQuery prq = new StockInfoQuery(queryForm);
+
+        partsNum =  reqForm.getPartNum();
+
+        stockAll = prq.doListQuery();
+        count = prq.doCountQuery();
+
+        //å¦‚æœæŸ¥è¯¢çš„åº“å­˜è®°å½•æ•°ä¸º0åˆ™è¿”å›ç”³è¯·é›¶ä»¶éœ€æ±‚çš„æ•°é‡ï¼Œä»¥æ–¹ä¾¿è¿›è¡Œæ¥ä¸‹æ¥çš„åˆ†é…flagå°±ä»£è¡¨éœ€è¦è¿›è¡Œåˆ†é…çš„æ•°é‡
+        if(count == 0) {
+            flag = partsNum;
+            return flag;
+        }else{
+
+            partsNum = this.reqAllocate(partsNum,(ArrayList)stockAll);
+            reqForm.setPartNum(new Integer(partsNum));
+            flag = partsNum;
+        }
+        return flag;
+    }
+
+
+    /**
+     * æä¾›ç‰¹å®šé›¶ä»¶ç¼–å·ç¬¦åˆèˆ±ä½æ¡ä»¶çš„ï¼ˆN,Uä»“ï¼‰åº“å­˜ä¿¡æ¯çš„arraylistä»¥åŠéœ€è¦åˆ†é…çš„æ•°é‡ï¼Œ<br>
+     * è¿›è¡Œé›¶ä»¶åˆ†é…ï¼ˆarraylistå·²æŒ‰å…¥åº“æ—¶é—´è¿›è¡Œäº†æ’åºï¼‰
+     * @param reqNum   int
+     * @param dataArr    ArrayList
+     * @return int 1=æˆåŠŸ,-1=å¤±è´¥
+     */
+    private int reqAllocate(int reqNum,ArrayList dataArr) throws Exception{
+        int leftNum = reqNum;
+        int rang;
+        //String allocatePartCode="";		//å®é™…åˆ†é…é›¶ä»¶
+        boolean t = false;
+
+        for (int i=0;i<dataArr.size();i++) {
+            StockInfoForm temp = (StockInfoForm)dataArr.get(i);
+            //allocatePartCode=temp.getSkuCode();
+            reqID = reqForm.getSaleDetailId();
+            rang = temp.getSkuNum().intValue() - leftNum;
+            //å¦‚æœåº“å­˜æ•°é‡å¤§äºæˆ–ç­‰äºç”³è¯·æ•°é‡
+            if( rang >= 0 ){
+                //åº“å­˜æ•°é‡å¤§äºç”³è¯·æ•°é‡
+                if(rang > 0 ){
+                    //ä¿®æ”¹åº“å­˜æ•°é‡ä¸ºåˆ†é…åå‰©ä½™çš„æ•°é‡
+                    temp.setSkuNum(new Integer(rang));
+                    temp.setUpdateBy(new Long(-1));
+                    temp.setUpdateDate(new Date());
+                    temp.setCreateBy(null);
+                    t = this.getDao().update(temp);
+                    //æ’å…¥ä¸€æ¡æ–°çš„åº“å­˜è®°å½•ï¼Œåº“å­˜çŠ¶æ€ä¸ºä¿ç•™çŠ¶æ€(R=ä¿ç•™çŠ¶æ€)
+                    temp.setSkuNum(new Integer(leftNum));
+                    temp.setStockStatus("R");
+                    temp.setRequestId(reqID);		//ä¿ç•™ç»™å½“å‰é›¶ä»¶ç”³è¯·çš„request
+                    temp.setSkuType("S");
+                    temp.setStockId(null);
+                    temp.setUpdateBy(null);
+                    temp.setUpdateDate(null);
+                    temp.setCreateBy(new Long(-1));
+                    t = t && this.getDao().insert(temp);
+                    //åº“å­˜æ•°é‡ç­‰äºç”³è¯·æ•°é‡
+                }else{
+                    //å°†åº“å­˜çŠ¶æ€æ”¹ä¸ºä¿ç•™çŠ¶æ€(R=ä¿ç•™çŠ¶æ€)
+                    temp.setStockStatus("R");
+                    temp.setRequestId(reqID);		//ä¿ç•™ç»™å½“å‰é›¶ä»¶ç”³è¯·çš„request
+                    temp.setSkuType("S");
+                    temp.setCreateBy(null);
+                    temp.setUpdateBy(new Long(-1));
+                    temp.setUpdateDate(new Date());
+                    t = this.getDao().update(temp);
+                }
+
+                if(t){
+                    //å¦‚æœé›¶ä»¶æ˜¯ä¿å†…è®¢è´­ï¼Œç”¨äº†ä¸€ä¸ªåº“å­˜ï¼Œåˆ™éœ€è¦å†è¡¥å®šä¸€ä¸ªè¡¥åº“
+                    if(AtomRoleCheck.checkSaleIW(reqForm.getWarrantyType())){
+                        if(this.createIWPlan(leftNum)){
+                            System.err.println("ERROR TO CREATE INTERNAL PO!  REQUSET ID:" + reqID + "   PARTS NUM:" + leftNum);
+                        }
+                    }
+                    leftNum = 0;
+                }
+                //ç”³è¯·å·²ç»æ»¡è¶³äº†æ— é¡»å†è¿›è¡Œåˆ†é…ï¼Œæ‰€æœ‰å°±breakäº†
+                break;
+                //åº“å­˜æ•°é‡å°‘äºç”³è¯·çš„æ•°é‡
+            }else{
+                //ä¸ç®¡åº“å­˜æ˜¯ä¸æ˜¯æ¯”ç”³è¯·çš„å°‘å…ˆæŠŠå¯ä»¥åˆ†é…çš„å…ˆåˆ†é…
+                temp.setStockStatus("R");
+                temp.setRequestId(reqID);
+                temp.setUpdateBy(new Long(-1));
+                temp.setUpdateDate(new Date());
+                temp.setCreateBy(null);
+                t = this.getDao().update(temp);
+                if(t){
+                    if(AtomRoleCheck.checkSaleIW(reqForm.getWarrantyType())){
+                        if(this.createIWPlan(leftNum)){
+                            System.err.println("ERROR TO CREATE INTERNAL PO!  REQUSET ID:" + reqID + "   PARTS NUM:" + leftNum);
+                        }
+
+                    }
+                    //è¿™ä¸ªleftNumå°±ä»£è¡¨æ˜¯é›¶ä»¶ç”³è¯·è¿›è¡Œåˆ†é…è¿‡åè¿˜ç¼ºå°‘çš„æ•°é‡
+                    leftNum = -(rang);
+                }
+            }
+        }
+
+        //reqNumç”³è¯·æ•°é‡-leftNumç¼ºå°‘æˆ–è€…è¿˜é¡»åˆ†é…çš„æ•°é‡=å·²ç»åˆ†é…çš„æ•°é‡
+        reqForm.setPartNum(new Integer(reqNum - leftNum));
+        //L : å·²åˆ†é…å¾…é¢†å–
+        reqForm.setPartStatus("L");
+        reqForm.setUpdateBy(new Long(-1));
+        reqForm.setUpdateDate(new Date());
+
+        t = this.getDao().update(reqForm);
+
+        if(leftNum > 0 ){
+            reqForm.setPartNum(new Integer(leftNum));
+            reqForm.setPartStatus(oldReqStat);
+
+            reqForm.setUpdateBy(null);
+            reqForm.setUpdateDate(null);
+
+            if(reqForm.getRootId()==null||reqForm.getRootId().longValue() == 0){
+                reqForm.setRootId(reqForm.getSaleDetailId()) ;
+                reqForm.setSaleDetailId(null);
+            }else{
+                reqForm.setSaleDetailId(null);
+            }
+            t = t && this.getDao().insert(reqForm);
+
+        }
+
+
+        return  leftNum;
+    }
+
+
+    /**
+     * ä¿å†…è®¢è´­ï¼Œç”¨äº†ä¸€ä¸ªåº“å­˜ï¼Œåˆ™éœ€è¦å†è¡¥å®šä¸€ä¸ªè¡¥åº“
+     * @param partsNum   int   é›¶ä»¶æ•°é‡
+     * @return boolean
+     */
+    private boolean createIWPlan(int partsNum){
+        boolean flag = false;
+        try{
+
+
+
+            PoForm tempPlan = new PoForm();
+            tempPlan.setOrderType("N");	//ä¿å†…è¡¥å……è‡ªåŠ¨è®¢è´­
+            tempPlan.setWarrantyType("I");
+            tempPlan.setRequestId(reqForm.getSaleDetailId());
+
+            tempPlan.setStuffNo(reqForm.getStuffNo());
+            tempPlan.setSkuCode(reqForm.getSkuCode());
+            tempPlan.setSkuUnit(reqForm.getSkuUnit());
+
+            //purchaseDollarå°æ¹¾ç¾å…ƒæŠ¥ä»·(purchasePriceæ˜¯æ ¹æ®æ±‡ç‡exchangeRateè½¬æ¢åçš„å°æ¹¾RMBæŠ¥ä»·)ï¼Œå®é™…RMBå•ä»·(PER_COST)åœ¨æ”¶è´§æ—¶å†ç¡®è®¤
+            tempPlan.setPerQuote(reqForm.getPurchaseDollar());
+            tempPlan.setOrderNum(partsNum);
+            tempPlan.setModelCode(reqForm.getModelCode());
+            tempPlan.setModelSerialNo(reqForm.getModelSerialNo());
+            tempPlan.setOrderStatus("A");	//ç­‰å¾…å‘é€
+            tempPlan.setSaleNo(reqForm.getSaleNo());
+
+            SaleInfoForm sif=SaleInfoBo.getInstance().findById(reqForm.getSaleNo());
+            tempPlan.setCustomerId(sif.getCustomerId());
+            tempPlan.setCustomerName(sif.getCustomerName());
+            tempPlan.setDeliveryTime((reqForm.getDeliveryTimeStart()==null?"":reqForm.getDeliveryTimeStart())+"~"+(reqForm.getDeliveryTimeEnd()==null?"":reqForm.getDeliveryTimeEnd()));
+            tempPlan.setShippingAddress(sif.getShippingAddress());
+
+            tempPlan.setCreateDate(new Date());
+            tempPlan.setCreateBy(reqForm.getCreateBy());	//é›¶ä»¶å®é™…çš„ç»åŠäºº
+
+            flag = this.getDao().insert(tempPlan);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return flag;
+    }
+
+
+    public synchronized boolean allocateLoan(RepairPartForm rpf,Long stockNum) {
+        try{
+            int leftNum = rpf.getApplyQty();
+
+            if(stockNum - leftNum<0){
+                return false;
+            }else{
+                int rang;
+                String table=null;
+                if(rpf.getRepairPartType().equals("X")){
+                    table="StockInfoForm";
+                }else if(rpf.getRepairPartType().equals("T")){
+                    table="StockToolsInfoForm";
+                }
+                List stockInfoList = this.getDao().list("from "+table+" si where si.stuffNo=? and si.stockStatus='A' order by si.stockId",rpf.getStuffNo());
+                reqID = rpf.getPartsId();
+                for (int i=0;i<stockInfoList.size();i++) {
+                    if(rpf.getRepairPartType().equals("X")){
+                        StockInfoForm temp = (StockInfoForm)stockInfoList.get(i);
+
+                        rang = temp.getSkuNum() - leftNum;
+                        //å¦‚æœåº“å­˜æ•°é‡å¤§äºæˆ–ç­‰äºç”³è¯·æ•°é‡
+                        if( rang >= 0 ){
+                            //åº“å­˜æ•°é‡å¤§äºç”³è¯·æ•°é‡
+                            if(rang > 0 ){
+                                //ä¿®æ”¹åº“å­˜æ•°é‡ä¸ºåˆ†é…åå‰©ä½™çš„æ•°é‡
+                                temp.setSkuNum(new Integer(rang));
+                                temp.setUpdateBy(new Long(-1));
+                                temp.setUpdateDate(new Date());
+                                temp.setCreateBy(null);
+                                this.getDao().update(temp);
+                                //æ’å…¥ä¸€æ¡æ–°çš„åº“å­˜è®°å½•ï¼Œåº“å­˜çŠ¶æ€ä¸ºä¿ç•™çŠ¶æ€(R=ä¿ç•™çŠ¶æ€)
+                                temp.setSkuNum(new Integer(leftNum));
+                                temp.setStockStatus("R");
+                                temp.setRequestId(reqID);		//ä¿ç•™ç»™å½“å‰é›¶ä»¶ç”³è¯·çš„request
+                                temp.setSkuType("L");
+                                temp.setStockId(null);
+                                temp.setUpdateBy(null);
+                                temp.setUpdateDate(null);
+                                temp.setCreateBy(new Long(-1));
+                                this.getDao().insert(temp);
+                                //åº“å­˜æ•°é‡ç­‰äºç”³è¯·æ•°é‡
+                            }else{
+                                //å°†åº“å­˜çŠ¶æ€æ”¹ä¸ºä¿ç•™çŠ¶æ€(R=ä¿ç•™çŠ¶æ€)
+                                temp.setStockStatus("R");
+                                temp.setRequestId(reqID);		//ä¿ç•™ç»™å½“å‰é›¶ä»¶ç”³è¯·çš„request
+                                temp.setSkuType("L");
+                                temp.setCreateBy(null);
+                                temp.setUpdateBy(new Long(-1));
+                                temp.setUpdateDate(new Date());
+                                this.getDao().update(temp);
+                            }
+
+                            //ç”³è¯·å·²ç»æ»¡è¶³äº†æ— é¡»å†è¿›è¡Œåˆ†é…ï¼Œæ‰€æœ‰å°±breakäº†
+                            break;
+                            //åº“å­˜æ•°é‡å°‘äºç”³è¯·çš„æ•°é‡
+                        }else{
+                            //ä¸ç®¡åº“å­˜æ˜¯ä¸æ˜¯æ¯”ç”³è¯·çš„å°‘å…ˆæŠŠå¯ä»¥åˆ†é…çš„å…ˆåˆ†é…
+                            temp.setStockStatus("R");
+                            temp.setRequestId(reqID);
+                            temp.setUpdateBy(new Long(-1));
+                            temp.setUpdateDate(new Date());
+                            temp.setCreateBy(null);
+                            this.getDao().update(temp);
+                        }
+
+                    }else if(rpf.getRepairPartType().equals("T")){	//Tool
+                        StockToolsInfoForm temp = (StockToolsInfoForm)stockInfoList.get(i);
+
+                        rang = temp.getSkuNum() - leftNum;
+                        //å¦‚æœåº“å­˜æ•°é‡å¤§äºæˆ–ç­‰äºç”³è¯·æ•°é‡
+                        if( rang >= 0 ){
+                            //åº“å­˜æ•°é‡å¤§äºç”³è¯·æ•°é‡
+                            if(rang > 0 ){
+                                //ä¿®æ”¹åº“å­˜æ•°é‡ä¸ºåˆ†é…åå‰©ä½™çš„æ•°é‡
+                                temp.setSkuNum(new Integer(rang));
+                                temp.setUpdateBy(new Long(-1));
+                                temp.setUpdateDate(new Date());
+                                temp.setCreateBy(null);
+                                this.getDao().update(temp);
+                                //æ’å…¥ä¸€æ¡æ–°çš„åº“å­˜è®°å½•ï¼Œåº“å­˜çŠ¶æ€ä¸ºä¿ç•™çŠ¶æ€(R=ä¿ç•™çŠ¶æ€)
+                                temp.setSkuNum(new Integer(leftNum));
+                                temp.setStockStatus("R");
+                                temp.setRequestId(reqID);		//ä¿ç•™ç»™å½“å‰é›¶ä»¶ç”³è¯·çš„request
+                                temp.setSkuType("L");
+                                temp.setStockId(null);
+                                temp.setUpdateBy(null);
+                                temp.setUpdateDate(null);
+                                temp.setCreateBy(new Long(-1));
+                                this.getDao().insert(temp);
+                                //åº“å­˜æ•°é‡ç­‰äºç”³è¯·æ•°é‡
+                            }else{
+                                //å°†åº“å­˜çŠ¶æ€æ”¹ä¸ºä¿ç•™çŠ¶æ€(R=ä¿ç•™çŠ¶æ€)
+                                temp.setStockStatus("R");
+                                temp.setRequestId(reqID);		//ä¿ç•™ç»™å½“å‰é›¶ä»¶ç”³è¯·çš„request
+                                temp.setSkuType("L");
+                                temp.setCreateBy(null);
+                                temp.setUpdateBy(new Long(-1));
+                                temp.setUpdateDate(new Date());
+                                this.getDao().update(temp);
+                            }
+
+                            //ç”³è¯·å·²ç»æ»¡è¶³äº†æ— é¡»å†è¿›è¡Œåˆ†é…ï¼Œæ‰€æœ‰å°±breakäº†
+                            break;
+                            //åº“å­˜æ•°é‡å°‘äºç”³è¯·çš„æ•°é‡
+                        }else{
+                            //ä¸ç®¡åº“å­˜æ˜¯ä¸æ˜¯æ¯”ç”³è¯·çš„å°‘å…ˆæŠŠå¯ä»¥åˆ†é…çš„å…ˆåˆ†é…
+                            temp.setStockStatus("R");
+                            temp.setRequestId(reqID);
+                            temp.setUpdateBy(new Long(-1));
+                            temp.setUpdateDate(new Date());
+                            temp.setCreateBy(null);
+                            this.getDao().update(temp);
+                        }
+
+                    }
+                }
+
+            }
+            return true;
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        try{
+            ReqAllocateBo rab=new ReqAllocateBo();
+            //Long[] requestID={new Long(15)};
+            SaleInfoBo.getInstance().renewSaleStatus("PI100619002BBB");
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param i  è®¢è´­ç±»å‹
+     */
+    public void setReqFlag(int i) {
+        reqFlag = i;
+    }
+
 
 }

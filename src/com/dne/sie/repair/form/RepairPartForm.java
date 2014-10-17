@@ -5,136 +5,136 @@ import java.util.Date;
 import com.dne.sie.util.form.CommForm;
 
 public class RepairPartForm extends CommForm{
-	
-	private Long partsId;
-	private Long repairNo;
-	private String stuffNo;                  	//ÁÏºÅ		
-	private String repairPartType;              //Î¬ĞŞÁã¼şÀàĞÍ(Î¬ĞŞÉêÇë/Ğ¯´øÁã¼ş/Ğ¯´ø¹¤¾ß/Ğ¯´ø×ªÏúÊÛ)
-	private String warrantyType;              	//±£ÄÚ/Íâ
-	private Integer applyQty;					//ÉêÇëÊıÁ¿
-	
-	private String repairPartStatus;			//Î¬ĞŞÁã¼ş×´Ì¬(ÉêÇëÖĞ¡¢¶©¹ºÖĞ¡¢ÒÑ·ÖÅä´ıÁìÈ¡¡¢ÒÑĞ¯´ø´ı·µ»¹¡¢ÒÑ·µ»¹¡¢×ªÏúÊÛ)
-	
-	private String skuCode;                  //Áã¼şÃû³Æ				
-	private String standard;                 //¹æ¸ñ							
-	private String skuUnit;                  //µ¥Î»	
-	
-	private String owner;
-	private String serviceSheetNo;
-	
-	private int version;
-	
-	private Long createBy;      	
-	private Date createDate;
-	private Long updateBy;
-	private Date updateDate;
-	
-	
-	public Long getPartsId() {
-		return partsId;
-	}
-	public void setPartsId(Long partsId) {
-		this.partsId = partsId;
-	}
-	public Long getRepairNo() {
-		return repairNo;
-	}
-	public void setRepairNo(Long repairNo) {
-		this.repairNo = repairNo;
-	}
-	public String getStuffNo() {
-		return stuffNo;
-	}
-	public void setStuffNo(String stuffNo) {
-		this.stuffNo = stuffNo;
-	}
-	public String getRepairPartType() {
-		return repairPartType;
-	}
-	public void setRepairPartType(String repairPartType) {
-		this.repairPartType = repairPartType;
-	}
-	public String getWarrantyType() {
-		return warrantyType;
-	}
-	public void setWarrantyType(String warrantyType) {
-		this.warrantyType = warrantyType;
-	}
-	public Integer getApplyQty() {
-		return applyQty;
-	}
-	public void setApplyQty(Integer applyQty) {
-		this.applyQty = applyQty;
-	}
-	public String getRepairPartStatus() {
-		return repairPartStatus;
-	}
-	public void setRepairPartStatus(String repairPartStatus) {
-		this.repairPartStatus = repairPartStatus;
-	}
-	public int getVersion() {
-		return version;
-	}
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	public Long getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(Long createBy) {
-		this.createBy = createBy;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public Long getUpdateBy() {
-		return updateBy;
-	}
-	public void setUpdateBy(Long updateBy) {
-		this.updateBy = updateBy;
-	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	public String getSkuCode() {
-		return skuCode;
-	}
-	public void setSkuCode(String skuCode) {
-		this.skuCode = skuCode;
-	}
-	public String getStandard() {
-		return standard;
-	}
-	public void setStandard(String standard) {
-		this.standard = standard;
-	}
-	public String getSkuUnit() {
-		return skuUnit;
-	}
-	public void setSkuUnit(String skuUnit) {
-		this.skuUnit = skuUnit;
-	}
-	public String getOwner() {
-		return owner;
-	}
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-	public String getServiceSheetNo() {
-		return serviceSheetNo;
-	}
-	public void setServiceSheetNo(String serviceSheetNo) {
-		this.serviceSheetNo = serviceSheetNo;
-	}
-	
-	
-	
-	
-	
+
+    private Long partsId;
+    private Long repairNo;
+    private String stuffNo;                  	//æ–™å·
+    private String repairPartType;              //ç»´ä¿®é›¶ä»¶ç±»å‹(ç»´ä¿®ç”³è¯·/æºå¸¦é›¶ä»¶/æºå¸¦å·¥å…·/æºå¸¦è½¬é”€å”®)
+    private String warrantyType;              	//ä¿å†…/å¤–
+    private Integer applyQty;					//ç”³è¯·æ•°é‡
+
+    private String repairPartStatus;			//ç»´ä¿®é›¶ä»¶çŠ¶æ€(ç”³è¯·ä¸­ã€è®¢è´­ä¸­ã€å·²åˆ†é…å¾…é¢†å–ã€å·²æºå¸¦å¾…è¿”è¿˜ã€å·²è¿”è¿˜ã€è½¬é”€å”®)
+
+    private String skuCode;                  //é›¶ä»¶åç§°
+    private String standard;                 //è§„æ ¼
+    private String skuUnit;                  //å•ä½
+
+    private String owner;
+    private String serviceSheetNo;
+
+    private int version;
+
+    private Long createBy;
+    private Date createDate;
+    private Long updateBy;
+    private Date updateDate;
+
+
+    public Long getPartsId() {
+        return partsId;
+    }
+    public void setPartsId(Long partsId) {
+        this.partsId = partsId;
+    }
+    public Long getRepairNo() {
+        return repairNo;
+    }
+    public void setRepairNo(Long repairNo) {
+        this.repairNo = repairNo;
+    }
+    public String getStuffNo() {
+        return stuffNo;
+    }
+    public void setStuffNo(String stuffNo) {
+        this.stuffNo = stuffNo;
+    }
+    public String getRepairPartType() {
+        return repairPartType;
+    }
+    public void setRepairPartType(String repairPartType) {
+        this.repairPartType = repairPartType;
+    }
+    public String getWarrantyType() {
+        return warrantyType;
+    }
+    public void setWarrantyType(String warrantyType) {
+        this.warrantyType = warrantyType;
+    }
+    public Integer getApplyQty() {
+        return applyQty;
+    }
+    public void setApplyQty(Integer applyQty) {
+        this.applyQty = applyQty;
+    }
+    public String getRepairPartStatus() {
+        return repairPartStatus;
+    }
+    public void setRepairPartStatus(String repairPartStatus) {
+        this.repairPartStatus = repairPartStatus;
+    }
+    public int getVersion() {
+        return version;
+    }
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    public Long getCreateBy() {
+        return createBy;
+    }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getSkuCode() {
+        return skuCode;
+    }
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+    public String getStandard() {
+        return standard;
+    }
+    public void setStandard(String standard) {
+        this.standard = standard;
+    }
+    public String getSkuUnit() {
+        return skuUnit;
+    }
+    public void setSkuUnit(String skuUnit) {
+        this.skuUnit = skuUnit;
+    }
+    public String getOwner() {
+        return owner;
+    }
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+    public String getServiceSheetNo() {
+        return serviceSheetNo;
+    }
+    public void setServiceSheetNo(String serviceSheetNo) {
+        this.serviceSheetNo = serviceSheetNo;
+    }
+
+
+
+
+
 }
