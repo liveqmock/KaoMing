@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.dne.sie.common.tools.DicInit;
 import org.apache.log4j.Logger;
 
 import com.dne.sie.common.tools.CommonSearch;
@@ -75,6 +76,75 @@ public class RepairListBo extends CommBo {
 
         return alData;
 
+
+    }
+
+    public String exportRepairQueryList(RepairSearchForm serviceOrder) throws Exception {
+        RepairListQuery rqlq = new RepairListQuery(serviceOrder);
+
+        List dataList = rqlq.doListQuery();
+        StringBuffer strSource=new StringBuffer("");
+        if (dataList != null) {
+            String[] colName =
+                    {
+                            "序号",
+                            "维修单",
+                            "维修员",
+                            "客户",
+                            "机型",
+                            "机身号",
+                            "维修性质",
+                            "类别",
+                            "状态",
+                            "创建日期",
+                            "提交次数",
+                            "备注"
+                    };
+            for(int j = 0;j<colName.length;j++){
+                if(j==0) strSource.append(colName[j]);
+                else strSource.append("\t").append(colName[j]==null?"":colName[j]);
+            }
+
+            for (int i = 0; i < dataList.size(); i++) {
+                String[] data = new String[12];
+                RepairSearchForm rsf = (RepairSearchForm) dataList.get(i);
+                data[0] = (i+1) + "";
+                data[1] = rsf.getServiceSheetNo();
+                data[2] = this.getRepairManName(rsf.getRepairNo());
+                data[3] = rsf.getCustomerName();
+                data[4] = rsf.getModelCode();
+                data[5] = rsf.getSerialNo();
+
+                data[6] = DicInit.getSystemName("REPAIR_PROPERITES",rsf.getRepairProperites());
+                data[7] = DicInit.getSystemName("WARRANTY_TYPE",rsf.getWarrantyType());
+                if(data[7].length() <= 1){
+                    data[7] = DicInit.getSystemName("TUNING_TYPE",rsf.getWarrantyType());
+                }
+                data[8] = DicInit.getSystemName("CURRENT_STATUS",rsf.getCurrentStatus());
+
+                data[9] = rsf.getCreateDate() == null ? "" : Operate.formatYMDDate(rsf.getCreateDate());
+                Long num = this.getSubmitNum(rsf.getRepairNo());
+                data[10] = (num == null || num.longValue()<=1 )?"":num.toString();
+                data[11] = "";
+
+                strSource.append("\r\n");
+                for(int j=0;j<data.length;j++){
+                    if(j==0) strSource.append(data[j]);
+                    else strSource.append("\t").append(data[j]==null?"":data[j]);
+                }
+
+            }
+        }
+
+        return strSource.toString();
+
+
+    }
+
+    public Long getSubmitNum(Long repairNo) throws Exception {
+        String strHql="SELECT count(s.statusId) from RepairServiceStatusForm s where s.repairStatus='F' and s.repairNo=?" +
+                " group by s.repairNo HAVING count(s.statusId)>1 ";
+        return (Long)this.getDao().uniqueResult(strHql,repairNo);
 
     }
 

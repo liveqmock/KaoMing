@@ -3,6 +3,7 @@ package com.dne.sie.repair.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.ActionForm;
 
@@ -15,10 +16,9 @@ import com.dne.sie.repair.form.RepairFeeInfoForm;
 import com.dne.sie.repair.form.RepairSearchForm;
 import com.dne.sie.repair.form.RepairServiceForm;
 import com.dne.sie.util.action.ControlAction;
+import org.apache.struts.action.ActionMapping;
 
 public class RepairAction extends ControlAction {
-
-//	public final static ConcurrentHashMap RepairDetailWarnMap = new ConcurrentHashMap();
 
     /**
      * “维修”->“维修单查询”
@@ -35,6 +35,41 @@ public class RepairAction extends ControlAction {
         request.setAttribute("repairQueryList",rlBo.getRepairQueryList(rsForm));
 
         return forward;
+    }
+
+    /**
+     * 导出维修单信息
+     * @param form ActionForm
+     * @param response HttpServletResponse
+     * @return
+     */
+    public void exportRepairList(ActionMapping mapping,ActionForm form,
+                                 HttpServletRequest request,HttpServletResponse response) {
+
+        try {
+            RepairSearchForm rsForm = (RepairSearchForm) form;
+
+            RepairListBo rlBo = RepairListBo.getInstance();
+
+            String strTitle="维修单信息";
+
+            String strSource=rlBo.exportRepairQueryList(rsForm);
+
+            if(strSource!=null){
+                byte readFromFile[] = strSource.getBytes("GBK");
+
+                //response.setContentType("text/html;charset=GBK");
+                //response.setCharacterEncoding("GBK");
+                response.setHeader("Content-disposition", "attachment; filename="+
+                        java.net.URLEncoder.encode(strTitle,"utf-8")+".xls");
+                response.setBufferSize(readFromFile.length + 4096);
+                response.getOutputStream().write(readFromFile);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -48,6 +48,17 @@ function f_position(){
 	
 }
 
+function f_excel(){
+    document.forms[0].excel.disabled = true;
+    document.forms[0].action="repairAction.do?method=exportRepairList";
+    document.forms[0].submit();
+    setTimeout("doRefresh()",3000);
+}
+
+function doRefresh(){
+    document.forms[0].excel.disabled = false;
+}
+
 //-->
 </script>
 </head>
@@ -188,6 +199,7 @@ function f_position(){
                         <td colspan="6">
                         	<html:button property="query" value=" 查 询 " styleClass="button2" onclick="doSubmit()"/>&nbsp;
                         	<input type="button" value="故障位置查询" class="button6" onclick="f_position()"/>&nbsp;
+                            <input type="button" class="button6" name="excel" value="生成Excel" onclick="f_excel()">&nbsp;
                         	<input type="button" value=" 重 置 " class="button2" onclick="doReset()"/>
                         </td>
                       </tr>
