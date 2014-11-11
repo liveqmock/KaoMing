@@ -3,153 +3,152 @@ package com.dne.sie.common.exception;
 /*
 * <blockquote>
 * <pre>
-* Õâ¸öÀàÖĞ¾ÛºÏÁËComMessage
-* Õâ²»ÊÇÒ»¸öºÜºÃµÄ½â¾ö·½°¸
-* ÒòÎªÕâÑù¾ÍÊ¹ñîºÏÔöÇ¿
-* Ò»¸öºÃµÄ½â¾ö·½°¸Ê¹Ê¹ÓÃÊı×é×÷Îª²ÎÊı
-* ÀıÈç£ºObject[] getMessageArgs()
+* è¿™ä¸ªç±»ä¸­èšåˆäº†ComMessage
+* è¿™ä¸æ˜¯ä¸€ä¸ªå¾ˆå¥½çš„è§£å†³æ–¹æ¡ˆ
+* å› ä¸ºè¿™æ ·å°±ä½¿è€¦åˆå¢å¼º
+* ä¸€ä¸ªå¥½çš„è§£å†³æ–¹æ¡ˆä½¿ä½¿ç”¨æ•°ç»„ä½œä¸ºå‚æ•°
+* ä¾‹å¦‚ï¼šObject[] getMessageArgs()
 * </pre>
 * </blockquote>
 */
 
-public class ComException extends Exception
-{
-   private ComMessage message;//Ê¹ÓÃ¹Ø¼ü×ÖÀ´Ë÷ÒıÏûÏ¢µÄÄÚÈİ£¬²¢ÄÜÊ¹ÓÃÊôĞÔÅäÖÃÎÄ¼ş×°ÔØÏûÏ¢ÄÚÈİ¡£
-   private Throwable cause;//ÒıÆğÒì³£µÄÕæÕıÔ­Òò
- //  private String  errorCode; //´íÎóºÅ
-   private String msgStr;//Òì³£ĞÅÏ¢
+public class ComException extends Exception{
+    private ComMessage message;//ä½¿ç”¨å…³é”®å­—æ¥ç´¢å¼•æ¶ˆæ¯çš„å†…å®¹ï¼Œå¹¶èƒ½ä½¿ç”¨å±æ€§é…ç½®æ–‡ä»¶è£…è½½æ¶ˆæ¯å†…å®¹ã€‚
+    private Throwable cause;//å¼•èµ·å¼‚å¸¸çš„çœŸæ­£åŸå› 
+    //  private String  errorCode; //é”™è¯¯å·
+    private String msgStr;//å¼‚å¸¸ä¿¡æ¯
 
-   /** ¹¹Ôìº¯Êı
-    */
-   public ComException()
-   {
-       super();
-   }
+    /** æ„é€ å‡½æ•°
+     */
+    public ComException()
+    {
+        super();
+    }
 
-   /** ¹¹Ôìº¯Êı<br>
-    * ÔÚÒì³£ÖĞ¼ÓÈëÒ»Ìõ×Ö·û´®ÏûÏ¢¡£
-    * @param msgStr Òì³£ĞÅÏ¢
-    */
-   public ComException(String msgStr)
-   {
-       super(msgStr);
-       this.msgStr = msgStr;
-   }
+    /** æ„é€ å‡½æ•°<br>
+     * åœ¨å¼‚å¸¸ä¸­åŠ å…¥ä¸€æ¡å­—ç¬¦ä¸²æ¶ˆæ¯ã€‚
+     * @param msgStr å¼‚å¸¸ä¿¡æ¯
+     */
+    public ComException(String msgStr)
+    {
+        super(msgStr);
+        this.msgStr = msgStr;
+    }
 
-   /**
-    * ¹¹Ôìº¯Êı<br>
-    * ÔÚÒì³£ÖĞ¼ÓÈë´íÎóºÅºÍ×Ö·û´®ÏûÏ¢¡£<br>
-    * ½¨ÒéÊ¹ÓÃXMLMessages¶ÔÏóÀ´´«µİÏûÏ¢£¬ÀıÈç£º<br>
-    *        XMLMessages messages = new XMLMessages();<br>
-    *        throw new ComException(messages.getErrorCode("fileNotFound"),messages.getErrorText("fileNotFound"));
-    * @param errorCode ´íÎóºÅ
-    * @param msgStr Òì³£ĞÅÏ¢
-    * @see XMLMessages.java
-    */
-   public ComException (String errorCode,String msgStr){
-       super(msgStr);
-       this.msgStr = errorCode+":"+msgStr;
-   }
+    /**
+     * æ„é€ å‡½æ•°<br>
+     * åœ¨å¼‚å¸¸ä¸­åŠ å…¥é”™è¯¯å·å’Œå­—ç¬¦ä¸²æ¶ˆæ¯ã€‚<br>
+     * å»ºè®®ä½¿ç”¨XMLMessageså¯¹è±¡æ¥ä¼ é€’æ¶ˆæ¯ï¼Œä¾‹å¦‚ï¼š<br>
+     *        XMLMessages messages = new XMLMessages();<br>
+     *        throw new ComException(messages.getErrorCode("fileNotFound"),messages.getErrorText("fileNotFound"));
+     * @param errorCode é”™è¯¯å·
+     * @param msgStr å¼‚å¸¸ä¿¡æ¯
+     * @see XMLMessages.java
+     */
+    public ComException (String errorCode,String msgStr){
+        super(msgStr);
+        this.msgStr = errorCode+":"+msgStr;
+    }
 
-   /** ¹¹Ôìº¯Êı<br>
-    * ÔÚÒì³£ÖĞ¼ÓÈëÒıÆğÕâ¸öÒì³£µÄÔ­Òò¡£
-    * Õâ¸öÔ­ÒòÊÇÔÚcatchÓï¾äÖĞµÄµ½µÄexcetption¡£
-    * ÕâÀïÓÃExceptionµÄ¸¸ÀàThrowable×÷Îª²ÎÊıµÄÀàĞÍ¡£
-    * @param cause ÒıÆğÒì³£µÄÕæÕıÔ­Òò
-    */
-  public ComException(Throwable cause) {
-      super(cause.getLocalizedMessage());
-      this.cause = cause;
-  }
+    /** æ„é€ å‡½æ•°<br>
+     * åœ¨å¼‚å¸¸ä¸­åŠ å…¥å¼•èµ·è¿™ä¸ªå¼‚å¸¸çš„åŸå› ã€‚
+     * è¿™ä¸ªåŸå› æ˜¯åœ¨catchè¯­å¥ä¸­çš„åˆ°çš„excetptionã€‚
+     * è¿™é‡Œç”¨Exceptionçš„çˆ¶ç±»Throwableä½œä¸ºå‚æ•°çš„ç±»å‹ã€‚
+     * @param cause å¼•èµ·å¼‚å¸¸çš„çœŸæ­£åŸå› 
+     */
+    public ComException(Throwable cause) {
+        super(cause.getLocalizedMessage());
+        this.cause = cause;
+    }
 
-  /** ¹¹Ôìº¯Êı<br>
-    * ÔÚÒì³£ÖĞ¼ÓÈëÒ»Ìõ×Ö·û´®ÏûÏ¢£¬²¢ÇÒ½«ÒıÆğÕâ¸öÒì³£µÄÔ­Òò¼ÓÈë¡£<br>
-    * Èç¹ûĞèÒª´ø´íÎóºÅ£¬¿ÉÒÔÊ¹ÓÃXMLMessagesµÄget·½·¨´«ÈëmsgStr£¬ÀıÈç£º<br>
-    *        XMLMessages messages = new XMLMessages();<br>
-    *        throw new ComException(messages.get("fileNotFound"),ex);
-    * @param msgStr Òì³£ĞÅÏ¢
-    * @param cause ÒıÆğÒì³£µÄÕæÕıÔ­Òò
-    * @see XMLMessages.java
-    */
-   public ComException(String msgStr, Throwable cause)
-   {
+    /** æ„é€ å‡½æ•°<br>
+     * åœ¨å¼‚å¸¸ä¸­åŠ å…¥ä¸€æ¡å­—ç¬¦ä¸²æ¶ˆæ¯ï¼Œå¹¶ä¸”å°†å¼•èµ·è¿™ä¸ªå¼‚å¸¸çš„åŸå› åŠ å…¥ã€‚<br>
+     * å¦‚æœéœ€è¦å¸¦é”™è¯¯å·ï¼Œå¯ä»¥ä½¿ç”¨XMLMessagesçš„getæ–¹æ³•ä¼ å…¥msgStrï¼Œä¾‹å¦‚ï¼š<br>
+     *        XMLMessages messages = new XMLMessages();<br>
+     *        throw new ComException(messages.get("fileNotFound"),ex);
+     * @param msgStr å¼‚å¸¸ä¿¡æ¯
+     * @param cause å¼•èµ·å¼‚å¸¸çš„çœŸæ­£åŸå› 
+     * @see XMLMessages.java
+     */
+    public ComException(String msgStr, Throwable cause)
+    {
         super(msgStr);
         this.msgStr = msgStr;
         this.cause = cause;
-   }
+    }
 
-   /** ¹¹Ôìº¯Êı<br>
-    * ÔÚÒì³£ÖĞ¼ÓÈëCESMessage¶ÔÏó¡£
-    * Õâ¸ö¶ÔÏóÊ¹ÓÃ¹Ø¼ü×ÖÀ´Ë÷ÒıÏûÏ¢µÄÄÚÈİ£¬²¢ÄÜÊ¹ÓÃÊôĞÔÅäÖÃÎÄ¼ş×°ÔØÏûÏ¢ÄÚÈİ¡£
-    * ÏêÏ¸ĞÅÏ¢Çë²ÎÔÄCESMessageÎÄµµ¡£
-    * @deprecated replaced by ComException (String errorCode,String msgStr)
-    * @param message Òì³£ÏûÏ¢ĞÅÏ¢
-    */
-   public ComException(ComMessage message)
-   {
+    /** æ„é€ å‡½æ•°<br>
+     * åœ¨å¼‚å¸¸ä¸­åŠ å…¥CESMessageå¯¹è±¡ã€‚
+     * è¿™ä¸ªå¯¹è±¡ä½¿ç”¨å…³é”®å­—æ¥ç´¢å¼•æ¶ˆæ¯çš„å†…å®¹ï¼Œå¹¶èƒ½ä½¿ç”¨å±æ€§é…ç½®æ–‡ä»¶è£…è½½æ¶ˆæ¯å†…å®¹ã€‚
+     * è¯¦ç»†ä¿¡æ¯è¯·å‚é˜…CESMessageæ–‡æ¡£ã€‚
+     * @deprecated replaced by ComException (String errorCode,String msgStr)
+     * @param message å¼‚å¸¸æ¶ˆæ¯ä¿¡æ¯
+     */
+    public ComException(ComMessage message)
+    {
         this.message = message;
-   }
+    }
 
-   /** ¹¹Ôìº¯Êı
-    * ÔÚÒì³£ÖĞ¼ÓÈëComMessage¶ÔÏó£¬²¢ÇÒ½«ÒıÆğÕâ¸öÒì³£µÄÔ­Òò¼ÓÈë¡£
-    * @param message Òì³£ÏûÏ¢ĞÅÏ¢
-    * @param cause ÒıÆğÒì³£µÄÕæÕıÔ­Òò
-    * @deprecated replaced by ComException (String msgStr£¬Throwable cause)
-    */
-   public ComException(ComMessage message,Throwable cause)
-   {
+    /** æ„é€ å‡½æ•°
+     * åœ¨å¼‚å¸¸ä¸­åŠ å…¥ComMessageå¯¹è±¡ï¼Œå¹¶ä¸”å°†å¼•èµ·è¿™ä¸ªå¼‚å¸¸çš„åŸå› åŠ å…¥ã€‚
+     * @param message å¼‚å¸¸æ¶ˆæ¯ä¿¡æ¯
+     * @param cause å¼•èµ·å¼‚å¸¸çš„çœŸæ­£åŸå› 
+     * @deprecated replaced by ComException (String msgStrï¼ŒThrowable cause)
+     */
+    public ComException(ComMessage message,Throwable cause)
+    {
         this.message = message;
         this.cause = cause;
-   }
+    }
 
 
-   /** µÃµ½Òì³£µÄÔ­Òò
-    * @return java.lang.Throwable
-    */
-   public Throwable getCause()
-   {
-    return cause;
-   }
+    /** å¾—åˆ°å¼‚å¸¸çš„åŸå› 
+     * @return java.lang.Throwable
+     */
+    public Throwable getCause()
+    {
+        return cause;
+    }
 
 
-   /** µÃµ½ComMessage¶ÔÏó
-    * @return ces.dvp.exception.ComMessage
-    */
-   public ComMessage getComMessage()
-   {
-    return message;
-   }
+    /** å¾—åˆ°ComMessageå¯¹è±¡
+     * @return ces.dvp.exception.ComMessage
+     */
+    public ComMessage getComMessage()
+    {
+        return message;
+    }
 
 
-   /** ·µ»ØËùÓĞÒì³£ĞÅÏ¢
-    * ÕâÀï½«±¾¶ÔÏó×°ÔØµÄËùÓĞ¶ÔÏó¶¼·µ»Ø³öÀ´£¬·ÖÎªËÄÀàĞÅÏ¢¡£
-    * SUPER INFO ·µ»Ø¸¸ÀàµÄÒì³£ĞÅÏ¢£»
-    * MESSAGE STRING INFO ·µ»Ø×Ö·û´®ÏûÏ¢µÄĞÅÏ¢£»
-    * ComMessage OBJECT INFO ·µ»ØComMessage¶ÔÏóĞÅÏ¢£»
-    * CAUSE INFO ·µ»ØÒì³£ÒıÆğµÄÔ­Òò¡£
-    * @return String
-    */
-   public String toString()
-   {
-    StringBuffer buf = new StringBuffer();
-    buf.append("Òì³£Ãû³Æ£º");
-    buf.append(super.getClass().getName());
-    buf.append("\n");
-    if(msgStr != null){
-        buf.append("Òì³£ĞÅÏ¢:");
-        buf.append(msgStr);
+    /** è¿”å›æ‰€æœ‰å¼‚å¸¸ä¿¡æ¯
+     * è¿™é‡Œå°†æœ¬å¯¹è±¡è£…è½½çš„æ‰€æœ‰å¯¹è±¡éƒ½è¿”å›å‡ºæ¥ï¼Œåˆ†ä¸ºå››ç±»ä¿¡æ¯ã€‚
+     * SUPER INFO è¿”å›çˆ¶ç±»çš„å¼‚å¸¸ä¿¡æ¯ï¼›
+     * MESSAGE STRING INFO è¿”å›å­—ç¬¦ä¸²æ¶ˆæ¯çš„ä¿¡æ¯ï¼›
+     * ComMessage OBJECT INFO è¿”å›ComMessageå¯¹è±¡ä¿¡æ¯ï¼›
+     * CAUSE INFO è¿”å›å¼‚å¸¸å¼•èµ·çš„åŸå› ã€‚
+     * @return String
+     */
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append("å¼‚å¸¸åç§°ï¼š");
+        buf.append(super.getClass().getName());
         buf.append("\n");
+        if(msgStr != null){
+            buf.append("å¼‚å¸¸ä¿¡æ¯:");
+            buf.append(msgStr);
+            buf.append("\n");
+        }
+        if(message != null){
+            buf.append("å¼‚å¸¸ä¿¡æ¯ï¼ˆComMessageï¼‰:");
+            buf.append(message.getText());
+            buf.append("\n");
+        }
+        if(cause != null){
+            buf.append("å¼‚å¸¸åŸå› :");
+            buf.append(cause.toString());
+            buf.append("\n");
+        }
+        return buf.toString();
     }
-    if(message != null){
-       buf.append("Òì³£ĞÅÏ¢£¨ComMessage£©:");
-       buf.append(message.getText());
-       buf.append("\n");
-    }
-    if(cause != null){
-       buf.append("Òì³£Ô­Òò:");
-       buf.append(cause.toString());
-       buf.append("\n");
-    }
-    return buf.toString();
-   }
 }

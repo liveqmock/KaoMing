@@ -42,7 +42,7 @@
 				
         <tr class="tableback1"> 
           <td width="80">¿Í»§Ãû³Æ£º<font color='red'>*</font></td>
-          <td  id="cust"> <input type="hidden" name=customerId> 
+          <td  id="cust"> <input type="hidden" name="customerId" >
                <input name="customerName" type="text" class="form" size="30" >
           </td>
           

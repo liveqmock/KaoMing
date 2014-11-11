@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="css/style.css">
 <script language=javascript src="js/checkValid.js"></script>
 <script language=javascript src="js/ajax.js"></script>
+<SCRIPT  src="js/common.js"></SCRIPT>
 </head>
 <%
 	String subId=(String)request.getAttribute("subId");	
@@ -16,6 +17,9 @@
 	String layer=(String)request.getAttribute("layer");
 	String strFlag=(String)request.getAttribute("flag");
 	String reportFlag=(String)request.getAttribute("reportFlag");
+    if(layer == null && title!=null &&  title.indexOf(" ")!=-1){
+        layer = title.substring(0,title.indexOf(" "));
+    }
 	
 	if("init".equals(strFlag)) parentName+=" 添加";
 	else parentName+=" 信息修改";
@@ -72,7 +76,8 @@
     <td colspan="6">
 
     	<input type="button"  value="保存" onclick="f_submit()">
-    	
+        <input type="button"  value="增加下级科目" onclick="f_addNode()">
+        <input type="button"  value="删除科目" onclick="f_deleteNode()">
     </td>
   </tr>
   <tr> 
@@ -98,6 +103,29 @@ function f_submit(){
     }
 }
 
+function f_addNode() {
+    var subId = "<%=subId%>";
+    if(subId == null || subId == 'null' || subId == ''){
+        alert("当前科目为空，请重新刷新!");
+        return;
+    }
+    var layer = "<%=layer%>";
+    var nextLayer = new Number(layer) +1;
+    var treeName=replaceAll0(escape("<%=parentName%>"),"%u","@");
+    parent.main.location = "accountAction.do?method=addInit&parentId=<%=subId%>&layer="+nextLayer+"&treeName="+treeName;
+}
+
+function f_deleteNode(){
+    var layer = "<%=layer%>";
+    if(layer!=null&&layer!=''){
+        if(confirm("将同时删除所有下层科目，是否确认删除？")){
+            parent.main.location="accountAction.do?method=subDelete&id=<%=subId%>";
+
+        }
+    }else{
+        alert("总科目不可删除！");
+    }
+}
 
 
 	var ajax = new sack(); // 创建ajax对象

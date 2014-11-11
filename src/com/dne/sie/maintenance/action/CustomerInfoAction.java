@@ -22,346 +22,346 @@ import com.dne.sie.util.action.ControlAction;
 
 
 /**
- * ¿Í»§ĞÅÏ¢Action´¦ÀíÀà
+ * å®¢æˆ·ä¿¡æ¯Actionå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
  */
 public class CustomerInfoAction extends ControlAction {
-	
-	
-	/**
-	* ¿Í»§±íĞÅÏ¢ ÁĞ±íÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-   public String customerList(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "customerList";
-		CustomerInfoForm pif=(CustomerInfoForm)form;
-		CustomerInfoBo pib = CustomerInfoBo.getInstance();
-		request.setAttribute("customerList",pib.list(pif));
-		
-		return forward;
-   }
-   
-   /**
-	* ¿Í»§±íĞÅÏ¢ ĞÂÔöÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String customerInit(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "customerInit";
-		
-		request.setAttribute("Rnd",request.getParameter("Rnd"));
-		return forward;
-  }
-  
-  /**
-	* ¿Í»§±íĞÅÏ¢ ĞŞ¸ÄÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String customerEdit(HttpServletRequest request, ActionForm form) {
-		String forward = "customerEdit";
-		try{
-			String sysId=request.getParameter("ids");
-			request.setAttribute("customerInfoForm", CustomerInfoBo.getInstance().find(sysId));
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
 
-  /**
-	* ¿Í»§±íĞÅÏ¢ ²åÈë²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String insertCustomer(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		try{
-			CustomerInfoForm pif=(CustomerInfoForm)form;
-			CustomerInfoBo cibo = CustomerInfoBo.getInstance();
-			if(cibo.chkCustId(pif.getCustomerId())){
-				int tag=cibo.add(pif);
-				request.setAttribute("tag", tag + "");
-				request.setAttribute("businessFlag", "saveCustomer");
-				
-			}else{
-				request.setAttribute("idRepeat", "idRepeat");
-				forward="customerInit";
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
-  
-  
-  public void insertCustomerWithTurning(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
-		
-		
-		try{
-			String strXml="false";
-			CustomerInfoForm pif=(CustomerInfoForm)form;
-			
-			String customername= pif.getCustomerName(); 
-			String linkman=      pif.getLinkman(); 
-			String provincename= pif.getProvinceName(); 
-			String cityname=     pif.getCityName(); 
-			String address     = pif.getAddress();
-			
-			pif.setCustomerName(EscapeUnescape.unescape(customername));
-			pif.setLinkman(EscapeUnescape.unescape(linkman));
-			pif.setProvinceName(EscapeUnescape.unescape(provincename));
-			pif.setCityName(EscapeUnescape.unescape(cityname));
-			pif.setAddress(EscapeUnescape.unescape(address));
-			pif.setCreateBy((Long)request.getSession().getAttribute("userId"));
-			pif.setCreateDate(new Date());
-			
-			CustomerInfoBo cibo = CustomerInfoBo.getInstance();
-			if(cibo.chkCustId(pif.getCustomerId())){
-				int tag=cibo.add(pif);
-				if(tag!=-1){
-					strXml=pif.getCustomerId()
-							+DicInit.SPLIT3+customername
-							+DicInit.SPLIT3+linkman
-							+DicInit.SPLIT3+(pif.getPhone())
-							+DicInit.SPLIT3+pif.getFax()
-							+DicInit.SPLIT3+pif.getMobile()
-							+DicInit.SPLIT3+provincename
-							+DicInit.SPLIT3+cityname
-							+DicInit.SPLIT3+address;
-				}	
-			}
-			
-			PrintWriter writer = response.getWriter();			
-			response.setContentType("text/xml");					
-			response.setHeader("Cache-Control", "no-cache");      
-			writer.println("<xml>");
-			
-			writer.println("<ifUse>"+strXml+"</ifUse>");
-		
-			writer.println("</xml>");
-			writer.flush();
-			writer.close();
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	
-	}
 
-  /**
-	* ¿Í»§±íĞÅÏ¢ ĞŞ¸Ä²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String updateCustomer(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		try{
-			CustomerInfoForm pif=(CustomerInfoForm)form;
-			CustomerInfoBo cibo = CustomerInfoBo.getInstance();
-			int tag=cibo.modify(pif);
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "saveCustomer");
-		
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
-  
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ åˆ—è¡¨é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String customerList(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "customerList";
+        CustomerInfoForm pif=(CustomerInfoForm)form;
+        CustomerInfoBo pib = CustomerInfoBo.getInstance();
+        request.setAttribute("customerList",pib.list(pif));
 
-  /**
-	* ¿Í»§±íĞÅÏ¢ É¾³ı²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String deleteCustomer(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		try{
-			String sysId=request.getParameter("ids");
-			int tag=CustomerInfoBo.getInstance().delete(sysId);
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "deleteCustomer");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
+        return forward;
+    }
 
-	/**
-	 * Ğ£ÑéÓÃ»§idÊÇ·ñ´æÔÚ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public void ajaxChkId(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
-		
-		
-		try{
-			String custId=request.getParameter("custId");
-			CustomerInfoBo ubo = CustomerInfoBo.getInstance();
-			String strXml="false";
-			if(ubo.chkCustId(custId)){
-				strXml="true";
-			}
-		
-			PrintWriter writer = response.getWriter();			
-			response.setContentType("text/xml");					
-			response.setHeader("Cache-Control", "no-cache");      
-			writer.println("<xml>");
-			
-			writer.println("<ifUse>"+strXml+"</ifUse>");
-		
-			writer.println("</xml>");
-			writer.flush();
-			writer.close();
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	
-	}
-	
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ æ–°å¢é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String customerInit(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "customerInit";
 
-	  /**
-		* ÔÚÒµÎñÄ£¿éÖĞ£¬µã»÷¡°²éÑ¯°´Å¥¡±ºó´¥·¢µÄÊÂ¼ş
-		*	@param request HttpServletRequest
-		*	@param form ActionForm
-		*	@return String ·µ»ØforwardÒ³Ãæ	popupPartStart Í¨ÓÃÁã¼şĞÅÏ¢²éÑ¯Ò³Ãæ	
-		*/
-	  public String popupCustList(HttpServletRequest request, ActionForm form){
-			String forward="popupCustStart";
-			try{
-				CustomerInfoForm cif=(CustomerInfoForm)form;
-				String flag=request.getParameter("flag");
-				if(!"query".equals(flag)){
-					if(cif.getCustomerName()!=null&&!cif.getCustomerName().equals("")){
-						BASE64Decoder decoder = new BASE64Decoder(); 
-						byte[] b = decoder.decodeBuffer(cif.getCustomerName()); 
-						cif.setCustomerName(EscapeUnescape.unescape(EscapeUnescape.unescape(new String(b).toString())).trim());
-						
-					}
-				}
-				request.setAttribute("custInfoList",CustomerInfoBo.getInstance().list(cif));
-				
-				
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			return forward;
-		}
-	  
-	  
-	  /**
-		 * µÃµ½ËùÓĞ¿Í»§ĞÅÏ¢
-		 * @param mapping
-		 * @param form
-		 * @param request
-		 * @param response
-		 * @return
-		 * @throws Exception
-		 */
-		public String getCustInfo(ActionMapping mapping, ActionForm form,
-				HttpServletRequest request, HttpServletResponse response) throws Exception {
-			try{
-				response.setContentType("text/html;charset=UTF-8");
-				
-				//diable cache
-		        // Set to expire far in the past.
-		        response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-		
-		        // Set standard HTTP/1.1 no-cache headers.
-		        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-		
-		        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-		        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-		
-		        // Set standard HTTP/1.0 no-cache header.
-		        response.setHeader("Pragma", "no-cache");
-				
-				//µÃµ½Ò³ÃæÉÏÊäÈëµÄÖµ
-				String inputValue = request.getParameter("inputValue");
-				//ÖĞÎÄĞèÒª×ª»»£¬Ê¹ÓÃjavascriptµÄescape±àÂë£¬ËùÓĞ×Ö·û¼¯¶¼¿ÉÓÃ
-				inputValue = EscapeUnescape.unescape(inputValue);
-				//µÃµ½ËùÓĞ¾­ÏúÉÌµÄÃû×ÖºÍid
-				List custList = CustomerInfoBo.getInstance().getCustomerListByName(inputValue);
-				
-				String customerId = "";		
-				String customerName = "";		
-				String linkman = "";		
-				String phone = "";		
-				String cityName = "";	
-				String fax = "";
-				String address = "";
-				String mobile= "";
-				String provinceName= "";
-				
-				String StrongDealerName = "";
-				
-				StringBuffer buffer = new StringBuffer();
-				for (int i = 0; i < custList.size(); i++) {
-					Object[] obj = (Object[]) custList.get(i);
-					if("TWKM".equals(customerId)){
-						continue;
-					}
-					
-					customerId = obj[0].toString();
-					customerName = obj[1].toString();
-					linkman = obj[2]==null?"":obj[2].toString();
-					phone = obj[3]==null?"":obj[3].toString();
-					cityName = obj[4]==null?"":obj[4].toString();
-					fax = obj[5]==null?"":obj[5].toString();
-					address = obj[6]==null?"":obj[6].toString();
-					mobile = obj[7]==null?"":obj[7].toString();
-					provinceName = obj[8]==null?"":obj[8].toString();
-					
-					
-					if(customerName.indexOf(inputValue) != -1) {
-						//°ÑÊäÈëµÄÖµºÍÊı¾İ¿âµÄÊı¾İ±È½Ïºó,¼Ó´Ö
-						StrongDealerName = customerName.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+        request.setAttribute("Rnd",request.getParameter("Rnd"));
+        return forward;
+    }
 
-						buffer.append("<div onselect=\"this.text.value = '")
-							  .append(customerName)
-							  .append("';$('customerId').value = '")
-							  .append(customerId)
-							  .append("';$('linkman').value = '")
-							  .append(linkman)
-							  .append("';$('phone').value = '")
-							  .append(phone)
-							  .append("';$('cityName').value = '")
-							  .append(cityName)
-							  .append("';$('fax').value = '")
-							  .append(fax)
-							  .append("';$('shippingAddress').value = '")
-							  .append(address)
-							  .append("';$('address').value = '")
-							  .append(address)
-							  .append("';$('mobile').value = '")
-							  .append(mobile)
-							  .append("';$('provinceName').value = '")
-							  .append(provinceName)
-							  .append("'\">")
-							  .append(StrongDealerName)
-							  .append("</div>");
-					}
-				}
-				PrintWriter out = response.getWriter();
-				out.println(buffer.toString());
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ ä¿®æ”¹é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String customerEdit(HttpServletRequest request, ActionForm form) {
+        String forward = "customerEdit";
+        try{
+            String sysId=request.getParameter("ids");
+            request.setAttribute("customerInfoForm", CustomerInfoBo.getInstance().find(sysId));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ æ’å…¥æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String insertCustomer(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        try{
+            CustomerInfoForm pif=(CustomerInfoForm)form;
+            CustomerInfoBo cibo = CustomerInfoBo.getInstance();
+            if(cibo.chkCustId(pif.getCustomerId())){
+                int tag=cibo.add(pif);
+                request.setAttribute("tag", tag + "");
+                request.setAttribute("businessFlag", "saveCustomer");
+
+            }else{
+                request.setAttribute("idRepeat", "idRepeat");
+                forward="customerInit";
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    public void insertCustomerWithTurning(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+
+
+        try{
+            String strXml="false";
+            CustomerInfoForm pif=(CustomerInfoForm)form;
+
+            String customername= pif.getCustomerName();
+            String linkman=      pif.getLinkman();
+            String provincename= pif.getProvinceName();
+            String cityname=     pif.getCityName();
+            String address     = pif.getAddress();
+
+            pif.setCustomerName(EscapeUnescape.unescape(customername));
+            pif.setLinkman(EscapeUnescape.unescape(linkman));
+            pif.setProvinceName(EscapeUnescape.unescape(provincename));
+            pif.setCityName(EscapeUnescape.unescape(cityname));
+            pif.setAddress(EscapeUnescape.unescape(address));
+            pif.setCreateBy((Long)request.getSession().getAttribute("userId"));
+            pif.setCreateDate(new Date());
+
+            CustomerInfoBo cibo = CustomerInfoBo.getInstance();
+            if(cibo.chkCustId(pif.getCustomerId())){
+                int tag=cibo.add(pif);
+                if(tag!=-1){
+                    strXml=pif.getCustomerId()
+                            +DicInit.SPLIT3+customername
+                            +DicInit.SPLIT3+linkman
+                            +DicInit.SPLIT3+(pif.getPhone())
+                            +DicInit.SPLIT3+pif.getFax()
+                            +DicInit.SPLIT3+pif.getMobile()
+                            +DicInit.SPLIT3+provincename
+                            +DicInit.SPLIT3+cityname
+                            +DicInit.SPLIT3+address;
+                }
+            }
+
+            PrintWriter writer = response.getWriter();
+            response.setContentType("text/xml");
+            response.setHeader("Cache-Control", "no-cache");
+            writer.println("<xml>");
+
+            writer.println("<ifUse>"+strXml+"</ifUse>");
+
+            writer.println("</xml>");
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ ä¿®æ”¹æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String updateCustomer(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        try{
+            CustomerInfoForm pif=(CustomerInfoForm)form;
+            CustomerInfoBo cibo = CustomerInfoBo.getInstance();
+            int tag=cibo.modify(pif);
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "saveCustomer");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ åˆ é™¤æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String deleteCustomer(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        try{
+            String sysId=request.getParameter("ids");
+            int tag=CustomerInfoBo.getInstance().delete(sysId);
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "deleteCustomer");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * æ ¡éªŒç”¨æˆ·idæ˜¯å¦å­˜åœ¨
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public void ajaxChkId(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+
+
+        try{
+            String custId=request.getParameter("custId");
+            CustomerInfoBo ubo = CustomerInfoBo.getInstance();
+            String strXml="false";
+            if(ubo.chkCustId(custId)){
+                strXml="true";
+            }
+
+            PrintWriter writer = response.getWriter();
+            response.setContentType("text/xml");
+            response.setHeader("Cache-Control", "no-cache");
+            writer.println("<xml>");
+
+            writer.println("<ifUse>"+strXml+"</ifUse>");
+
+            writer.println("</xml>");
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * åœ¨ä¸šåŠ¡æ¨¡å—ä¸­ï¼Œç‚¹å‡»â€œæŸ¥è¯¢æŒ‰é’®â€åè§¦å‘çš„äº‹ä»¶
+     *	@param request HttpServletRequest
+     *	@param form ActionForm
+     *	@return String è¿”å›forwardé¡µé¢	popupPartStart é€šç”¨é›¶ä»¶ä¿¡æ¯æŸ¥è¯¢é¡µé¢
+     */
+    public String popupCustList(HttpServletRequest request, ActionForm form){
+        String forward="popupCustStart";
+        try{
+            CustomerInfoForm cif=(CustomerInfoForm)form;
+            String flag=request.getParameter("flag");
+            if(!"query".equals(flag)){
+                if(cif.getCustomerName()!=null&&!cif.getCustomerName().equals("")){
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] b = decoder.decodeBuffer(cif.getCustomerName());
+                    cif.setCustomerName(EscapeUnescape.unescape(EscapeUnescape.unescape(new String(b).toString())).trim());
+
+                }
+            }
+            request.setAttribute("custInfoList",CustomerInfoBo.getInstance().list(cif));
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * å¾—åˆ°æ‰€æœ‰å®¢æˆ·ä¿¡æ¯
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public String getCustInfo(ActionMapping mapping, ActionForm form,
+                              HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            response.setContentType("text/html;charset=UTF-8");
+
+            //diable cache
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+
+            //å¾—åˆ°é¡µé¢ä¸Šè¾“å…¥çš„å€¼
+            String inputValue = request.getParameter("inputValue");
+            //ä¸­æ–‡éœ€è¦è½¬æ¢ï¼Œä½¿ç”¨javascriptçš„escapeç¼–ç ï¼Œæ‰€æœ‰å­—ç¬¦é›†éƒ½å¯ç”¨
+            inputValue = EscapeUnescape.unescape(inputValue);
+            //å¾—åˆ°æ‰€æœ‰ç»é”€å•†çš„åå­—å’Œid
+            List custList = CustomerInfoBo.getInstance().getCustomerListByName(inputValue);
+
+            String customerId = "";
+            String customerName = "";
+            String linkman = "";
+            String phone = "";
+            String cityName = "";
+            String fax = "";
+            String address = "";
+            String mobile= "";
+            String provinceName= "";
+
+            String StrongDealerName = "";
+
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < custList.size(); i++) {
+                Object[] obj = (Object[]) custList.get(i);
+                if("TWKM".equals(customerId)){
+                    continue;
+                }
+
+                customerId = obj[0].toString();
+                customerName = obj[1].toString();
+                linkman = obj[2]==null?"":obj[2].toString();
+                phone = obj[3]==null?"":obj[3].toString();
+                cityName = obj[4]==null?"":obj[4].toString();
+                fax = obj[5]==null?"":obj[5].toString();
+                address = obj[6]==null?"":obj[6].toString();
+                mobile = obj[7]==null?"":obj[7].toString();
+                provinceName = obj[8]==null?"":obj[8].toString();
+
+
+                if(customerName.indexOf(inputValue) != -1) {
+                    //æŠŠè¾“å…¥çš„å€¼å’Œæ•°æ®åº“çš„æ•°æ®æ¯”è¾ƒå,åŠ ç²—
+                    StrongDealerName = customerName.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+
+                    buffer.append("<div onselect=\"this.text.value = '")
+                            .append(customerName)
+                            .append("';$('customerId').value = '")
+                            .append(customerId)
+                            .append("';$('linkman').value = '")
+                            .append(linkman)
+                            .append("';$('phone').value = '")
+                            .append(phone)
+                            .append("';$('cityName').value = '")
+                            .append(cityName)
+                            .append("';$('fax').value = '")
+                            .append(fax)
+                            .append("';$('shippingAddress').value = '")
+                            .append(address)
+                            .append("';$('address').value = '")
+                            .append(address)
+                            .append("';$('mobile').value = '")
+                            .append(mobile)
+                            .append("';$('provinceName').value = '")
+                            .append(provinceName)
+                            .append("'\">")
+                            .append(StrongDealerName)
+                            .append("</div>");
+                }
+            }
+            PrintWriter out = response.getWriter();
+            out.println(buffer.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
 

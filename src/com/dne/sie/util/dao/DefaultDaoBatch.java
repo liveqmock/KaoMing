@@ -6,63 +6,59 @@ import java.util.Map;
 
 
 /**
- * <p>ÅúÁ¿ÊÂÎñµÄ»ù±¾DAO</p>
- * <p>È«²¿´¦Àíºó¾Í½øĞĞÊÂÎñcommit»òrollback</p>
+ * <p>æ‰¹é‡äº‹åŠ¡çš„åŸºæœ¬DAO</p>
+ * <p>å…¨éƒ¨å¤„ç†åå°±è¿›è¡Œäº‹åŠ¡commitæˆ–rollback</p>
  * @author xt
  * @version 1.1.5.6
  */
 public interface DefaultDaoBatch {
-	
-    
-	/**
-	 * ¸ù¾İidÖµÅúÁ¿É¾³ı¶ÔÏó£¨List ½Ó¿Ú£©
-	 * @param pojoClass ¶ÔÏóµÄÀàĞÍ
-	 * @param ids Ò»Åúid 
-	 * @return ÊÇ·ñÉ¾³ı³É¹¦
-	 * @throws CESException
-	 */
-	public boolean deleteBatch(List ids) throws ComException;
-    
 
-    
-	/**
-	 * ÅúÁ¿ĞŞ¸Ä¶ÔÏó£¨List½Ó¿Ú£©
-	 * @param pojoClass ¶ÔÏóµÄÀàĞÍ
-	 * @param ids Ò»Åúform
-	 * @return ÊÇ·ñĞŞ¸Ä³É¹¦
-	 * @throws ComException
-	 */
-	public boolean updateBatch(List al) throws ComException;
-	
-	/**
-	 * ÅúÁ¿ĞÂÔö¶ÔÏó£¨List½Ó¿Ú£©
-	 * @param pojoClass ¶ÔÏóµÄÀàĞÍ
-	 * @param ids Ò»Åúform
-	 * @return ÊÇ·ñĞŞ¸Ä³É¹¦
-	 * @throws ComException
-	 */
-	public boolean insertBatch(List al) throws ComException;
-	
-	/**
-	 * ÅúÁ¿ĞÂÔö»òĞŞ¸Ä¶ÔÏó£¨List½Ó¿Ú£©
-	 * @param pojoClass ¶ÔÏóµÄÀàĞÍ
-	 * @param ids Ò»Åúform
-	 * @return ÊÇ·ñĞŞ¸Ä³É¹¦
-	 * @throws ComException
-	 */
-	public boolean saveOrUpdateBatch(List al) throws ComException;
-	
-	
-	/**
-	 * ÅúÁ¿ĞÂÔö»òĞŞ¸Ä»òÉ¾³ı¶ÔÏó£¨List½Ó¿Ú£©
-	 * @param al - list¶ÔÏó£¬·â×°Object[]£¬
-	 * 	Object[0]Îª´ı²Ù×÷form£¬Object[1]Îª²Ù×÷±êÖ¾£¬"i"-insert,"u"-update,"d"-delete
-	 * @return ÊÇ·ñĞŞ¸Ä³É¹¦
-	 * @throws ComException
-	 */
-	public boolean allDMLBatch(List<Object[]> al) throws ComException;
-	
-	public boolean excuteBatch(List al) throws ComException;
-	
+
+    /**
+     * æ ¹æ®idå€¼æ‰¹é‡åˆ é™¤å¯¹è±¡ï¼ˆList æ¥å£ï¼‰
+     * @param ids ä¸€æ‰¹id
+     * @return æ˜¯å¦åˆ é™¤æˆåŠŸ
+     * @throws ComException
+     */
+    public boolean deleteBatch(List ids) throws ComException;
+
+
+
+    /**
+     * æ‰¹é‡ä¿®æ”¹å¯¹è±¡ï¼ˆListæ¥å£ï¼‰
+     * @param al ä¸€æ‰¹form
+     * @return æ˜¯å¦ä¿®æ”¹æˆåŠŸ
+     * @throws ComException
+     */
+    public boolean updateBatch(List al) throws ComException;
+
+    /**
+     * æ‰¹é‡æ–°å¢å¯¹è±¡ï¼ˆListæ¥å£ï¼‰
+     * @param al ä¸€æ‰¹form
+     * @return æ˜¯å¦ä¿®æ”¹æˆåŠŸ
+     * @throws ComException
+     */
+    public boolean insertBatch(List al) throws ComException;
+
+    /**
+     * æ‰¹é‡æ–°å¢æˆ–ä¿®æ”¹å¯¹è±¡ï¼ˆListæ¥å£ï¼‰
+     * @param al ä¸€æ‰¹form
+     * @return æ˜¯å¦ä¿®æ”¹æˆåŠŸ
+     * @throws ComException
+     */
+    public boolean saveOrUpdateBatch(List al) throws ComException;
+
+
+    /**
+     * æ‰¹é‡æ–°å¢æˆ–ä¿®æ”¹æˆ–åˆ é™¤å¯¹è±¡ï¼ˆListæ¥å£ï¼‰
+     * @param al - listå¯¹è±¡ï¼Œå°è£…Object[]ï¼Œ
+     * 	Object[0]ä¸ºå¾…æ“ä½œformï¼ŒObject[1]ä¸ºæ“ä½œæ ‡å¿—ï¼Œ"i"-insert,"u"-update,"d"-delete
+     * @return æ˜¯å¦ä¿®æ”¹æˆåŠŸ
+     * @throws ComException
+     */
+    public boolean allDMLBatch(List<Object[]> al) throws ComException;
+
+    public boolean excuteBatch(List al) throws ComException;
+
 
 }

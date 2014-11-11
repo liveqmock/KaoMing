@@ -1,75 +1,73 @@
 package com.dne.sie.reception.action;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionForm;
-
-import com.dne.sie.common.tools.Operate;
 import com.dne.sie.reception.bo.SaleInfoBo;
 import com.dne.sie.reception.form.SaleInfoForm;
 import com.dne.sie.util.action.ControlAction;
+import org.apache.struts.action.ActionForm;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class SalePartsApproveAction extends ControlAction{
-	
-	/**
-	 * ¥˝…Û≈˙¡„º˛¡–±Ì
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String iwPartsList(HttpServletRequest request, ActionForm form) throws Exception{
-		
-		SaleInfoForm pif=(SaleInfoForm)form;
-		
-		pif.setSaleStatus("B");
-		SaleInfoBo pib = SaleInfoBo.getInstance();
-		request.setAttribute("saleList",pib.list(pif));
-	
-		
-		return  "iwPartsList";
-	}
-	
-	/**
-	 * ¥˝…Û≈˙¡„º˛√˜œ∏
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String iwPartsDetail(HttpServletRequest request,ActionForm form) throws Exception{
 
-		String saleNo = request.getParameter("saleNo");
-		//œ˙ €–≈œ¢±Ì
-		SaleInfoBo bo = SaleInfoBo.getInstance();
-		SaleInfoForm sif = bo.findById(saleNo);
-		
-		request.setAttribute("detailList", bo.detailList(saleNo));
-		
-		request.setAttribute("salesInfoForm", sif);
+    /**
+     * ÂæÖÂÆ°ÊâπÈõ∂‰ª∂ÂàóË°®
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String iwPartsList(HttpServletRequest request, ActionForm form) throws Exception{
 
-		return "iwPartsDetail";
-	}
-	
-	/**
-	 * ¡„º˛…Û≈˙
-	 * @param request
-	 * @param form
-	 * @return
-	 * @throws Exception
-	 */
-	public String iwPartApprove(HttpServletRequest request,ActionForm form) throws Exception{
+        SaleInfoForm pif=(SaleInfoForm)form;
 
-		SaleInfoForm sif=(SaleInfoForm)form;
-		sif.setUpdateBy((Long)request.getSession().getAttribute("userId"));
-		
-		//œ˙ €–≈œ¢±Ì
-		SaleInfoBo bo = SaleInfoBo.getInstance();
+        pif.setSaleStatus("B");
+        SaleInfoBo pib = SaleInfoBo.getInstance();
+        request.setAttribute("saleList",pib.list(pif));
 
-		request.setAttribute("businessFlag", "iwPartApprove");
-		request.setAttribute("tag", bo.iwPartApprove(sif)+"");
-		
-		return "resultMessage";
-	}
+
+        return  "iwPartsList";
+    }
+
+    /**
+     * ÂæÖÂÆ°ÊâπÈõ∂‰ª∂ÊòéÁªÜ
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String iwPartsDetail(HttpServletRequest request,ActionForm form) throws Exception{
+
+        String saleNo = request.getParameter("saleNo");
+        //ÈîÄÂîÆ‰ø°ÊÅØË°®
+        SaleInfoBo bo = SaleInfoBo.getInstance();
+        SaleInfoForm sif = bo.findById(saleNo);
+
+        request.setAttribute("detailList", bo.detailList(saleNo));
+
+        request.setAttribute("salesInfoForm", sif);
+
+        return "iwPartsDetail";
+    }
+
+    /**
+     * Èõ∂‰ª∂ÂÆ°Êâπ
+     * @param request
+     * @param form
+     * @return
+     * @throws Exception
+     */
+    public String iwPartApprove(HttpServletRequest request,ActionForm form) throws Exception{
+
+        SaleInfoForm sif=(SaleInfoForm)form;
+        sif.setUpdateBy((Long)request.getSession().getAttribute("userId"));
+
+        //ÈîÄÂîÆ‰ø°ÊÅØË°®
+        SaleInfoBo bo = SaleInfoBo.getInstance();
+
+        request.setAttribute("businessFlag", "iwPartApprove");
+        request.setAttribute("tag", bo.iwPartApprove(sif)+"");
+
+        return "resultMessage";
+    }
 
 }

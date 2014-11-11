@@ -6,408 +6,408 @@ import com.dne.sie.common.tools.Operate;
 import com.dne.sie.util.form.CommForm;
 
 public class SaleInfoForm extends CommForm{
-	
-	private String saleNo;             			//Ñ¯¼Ûµ¥ºÅ			
-	private String customerId;         			//¿Í»§ID				
-	private String customerName;       			//¿Í»§Ãû³Æ	
-	private String customerPhone;      			//¿Í»§µç»°	
-	private String linkman;						//ÁªÏµÈË
-	private String shippingAddress;    			//½»»õµØµã			
-	private Integer partNum;            		//Áã¼ş×ÜÊıÁ¿			
-	private Float purchasePrice;      			//½ø¼Û		
-	private Float tariffAmount;             	//¹ØË°_½ğ¶î		
 
-	private Float vat;                			//º£¹ØÔöÖµË°_½ğ¶î		
-	private Float customsChargesPlan; 			//±¨¹Ø·Ñ_¼Æ»®(ÒÑ·ÏÆú)		
-	private Float customsChargesReal; 			//´úÀí·Ñ	
-	private Float domesticFreightPlan;			//¹úÄÚÔË·Ñ_¼Æ»®	
-	private Float domesticFreightReal;			//¹úÄÚÔË·Ñ_Êµ¼Ê	
-	private Float costPlan;           			//³É±¾_¼Æ»®			
-	private Float costReal;           			//³É±¾_Êµ¼Ê			
-	private Float totalQuote;         			//Áã¼ş×Ü±¨¼Û				
-//	private Float saleTotalPrice;     			//ÏúÊÛ×Ü¼Û			
-	private Float repairFeePlan;      			//Î¬ĞŞ·Ñ_¼Æ»®		
-	private Float repairFeeReal;      			//Î¬ĞŞ·Ñ_Êµ¼Ê		
-	private Float repairQuote;      			//Î¬ĞŞ·Ñ_±¨¼Û	
-	private Float repairProfit;					//Î¬ĞŞ·Ñ_ÀûÈó
-	
-	private Float profitPlan;         			//ÀûÈó_¼Æ»®			
-	private Float profitReal;         			//ÀûÈó_Êµ¼Ê	
-	
-	private String deliveryPlaceTw;    			//Ì¨Íå½»»õµØµã	
+    private String saleNo;             			//è¯¢ä»·å•å·
+    private String customerId;         			//å®¢æˆ·ID
+    private String customerName;       			//å®¢æˆ·åç§°
+    private String customerPhone;      			//å®¢æˆ·ç”µè¯
+    private String linkman;						//è”ç³»äºº
+    private String shippingAddress;    			//äº¤è´§åœ°ç‚¹
+    private Integer partNum;            		//é›¶ä»¶æ€»æ•°é‡
+    private Float purchasePrice;      			//è¿›ä»·
+    private Float tariffAmount;             	//å…³ç¨_é‡‘é¢
 
-	private String invoiceType;         		//·¢Æ±ÀàĞÍ
-	private String saleStatus;         			//ÏúÊÛµ¥×´Ì¬		
-	private String payStatus;          			//¸¶¿î×´Ì¬			
-	private String billingStatus;      			//¿ªÆ±×´Ì¬			
-	private Float billingMoney;       			//¿ªÆ±½ğ¶î			
-	private Float totalPay;           			//¿Í»§ÒÑ¸¶×Ü¶î	
-	private String shippingRemark;     			//·¢»õ±¸×¢			
-	private String remark;             			//±¸×¢					
-	private int version;
-	private Integer delFlag;    
-	private Float exchangeRate;             //ÃÀÔª»ãÂÊ	
-	private String factoryId;			//³§ÉÌID 
-	private String factoryName;			//³§ÉÌÃû³Æ    
-	
-	private Date createDate;
-	private Long updateBy;
-	private Long createBy;
-	private Date updateDate;
-	
-	private String skuCode;
-	private String stuffNo;
-	private String modelCode;
-	private String modelSerialNo;            //»úÉí±àÂë	
-	private String orderMonth;  					//¶©µ¥ÔÂ·İ
-	private String invoiceNo1;  			//·¢Æ±ÆğÊ¼ºÅ
-	private String invoiceNo2;  			//·¢Æ±ÖÕÖ¹ºÅ
-	
-	private String dsaleNo;
-	
-	private Long repairNo;		//FK
-	private String serviceSheetNo;			//¹ØÁªÎ¬ĞŞµ¥
-	private String warrantyType;			//¶ÔÓ¦Î¬ĞŞµ¥ ±£ÄÚ/±£Íâ
-	private Float stockCost;				//¿â´æ³É±¾×Ü¼Û(RMB)
-	
-	public String getSaleNo() {
-		return saleNo;
-	}
-	public void setSaleNo(String saleNo) {
-		this.saleNo = saleNo;
-	}
-	
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public String getCustomerPhone() {
-		return customerPhone;
-	}
-	public void setCustomerPhone(String customerPhone) {
-		this.customerPhone = customerPhone;
-	}
-	public String getShippingAddress() {
-		return shippingAddress;
-	}
-	public void setShippingAddress(String shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
+    private Float vat;                			//æµ·å…³å¢å€¼ç¨_é‡‘é¢
+    private Float customsChargesPlan; 			//æŠ¥å…³è´¹_è®¡åˆ’(å·²åºŸå¼ƒ)
+    private Float customsChargesReal; 			//ä»£ç†è´¹
+    private Float domesticFreightPlan;			//å›½å†…è¿è´¹_è®¡åˆ’
+    private Float domesticFreightReal;			//å›½å†…è¿è´¹_å®é™…
+    private Float costPlan;           			//æˆæœ¬_è®¡åˆ’
+    private Float costReal;           			//æˆæœ¬_å®é™…
+    private Float totalQuote;         			//é›¶ä»¶æ€»æŠ¥ä»·
+    //	private Float saleTotalPrice;     			//é”€å”®æ€»ä»·
+    private Float repairFeePlan;      			//ç»´ä¿®è´¹_è®¡åˆ’
+    private Float repairFeeReal;      			//ç»´ä¿®è´¹_å®é™…
+    private Float repairQuote;      			//ç»´ä¿®è´¹_æŠ¥ä»·
+    private Float repairProfit;					//ç»´ä¿®è´¹_åˆ©æ¶¦
 
-	public Integer getPartNum() {
-		return partNum;
-	}
-	public void setPartNum(Integer partNum) {
-		this.partNum = partNum;
-	}
-	public Float getPurchasePrice() {
-		return purchasePrice;
-	}
-	public void setPurchasePrice(Float purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-	public Float getVat() {
-		return vat;
-	}
-	public void setVat(Float vat) {
-		this.vat = vat;
-	}
-	public Float getCustomsChargesPlan() {
-		return customsChargesPlan;
-	}
-	public void setCustomsChargesPlan(Float customsChargesPlan) {
-		this.customsChargesPlan = customsChargesPlan;
-	}
-	public Float getCustomsChargesReal() {
-		return customsChargesReal;
-	}
-	public void setCustomsChargesReal(Float customsChargesReal) {
-		this.customsChargesReal = customsChargesReal;
-	}
-	public Float getDomesticFreightPlan() {
-		return domesticFreightPlan;
-	}
-	public void setDomesticFreightPlan(Float domesticFreightPlan) {
-		this.domesticFreightPlan = domesticFreightPlan;
-	}
-	public Float getDomesticFreightReal() {
-		return domesticFreightReal;
-	}
-	public void setDomesticFreightReal(Float domesticFreightReal) {
-		this.domesticFreightReal = domesticFreightReal;
-	}
-	public Float getCostPlan() {
-		return costPlan;
-	}
-	public void setCostPlan(Float costPlan) {
-		this.costPlan = costPlan;
-	}
-	public Float getCostReal() {
-		return costReal;
-	}
-	public void setCostReal(Float costReal) {
-		this.costReal = costReal;
-	}
-	public Float getTotalQuote() {
-		return totalQuote;
-	}
-	public void setTotalQuote(Float totalQuote) {
-		this.totalQuote = totalQuote;
-	}
-//	public Float getSaleTotalPrice() {
+    private Float profitPlan;         			//åˆ©æ¶¦_è®¡åˆ’
+    private Float profitReal;         			//åˆ©æ¶¦_å®é™…
+
+    private String deliveryPlaceTw;    			//å°æ¹¾äº¤è´§åœ°ç‚¹
+
+    private String invoiceType;         		//å‘ç¥¨ç±»å‹
+    private String saleStatus;         			//é”€å”®å•çŠ¶æ€
+    private String payStatus;          			//ä»˜æ¬¾çŠ¶æ€
+    private String billingStatus;      			//å¼€ç¥¨çŠ¶æ€
+    private Float billingMoney;       			//å¼€ç¥¨é‡‘é¢
+    private Float totalPay;           			//å®¢æˆ·å·²ä»˜æ€»é¢
+    private String shippingRemark;     			//å‘è´§å¤‡æ³¨
+    private String remark;             			//å¤‡æ³¨
+    private int version;
+    private Integer delFlag;
+    private Float exchangeRate;             //ç¾å…ƒæ±‡ç‡
+    private String factoryId;			//å‚å•†ID
+    private String factoryName;			//å‚å•†åç§°
+
+    private Date createDate;
+    private Long updateBy;
+    private Long createBy;
+    private Date updateDate;
+
+    private String skuCode;
+    private String stuffNo;
+    private String modelCode;
+    private String modelSerialNo;            //æœºèº«ç¼–ç 
+    private String orderMonth;  					//è®¢å•æœˆä»½
+    private String invoiceNo1;  			//å‘ç¥¨èµ·å§‹å·
+    private String invoiceNo2;  			//å‘ç¥¨ç»ˆæ­¢å·
+
+    private String dsaleNo;
+
+    private Long repairNo;		//FK
+    private String serviceSheetNo;			//å…³è”ç»´ä¿®å•
+    private String warrantyType;			//å¯¹åº”ç»´ä¿®å• ä¿å†…/ä¿å¤–
+    private Float stockCost;				//åº“å­˜æˆæœ¬æ€»ä»·(RMB)
+
+    public String getSaleNo() {
+        return saleNo;
+    }
+    public void setSaleNo(String saleNo) {
+        this.saleNo = saleNo;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public Integer getPartNum() {
+        return partNum;
+    }
+    public void setPartNum(Integer partNum) {
+        this.partNum = partNum;
+    }
+    public Float getPurchasePrice() {
+        return purchasePrice;
+    }
+    public void setPurchasePrice(Float purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+    public Float getVat() {
+        return vat;
+    }
+    public void setVat(Float vat) {
+        this.vat = vat;
+    }
+    public Float getCustomsChargesPlan() {
+        return customsChargesPlan;
+    }
+    public void setCustomsChargesPlan(Float customsChargesPlan) {
+        this.customsChargesPlan = customsChargesPlan;
+    }
+    public Float getCustomsChargesReal() {
+        return customsChargesReal;
+    }
+    public void setCustomsChargesReal(Float customsChargesReal) {
+        this.customsChargesReal = customsChargesReal;
+    }
+    public Float getDomesticFreightPlan() {
+        return domesticFreightPlan;
+    }
+    public void setDomesticFreightPlan(Float domesticFreightPlan) {
+        this.domesticFreightPlan = domesticFreightPlan;
+    }
+    public Float getDomesticFreightReal() {
+        return domesticFreightReal;
+    }
+    public void setDomesticFreightReal(Float domesticFreightReal) {
+        this.domesticFreightReal = domesticFreightReal;
+    }
+    public Float getCostPlan() {
+        return costPlan;
+    }
+    public void setCostPlan(Float costPlan) {
+        this.costPlan = costPlan;
+    }
+    public Float getCostReal() {
+        return costReal;
+    }
+    public void setCostReal(Float costReal) {
+        this.costReal = costReal;
+    }
+    public Float getTotalQuote() {
+        return totalQuote;
+    }
+    public void setTotalQuote(Float totalQuote) {
+        this.totalQuote = totalQuote;
+    }
+    //	public Float getSaleTotalPrice() {
 //		return saleTotalPrice;
 //	}
 //	public void setSaleTotalPrice(Float saleTotalPrice) {
 //		this.saleTotalPrice = saleTotalPrice;
 //	}
-	public Float getRepairFeePlan() {
-		return repairFeePlan;
-	}
-	public void setRepairFeePlan(Float repairFeePlan) {
-		this.repairFeePlan = repairFeePlan;
-	}
-	public Float getRepairFeeReal() {
-		return repairFeeReal;
-	}
-	public void setRepairFeeReal(Float repairFeeReal) {
-		this.repairFeeReal = repairFeeReal;
-	}
-	public Float getProfitPlan() {
-		return profitPlan;
-	}
-	public void setProfitPlan(Float profitPlan) {
-		this.profitPlan = profitPlan;
-	}
-	public Float getProfitReal() {
-		return profitReal;
-	}
-	public void setProfitReal(Float profitReal) {
-		this.profitReal = profitReal;
-	}
-	public String getDeliveryPlaceTw() {
-		return deliveryPlaceTw;
-	}
-	public void setDeliveryPlaceTw(String deliveryPlaceTw) {
-		this.deliveryPlaceTw = deliveryPlaceTw;
-	}
-	
-	public String getInvoiceType() {
-		return invoiceType;
-	}
-	public void setInvoiceType(String invoiceType) {
-		this.invoiceType = invoiceType;
-	}
-	public String getSaleStatus() {
-		return saleStatus;
-	}
-	public void setSaleStatus(String saleStatus) {
-		this.saleStatus = saleStatus;
-	}
-	public String getPayStatus() {
-		return payStatus;
-	}
-	public void setPayStatus(String payStatus) {
-		this.payStatus = payStatus;
-	}
-	public String getBillingStatus() {
-		return billingStatus;
-	}
-	public void setBillingStatus(String billingStatus) {
-		this.billingStatus = billingStatus;
-	}
-	public Float getBillingMoney() {
-		return billingMoney;
-	}
-	public void setBillingMoney(Float billingMoney) {
-		this.billingMoney = billingMoney;
-	}
-	public Float getTotalPay() {
-		return totalPay;
-	}
-	public void setTotalPay(Float totalPay) {
-		this.totalPay = totalPay;
-	}
-	public String getShippingRemark() {
-		return shippingRemark;
-	}
-	public void setShippingRemark(String shippingRemark) {
-		this.shippingRemark = shippingRemark;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public Long getUpdateBy() {
-		return updateBy;
-	}
-	public void setUpdateBy(Long updateBy) {
-		this.updateBy = updateBy;
-	}
-	public Long getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(Long createBy) {
-		this.createBy = createBy;
-	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	public String getSkuCode() {
-		return skuCode;
-	}
-	public void setSkuCode(String skuCode) {
-		this.skuCode = skuCode;
-	}
-	public String getStuffNo() {
-		return stuffNo;
-	}
-	public void setStuffNo(String stuffNo) {
-		this.stuffNo = stuffNo;
-	}
-	public String getModelCode() {
-		return modelCode;
-	}
-	public void setModelCode(String modelCode) {
-		this.modelCode = modelCode;
-	}
-	
-	
-	public String getInvoiceNo1() {
-		return invoiceNo1;
-	}
-	public void setInvoiceNo1(String invoiceNo1) {
-		this.invoiceNo1 = invoiceNo1;
-	}
-	public String getInvoiceNo2() {
-		return invoiceNo2;
-	}
-	public void setInvoiceNo2(String invoiceNo2) {
-		this.invoiceNo2 = invoiceNo2;
-	}
-	public String getOrderMonth() {
-		return orderMonth;
-	}
-	public void setOrderMonth(String orderMonth) {
-		this.orderMonth = orderMonth;
-	}
-	public int getVersion() {
-		return version;
-	}
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	public String getCustomerId() {
-		return customerId;
-	}
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
-	public Integer getDelFlag() {
-		return delFlag;
-	}
-	public void setDelFlag(Integer delFlag) {
-		this.delFlag = delFlag;
-	}
-	public String getDsaleNo() {
-		return dsaleNo;
-	}
-	public void setDsaleNo(String dsaleNo) {
-		this.dsaleNo = dsaleNo;
-	}
-	public Float getExchangeRate() {
-		return exchangeRate;
-	}
-	public void setExchangeRate(Float exchangeRate) {
-		this.exchangeRate = exchangeRate;
-	}
-	public Float getTariffAmount() {
-		return tariffAmount;
-	}
-	public void setTariffAmount(Float tariffAmount) {
-		this.tariffAmount = tariffAmount;
-	}
-	
-	public String getLinkman() {
-		return linkman;
-	}
-	public void setLinkman(String linkman) {
-		this.linkman = linkman;
-	}
-	public String getFactoryId() {
-		return factoryId;
-	}
-	public void setFactoryId(String factoryId) {
-		this.factoryId = factoryId;
-	}
-	public String getFactoryName() {
-		return factoryName;
-	}
-	public void setFactoryName(String factoryName) {
-		this.factoryName = factoryName;
-	}
-	public Long getRepairNo() {
-		return repairNo;
-	}
-	public void setRepairNo(Long repairNo) {
-		this.repairNo = repairNo;
-	}
-	public String getServiceSheetNo() {
-		return serviceSheetNo;
-	}
-	public void setServiceSheetNo(String serviceSheetNo) {
-		this.serviceSheetNo = serviceSheetNo;
-	}
-	public String getWarrantyType() {
-		return warrantyType;
-	}
-	public void setWarrantyType(String warrantyType) {
-		this.warrantyType = warrantyType;
-	}
-	public Float getStockCost() {
-		return stockCost;
-	}
-	public void setStockCost(Float stockCost) {
-		this.stockCost = stockCost;
-	}
-	
-	public String getModelSerialNo() {
-		return modelSerialNo;
-	}
-	public void setModelSerialNo(String modelSerialNo) {
-		this.modelSerialNo = modelSerialNo;
-	}
-	
-	
-	public Float getRepairQuote() {
-		return repairQuote;
-	}
-	public void setRepairQuote(Float repairQuote) {
-		this.repairQuote = repairQuote;
-	}
-	
-	public void setRepairProfit(Float repairProfit) {
-		this.repairProfit = repairProfit;
-	}
-	public Double getRepairProfit() throws Exception{
-		return Operate.roundD((this.getRepairQuote()==null?0:this.getRepairQuote()) - (this.getRepairFeePlan()==null?0:this.getRepairFeePlan()),2);
-	}
-	public Double getTotalQuteWithTax() throws Exception{
-		return Operate.roundD((this.getTotalQuote()==null?0:this.getTotalQuote()*1.17) + (this.getRepairQuote()==null?0:this.getRepairQuote()*1.17),2);
-	}
-	
-	
-	
+    public Float getRepairFeePlan() {
+        return repairFeePlan;
+    }
+    public void setRepairFeePlan(Float repairFeePlan) {
+        this.repairFeePlan = repairFeePlan;
+    }
+    public Float getRepairFeeReal() {
+        return repairFeeReal;
+    }
+    public void setRepairFeeReal(Float repairFeeReal) {
+        this.repairFeeReal = repairFeeReal;
+    }
+    public Float getProfitPlan() {
+        return profitPlan;
+    }
+    public void setProfitPlan(Float profitPlan) {
+        this.profitPlan = profitPlan;
+    }
+    public Float getProfitReal() {
+        return profitReal;
+    }
+    public void setProfitReal(Float profitReal) {
+        this.profitReal = profitReal;
+    }
+    public String getDeliveryPlaceTw() {
+        return deliveryPlaceTw;
+    }
+    public void setDeliveryPlaceTw(String deliveryPlaceTw) {
+        this.deliveryPlaceTw = deliveryPlaceTw;
+    }
+
+    public String getInvoiceType() {
+        return invoiceType;
+    }
+    public void setInvoiceType(String invoiceType) {
+        this.invoiceType = invoiceType;
+    }
+    public String getSaleStatus() {
+        return saleStatus;
+    }
+    public void setSaleStatus(String saleStatus) {
+        this.saleStatus = saleStatus;
+    }
+    public String getPayStatus() {
+        return payStatus;
+    }
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
+    public String getBillingStatus() {
+        return billingStatus;
+    }
+    public void setBillingStatus(String billingStatus) {
+        this.billingStatus = billingStatus;
+    }
+    public Float getBillingMoney() {
+        return billingMoney;
+    }
+    public void setBillingMoney(Float billingMoney) {
+        this.billingMoney = billingMoney;
+    }
+    public Float getTotalPay() {
+        return totalPay;
+    }
+    public void setTotalPay(Float totalPay) {
+        this.totalPay = totalPay;
+    }
+    public String getShippingRemark() {
+        return shippingRemark;
+    }
+    public void setShippingRemark(String shippingRemark) {
+        this.shippingRemark = shippingRemark;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Long getCreateBy() {
+        return createBy;
+    }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getSkuCode() {
+        return skuCode;
+    }
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+    public String getStuffNo() {
+        return stuffNo;
+    }
+    public void setStuffNo(String stuffNo) {
+        this.stuffNo = stuffNo;
+    }
+    public String getModelCode() {
+        return modelCode;
+    }
+    public void setModelCode(String modelCode) {
+        this.modelCode = modelCode;
+    }
+
+
+    public String getInvoiceNo1() {
+        return invoiceNo1;
+    }
+    public void setInvoiceNo1(String invoiceNo1) {
+        this.invoiceNo1 = invoiceNo1;
+    }
+    public String getInvoiceNo2() {
+        return invoiceNo2;
+    }
+    public void setInvoiceNo2(String invoiceNo2) {
+        this.invoiceNo2 = invoiceNo2;
+    }
+    public String getOrderMonth() {
+        return orderMonth;
+    }
+    public void setOrderMonth(String orderMonth) {
+        this.orderMonth = orderMonth;
+    }
+    public int getVersion() {
+        return version;
+    }
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    public String getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+    public String getDsaleNo() {
+        return dsaleNo;
+    }
+    public void setDsaleNo(String dsaleNo) {
+        this.dsaleNo = dsaleNo;
+    }
+    public Float getExchangeRate() {
+        return exchangeRate;
+    }
+    public void setExchangeRate(Float exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+    public Float getTariffAmount() {
+        return tariffAmount;
+    }
+    public void setTariffAmount(Float tariffAmount) {
+        this.tariffAmount = tariffAmount;
+    }
+
+    public String getLinkman() {
+        return linkman;
+    }
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+    public String getFactoryId() {
+        return factoryId;
+    }
+    public void setFactoryId(String factoryId) {
+        this.factoryId = factoryId;
+    }
+    public String getFactoryName() {
+        return factoryName;
+    }
+    public void setFactoryName(String factoryName) {
+        this.factoryName = factoryName;
+    }
+    public Long getRepairNo() {
+        return repairNo;
+    }
+    public void setRepairNo(Long repairNo) {
+        this.repairNo = repairNo;
+    }
+    public String getServiceSheetNo() {
+        return serviceSheetNo;
+    }
+    public void setServiceSheetNo(String serviceSheetNo) {
+        this.serviceSheetNo = serviceSheetNo;
+    }
+    public String getWarrantyType() {
+        return warrantyType;
+    }
+    public void setWarrantyType(String warrantyType) {
+        this.warrantyType = warrantyType;
+    }
+    public Float getStockCost() {
+        return stockCost;
+    }
+    public void setStockCost(Float stockCost) {
+        this.stockCost = stockCost;
+    }
+
+    public String getModelSerialNo() {
+        return modelSerialNo;
+    }
+    public void setModelSerialNo(String modelSerialNo) {
+        this.modelSerialNo = modelSerialNo;
+    }
+
+
+    public Float getRepairQuote() {
+        return repairQuote;
+    }
+    public void setRepairQuote(Float repairQuote) {
+        this.repairQuote = repairQuote;
+    }
+
+    public void setRepairProfit(Float repairProfit) {
+        this.repairProfit = repairProfit;
+    }
+    public Double getRepairProfit() throws Exception{
+        return Operate.roundD((this.getRepairQuote()==null?0:this.getRepairQuote()) - (this.getRepairFeePlan()==null?0:this.getRepairFeePlan()),2);
+    }
+    public Double getTotalQuteWithTax() throws Exception{
+        return Operate.roundD((this.getTotalQuote()==null?0:this.getTotalQuote()*1.17) + (this.getRepairQuote()==null?0:this.getRepairQuote()*1.17),2);
+    }
+
+
+
 }

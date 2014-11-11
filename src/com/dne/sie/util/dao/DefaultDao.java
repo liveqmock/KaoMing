@@ -8,96 +8,96 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>²éÑ¯ºÍµ¥¶ÀÊÂÎñµÄ»ù±¾DAO</p>
- * <p>×÷Îªµ¥¶À´¦ÀíµÄDAO£¬±¾Éí´¦Àíºó¾Í½øĞĞÊÂÎñcommit»òrollback</p>
+ * <p>æŸ¥è¯¢å’Œå•ç‹¬äº‹åŠ¡çš„åŸºæœ¬DAO</p>
+ * <p>ä½œä¸ºå•ç‹¬å¤„ç†çš„DAOï¼Œæœ¬èº«å¤„ç†åå°±è¿›è¡Œäº‹åŠ¡commitæˆ–rollback</p>
  * @author xt
  * @version 1.1.5.6
  */
 public interface DefaultDao {
     /**
-     * ¸ù¾İid´ÓÊı¾İ¿â×°ÔØÏàÓ¦¶ÔÏó
-     * @param pojoClass Class pojoÀà
-     * @param id String Î¨Ò»±êÊ¶
-     * @return Object pojo¶ÔÏó
-     * @throws CESException
+     * æ ¹æ®idä»æ•°æ®åº“è£…è½½ç›¸åº”å¯¹è±¡
+     * @param pojoClass Class pojoç±»
+     * @param id String å”¯ä¸€æ ‡è¯†
+     * @return Object pojoå¯¹è±¡
+     * @throws ComException
      */
     public Object findById(Class pojoClass,String id) throws ComException;
-    
-	public Object findById(Class pojoClass,Long id) throws ComException;
 
-	
+    public Object findById(Class pojoClass,Long id) throws ComException;
+
+
 
     /**
-     * ÕÒµ½ÒÑ¹ØÁªµ½sessionµÄpojo¶ÔÏó
-     * @param pojoClass Class pojoµÄÀà
-     * @param id String Î¨Ò»±êÊ¶
-     * @return Object pojo¶ÔÏó
+     * æ‰¾åˆ°å·²å…³è”åˆ°sessionçš„pojoå¯¹è±¡
+     * @param pojoClass Class pojoçš„ç±»
+     * @param id String å”¯ä¸€æ ‡è¯†
+     * @return Object pojoå¯¹è±¡
      * @throws ComException
      */
     public Object loadById(Class pojoClass,String id) throws ComException;
 
     /**
-     * ´´½¨ĞÂ¶ÔÏó
-     * @param pojo Object ĞÂ¶ÔÏó
-     * @return boolean ÊÇ·ñ³É¹¦
+     * åˆ›å»ºæ–°å¯¹è±¡
+     * @param pojo Object æ–°å¯¹è±¡
+     * @return boolean æ˜¯å¦æˆåŠŸ
      * @throws ComException
      */
     public boolean insert(Object pojo) throws ComException;
-    
-	public boolean saveOrUpdate(Object pojo) throws ComException;
+
+    public boolean saveOrUpdate(Object pojo) throws ComException;
 
     /**
-     * ¸üĞÂÒÑÓĞ¶ÔÏó
-     * @param pojo Object ĞèÒª¸üĞÂµÄ¶ÔÏó
-     * @return boolean ÊÇ·ñ³É¹¦
+     * æ›´æ–°å·²æœ‰å¯¹è±¡
+     * @param pojo Object éœ€è¦æ›´æ–°çš„å¯¹è±¡
+     * @return boolean æ˜¯å¦æˆåŠŸ
      * @throws ComException
      */
     public boolean update(Object pojo) throws ComException,VersionException;
-    
+
     public boolean merge(Object pojo) throws ComException,VersionException;
 
     /**
-     * É¾³ı¶ÔÏó
-     * @param pojo Object ĞèÒªÉ¾³ıµÄ¶ÔÏó
-     * @return boolean ÊÇ·ñ³É¹¦
+     * åˆ é™¤å¯¹è±¡
+     * @param pojo Object éœ€è¦åˆ é™¤çš„å¯¹è±¡
+     * @return boolean æ˜¯å¦æˆåŠŸ
      * @throws ComException
      */
     public boolean delete(Object pojo) throws ComException;
 
     /**
-     * ÔöÉ¾¸Ä¶ÔÏó£¬¸ù¾İhqlÓï¾ä
+     * å¢åˆ æ”¹å¯¹è±¡ï¼Œæ ¹æ®hqlè¯­å¥
      * @param hql
-     * @return boolean ³É¹¦ÌõÊı
+     * @return boolean æˆåŠŸæ¡æ•°
      * @throws ComException
      */
     public int execute(String hql) throws ComException;
-    
+
     public Object execute(String strHql,Object...obj) throws ComException, Exception;
-    
+
     public int updatePara(final String hql, final Map params) throws ComException;
-    
+
     /**
-     * µÃµ½¶ÔÏóÁĞ±í
-     * @param pojoClass ¶ÔÏóclass
-     * @return ÁĞ±í
+     * å¾—åˆ°å¯¹è±¡åˆ—è¡¨
+     * @param pojoClass å¯¹è±¡class
+     * @return åˆ—è¡¨
      * @throws ComException
      */
     public List list(String strHql) throws ComException,Exception;
     public List list(String strHql,Object...obj) throws ComException,Exception;
-    
-	public List list(String strHql,int rownum) throws ComException,Exception;
-    
-	public List listAll(String strHql) throws ComException,Exception;
-    
-	public Object uniqueResult(String strHql) throws ComException,Exception;
-	public Object uniqueResult(String strHql,Object...obj) throws ComException,Exception;
-	public Object parameterUnique(String strHql,QueryParameter param) throws ComException,Exception;
-	
+
+    public List list(String strHql,int rownum) throws ComException,Exception;
+
+    public List listAll(String strHql) throws ComException,Exception;
+
+    public Object uniqueResult(String strHql) throws ComException,Exception;
+    public Object uniqueResult(String strHql,Object...obj) throws ComException,Exception;
+    public Object parameterUnique(String strHql,QueryParameter param) throws ComException,Exception;
+
 //	public boolean lock(Object obj) throws ComException,VersionException;
 
-    
-	public List parameterQuery(String strHql,List paramList) throws ComException;
-	public List parameterQuery(String strHql,QueryParameter param) throws ComException;
-	
+
+    public List parameterQuery(String strHql,List paramList) throws ComException;
+    public List parameterQuery(String strHql,QueryParameter param) throws ComException;
+
     int attribute1 = 0;
 }

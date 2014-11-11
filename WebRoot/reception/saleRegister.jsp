@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=GBK" %>
 <%@ taglib uri="/WEB-INF/tlds/struts-html.tld" prefix="html" %>
-<%@ page import="java.util.ArrayList"%> 
 
 <html>
 <head>

@@ -1,198 +1,192 @@
 package com.dne.sie.maintenance.bo;
 
-//Java »ù´¡Àà
-import java.util.List;
-import java.util.ArrayList;
-
-//Java À©Õ¹Àà
-
-//µÚÈı·½Àà
-//import org.apache.log4j.Logger;
-
-//×Ô¶¨ÒåÀà
 import com.dne.sie.maintenance.form.CustomerInfoForm;
 import com.dne.sie.maintenance.queryBean.CustomerInfoQuery;
-
 import com.dne.sie.util.bo.CommBo;
 
-/**¿Í»§±íĞÅÏ¢±í
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * å®¢æˆ·è¡¨ä¿¡æ¯è¡¨
  *@version 1.1.5.6
  */
 
 public class CustomerInfoBo extends CommBo {
 
-	private static final CustomerInfoBo INSTANCE = new CustomerInfoBo();
-		
-	private CustomerInfoBo(){
-	}
-	
-	public static final CustomerInfoBo getInstance() {
-	   return INSTANCE;
-	}
-   
-   /**
-	* ¿Í»§±íĞÅÏ¢²éÑ¯¡£
-	* @param part CustomerInfoForm  
-	* @return ArrayList  ·µ»ØÊı¾İÊÇÓÉTsSystemCodeFormÊôĞÔ×éºÏ³ÉµÄStringÊı×é¼¯ºÏ¡£
-	*/
-   public ArrayList list(CustomerInfoForm part) {
-	   List dataList = null;
-	   ArrayList alData = new ArrayList();
-	   CustomerInfoQuery uq = new CustomerInfoQuery(part);
-       int count=0;
-	   try {
-		   dataList=uq.doListQuery(part.getFromPage(),part.getToPage());
-		   count=uq.doCountQuery();
-		   CustomerInfoForm pif=null;
+    private static final CustomerInfoBo INSTANCE = new CustomerInfoBo();
 
-		   for (int i=0;i<dataList.size();i++) {
-			   String[] data = new String[9];
-			   pif = (CustomerInfoForm)dataList.get(i);
-			   data[0] = pif.getCustomerId();
-			   data[1] = pif.getCustomerName();
-			   data[2] = pif.getLinkman();
-			   data[3] = pif.getPhone();
-			   data[4] = pif.getFax();
-			   data[5] = pif.getAddress();
-			   data[6] = pif.getPostCode();
-			   data[7] = pif.getProvinceName();
-			   data[8] = pif.getCityName();
-			  
-			   alData.add(data);
-		   }
-		   alData.add(0,count+"");
-	   } catch(Exception e) {
-		   e.printStackTrace();
-	   } 
-	   return alData;
-	  }
-		
-   
-   /**
-	 * ²éÑ¯µ¥Ìõ¿Í»§±íĞÅÏ¢
-	 * @param id  String   idÎª¿Í»§±íĞÅÏ¢±íµÄÖ÷¼ü
-	 * @return CustomerInfoForm
-	 */ 
-	public CustomerInfoForm find(String id) throws Exception{
-		return  (CustomerInfoForm)this.getDao().findById(CustomerInfoForm.class,id);
-		    	
-	} 
-		
-   
-	/**
-	 * Ìí¼Óµ¥Ìõ¿Í»§±íĞÅÏ¢
-	 * @param uf  CustomerInfoForm 
-	 * @return int 1Îª³É¹¦£¬-1ÎªÊ§°Ü¡£
-	 */
-	public int add(CustomerInfoForm uf) throws Exception{
-		int tag=-1;
-		try{
-			if (this.getDao().insert(uf)) {
-				tag=1;
-			}
-		} catch(Exception e) {
-		   e.printStackTrace();
-	   } 
-		return tag;	   	
-	}
-    
-	
-	/**
-	 * ĞŞ¸Ä¿Í»§±íĞÅÏ¢
-	 * @param uf  CustomerInfoForm 
-	 * @return int 1Îª³É¹¦£¬-1ÎªÊ§°Ü
-	 */
-   public int modify(CustomerInfoForm uf) throws Exception{
-		int tag=-1;
-		try{
-			if (this.getDao().update(uf)) {
-				tag = 1;
-			}
-		} catch(Exception e) {
-		   e.printStackTrace();
-		} 
-		return tag;	   	
-	}
+    private CustomerInfoBo(){
+    }
 
-	/**
-	 * Âß¼­É¾³ı¿Í»§±íĞÅÏ¢
-	 * @param uf  ¿Í»§±í
-	 * @return int 1Îª³É¹¦£¬-1ÎªÊ§°Ü
-	 */
-   public int delete(String ids) throws Exception{
-	  int tag=-1;
-	  try{
-		  tag=this.getDao().execute("update from CustomerInfoForm as sc " +
-	  		"set sc.delFlag=1 where sc.customerId in ('"+ids.replaceAll(",", "','")+"')");
-	  } catch(Exception e) {
-		   e.printStackTrace();
-	  } 
-	  return tag;
-	}
+    public static final CustomerInfoBo getInstance() {
+        return INSTANCE;
+    }
 
-	/**
-	 * Ğ£Ñé¿Í»§id(PK)ÊÇ·ñ´æÔÚ
-	 * @param String ÊäÈëµÄÓÃ»§id
-	 * @return ¸ÃÓÃ»§idÊÇ·ñ¿ÉÒÔÊäÈë
-	 */
-	public boolean chkCustId(String id) {
-		boolean retBoo = false;
-		
-		try {
-			Object obj=this.getDao().uniqueResult("select count(uf) from CustomerInfoForm as uf " +
-					"where uf.customerId='"+id.toUpperCase()+"'");
-			int count=((Long)obj).intValue();
-			
-			if(count==0) retBoo=true;
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return retBoo;		    	
-	} 
-	
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯æŸ¥è¯¢ã€‚
+     * @param part CustomerInfoForm
+     * @return ArrayList  è¿”å›æ•°æ®æ˜¯ç”±TsSystemCodeFormå±æ€§ç»„åˆæˆçš„Stringæ•°ç»„é›†åˆã€‚
+     */
+    public ArrayList list(CustomerInfoForm part) {
+        List dataList = null;
+        ArrayList alData = new ArrayList();
+        CustomerInfoQuery uq = new CustomerInfoQuery(part);
+        int count=0;
+        try {
+            dataList=uq.doListQuery(part.getFromPage(),part.getToPage());
+            count=uq.doCountQuery();
+            CustomerInfoForm pif=null;
 
-	/**
-	 * ²éÑ¯Ì¨Íå¸ßÃ÷Ñ¯¼ÛµØÖ·ĞÅÏ¢
-	 * @param 
-	 * @return ¸ßÃ÷ĞÅÏ¢
-	 */
-	public String[] getKmInfo(String custId) {
-		String[] kmInfo=new String[5];
-		
-		try {
-			Object[] obj=(Object[])this.getDao().uniqueResult("select ci.customerName," +
-					"ci.fax,ci.linkman,ci.bank,ci.bankAccount from CustomerInfoForm as ci where ci.customerId='"+custId+"'");
-			if(obj!=null){
-				kmInfo[0]=obj[0]==null?"":(String)obj[0];
-				kmInfo[1]=obj[1]==null?"":(String)obj[1];
-				kmInfo[2]=obj[2]==null?"":(String)obj[2];
-				kmInfo[3]=obj[3]==null?"":(String)obj[3];
-				kmInfo[4]=obj[4]==null?"":(String)obj[4];
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return kmInfo;		    	
-	} 
-	
+            for (int i=0;i<dataList.size();i++) {
+                String[] data = new String[9];
+                pif = (CustomerInfoForm)dataList.get(i);
+                data[0] = pif.getCustomerId();
+                data[1] = pif.getCustomerName();
+                data[2] = pif.getLinkman();
+                data[3] = pif.getPhone();
+                data[4] = pif.getFax();
+                data[5] = pif.getAddress();
+                data[6] = pif.getPostCode();
+                data[7] = pif.getProvinceName();
+                data[8] = pif.getCityName();
 
-	/**
-	 * ²éÑ¯¿Í»§ĞÅÏ¢
-	 * @param 
-	 * @return List
-	 */
-	public List getCustomerListByName(String custName) throws Exception{
-		
-		String strHql="select cif.customerId,cif.customerName,cif.linkman,cif.phone,cif.cityName,cif.fax," +
-				"cif.address,cif.mobile,cif.provinceName,remark,email " +
-				"from CustomerInfoForm as cif where cif.delFlag=0 and cif.customerName like ?";
+                alData.add(data);
+            }
+            alData.add(0,count+"");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return alData;
+    }
 
-		List aList = (ArrayList)this.getDao().list(strHql,"%"+custName+"%");
-		
-	
-		return aList;	
-	}
-	
-	
+
+    /**
+     * æŸ¥è¯¢å•æ¡å®¢æˆ·è¡¨ä¿¡æ¯
+     * @param id  String   idä¸ºå®¢æˆ·è¡¨ä¿¡æ¯è¡¨çš„ä¸»é”®
+     * @return CustomerInfoForm
+     */
+    public CustomerInfoForm find(String id) throws Exception{
+        return  (CustomerInfoForm)this.getDao().findById(CustomerInfoForm.class,id);
+
+    }
+
+
+    /**
+     * æ·»åŠ å•æ¡å®¢æˆ·è¡¨ä¿¡æ¯
+     * @param uf  CustomerInfoForm
+     * @return int 1ä¸ºæˆåŠŸï¼Œ-1ä¸ºå¤±è´¥ã€‚
+     */
+    public int add(CustomerInfoForm uf) throws Exception{
+        int tag=-1;
+        try{
+            if (this.getDao().insert(uf)) {
+                tag=1;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return tag;
+    }
+
+
+    /**
+     * ä¿®æ”¹å®¢æˆ·è¡¨ä¿¡æ¯
+     * @param uf  CustomerInfoForm
+     * @return int 1ä¸ºæˆåŠŸï¼Œ-1ä¸ºå¤±è´¥
+     */
+    public int modify(CustomerInfoForm uf) throws Exception{
+        int tag=-1;
+        try{
+            if (this.getDao().update(uf)) {
+                tag = 1;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return tag;
+    }
+
+    /**
+     * é€»è¾‘åˆ é™¤å®¢æˆ·è¡¨ä¿¡æ¯
+     * @param ids  å®¢æˆ·è¡¨
+     * @return int 1ä¸ºæˆåŠŸï¼Œ-1ä¸ºå¤±è´¥
+     */
+    public int delete(String ids) throws Exception{
+        int tag=-1;
+        try{
+            tag=this.getDao().execute("update from CustomerInfoForm as sc " +
+                    "set sc.delFlag=1 where sc.customerId in ('"+ids.replaceAll(",", "','")+"')");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return tag;
+    }
+
+    /**
+     * æ ¡éªŒå®¢æˆ·id(PK)æ˜¯å¦å­˜åœ¨
+     * @param id è¾“å…¥çš„ç”¨æˆ·id
+     * @return è¯¥ç”¨æˆ·idæ˜¯å¦å¯ä»¥è¾“å…¥
+     */
+    public boolean chkCustId(String id) {
+        boolean retBoo = false;
+
+        try {
+            Object obj=this.getDao().uniqueResult("select count(uf) from CustomerInfoForm as uf " +
+                    "where uf.customerId='"+id.toUpperCase()+"'");
+            int count=((Long)obj).intValue();
+
+            if(count==0) retBoo=true;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return retBoo;
+    }
+
+
+    /**
+     * æŸ¥è¯¢å°æ¹¾é«˜æ˜è¯¢ä»·åœ°å€ä¿¡æ¯
+     * @param
+     * @return é«˜æ˜ä¿¡æ¯
+     */
+    public String[] getKmInfo(String custId) {
+        String[] kmInfo=new String[5];
+
+        try {
+            Object[] obj=(Object[])this.getDao().uniqueResult("select ci.customerName," +
+                    "ci.fax,ci.linkman,ci.bank,ci.bankAccount from CustomerInfoForm as ci where ci.customerId='"+custId+"'");
+            if(obj!=null){
+                kmInfo[0]=obj[0]==null?"":(String)obj[0];
+                kmInfo[1]=obj[1]==null?"":(String)obj[1];
+                kmInfo[2]=obj[2]==null?"":(String)obj[2];
+                kmInfo[3]=obj[3]==null?"":(String)obj[3];
+                kmInfo[4]=obj[4]==null?"":(String)obj[4];
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return kmInfo;
+    }
+
+
+    /**
+     * æŸ¥è¯¢å®¢æˆ·ä¿¡æ¯
+     * @param
+     * @return List
+     */
+    public List getCustomerListByName(String custName) throws Exception{
+
+        String strHql="select cif.customerId,cif.customerName,cif.linkman,cif.phone,cif.cityName,cif.fax," +
+                "cif.address,cif.mobile,cif.provinceName,remark,email " +
+                "from CustomerInfoForm as cif where cif.delFlag=0 and cif.customerName like ?";
+
+        List aList = (ArrayList)this.getDao().list(strHql,"%"+custName+"%");
+
+
+        return aList;
+    }
+
+
 }

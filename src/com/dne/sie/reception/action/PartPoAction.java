@@ -1,6 +1,6 @@
 package com.dne.sie.reception.action;
 
-//Java ª˘¥°¿‡
+//Java Âü∫Á°ÄÁ±ª
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,290 +19,290 @@ import com.dne.sie.support.userRole.action.RoleAction;
 import com.dne.sie.util.action.ControlAction;
 
 /**
- * ¡„º˛PO Action¥¶¿Ì¿‡
+ * Èõ∂‰ª∂PO ActionÂ§ÑÁêÜÁ±ª
  * @author xt
  * @version 1.1.5.6
- * @see RoleAction.java <br>
+ * @see RoleAction <br>
  */
 public class PartPoAction extends ControlAction{
-	
 
-	/**
-	 * ¡„º˛∂©π∫¥˝∑¢¡–±Ì
-	 * @param request HttpServletRequest
-	 * @param form ActionForm ±Ìµ• ˝æ›
-	 * @return ¡–±Ì
-	 */
-	public String planList(HttpServletRequest request, ActionForm form){
-		String forward = "planList";
-	
-		try{
-			PoForm pof=(PoForm)form;
-			//µ»¥˝∑¢ÀÕ
-			pof.setOrderStatus("A");
-			//pof.setOrderType("out");	//∑«±£ƒ⁄∂©π∫
-			pof.setTransportMode(null);
-			PartPoBo pob = PartPoBo.getInstance();
-			request.setAttribute("poList",pob.planList(pof));
-			request.setAttribute("orderNo",FormNumberBuilder.findOrderNo("SH"));
-			request.setAttribute("poPayAmounts",pob.getPoPayAmounts());
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
 
-	/**
-	* PO»∑»œ
-	* @param request HttpServletRequest
-	* @param form ±Ìµ• ˝æ›
-	* @return “≥√Ê
-	*/
-	public String sendPo(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		int tag=-1;
-		String flag = request.getParameter("flag");
-		String orderNo = null;
-		try{
-			HttpSession session = request.getSession();
-			Long userId = (Long) session.getAttribute("userId");
-			
-			String ids = request.getParameter("ids");
-			String remark = request.getParameter("remark");
-			String factoryId = request.getParameter("factoryId");
-			String factoryName = request.getParameter("factoryName");
-			String transportMode = request.getParameter("transportMode");
-			
-			orderNo = FormNumberBuilder.getOrderNo("SH");
-			tag=PartPoBo.sendPo(ids,userId,orderNo,remark,factoryId,factoryName,transportMode);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("tempData", orderNo);
-			if("manu".equals(flag)){
-				request.setAttribute("businessFlag", "manualPlanAdd");
-			}else{
-				request.setAttribute("businessFlag", "sendPo");
-			}
-			
-		
-		}
-		return forward;
-	}
-	
-	/**
-	 * PO»°œ˚
-	 * @param request
-	 * @param form
-	 * @return
-	 */
-	public String cancelPo(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		int tag=-1;
-		String flag = request.getParameter("flag");
-		String orderNo = null;
-		try{
-			HttpSession session = request.getSession();
-			Long userId = (Long) session.getAttribute("userId");
-			
-			String ids = request.getParameter("ids");
-			String remark = request.getParameter("remark");
-			
-			tag=PartPoBo.cancelPo(ids,userId,remark);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("tempData", orderNo);
-			if("manu".equals(flag)){
-				request.setAttribute("businessFlag", "manualPlanAdd");
-			}else{
-				request.setAttribute("businessFlag", "sendPo");
-			}
-			
-		
-		}
-		return forward;
-	}
+    /**
+     * Èõ∂‰ª∂ËÆ¢Ë¥≠ÂæÖÂèëÂàóË°®
+     * @param request HttpServletRequest
+     * @param form ActionForm Ë°®ÂçïÊï∞ÊçÆ
+     * @return ÂàóË°®
+     */
+    public String planList(HttpServletRequest request, ActionForm form){
+        String forward = "planList";
 
-	/**
-	 *  ÷π§∂©π∫¡–±Ì
-	 * @param request HttpServletRequest
-	 * @param form ActionForm ±Ìµ• ˝æ›
-	 * @return ¡–±Ì
-	 */
-	public String manualPlanList(HttpServletRequest request, ActionForm form){
-		String forward = "manualPlanList";
-	
-		try{
-			PoForm pof=new PoForm();
-			
-			pof.setOrderStatus("A");	//µ»¥˝∑¢ÀÕ
-			pof.setOrderType("I");	//±£ƒ⁄∂©π∫
-			//pof.setWarrantyType("O");
-			
-			PartPoBo pob = PartPoBo.getInstance();
-			request.setAttribute("poList",pob.planList(pof));
-			request.setAttribute("orderNo",FormNumberBuilder.findOrderNo("SH"));
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
+        try{
+            PoForm pof=(PoForm)form;
+            //Á≠âÂæÖÂèëÈÄÅ
+            pof.setOrderStatus("A");
+            //pof.setOrderType("out");	//Èùû‰øùÂÜÖËÆ¢Ë¥≠
+            pof.setTransportMode(null);
+            PartPoBo pob = PartPoBo.getInstance();
+            request.setAttribute("poList",pob.planList(pof));
+            request.setAttribute("orderNo",FormNumberBuilder.findOrderNo("SH"));
+            request.setAttribute("poPayAmounts",pob.getPoPayAmounts());
 
-	/**
-	*  ÷π§∂©π∫–¬‘ˆ
-	* @param request HttpServletRequest
-	* @param form ±Ìµ• ˝æ›
-	* @return “≥√Ê
-	*/
-	public String manualPlanAdd(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		int tag=-1;
-		try{
-			HttpSession session = request.getSession();
-			Long userId = (Long) session.getAttribute("userId");
-			
-			PoForm pof=(PoForm)form;
-			if(CommonSearch.getInstance().getPartInfo(pof.getStuffNo())==null){
-				throw new IllegalPoException(pof.getStuffNo());
-			}
-			pof.setOrderStatus("A");	//µ»¥˝∑¢ÀÕ
-			pof.setOrderType("I");	// ÷π§∂©π∫
-			pof.setWarrantyType("O");
-			pof.setSaleNo("N");		
-			
-			
-			pof.setCreateBy(userId);
-			pof.setCreateDate(new Date());
-			pof.setTransportMode(null);
-			
-			PartPoBo pob = PartPoBo.getInstance();
-			tag=pob.manualPlanAdd(pof);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
 
-		}catch(IllegalPoException e1){
-			request.setAttribute("errStuffNo", e1.getMessage());
-			forward="IllegalPoException";	
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "manualPlanAdd");
-		
-		}
-		return forward;
-	}
-	
+    /**
+     * POÁ°ÆËÆ§
+     * @param request HttpServletRequest
+     * @param form Ë°®ÂçïÊï∞ÊçÆ
+     * @return È°µÈù¢
+     */
+    public String sendPo(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        String flag = request.getParameter("flag");
+        String orderNo = null;
+        try{
+            HttpSession session = request.getSession();
+            Long userId = (Long) session.getAttribute("userId");
 
-	/**
-	*  ÷π§∂©π∫…æ≥˝
-	* @param request HttpServletRequest
-	* @param form ±Ìµ• ˝æ›
-	* @return “≥√Ê
-	*/
-	public String manuPoDel(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		int tag=-1;
-		try{
-			String ids = request.getParameter("ids");
-			
-			PartPoBo pob = PartPoBo.getInstance();
-			tag=pob.manuPoDel(ids);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "manualPlanAdd");
-		
-		}
-		return forward;
-	}
-	
+            String ids = request.getParameter("ids");
+            String remark = request.getParameter("remark");
+            String factoryId = request.getParameter("factoryId");
+            String factoryName = request.getParameter("factoryName");
+            String transportMode = request.getParameter("transportMode");
 
-	/**
-	 * ¡„º˛∂©π∫«Âµ•
-	 * @param request HttpServletRequest
-	 * @param form ActionForm ±Ìµ• ˝æ›
-	 * @return ¡–±Ì
-	 */
-	public String poList(HttpServletRequest request, ActionForm form){
-		String forward = "poList";
-	
-		try{
-			PoForm pof=(PoForm)form;
-			
-			PartPoBo pob = PartPoBo.getInstance();
-			request.setAttribute("poList",pob.planList(pof));
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
+            orderNo = FormNumberBuilder.getOrderNo("SH");
+            tag=PartPoBo.sendPo(ids,userId,orderNo,remark,factoryId,factoryName,transportMode);
 
-	/**
-	 * ∂©π∫µ•¥Ú”°
-	 * @param request HttpServletRequest
-	 * @param form ActionForm ±Ìµ• ˝æ›
-	 * @return —Øº€µ•¥Ú”°“≥√Ê
-	 */
-	public String poFormPrint(HttpServletRequest request, ActionForm form){
-		String forward="poFormPrint";
-	
-		try{
-			String orderNo = request.getParameter("orderNo");
-			PartPoBo pob = PartPoBo.getInstance();
-			ArrayList poList = pob.poFormPrint(orderNo);
-			if(poList!=null&&poList.size()>0){
-				request.setAttribute("poFormPrintList",poList);
-				String[] kmInfo=CustomerInfoBo.getInstance().getKmInfo("TWKM");
-				request.setAttribute("kmInfo",kmInfo);
-			}else{
-				request.setAttribute("tag", "-1");
-				request.setAttribute("businessFlag", "poFormPrintNull");
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
-	/**
-	* ∂©π∫µ•»°œ˚
-	* @param request HttpServletRequest
-	* @param form ±Ìµ• ˝æ›
-	* @return “≥√Ê
-	*/
-	public String orderCancel(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		int tag=-1;
-		try{
-			HttpSession session = request.getSession();
-			Long userId = (Long) session.getAttribute("userId");
-			
-			String ids = request.getParameter("ids");
-			
-			PartPoBo pob = PartPoBo.getInstance();
-			tag=pob.orderCancel(ids,userId);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "orderCancel");
-		
-		}
-		return forward;
-	}
-	
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("tempData", orderNo);
+            if("manu".equals(flag)){
+                request.setAttribute("businessFlag", "manualPlanAdd");
+            }else{
+                request.setAttribute("businessFlag", "sendPo");
+            }
+
+
+        }
+        return forward;
+    }
+
+    /**
+     * POÂèñÊ∂à
+     * @param request
+     * @param form
+     * @return
+     */
+    public String cancelPo(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        String flag = request.getParameter("flag");
+        String orderNo = null;
+        try{
+            HttpSession session = request.getSession();
+            Long userId = (Long) session.getAttribute("userId");
+
+            String ids = request.getParameter("ids");
+            String remark = request.getParameter("remark");
+
+            tag=PartPoBo.cancelPo(ids,userId,remark);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("tempData", orderNo);
+            if("manu".equals(flag)){
+                request.setAttribute("businessFlag", "manualPlanAdd");
+            }else{
+                request.setAttribute("businessFlag", "sendPo");
+            }
+
+
+        }
+        return forward;
+    }
+
+    /**
+     * ÊâãÂ∑•ËÆ¢Ë¥≠ÂàóË°®
+     * @param request HttpServletRequest
+     * @param form ActionForm Ë°®ÂçïÊï∞ÊçÆ
+     * @return ÂàóË°®
+     */
+    public String manualPlanList(HttpServletRequest request, ActionForm form){
+        String forward = "manualPlanList";
+
+        try{
+            PoForm pof=new PoForm();
+
+            pof.setOrderStatus("A");	//Á≠âÂæÖÂèëÈÄÅ
+            pof.setOrderType("I");	//‰øùÂÜÖËÆ¢Ë¥≠
+            //pof.setWarrantyType("O");
+
+            PartPoBo pob = PartPoBo.getInstance();
+            request.setAttribute("poList",pob.planList(pof));
+            request.setAttribute("orderNo",FormNumberBuilder.findOrderNo("SH"));
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * ÊâãÂ∑•ËÆ¢Ë¥≠Êñ∞Â¢û
+     * @param request HttpServletRequest
+     * @param form Ë°®ÂçïÊï∞ÊçÆ
+     * @return È°µÈù¢
+     */
+    public String manualPlanAdd(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        try{
+            HttpSession session = request.getSession();
+            Long userId = (Long) session.getAttribute("userId");
+
+            PoForm pof=(PoForm)form;
+            if(CommonSearch.getInstance().getPartInfo(pof.getStuffNo())==null){
+                throw new IllegalPoException(pof.getStuffNo());
+            }
+            pof.setOrderStatus("A");	//Á≠âÂæÖÂèëÈÄÅ
+            pof.setOrderType("I");	//ÊâãÂ∑•ËÆ¢Ë¥≠
+            pof.setWarrantyType("O");
+            pof.setSaleNo("N");
+
+
+            pof.setCreateBy(userId);
+            pof.setCreateDate(new Date());
+            pof.setTransportMode(null);
+
+            PartPoBo pob = PartPoBo.getInstance();
+            tag=pob.manualPlanAdd(pof);
+
+        }catch(IllegalPoException e1){
+            request.setAttribute("errStuffNo", e1.getMessage());
+            forward="IllegalPoException";
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "manualPlanAdd");
+
+        }
+        return forward;
+    }
+
+
+    /**
+     * ÊâãÂ∑•ËÆ¢Ë¥≠Âà†Èô§
+     * @param request HttpServletRequest
+     * @param form Ë°®ÂçïÊï∞ÊçÆ
+     * @return È°µÈù¢
+     */
+    public String manuPoDel(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        try{
+            String ids = request.getParameter("ids");
+
+            PartPoBo pob = PartPoBo.getInstance();
+            tag=pob.manuPoDel(ids);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "manualPlanAdd");
+
+        }
+        return forward;
+    }
+
+
+    /**
+     * Èõ∂‰ª∂ËÆ¢Ë¥≠Ê∏ÖÂçï
+     * @param request HttpServletRequest
+     * @param form ActionForm Ë°®ÂçïÊï∞ÊçÆ
+     * @return ÂàóË°®
+     */
+    public String poList(HttpServletRequest request, ActionForm form){
+        String forward = "poList";
+
+        try{
+            PoForm pof=(PoForm)form;
+
+            PartPoBo pob = PartPoBo.getInstance();
+            request.setAttribute("poList",pob.planList(pof));
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * ËÆ¢Ë¥≠ÂçïÊâìÂç∞
+     * @param request HttpServletRequest
+     * @param form ActionForm Ë°®ÂçïÊï∞ÊçÆ
+     * @return ËØ¢‰ª∑ÂçïÊâìÂç∞È°µÈù¢
+     */
+    public String poFormPrint(HttpServletRequest request, ActionForm form){
+        String forward="poFormPrint";
+
+        try{
+            String orderNo = request.getParameter("orderNo");
+            PartPoBo pob = PartPoBo.getInstance();
+            ArrayList poList = pob.poFormPrint(orderNo);
+            if(poList!=null&&poList.size()>0){
+                request.setAttribute("poFormPrintList",poList);
+                String[] kmInfo=CustomerInfoBo.getInstance().getKmInfo("TWKM");
+                request.setAttribute("kmInfo",kmInfo);
+            }else{
+                request.setAttribute("tag", "-1");
+                request.setAttribute("businessFlag", "poFormPrintNull");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * ËÆ¢Ë¥≠ÂçïÂèñÊ∂à
+     * @param request HttpServletRequest
+     * @param form Ë°®ÂçïÊï∞ÊçÆ
+     * @return È°µÈù¢
+     */
+    public String orderCancel(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        try{
+            HttpSession session = request.getSession();
+            Long userId = (Long) session.getAttribute("userId");
+
+            String ids = request.getParameter("ids");
+
+            PartPoBo pob = PartPoBo.getInstance();
+            tag=pob.orderCancel(ids,userId);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "orderCancel");
+
+        }
+        return forward;
+    }
+
 
 }

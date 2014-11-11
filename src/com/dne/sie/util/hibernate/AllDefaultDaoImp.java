@@ -1,800 +1,789 @@
 package com.dne.sie.util.hibernate;
 
-import java.io.*;
-import com.dne.sie.util.dao.*;
 import com.dne.sie.common.exception.ComException;
 import com.dne.sie.common.exception.VersionException;
-import com.dne.sie.util.hibernate.HbConn;
-import org.hibernate.Query;
-import org.hibernate.LockMode;
-import org.hibernate.StaleObjectStateException;
-import org.hibernate.HibernateException;
+import com.dne.sie.util.dao.DefaultDao;
+import com.dne.sie.util.dao.DefaultDaoBatch;
+import com.dne.sie.util.query.QueryParameter;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import org.hibernate.Hibernate;
-import com.dne.sie.util.query.QueryParameter;
-import com.dne.sie.common.tools.LayOut;
 
 /**
- * hibernateª˘±æ≤Ÿ◊˜ µœ÷¿‡
+ * hibernateÂü∫Êú¨Êìç‰ΩúÂÆûÁé∞Á±ª
  * @author xt
  * @version 1.1.5.6
- * @see AllDefaultDaoImp.java <br>
+ * @see AllDefaultDaoImp <br>
  */
 public class AllDefaultDaoImp implements DefaultDao, DefaultDaoBatch {
-	private static Logger logger = Logger.getLogger(AllDefaultDaoImp.class);
-	public AllDefaultDaoImp() {
-	}
+    private static Logger logger = Logger.getLogger(AllDefaultDaoImp.class);
+    public AllDefaultDaoImp() {
+    }
 
-	/**
-	 * …æ≥˝∂‘œÛ
-	 * @param pojo Object –Ë“™…æ≥˝µƒ∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean delete(Object pojo) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try {
-			hbConn.getSessionWithTransaction().delete(pojo);
-			result = hbConn.commit();
-            
-		} catch (Exception e) {
-			result = false;
-			hbConn.rollback();
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-		return result;
-	}
+    /**
+     * Âà†Èô§ÂØπË±°
+     * @param pojo Object ÈúÄË¶ÅÂà†Èô§ÁöÑÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean delete(Object pojo) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try {
+            hbConn.getSessionWithTransaction().delete(pojo);
+            result = hbConn.commit();
 
-	/**
-	 * …æ≥˝∂‘œÛ£¨∏˘æ›id
-	 * @param pojoClass Class –Ë“™…æ≥˝µƒ∂‘œÛ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public int execute(String hql) throws ComException {
-		int tag=-1;
-		HbConn hbConn=new HbConn();
-		try {
-			tag=hbConn.getSessionWithTransaction().createQuery(hql).executeUpdate();
-			hbConn.commit();
-		} catch (Exception e) {
-			tag=-1;
-			hbConn.rollback();
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-		return tag;
+        } catch (Exception e) {
+            result = false;
+            hbConn.rollback();
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+        return result;
+    }
 
-	}
-	
-	public Object execute(String strHql,Object...obj) throws ComException, Exception{
-		Object result=null;
-		if(strHql!=null){
-			HbConn hbConn=new HbConn();
-			try{
-				
-				Query q = hbConn.getSessionWithTransaction().createQuery(strHql);
-				for(int i=0;i<obj.length;i++){
-					q=this.setParam(q,obj[i],i);	
-				}
-				result = q.executeUpdate();
-				hbConn.commit();
-			} catch (Exception e) {
-				throw new Exception(e);
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return result;
-	}
+    /**
+     * Âà†Èô§ÂØπË±°ÔºåÊ†πÊçÆid
+     * @param hql String ÂîØ‰∏ÄÊ†áËØÜ
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public int execute(String hql) throws ComException {
+        int tag=-1;
+        HbConn hbConn=new HbConn();
+        try {
+            tag=hbConn.getSessionWithTransaction().createQuery(hql).executeUpdate();
+            hbConn.commit();
+        } catch (Exception e) {
+            tag=-1;
+            hbConn.rollback();
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+        return tag;
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›String¿‡–Õid
-	 * @param id String Œ®“ª±Í ∂
-	 * @param pojoClass Class pojo¿‡
-	 * @return Object pojo∂‘œÛ
-	 * @throws ComException
-	 */
-	public Object findById(Class pojoClass, String id) throws ComException {
-		Object pojo = null;
-		if(id!=null){
-			HbConn hbConn=new HbConn();
-			try {
-				pojo = hbConn.getSession().get(pojoClass,id);
-	
-			} catch (HibernateException hbe) {
-				throw new ComException(hbe);
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return pojo;
+    }
 
-	}
-    
+    public Object execute(String strHql,Object...obj) throws ComException, Exception{
+        Object result=null;
+        if(strHql!=null){
+            HbConn hbConn=new HbConn();
+            try{
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›Long¿‡–Õid
-	 * @param id String Œ®“ª±Í ∂
-	 * @param pojoClass Class pojo¿‡
-	 * @return Object pojo∂‘œÛ
-	 * @throws ComException
-	 */
-	public Object findById(Class pojoClass, Long id) throws ComException {
-		Object pojo = null;
-		if(id!=null){
-			HbConn hbConn=new HbConn();
-			try {
-				pojo = hbConn.getSession().get(pojoClass, id);
+                Query q = hbConn.getSessionWithTransaction().createQuery(strHql);
+                for(int i=0;i<obj.length;i++){
+                    q=this.setParam(q,obj[i],i);
+                }
+                result = q.executeUpdate();
+                hbConn.commit();
+            } catch (Exception e) {
+                throw new Exception(e);
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return result;
+    }
 
-			} catch (HibernateException hbe) {
-				throw new ComException(hbe);
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return pojo;
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆStringÁ±ªÂûãid
+     * @param id String ÂîØ‰∏ÄÊ†áËØÜ
+     * @param pojoClass Class pojoÁ±ª
+     * @return Object pojoÂØπË±°
+     * @throws ComException
+     */
+    public Object findById(Class pojoClass, String id) throws ComException {
+        Object pojo = null;
+        if(id!=null){
+            HbConn hbConn=new HbConn();
+            try {
+                pojo = hbConn.getSession().get(pojoClass,id);
 
-	}
-		
+            } catch (HibernateException hbe) {
+                throw new ComException(hbe);
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return pojo;
 
-	
-
-	/**
-	 * –¬‘ˆ∂‘œÛ
-	 * @param pojo Object –¬∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean insert(Object pojo) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try {
-			hbConn.getSessionWithTransaction().save(pojo);
-			result=hbConn.commit();
-            
-		} catch (Exception e) {
-			result = false;
-			hbConn.rollback();
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-		return result;
-
-	}
-
-	/**
-	 * –¬‘ˆªÚ–ﬁ∏ƒ∂‘œÛ£®∏˘æ›∂‘œÛ±æ…Ì «∑Ò±ª≥÷æ√ªØ£©
-	 * @param pojo Object –¬∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean saveOrUpdate(Object pojo) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try {
-			hbConn.getSessionWithTransaction().saveOrUpdate(pojo);
-			result = hbConn.commit();
-		} catch (Exception e) {
-			result = false;
-			hbConn.rollback();
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-		return result;
-
-	}
-	
-
-	/**
-	 * –¬‘ˆªÚ–ﬁ∏ƒ∂‘œÛ£®∏˘æ›∂‘œÛ±æ…Ì «∑Ò±ª≥÷æ√ªØ£©
-	 * @param pojo Object –¬∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean merge(Object pojo) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try {
-			hbConn.getSessionWithTransaction().merge(pojo);
-			result = hbConn.commit();
-		} catch (Exception e) {
-			result = false;
-			hbConn.rollback();
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-		return result;
-
-	}
-	
-	/**
-	 * ≤È—Ø∂‘œÛ
-	 * @param pojoClass Class pojoµƒ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return Object pojo∂‘œÛ
-	 * @throws ComException
-	 * @todo Implement this com.dne.sie.util.dao.DefaultDao method
-	 */
-	public Object loadById(Class pojoClass, String id) throws ComException {
-		Object pojo = null;
-		HbConn hbConn=new HbConn();
-		try {
-			pojo = hbConn.getSession().get(pojoClass, id);
-			
-		} catch (HibernateException hbe) {
-			throw new ComException(hbe);
-		} finally {
-			hbConn.closeSession();
-		}
-		return pojo;
-
-	}
-
-	/**
-	 * –ﬁ∏ƒ∂‘œÛ
-	 * @param pojo Object –Ë“™∏¸–¬µƒ∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 * @todo Implement this com.dne.sie.util.dao.DefaultDao method
-	 */
-	public boolean update(Object pojo) throws ComException,VersionException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try {
-			hbConn.getSessionWithTransaction().update(pojo);
-			result = hbConn.commit();
-		} catch (HibernateException he) {
-			result = false;
-			hbConn.rollback();
-			throw new ComException(he);
-		} finally {
-			hbConn.closeSession();
-		}
-		return result;
-
-	}
-    
-		
-	/**
-	 * ¥¥Ω®–¬∂‘œÛ£¨”√”⁄ ¬ŒÒ¥¶¿Ì
-	 * @param pojo Object –¬∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	private boolean insertT(Object pojo, HbConn hbConn) throws Exception {
-		boolean result = false;
-		try {
-        	
-			hbConn.getSessionWithTransaction().save(pojo);
-			result = true;
-            
-		} catch (Exception e) {
-			result = false;
-			throw e;
-		}
-		return result;
-	}
-	
-	/**
-	 * ¥¥Ω®–¬∂‘œÛ£¨”√”⁄ ¬ŒÒ¥¶¿Ì
-	 * @param pojo Object –¬∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	private boolean excuteT(Object hql, HbConn hbConn) throws Exception {
-		boolean result = false;
-		try {
-			hbConn.getSessionWithTransaction().createQuery(hql.toString()).executeUpdate();
-			result = true;
-		} catch (Exception e) {
-			throw e;
-		} 
-		return result;
-	}
-
-	/**
-	 * ∏¸–¬“—”–∂‘œÛ£¨”√”⁄ ¬ŒÒ¥¶¿Ì
-	 * @param pojo Object –Ë“™∏¸–¬µƒ∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	private boolean updateT(Object pojo,HbConn hbConn) throws Exception {
-		boolean result = false;
-		try {
-			hbConn.getSessionWithTransaction().update(pojo);
-			result = true;
-		} catch (Exception e) {
-			result = false;
-			throw e;
-		}
-		return result;
-
-	}
-
-	/**
-	 * …æ≥˝∂‘œÛ£¨”√”⁄ ¬ŒÒ¥¶¿Ì
-	 * @param pojo Object –Ë“™…æ≥˝µƒ∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	private boolean deleteT(Object pojo,HbConn hbConn) throws Exception {
-		boolean result = false;
-		try {
-			hbConn.getSessionWithTransaction().delete(pojo);
-			result = true;
-		} catch (Exception e) {
-			result = false;
-			throw e;
-		}
-		return result;
-
-	}
+    }
 
 
-	/**
-	 * –¬‘ˆªÚ∏¸–¬“—”–∂‘œÛ£¨”√”⁄ ¬ŒÒ¥¶¿Ì
-	 * @param pojo Object –Ë“™∏¸–¬µƒ∂‘œÛ
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	private boolean saveOrUpdateT(Object pojo,HbConn hbConn) throws Exception {
-		boolean result = false;
-		try {
-			hbConn.getSessionWithTransaction().saveOrUpdate(pojo);
-			result = true;
-		} catch (Exception e) {
-			result = false;
-			throw e;
-		} 
-		return result;
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆLongÁ±ªÂûãid
+     * @param id String ÂîØ‰∏ÄÊ†áËØÜ
+     * @param pojoClass Class pojoÁ±ª
+     * @return Object pojoÂØπË±°
+     * @throws ComException
+     */
+    public Object findById(Class pojoClass, Long id) throws ComException {
+        Object pojo = null;
+        if(id!=null){
+            HbConn hbConn=new HbConn();
+            try {
+                pojo = hbConn.getSession().get(pojoClass, id);
 
-	}
-    
+            } catch (HibernateException hbe) {
+                throw new ComException(hbe);
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return pojo;
+
+    }
 
 
-	/**
-	 * ≈˙¡ø…æ≥˝∂‘œÛ
-	 * @param pojoClass Class –Ë“™…æ≥˝µƒ∂‘œÛ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean deleteBatch(List pojos) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try{
-			if(pojos!=null&&pojos.size()!=0){
-				
-				for(int i=0;i<pojos.size();i++){
-					Object obj = pojos.get(i);
-					deleteT(obj,hbConn);
-				}
-				result = hbConn.commit();
-			}else{
-				result = true;
-			}
-		}catch(Exception e){
-			result = false;
-			hbConn.rollback();
-			throw new ComException(e);
-		}finally {
-			hbConn.closeSession();
-		}
-		return result;
-	}
-	
-	
 
-	
 
-	
-	
-	
+    /**
+     * Êñ∞Â¢ûÂØπË±°
+     * @param pojo Object Êñ∞ÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean insert(Object pojo) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try {
+            hbConn.getSessionWithTransaction().save(pojo);
+            result=hbConn.commit();
 
-	/**
-	 * ≈˙¡ø…æ≥˝∂‘œÛ
-	 * @param pojoClass Class –Ë“™…æ≥˝µƒ∂‘œÛ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean updateBatch(List alData)	throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try{
-			if(alData!=null&&alData.size()!=0){
-				for(int i=0;i<alData.size();i++){
-					updateT(alData.get(i),hbConn);
-				}
-				result = hbConn.commit();
-			}else{
-				result = true;
-			}
-		}catch(Exception e){
-			hbConn.rollback();
-			result = false;
-			throw new ComException(e);
-		}finally {
-			hbConn.closeSession();
-		}
-		return result;
-	}
-	
+        } catch (Exception e) {
+            result = false;
+            hbConn.rollback();
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+        return result;
 
-	/**
-	 * ≈˙¡ø–¬‘ˆ∂‘œÛ
-	 * @param pojoClass Class –Ë“™…æ≥˝µƒ∂‘œÛ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean insertBatch(List alData)	throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		try{
-			if(alData!=null&&alData.size()!=0){
-				for(int i=0;i<alData.size();i++){
-					insertT(alData.get(i),hbConn);
-				}
-				result = hbConn.commit();
-			}else{
-				result = true;
-			}
-		}catch(Exception e){
-			hbConn.rollback();
-			result = false;
-			throw new ComException(e);
-		}finally {
-			hbConn.closeSession();
-		}
-		return result;
-	}
-	
-	
+    }
 
-	/**
-	 * ≈˙¡ø–¬‘ˆªÚ–ﬁ∏ƒ∂‘œÛ
-	 * @param pojoClass Class –Ë“™…æ≥˝µƒ∂‘œÛ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean saveOrUpdateBatch(List alData)	throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
-		
-		try{
-			if(alData!=null&&alData.size()!=0){
-				for(int i=0;i<alData.size();i++){
-					saveOrUpdateT(alData.get(i),hbConn);
-				}
-				result = hbConn.commit();
-			}else{
-				result = true;
-			}
-		}catch(Exception e){
-			hbConn.rollback();
-			result = false;
-			throw new ComException(e);
-		}finally {
-			hbConn.closeSession();
-		}
-		return result;
-	}
+    /**
+     * Êñ∞Â¢ûÊàñ‰øÆÊîπÂØπË±°ÔºàÊ†πÊçÆÂØπË±°Êú¨Ë∫´ÊòØÂê¶Ë¢´ÊåÅ‰πÖÂåñÔºâ
+     * @param pojo Object Êñ∞ÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean saveOrUpdate(Object pojo) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try {
+            hbConn.getSessionWithTransaction().saveOrUpdate(pojo);
+            result = hbConn.commit();
+        } catch (Exception e) {
+            result = false;
+            hbConn.rollback();
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+        return result;
 
-	/**
-	 * ≈˙¡ø≤Ÿ◊˜∂‘œÛ£¨∏˘æ›≤Ÿ◊˜±Í÷æ
-	 * @param pojoClass Class –Ë“™…æ≥˝µƒ∂‘œÛ¿‡
-	 * @param id String Œ®“ª±Í ∂
-	 * @return boolean  «∑Ò≥…π¶
-	 * @throws ComException
-	 */
-	public boolean allDMLBatch(List alData) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
+    }
 
-		try{
-			if(alData!=null&&alData.size()!=0){
-				for(int i=0;i<alData.size();i++){
-					Object[] obj=(Object[])alData.get(i);
-					String flag=obj[1].toString();
-					if(flag.equals("i")) insertT(obj[0],hbConn);
-					else if(flag.equals("u")) updateT(obj[0],hbConn);
-					else if(flag.equals("d")) deleteT(obj[0],hbConn);
-					else if(flag.equals("e")) excuteT(obj[0],hbConn);
-					else if(flag.equals("s")) saveOrUpdateT(obj[0],hbConn);
-				}
-				result = hbConn.commit();
-			}else{
-				result = true;
-			}
-		}catch(Exception e){
-			hbConn.rollback();
-			result = false;
-			throw new ComException(e);
-		}finally {
-			hbConn.closeSession();
-		}
-		return result;
-		
-	}
-	
-	
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›ÕÍ’˚µƒhql”Ôæ‰£¨◊Ó∂‡≤È—Ø1000Ãı
-	 * @param strHql
-	 * @return List
-	 * @throws ComException, Exception
-	 */
-	public List list(String strHql) throws ComException, Exception{
-		List pojoList =  null;
-		if(strHql!=null){
-			HbConn hbConn=new HbConn();
-			try{
-				pojoList = hbConn.getSession().createQuery(strHql).setMaxResults(60000).list();	
-				
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return pojoList;
-	}
-	
+    /**
+     * Êñ∞Â¢ûÊàñ‰øÆÊîπÂØπË±°ÔºàÊ†πÊçÆÂØπË±°Êú¨Ë∫´ÊòØÂê¶Ë¢´ÊåÅ‰πÖÂåñÔºâ
+     * @param pojo Object Êñ∞ÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean merge(Object pojo) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try {
+            hbConn.getSessionWithTransaction().merge(pojo);
+            result = hbConn.commit();
+        } catch (Exception e) {
+            result = false;
+            hbConn.rollback();
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+        return result;
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›ÕÍ’˚µƒhql”Ôæ‰
-	 * @param strHql
-	 * @param rownum ≤È—Ø◊Ó¥Û–– ˝
-	 * @return List
-	 * @throws ComException, Exception
-	 */
-	public List list(String strHql,int rownum) throws ComException, Exception{
-		List pojoList =  null;
-		if(strHql!=null){
-			HbConn hbConn=new HbConn();
-			try{
-				if(rownum<=0||rownum>60000) rownum=60000;
-				pojoList = hbConn.getSession().createQuery(strHql).setMaxResults(rownum).list();	
-			
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return pojoList;
-	}
-	public List list(String strHql,Object...obj) throws ComException, Exception{
-		List pojoList =  null;
-		if(strHql!=null){
-			HbConn hbConn=new HbConn();
-			try{
-				
-				Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1000);
-				for(int i=0;i<obj.length;i++){
-					q=this.setParam(q,obj[i],i);	
-				}
-				pojoList = q.list();
-				
-			} catch (Exception e) {
-				throw new Exception(e);
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return pojoList;
-	}
-	
-	private Query setParam(Query q,Object obj,int i) throws Exception{
-		if(obj instanceof String){
-			q.setParameter(i,(String)obj,Hibernate.STRING);
-		}else if(obj instanceof Long){
-			q.setParameter(i,(Long)obj,Hibernate.LONG);
-		}else if(obj instanceof Integer){
-			q.setParameter(i,(Integer)obj,Hibernate.INTEGER);
-		}else{
-			throw new Exception("undefine Hibernate type : "+obj.getClass().getName());
-		}
-		
-		return q;
-	}
+    }
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›ÕÍ’˚µƒhql”Ôæ‰£¨∑µªÿ»´≤øΩ·π˚
-	 * @param strHql
-	 * @return List
-	 * @throws ComException, Exception
-	 */
-	public List listAll(String strHql) throws ComException, Exception{
-		List pojoList =  null;
-		if(strHql!=null){
-			HbConn hbConn=new HbConn();
-			try{
-				pojoList = hbConn.getSession().createQuery(strHql).list();	
-			
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return pojoList;
-	}
+    /**
+     * Êü•ËØ¢ÂØπË±°
+     * @param pojoClass Class pojoÁöÑÁ±ª
+     * @param id String ÂîØ‰∏ÄÊ†áËØÜ
+     * @return Object pojoÂØπË±°
+     * @throws ComException
+     * @todo Implement this com.dne.sie.util.dao.DefaultDao method
+     */
+    public Object loadById(Class pojoClass, String id) throws ComException {
+        Object pojo = null;
+        HbConn hbConn=new HbConn();
+        try {
+            pojo = hbConn.getSession().get(pojoClass, id);
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›ÕÍ’˚µƒhql”Ôæ‰£¨∑µªÿŒ®“ªΩ·π˚
-	 * @param strHql
-	 * @return Object
-	 * @throws ComException, Exception
-	 */
-	public Object uniqueResult(String strHql) throws ComException, Exception{
-		Object pojo = null;
-		HbConn hbConn=new HbConn();
-		try{
-			pojo = hbConn.getSession().createQuery(strHql).setMaxResults(1).uniqueResult();
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			hbConn.closeSession();
-		}
-	
-		return pojo;
-	}
-	public Object uniqueResult(String strHql,Object...obj) throws ComException, Exception{
-		Object result=null;
-		if(strHql!=null){
-			HbConn hbConn=new HbConn();
-			try{
-				
-				Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1);
-				for(int i=0;i<obj.length;i++){
-					q=this.setParam(q,obj[i],i);	
-				}
-				result = q.uniqueResult();
-				
-			} catch (Exception e) {
-				throw new Exception(e);
-			} finally {
-				hbConn.closeSession();
-			}
-		}
-		return result;
-	}
+        } catch (HibernateException hbe) {
+            throw new ComException(hbe);
+        } finally {
+            hbConn.closeSession();
+        }
+        return pojo;
 
-	public Object parameterUnique(String strHql,QueryParameter param) throws ComException {
-		Object pojo = null;
-		HbConn hbConn=new HbConn();
-		try {
-			Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1);
-		
-			q.setParameter(param.getName(), param.getValue(),param.getHbType());
-			
-			pojo=q.uniqueResult();
-		
-		} catch (Exception e) {
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
+    }
 
-		return pojo;
-	}
-	
+    /**
+     * ‰øÆÊîπÂØπË±°
+     * @param pojo Object ÈúÄË¶ÅÊõ¥Êñ∞ÁöÑÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     * @todo Implement this com.dne.sie.util.dao.DefaultDao method
+     */
+    public boolean update(Object pojo) throws ComException,VersionException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try {
+            hbConn.getSessionWithTransaction().update(pojo);
+            result = hbConn.commit();
+        } catch (HibernateException he) {
+            result = false;
+            hbConn.rollback();
+            throw new ComException(he);
+        } finally {
+            hbConn.closeSession();
+        }
+        return result;
 
-	/**
-	 * ≤È—Ø∂‘œÛ£¨∏˘æ›ÕÍ’˚µƒhql”Ôæ‰∫Õ≤È—Ø≤Œ ˝£¨◊Ó∂‡1000––
-	 * @param String
-	 * @param List
-	 * @return Object
-	 * @throws ComException, Exception
-	 */
-	public List parameterQuery(String strHql,List paramList) throws ComException {
-		List pojoList =  null;
-		HbConn hbConn=new HbConn();
-		try {
-			Query q = hbConn.getSession().createQuery(strHql).setMaxResults(2000);
-			
-			for (int i = 0; paramList!=null&&i < paramList.size(); i++) {
-				QueryParameter param = (QueryParameter)paramList.get(i);
-				q.setParameter(param.getName(), param.getValue(),param.getHbType());
-			}
-			
-			pojoList  =  q.list();
-			
-		} catch (Exception e) {
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-	
-		return pojoList;
-	}
-	public List parameterQuery(String strHql,QueryParameter param) throws ComException {
-		List pojoList =  new ArrayList();
-		HbConn hbConn=new HbConn();
-		try {
-			Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1000);
-		
-			q.setParameter(param.getName(), param.getValue(),param.getHbType());
-			
-		
-			pojoList  = (List) q.list();
-		
-		} catch (Exception e) {
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
+    }
 
-		return pojoList;
-	}
-	
-		
-	
-	public int updatePara(final String hql, final Map params) throws ComException {
-		int tag=-1;
-		HbConn hbConn=new HbConn();
-		try {
-			Query q = hbConn.getSessionWithTransaction().createQuery(hql);
-			
-			if (params != null) {
-				q.setProperties(params);
-			}
-			q.executeUpdate();
-			hbConn.commit();
-		} catch (Exception e) {
-			tag=-1;
-			hbConn.rollback();
-			throw new ComException(e);
-		} finally {
-			hbConn.closeSession();
-		}
-		return tag;
 
-	}
-	
-	
-	public boolean excuteBatch(List alData) throws ComException {
-		boolean result = false;
-		HbConn hbConn=new HbConn();
+    /**
+     * ÂàõÂª∫Êñ∞ÂØπË±°ÔºåÁî®‰∫é‰∫ãÂä°Â§ÑÁêÜ
+     * @param pojo Object Êñ∞ÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    private boolean insertT(Object pojo, HbConn hbConn) throws Exception {
+        boolean result = false;
+        try {
 
-		try{
-			if(alData!=null&&alData.size()!=0){
-				for(int i=0;i<alData.size();i++){
-					excuteT(alData.get(i),hbConn);
-				}
-				result = hbConn.commit();
-			}else{
-				result = true;
-			}
-		}catch(Exception e){
-			hbConn.rollback();
-			result = false;
-			throw new ComException(e);
-		}finally {
-			hbConn.closeSession();
-		}
-		return result;
-		
-	}
-	
-		
+            hbConn.getSessionWithTransaction().save(pojo);
+            result = true;
+
+        } catch (Exception e) {
+            result = false;
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * ÂàõÂª∫Êñ∞ÂØπË±°ÔºåÁî®‰∫é‰∫ãÂä°Â§ÑÁêÜ
+     * @param hql Object Êñ∞ÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    private boolean excuteT(Object hql, HbConn hbConn) throws Exception {
+        boolean result = false;
+        try {
+            hbConn.getSessionWithTransaction().createQuery(hql.toString()).executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * Êõ¥Êñ∞Â∑≤ÊúâÂØπË±°ÔºåÁî®‰∫é‰∫ãÂä°Â§ÑÁêÜ
+     * @param pojo Object ÈúÄË¶ÅÊõ¥Êñ∞ÁöÑÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    private boolean updateT(Object pojo,HbConn hbConn) throws Exception {
+        boolean result = false;
+        try {
+            hbConn.getSessionWithTransaction().update(pojo);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            throw e;
+        }
+        return result;
+
+    }
+
+    /**
+     * Âà†Èô§ÂØπË±°ÔºåÁî®‰∫é‰∫ãÂä°Â§ÑÁêÜ
+     * @param pojo Object ÈúÄË¶ÅÂà†Èô§ÁöÑÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    private boolean deleteT(Object pojo,HbConn hbConn) throws Exception {
+        boolean result = false;
+        try {
+            hbConn.getSessionWithTransaction().delete(pojo);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            throw e;
+        }
+        return result;
+
+    }
+
+
+    /**
+     * Êñ∞Â¢ûÊàñÊõ¥Êñ∞Â∑≤ÊúâÂØπË±°ÔºåÁî®‰∫é‰∫ãÂä°Â§ÑÁêÜ
+     * @param pojo Object ÈúÄË¶ÅÊõ¥Êñ∞ÁöÑÂØπË±°
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    private boolean saveOrUpdateT(Object pojo,HbConn hbConn) throws Exception {
+        boolean result = false;
+        try {
+            hbConn.getSessionWithTransaction().saveOrUpdate(pojo);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            throw e;
+        }
+        return result;
+
+    }
+
+
+
+    /**
+     * ÊâπÈáèÂà†Èô§ÂØπË±°
+     * @param pojos String ÂîØ‰∏ÄÊ†áËØÜ
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean deleteBatch(List pojos) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try{
+            if(pojos!=null&&pojos.size()!=0){
+
+                for(int i=0;i<pojos.size();i++){
+                    Object obj = pojos.get(i);
+                    deleteT(obj,hbConn);
+                }
+                result = hbConn.commit();
+            }else{
+                result = true;
+            }
+        }catch(Exception e){
+            result = false;
+            hbConn.rollback();
+            throw new ComException(e);
+        }finally {
+            hbConn.closeSession();
+        }
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * ÊâπÈáèÂà†Èô§ÂØπË±°
+     * @param alData String ÂîØ‰∏ÄÊ†áËØÜ
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean updateBatch(List alData)	throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try{
+            if(alData!=null&&alData.size()!=0){
+                for(int i=0;i<alData.size();i++){
+                    updateT(alData.get(i),hbConn);
+                }
+                result = hbConn.commit();
+            }else{
+                result = true;
+            }
+        }catch(Exception e){
+            hbConn.rollback();
+            result = false;
+            throw new ComException(e);
+        }finally {
+            hbConn.closeSession();
+        }
+        return result;
+    }
+
+
+    /**
+     * ÊâπÈáèÊñ∞Â¢ûÂØπË±°
+     * @param alData
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean insertBatch(List alData)	throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+        try{
+            if(alData!=null&&alData.size()!=0){
+                for(int i=0;i<alData.size();i++){
+                    insertT(alData.get(i),hbConn);
+                }
+                result = hbConn.commit();
+            }else{
+                result = true;
+            }
+        }catch(Exception e){
+            hbConn.rollback();
+            result = false;
+            throw new ComException(e);
+        }finally {
+            hbConn.closeSession();
+        }
+        return result;
+    }
+
+
+
+    /**
+     * ÊâπÈáèÊñ∞Â¢ûÊàñ‰øÆÊîπÂØπË±°
+     * @param alData
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean saveOrUpdateBatch(List alData)	throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+
+        try{
+            if(alData!=null&&alData.size()!=0){
+                for(int i=0;i<alData.size();i++){
+                    saveOrUpdateT(alData.get(i),hbConn);
+                }
+                result = hbConn.commit();
+            }else{
+                result = true;
+            }
+        }catch(Exception e){
+            hbConn.rollback();
+            result = false;
+            throw new ComException(e);
+        }finally {
+            hbConn.closeSession();
+        }
+        return result;
+    }
+
+    /**
+     * ÊâπÈáèÊìç‰ΩúÂØπË±°ÔºåÊ†πÊçÆÊìç‰ΩúÊ†áÂøó
+     * @param alData
+     * @return boolean ÊòØÂê¶ÊàêÂäü
+     * @throws ComException
+     */
+    public boolean allDMLBatch(List alData) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+
+        try{
+            if(alData!=null&&alData.size()!=0){
+                for(int i=0;i<alData.size();i++){
+                    Object[] obj=(Object[])alData.get(i);
+                    String flag=obj[1].toString();
+                    if(flag.equals("i")) insertT(obj[0],hbConn);
+                    else if(flag.equals("u")) updateT(obj[0],hbConn);
+                    else if(flag.equals("d")) deleteT(obj[0],hbConn);
+                    else if(flag.equals("e")) excuteT(obj[0],hbConn);
+                    else if(flag.equals("s")) saveOrUpdateT(obj[0],hbConn);
+                }
+                result = hbConn.commit();
+            }else{
+                result = true;
+            }
+        }catch(Exception e){
+            hbConn.rollback();
+            result = false;
+            throw new ComException(e);
+        }finally {
+            hbConn.closeSession();
+        }
+        return result;
+
+    }
+
+
+
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆÂÆåÊï¥ÁöÑhqlËØ≠Âè•ÔºåÊúÄÂ§öÊü•ËØ¢1000Êù°
+     * @param strHql
+     * @return List
+     * @throws ComException, Exception
+     */
+    public List list(String strHql) throws ComException, Exception{
+        List pojoList =  null;
+        if(strHql!=null){
+            HbConn hbConn=new HbConn();
+            try{
+                pojoList = hbConn.getSession().createQuery(strHql).setMaxResults(60000).list();
+
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return pojoList;
+    }
+
+
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆÂÆåÊï¥ÁöÑhqlËØ≠Âè•
+     * @param strHql
+     * @param rownum Êü•ËØ¢ÊúÄÂ§ßË°åÊï∞
+     * @return List
+     * @throws ComException, Exception
+     */
+    public List list(String strHql,int rownum) throws ComException, Exception{
+        List pojoList =  null;
+        if(strHql!=null){
+            HbConn hbConn=new HbConn();
+            try{
+                if(rownum<=0||rownum>60000) rownum=60000;
+                pojoList = hbConn.getSession().createQuery(strHql).setMaxResults(rownum).list();
+
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return pojoList;
+    }
+    public List list(String strHql,Object...obj) throws ComException, Exception{
+        List pojoList =  null;
+        if(strHql!=null){
+            HbConn hbConn=new HbConn();
+            try{
+
+                Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1000);
+                for(int i=0;i<obj.length;i++){
+                    q=this.setParam(q,obj[i],i);
+                }
+                pojoList = q.list();
+
+            } catch (Exception e) {
+                throw new Exception(e);
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return pojoList;
+    }
+
+    private Query setParam(Query q,Object obj,int i) throws Exception{
+        if(obj instanceof String){
+            q.setParameter(i,(String)obj,Hibernate.STRING);
+        }else if(obj instanceof Long){
+            q.setParameter(i,(Long)obj,Hibernate.LONG);
+        }else if(obj instanceof Integer){
+            q.setParameter(i,(Integer)obj,Hibernate.INTEGER);
+        }else{
+            throw new Exception("undefine Hibernate type : "+obj.getClass().getName());
+        }
+
+        return q;
+    }
+
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆÂÆåÊï¥ÁöÑhqlËØ≠Âè•ÔºåËøîÂõûÂÖ®ÈÉ®ÁªìÊûú
+     * @param strHql
+     * @return List
+     * @throws ComException, Exception
+     */
+    public List listAll(String strHql) throws ComException, Exception{
+        List pojoList =  null;
+        if(strHql!=null){
+            HbConn hbConn=new HbConn();
+            try{
+                pojoList = hbConn.getSession().createQuery(strHql).list();
+
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return pojoList;
+    }
+
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆÂÆåÊï¥ÁöÑhqlËØ≠Âè•ÔºåËøîÂõûÂîØ‰∏ÄÁªìÊûú
+     * @param strHql
+     * @return Object
+     * @throws ComException, Exception
+     */
+    public Object uniqueResult(String strHql) throws ComException, Exception{
+        Object pojo = null;
+        HbConn hbConn=new HbConn();
+        try{
+            pojo = hbConn.getSession().createQuery(strHql).setMaxResults(1).uniqueResult();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            hbConn.closeSession();
+        }
+
+        return pojo;
+    }
+    public Object uniqueResult(String strHql,Object...obj) throws ComException, Exception{
+        Object result=null;
+        if(strHql!=null){
+            HbConn hbConn=new HbConn();
+            try{
+
+                Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1);
+                for(int i=0;i<obj.length;i++){
+                    q=this.setParam(q,obj[i],i);
+                }
+                result = q.uniqueResult();
+
+            } catch (Exception e) {
+                throw new Exception(e);
+            } finally {
+                hbConn.closeSession();
+            }
+        }
+        return result;
+    }
+
+    public Object parameterUnique(String strHql,QueryParameter param) throws ComException {
+        Object pojo = null;
+        HbConn hbConn=new HbConn();
+        try {
+            Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1);
+
+            q.setParameter(param.getName(), param.getValue(),param.getHbType());
+
+            pojo=q.uniqueResult();
+
+        } catch (Exception e) {
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+
+        return pojo;
+    }
+
+
+    /**
+     * Êü•ËØ¢ÂØπË±°ÔºåÊ†πÊçÆÂÆåÊï¥ÁöÑhqlËØ≠Âè•ÂíåÊü•ËØ¢ÂèÇÊï∞ÔºåÊúÄÂ§ö1000Ë°å
+     * @param strHql
+     * @param paramList
+     * @return Object
+     * @throws ComException, Exception
+     */
+    public List parameterQuery(String strHql,List paramList) throws ComException {
+        List pojoList =  null;
+        HbConn hbConn=new HbConn();
+        try {
+            Query q = hbConn.getSession().createQuery(strHql).setMaxResults(2000);
+
+            for (int i = 0; paramList!=null&&i < paramList.size(); i++) {
+                QueryParameter param = (QueryParameter)paramList.get(i);
+                q.setParameter(param.getName(), param.getValue(),param.getHbType());
+            }
+
+            pojoList  =  q.list();
+
+        } catch (Exception e) {
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+
+        return pojoList;
+    }
+    public List parameterQuery(String strHql,QueryParameter param) throws ComException {
+        List pojoList =  new ArrayList();
+        HbConn hbConn=new HbConn();
+        try {
+            Query q = hbConn.getSession().createQuery(strHql).setMaxResults(1000);
+
+            q.setParameter(param.getName(), param.getValue(),param.getHbType());
+
+
+            pojoList  = (List) q.list();
+
+        } catch (Exception e) {
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+
+        return pojoList;
+    }
+
+
+
+    public int updatePara(final String hql, final Map params) throws ComException {
+        int tag=-1;
+        HbConn hbConn=new HbConn();
+        try {
+            Query q = hbConn.getSessionWithTransaction().createQuery(hql);
+
+            if (params != null) {
+                q.setProperties(params);
+            }
+            q.executeUpdate();
+            hbConn.commit();
+        } catch (Exception e) {
+            tag=-1;
+            hbConn.rollback();
+            throw new ComException(e);
+        } finally {
+            hbConn.closeSession();
+        }
+        return tag;
+
+    }
+
+
+    public boolean excuteBatch(List alData) throws ComException {
+        boolean result = false;
+        HbConn hbConn=new HbConn();
+
+        try{
+            if(alData!=null&&alData.size()!=0){
+                for(int i=0;i<alData.size();i++){
+                    excuteT(alData.get(i),hbConn);
+                }
+                result = hbConn.commit();
+            }else{
+                result = true;
+            }
+        }catch(Exception e){
+            hbConn.rollback();
+            result = false;
+            throw new ComException(e);
+        }finally {
+            hbConn.closeSession();
+        }
+        return result;
+
+    }
+
+
 }
 

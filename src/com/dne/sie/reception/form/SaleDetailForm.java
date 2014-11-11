@@ -5,335 +5,335 @@ import java.util.Date;
 import com.dne.sie.util.form.CommForm;
 
 public class SaleDetailForm extends CommForm{
-	
-	private Long saleDetailId;             //Ã÷Ï¸ID						
-	private String saleNo;                   //Ñ¯¼Ûµ¥ºÅ					
-	private String stuffNo;                  //ÁÏºÅ							
-	private String skuCode;                  //Áã¼şÃû³Æ		
-	private String skuCodeT;
-	private String shortCode;                //¼ò³Æ							
-	private String standard;                 //¹æ¸ñ							
-	private String skuUnit;                  //µ¥Î»							
-	private Integer partNum;                  //ÊıÁ¿							
-	private String modelCode;                //»úĞÍ							
-	private String modelSerialNo;            //»úÉí±àÂë					
-	private Float purchasePrice;            //Ì¨Íå±¨¼Û(RMB)	(ÊÇ¸ù¾İpurchaseDollarºÍ»ãÂÊexchangeRate×ª»»ºóµÄÌ¨ÍåRMB±¨¼Û)					
-	private Float tariffAmount;             //¹ØË°_½ğ¶î		
-	private Float tariffRat;                //¹ØË°_Ë°ÂÊ
-	private Float vat;                      //º£¹ØÔöÖµË°_½ğ¶î		
-	private Float customsChargesPlan;       //±¨¹Ø·Ñ_¼Æ»®(ÒÑ·ÏÆú)				
-	private Float customsChargesReal;       //´úÀí·Ñ				
-	private Float domesticFreightPlan;      //¹úÄÚÔË·Ñ_¼Æ»®			
-	private Float domesticFreightReal;      //¹úÄÚÔË·Ñ_Êµ¼Ê			
-	private Float costPlan;                 //³É±¾_¼Æ»®					
-	private Float costReal;                 //³É±¾_Êµ¼Ê					
-	private Float perQuote;                 //±¨¼Ûµ¥¼Û(RMB)	(¶Ô¿Í»§)
-	private Float salePerPrice;             //Êµ¼ÊÏúÊÛµ¥¼Û(RMB) (¶Ô¿Í»§)
-	private Float profitPlan;               //ÀûÈó_¼Æ»®					
-	private Float profitReal;               //ÀûÈó_Êµ¼Ê					
-	private String partStatus;               //Áã¼ş×´Ì¬					
-	private String deliveryTimeStart;        //½»»õÆğÊ¼Ê±¼ä			
-	private String deliveryTimeEnd;          //½»»õ½ØÖÁÊ±¼ä			
-	private String annexIds;                 //¸½¼şIDs						
-	private Long poNo;                     //¶©¹ºµ¥ºÅ					
-	private Float purchaseDollar;             //Ì¨Íå±¨¼Û£¨ÃÀÔª£©
-	private String orderType;                //¶©¹ºÀàĞÍ
-	private String warrantyType;              	//±£ÄÚ/Íâ
-	private String asnNo; 					//·¢»õµ¥ºÅ
-	private Float stockCost;				//¿â´æ³É±¾µ¥¼Û(RMB)
-	
-	private Long partsId;
-	
-	private Long rootId;
-	private int version; 
-	private Integer delFlag; 
 
-	private Date createDate;
-	private Long updateBy;
-	private Long createBy;
-	private Date updateDate;
-	
-	private String dateScope;
-	private String inDate1;
-	private String inDate2;
-	
-	public Long getSaleDetailId() {
-		return saleDetailId;
-	}
-	public void setSaleDetailId(Long saleDetailId) {
-		this.saleDetailId = saleDetailId;
-	}
-	public String getSaleNo() {
-		return saleNo;
-	}
-	public void setSaleNo(String saleNo) {
-		this.saleNo = saleNo;
-	}
-	public String getStuffNo() {
-		return stuffNo;
-	}
-	public void setStuffNo(String stuffNo) {
-		this.stuffNo = stuffNo;
-	}
-	public String getSkuCode() {
-		return skuCode;
-	}
-	public void setSkuCode(String skuCode) {
-		this.skuCode = skuCode;
-	}
-	public String getShortCode() {
-		return shortCode;
-	}
-	public void setShortCode(String shortCode) {
-		this.shortCode = shortCode;
-	}
-	public String getStandard() {
-		return standard;
-	}
-	public void setStandard(String standard) {
-		this.standard = standard;
-	}
-	public String getSkuUnit() {
-		return skuUnit;
-	}
-	public void setSkuUnit(String skuUnit) {
-		this.skuUnit = skuUnit;
-	}
-	public Integer getPartNum() {
-		return partNum;
-	}
-	public void setPartNum(Integer partNum) {
-		this.partNum = partNum;
-	}
-	public String getModelCode() {
-		return modelCode;
-	}
-	public void setModelCode(String modelCode) {
-		this.modelCode = modelCode;
-	}
-	public String getModelSerialNo() {
-		return modelSerialNo;
-	}
-	public void setModelSerialNo(String modelSerialNo) {
-		this.modelSerialNo = modelSerialNo;
-	}
-	public Float getPurchasePrice() {
-		return purchasePrice;
-	}
-	public void setPurchasePrice(Float purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-	public Float getVat() {
-		return vat;
-	}
-	public void setVat(Float vat) {
-		this.vat = vat;
-	}
-	public Float getCustomsChargesPlan() {
-		return customsChargesPlan;
-	}
-	public void setCustomsChargesPlan(Float customsChargesPlan) {
-		this.customsChargesPlan = customsChargesPlan;
-	}
-	public Float getCustomsChargesReal() {
-		return customsChargesReal;
-	}
-	public void setCustomsChargesReal(Float customsChargesReal) {
-		this.customsChargesReal = customsChargesReal;
-	}
-	public Float getDomesticFreightPlan() {
-		return domesticFreightPlan;
-	}
-	public void setDomesticFreightPlan(Float domesticFreightPlan) {
-		this.domesticFreightPlan = domesticFreightPlan;
-	}
-	public Float getDomesticFreightReal() {
-		return domesticFreightReal;
-	}
-	public void setDomesticFreightReal(Float domesticFreightReal) {
-		this.domesticFreightReal = domesticFreightReal;
-	}
-	public Float getCostPlan() {
-		return costPlan;
-	}
-	public void setCostPlan(Float costPlan) {
-		this.costPlan = costPlan;
-	}
-	public Float getCostReal() {
-		return costReal;
-	}
-	public void setCostReal(Float costReal) {
-		this.costReal = costReal;
-	}
-	public Float getPerQuote() {
-		return perQuote;
-	}
-	public void setPerQuote(Float perQuote) {
-		this.perQuote = perQuote;
-	}
-	public Float getSalePerPrice() {
-		return salePerPrice;
-	}
-	public void setSalePerPrice(Float salePerPrice) {
-		this.salePerPrice = salePerPrice;
-	}
-	public Float getProfitPlan() {
-		return profitPlan;
-	}
-	public void setProfitPlan(Float profitPlan) {
-		this.profitPlan = profitPlan;
-	}
-	public Float getProfitReal() {
-		return profitReal;
-	}
-	public void setProfitReal(Float profitReal) {
-		this.profitReal = profitReal;
-	}
-	public String getPartStatus() {
-		return partStatus;
-	}
-	public void setPartStatus(String partStatus) {
-		this.partStatus = partStatus;
-	}
-	public String getDeliveryTimeStart() {
-		return deliveryTimeStart;
-	}
-	public void setDeliveryTimeStart(String deliveryTimeStart) {
-		this.deliveryTimeStart = deliveryTimeStart;
-	}
-	public String getDeliveryTimeEnd() {
-		return deliveryTimeEnd;
-	}
-	public void setDeliveryTimeEnd(String deliveryTimeEnd) {
-		this.deliveryTimeEnd = deliveryTimeEnd;
-	}
-	public String getAnnexIds() {
-		return annexIds;
-	}
-	public void setAnnexIds(String annexIds) {
-		this.annexIds = annexIds;
-	}
-	public Long getPoNo() {
-		return poNo;
-	}
-	public void setPoNo(Long poNo) {
-		this.poNo = poNo;
-	}
-	
-	public Float getPurchaseDollar() {
-		return purchaseDollar;
-	}
-	public void setPurchaseDollar(Float purchaseDollar) {
-		this.purchaseDollar = purchaseDollar;
-	}
-	public int getVersion() {
-		return version;
-	}
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	public Integer getDelFlag() {
-		return delFlag;
-	}
-	public void setDelFlag(Integer delFlag) {
-		this.delFlag = delFlag;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public Long getUpdateBy() {
-		return updateBy;
-	}
-	public void setUpdateBy(Long updateBy) {
-		this.updateBy = updateBy;
-	}
-	public Long getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(Long createBy) {
-		this.createBy = createBy;
-	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	public String getOrderType() {
-		return orderType;
-	}
-	public void setOrderType(String orderType) {
-		this.orderType = orderType;
-	}
-	public Long getRootId() {
-		return rootId;
-	}
-	public void setRootId(Long rootId) {
-		this.rootId = rootId;
-	}
-	public String getInDate1() {
-		return inDate1;
-	}
-	public void setInDate1(String inDate1) {
-		this.inDate1 = inDate1;
-	}
-	public String getInDate2() {
-		return inDate2;
-	}
-	public void setInDate2(String inDate2) {
-		this.inDate2 = inDate2;
-	}
-	public String getDateScope() {
-		return dateScope;
-	}
-	public void setDateScope(String dateScope) {
-		this.dateScope = dateScope;
-	}
-	public Float getTariffAmount() {
-		return tariffAmount;
-	}
-	public void setTariffAmount(Float tariff) {
-		this.tariffAmount = tariff;
-	}
-	public Float getTariffRat() {
-		return tariffRat;
-	}
-	public void setTariffRat(Float tariffRat) {
-		this.tariffRat = tariffRat;
-	}
-	public String getAsnNo() {
-		return asnNo;
-	}
-	public void setAsnNo(String asnNo) {
-		this.asnNo = asnNo;
-	}
-	public String getSkuCodeT() {
-		return skuCodeT;
-	}
-	public void setSkuCodeT(String skuCodeT) {
-		this.skuCodeT = skuCodeT;
-	}
-	public String getWarrantyType() {
-		return warrantyType;
-	}
-	public void setWarrantyType(String warrantyType) {
-		this.warrantyType = warrantyType;
-	}
-	public Float getStockCost() {
-		return stockCost;
-	}
-	public void setStockCost(Float stockCost) {
-		this.stockCost = stockCost;
-	}
-	public Long getPartsId() {
-		return partsId;
-	}
-	public void setPartsId(Long partsId) {
-		this.partsId = partsId;
-	}
-	
-	
+    private Long saleDetailId;             //æ˜ç»†ID
+    private String saleNo;                   //è¯¢ä»·å•å·
+    private String stuffNo;                  //æ–™å·
+    private String skuCode;                  //é›¶ä»¶åç§°
+    private String skuCodeT;
+    private String shortCode;                //ç®€ç§°
+    private String standard;                 //è§„æ ¼
+    private String skuUnit;                  //å•ä½
+    private Integer partNum;                  //æ•°é‡
+    private String modelCode;                //æœºå‹
+    private String modelSerialNo;            //æœºèº«ç¼–ç 
+    private Float purchasePrice;            //å°æ¹¾æŠ¥ä»·(RMB)	(æ˜¯æ ¹æ®purchaseDollarå’Œæ±‡ç‡exchangeRateè½¬æ¢åçš„å°æ¹¾RMBæŠ¥ä»·)
+    private Float tariffAmount;             //å…³ç¨_é‡‘é¢
+    private Float tariffRat;                //å…³ç¨_ç¨ç‡
+    private Float vat;                      //æµ·å…³å¢å€¼ç¨_é‡‘é¢
+    private Float customsChargesPlan;       //æŠ¥å…³è´¹_è®¡åˆ’(å·²åºŸå¼ƒ)
+    private Float customsChargesReal;       //ä»£ç†è´¹
+    private Float domesticFreightPlan;      //å›½å†…è¿è´¹_è®¡åˆ’
+    private Float domesticFreightReal;      //å›½å†…è¿è´¹_å®é™…
+    private Float costPlan;                 //æˆæœ¬_è®¡åˆ’
+    private Float costReal;                 //æˆæœ¬_å®é™…
+    private Float perQuote;                 //æŠ¥ä»·å•ä»·(RMB)	(å¯¹å®¢æˆ·)
+    private Float salePerPrice;             //å®é™…é”€å”®å•ä»·(RMB) (å¯¹å®¢æˆ·)
+    private Float profitPlan;               //åˆ©æ¶¦_è®¡åˆ’
+    private Float profitReal;               //åˆ©æ¶¦_å®é™…
+    private String partStatus;               //é›¶ä»¶çŠ¶æ€
+    private String deliveryTimeStart;        //äº¤è´§èµ·å§‹æ—¶é—´
+    private String deliveryTimeEnd;          //äº¤è´§æˆªè‡³æ—¶é—´
+    private String annexIds;                 //é™„ä»¶IDs
+    private Long poNo;                     //è®¢è´­å•å·
+    private Float purchaseDollar;             //å°æ¹¾æŠ¥ä»·ï¼ˆç¾å…ƒï¼‰
+    private String orderType;                //è®¢è´­ç±»å‹
+    private String warrantyType;              	//ä¿å†…/å¤–
+    private String asnNo; 					//å‘è´§å•å·
+    private Float stockCost;				//åº“å­˜æˆæœ¬å•ä»·(RMB)
+
+    private Long partsId;
+
+    private Long rootId;
+    private int version;
+    private Integer delFlag;
+
+    private Date createDate;
+    private Long updateBy;
+    private Long createBy;
+    private Date updateDate;
+
+    private String dateScope;
+    private String inDate1;
+    private String inDate2;
+
+    public Long getSaleDetailId() {
+        return saleDetailId;
+    }
+    public void setSaleDetailId(Long saleDetailId) {
+        this.saleDetailId = saleDetailId;
+    }
+    public String getSaleNo() {
+        return saleNo;
+    }
+    public void setSaleNo(String saleNo) {
+        this.saleNo = saleNo;
+    }
+    public String getStuffNo() {
+        return stuffNo;
+    }
+    public void setStuffNo(String stuffNo) {
+        this.stuffNo = stuffNo;
+    }
+    public String getSkuCode() {
+        return skuCode;
+    }
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+    public String getShortCode() {
+        return shortCode;
+    }
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
+    }
+    public String getStandard() {
+        return standard;
+    }
+    public void setStandard(String standard) {
+        this.standard = standard;
+    }
+    public String getSkuUnit() {
+        return skuUnit;
+    }
+    public void setSkuUnit(String skuUnit) {
+        this.skuUnit = skuUnit;
+    }
+    public Integer getPartNum() {
+        return partNum;
+    }
+    public void setPartNum(Integer partNum) {
+        this.partNum = partNum;
+    }
+    public String getModelCode() {
+        return modelCode;
+    }
+    public void setModelCode(String modelCode) {
+        this.modelCode = modelCode;
+    }
+    public String getModelSerialNo() {
+        return modelSerialNo;
+    }
+    public void setModelSerialNo(String modelSerialNo) {
+        this.modelSerialNo = modelSerialNo;
+    }
+    public Float getPurchasePrice() {
+        return purchasePrice;
+    }
+    public void setPurchasePrice(Float purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+    public Float getVat() {
+        return vat;
+    }
+    public void setVat(Float vat) {
+        this.vat = vat;
+    }
+    public Float getCustomsChargesPlan() {
+        return customsChargesPlan;
+    }
+    public void setCustomsChargesPlan(Float customsChargesPlan) {
+        this.customsChargesPlan = customsChargesPlan;
+    }
+    public Float getCustomsChargesReal() {
+        return customsChargesReal;
+    }
+    public void setCustomsChargesReal(Float customsChargesReal) {
+        this.customsChargesReal = customsChargesReal;
+    }
+    public Float getDomesticFreightPlan() {
+        return domesticFreightPlan;
+    }
+    public void setDomesticFreightPlan(Float domesticFreightPlan) {
+        this.domesticFreightPlan = domesticFreightPlan;
+    }
+    public Float getDomesticFreightReal() {
+        return domesticFreightReal;
+    }
+    public void setDomesticFreightReal(Float domesticFreightReal) {
+        this.domesticFreightReal = domesticFreightReal;
+    }
+    public Float getCostPlan() {
+        return costPlan;
+    }
+    public void setCostPlan(Float costPlan) {
+        this.costPlan = costPlan;
+    }
+    public Float getCostReal() {
+        return costReal;
+    }
+    public void setCostReal(Float costReal) {
+        this.costReal = costReal;
+    }
+    public Float getPerQuote() {
+        return perQuote;
+    }
+    public void setPerQuote(Float perQuote) {
+        this.perQuote = perQuote;
+    }
+    public Float getSalePerPrice() {
+        return salePerPrice;
+    }
+    public void setSalePerPrice(Float salePerPrice) {
+        this.salePerPrice = salePerPrice;
+    }
+    public Float getProfitPlan() {
+        return profitPlan;
+    }
+    public void setProfitPlan(Float profitPlan) {
+        this.profitPlan = profitPlan;
+    }
+    public Float getProfitReal() {
+        return profitReal;
+    }
+    public void setProfitReal(Float profitReal) {
+        this.profitReal = profitReal;
+    }
+    public String getPartStatus() {
+        return partStatus;
+    }
+    public void setPartStatus(String partStatus) {
+        this.partStatus = partStatus;
+    }
+    public String getDeliveryTimeStart() {
+        return deliveryTimeStart;
+    }
+    public void setDeliveryTimeStart(String deliveryTimeStart) {
+        this.deliveryTimeStart = deliveryTimeStart;
+    }
+    public String getDeliveryTimeEnd() {
+        return deliveryTimeEnd;
+    }
+    public void setDeliveryTimeEnd(String deliveryTimeEnd) {
+        this.deliveryTimeEnd = deliveryTimeEnd;
+    }
+    public String getAnnexIds() {
+        return annexIds;
+    }
+    public void setAnnexIds(String annexIds) {
+        this.annexIds = annexIds;
+    }
+    public Long getPoNo() {
+        return poNo;
+    }
+    public void setPoNo(Long poNo) {
+        this.poNo = poNo;
+    }
+
+    public Float getPurchaseDollar() {
+        return purchaseDollar;
+    }
+    public void setPurchaseDollar(Float purchaseDollar) {
+        this.purchaseDollar = purchaseDollar;
+    }
+    public int getVersion() {
+        return version;
+    }
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Long getCreateBy() {
+        return createBy;
+    }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getOrderType() {
+        return orderType;
+    }
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+    public Long getRootId() {
+        return rootId;
+    }
+    public void setRootId(Long rootId) {
+        this.rootId = rootId;
+    }
+    public String getInDate1() {
+        return inDate1;
+    }
+    public void setInDate1(String inDate1) {
+        this.inDate1 = inDate1;
+    }
+    public String getInDate2() {
+        return inDate2;
+    }
+    public void setInDate2(String inDate2) {
+        this.inDate2 = inDate2;
+    }
+    public String getDateScope() {
+        return dateScope;
+    }
+    public void setDateScope(String dateScope) {
+        this.dateScope = dateScope;
+    }
+    public Float getTariffAmount() {
+        return tariffAmount;
+    }
+    public void setTariffAmount(Float tariff) {
+        this.tariffAmount = tariff;
+    }
+    public Float getTariffRat() {
+        return tariffRat;
+    }
+    public void setTariffRat(Float tariffRat) {
+        this.tariffRat = tariffRat;
+    }
+    public String getAsnNo() {
+        return asnNo;
+    }
+    public void setAsnNo(String asnNo) {
+        this.asnNo = asnNo;
+    }
+    public String getSkuCodeT() {
+        return skuCodeT;
+    }
+    public void setSkuCodeT(String skuCodeT) {
+        this.skuCodeT = skuCodeT;
+    }
+    public String getWarrantyType() {
+        return warrantyType;
+    }
+    public void setWarrantyType(String warrantyType) {
+        this.warrantyType = warrantyType;
+    }
+    public Float getStockCost() {
+        return stockCost;
+    }
+    public void setStockCost(Float stockCost) {
+        this.stockCost = stockCost;
+    }
+    public Long getPartsId() {
+        return partsId;
+    }
+    public void setPartsId(Long partsId) {
+        this.partsId = partsId;
+    }
+
+
 }
