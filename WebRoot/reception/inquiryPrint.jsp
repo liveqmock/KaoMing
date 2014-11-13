@@ -24,9 +24,10 @@ table
 </head>
 <%
 		String[] kmInfo = (String[])request.getAttribute("kmInfo");
-		ArrayList salePartsInfoList = (ArrayList)request.getAttribute("salePartsInfoList");
-		Object[] obj=(Object[])salePartsInfoList.get(0);
-		SaleInfoForm sif=(SaleInfoForm)obj[1];
+		ArrayList[] salePartsInfoList = (ArrayList[])request.getAttribute("salePartsInfoList");
+//		Object[] obj=(Object[])salePartsInfoList.get(0);
+		SaleInfoForm sif=(SaleInfoForm)(salePartsInfoList[0].get(0));
+        ArrayList partsList = salePartsInfoList[1];
 		
 		String userName = (String) session.getAttribute("userName");
 		
@@ -94,9 +95,8 @@ table
 		<td align="center">ÊıÁ¿</td>
 	</tr>
 	
-	<%for(int i=0;i<salePartsInfoList.size();i++){
-			Object[] temp=(Object[])salePartsInfoList.get(i);
-			SaleDetailForm sdf=(SaleDetailForm)temp[0];
+	<%for(int i=0;i<partsList.size();i++){
+            SaleDetailForm sdf=(SaleDetailForm)partsList.get(i);
 	%>
 	<tr>
 		<td align="center"><%=(i+1)%></td>

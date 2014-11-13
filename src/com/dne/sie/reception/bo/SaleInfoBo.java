@@ -973,7 +973,7 @@ public class SaleInfoBo extends CommBo {
                 Object[] obj=(Object[])sdfList.get(i);
                 SaleDetailForm sdf = (SaleDetailForm)obj[0];
                 SaleInfoForm sif = (SaleInfoForm)obj[1];
-                String[] temp=new String[11];
+                String[] temp=new String[13];
                 temp[0] = sdf.getStuffNo();
                 temp[1] = sdf.getSkuCode();
                 temp[2] = sif.getCustomerName();
@@ -981,10 +981,12 @@ public class SaleInfoBo extends CommBo {
                 temp[4] = sdf.getModelSerialNo();
                 temp[5] = sdf.getPartNum()+"";
                 temp[6] = sdf.getPurchasePrice()==null?"":sdf.getPurchasePrice()+"";
-                temp[7] = sdf.getSalePerPrice()==null?"":sdf.getSalePerPrice()+"";
-                temp[8] = sdf.getProfitReal()==null?"":sdf.getProfitReal()+"";
+                temp[7] = sdf.getPerQuote()==null?"":sdf.getPerQuote()+"";
+                temp[8] = sdf.getProfitPlan()==null?"":sdf.getProfitPlan()+"";
                 temp[9] = cs.findUserNameByUserId(sdf.getCreateBy());
                 temp[10] = sdf.getCreateDate().toLocaleString();
+                temp[11] = sdf.getSaleNo();
+                temp[12] = DicInit.getSystemName("WARRANTY_TYPE",sdf.getWarrantyType());
 
                 stuffList.add(temp);
 
@@ -1019,7 +1021,7 @@ public class SaleInfoBo extends CommBo {
                 Object[] obj=(Object[])sdfList.get(i);
                 SaleDetailForm sdf = (SaleDetailForm)obj[0];
                 SaleInfoForm sif = (SaleInfoForm)obj[1];
-                String[] temp=new String[11];
+                String[] temp=new String[13];
                 temp[0] = sif.getCustomerName();
                 temp[1] = sdf.getStuffNo();
                 temp[2] = sdf.getSkuCode();
@@ -1027,10 +1029,12 @@ public class SaleInfoBo extends CommBo {
                 temp[4] = sdf.getModelSerialNo();
                 temp[5] = sdf.getPartNum()+"";
                 temp[6] = sdf.getPurchasePrice()==null?"":sdf.getPurchasePrice()+"";
-                temp[7] = sdf.getSalePerPrice()==null?"":sdf.getSalePerPrice()+"";
-                temp[8] = sdf.getProfitReal()==null?"":sdf.getProfitReal()+"";
+                temp[7] = sdf.getPerQuote()==null?"":sdf.getPerQuote()+"";
+                temp[8] = sdf.getProfitPlan()==null?"":sdf.getProfitPlan()+"";
                 temp[9] = cs.findUserNameByUserId(sdf.getCreateBy());
                 temp[10] = sdf.getCreateDate().toLocaleString();
+                temp[11] = sdf.getSaleNo();
+                temp[12] = DicInit.getSystemName("WARRANTY_TYPE",sdf.getWarrantyType());
 
                 custList.add(temp);
 

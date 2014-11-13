@@ -4,7 +4,7 @@
 
 <html>
 <head>
-<title>user_choose</title>
+<title>user_choose</title><SCRIPT language="javascript" src="js/screen.js"></SCRIPT>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/styles2.css">
 <SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
@@ -59,8 +59,7 @@ try{
 				%>
 					<span> &nbsp;===========<br></span>
 				<%}%>
-					<span onmouseover="this.className='item-selected';" onmouseout="this.className='';" >
-					<input name="chk" type=checkbox id="<%=temp[1]%>" value='<%=temp[0]%>'>
+					<span onmouseover="this.className='item-selected';" onmouseout="this.className='';"><input name="chk" type=checkbox id="<%=temp[1]%>" value='<%=temp[0]%>'>
 					<%if(temp[2]!=null&&temp[2].equals("A")){%> <font color="blue"><%=temp[1]%> </font>
 					<%}else if(temp[2]!=null&&temp[2].equals("B")){%> <font color="red"><%=temp[1]%> </font>
 					<%}else if(temp[2]!=null&&temp[2].equals("C")){%> <%=temp[1]%> 
@@ -79,8 +78,7 @@ try{
 				<%for(int i=0;i<reptUserList.size();i++){
 					String temp[]=(String[])reptUserList.get(i);
 				%>
-					<span onmouseover="this.className='item-selected';" onmouseout="this.className='';">
-					<input name="chk2" type=checkbox id="selectVal" value="<%=temp[0]%>_<%=temp[1]%>">
+					<span onmouseover="this.className='item-selected';" onmouseout="this.className='';"><input name="chk2" type=checkbox id="<%=temp[1]%>" value='<%=temp[0]%>'>
 					<%if(temp[2]!=null&&temp[2].equals("A")){%> <font color="blue"><%=temp[1]%> </font>
 					<%}else if(temp[2]!=null&&temp[2].equals("B")){%> <font color="red"><%=temp[1]%> </font>
 					<%}else if(temp[2]!=null&&temp[2].equals("C")){%> <%=temp[1]%> 
@@ -143,25 +141,25 @@ try{
 function moveToRight() {	
 	var nodesIndexToBeMoved = new Array();
 	var arrayIndex = 0;
-	//先顺序增加，同时记录下需要删除的节点，再批量删除，免除了document.getElementById("select1").children.length不断变小的影响
-	for (var i = 0; i <= document.getElementById("select1").children.length - 1; i++) {
-		if (document.getElementById("select1").children[i].tagName == "SPAN") {
+	//先顺序增加，同时记录下需要删除的节点，再批量删除，免除了select1.children.length不断变小的影响
+	for (var i = 0; i <= select1.children.length - 1; i++) {
+		if (select1.children[i].tagName == "SPAN") {
 			// 加入一个循环，因为由于每个span中的元素个数不定，需要准确定位到checkbox
-			for (var j = 0; j <= document.getElementById("select1").children[i].children.length - 1; j++) {
-				if (document.getElementById("select1").children[i].children[j].tagName == "INPUT" && document.getElementById("select1").children[i].children[j].checked) {			
+			for (var j = 0; j <= select1.children[i].children.length - 1; j++) {
+				if (select1.children[i].children[j].tagName == "INPUT" && select1.children[i].children[j].checked) {			
 					var span = document.createElement("span");
-					//alert(document.getElementById("select1").children[i].attributes.getNamedItem("onmouseover"));
-					span.innerHTML = document.getElementById("select1").children[i].innerHTML;
-					//alert(document.getElementById("select1").children[i].getAttribute("onmouseover"));
-					span.setAttribute("onmouseover", document.getElementById("select1").children[i].getAttribute("onmouseover"));
-					span.setAttribute("onmouseout", document.getElementById("select1").children[i].getAttribute("onmouseout"));
-					//var checkBox = document.createElement(document.getElementById("select1").children[i].innerHTML);
+					//alert(select1.children[i].attributes.getNamedItem("onmouseover"));
+					span.innerHTML = select1.children[i].innerHTML;
+					//alert(select1.children[i].getAttribute("onmouseover"));
+					span.setAttribute("onmouseover", select1.children[i].getAttribute("onmouseover"));
+					span.setAttribute("onmouseout", select1.children[i].getAttribute("onmouseout"));
+					//var checkBox = document.createElement(select1.children[i].innerHTML);
 					//span.appendChild(checkBox);
-					document.getElementById("select2").appendChild(span);
+					select2.appendChild(span);
 					nodesIndexToBeMoved[arrayIndex] = i;
 					arrayIndex++;
-					///alert(document.getElementById("select2").children[i].innerHTML);
-					//document.getElementById("select1").removeChild(document.getElementById("select1").children[i]);
+					
+					//select1.removeChild(select1.children[i]);
 				}
 			}
 		}
@@ -169,12 +167,12 @@ function moveToRight() {
 
 	// now, moved together	
 	for (var i = nodesIndexToBeMoved.length - 1; i >=0 ; i--) {
-		document.getElementById("select1").removeChild(document.getElementById("select1").children[nodesIndexToBeMoved[i]]);
+		select1.removeChild(select1.children[nodesIndexToBeMoved[i]]);
 	}
 	
-	for (var i = 0; i <= document.getElementById("select2").children.length - 1; i++) {
-	    for (var j = 0; j <= document.getElementById("select2").children[i].children.length - 1; j++) {
-		document.getElementById("select2").children[i].children[j].checked=false;
+	for (var i = 0; i <= select2.children.length - 1; i++) {
+	    for (var j = 0; j <= select2.children[i].children.length - 1; j++) {
+		select2.children[i].children[j].checked=false;
 	    }
 	}
 }
@@ -183,20 +181,20 @@ function moveToLeft() {
 	var nodesIndexToBeMoved = new Array();
 	var arrayIndex = 0;
 
-	for (var i = 0; i <= document.getElementById("select2").children.length - 1; i++) {
-		if (document.getElementById("select2").children[i].tagName == "SPAN") {
+	for (var i = 0; i <= select2.children.length - 1; i++) {
+		if (select2.children[i].tagName == "SPAN") {
 
-			for (var j = 0; j <= document.getElementById("select2").children[i].children.length - 1; j++) {
-				if (document.getElementById("select2").children[i].children[j].tagName == "INPUT" && document.getElementById("select2").children[i].children[j].checked) {			
+			for (var j = 0; j <= select2.children[i].children.length - 1; j++) {
+				if (select2.children[i].children[j].tagName == "INPUT" && select2.children[i].children[j].checked) {			
 					var span = document.createElement("span");
-					span.innerHTML = document.getElementById("select2").children[i].innerHTML;					
-					span.setAttribute("onmouseover", document.getElementById("select2").children[i].getAttribute("onmouseover"));
-					span.setAttribute("onmouseout", document.getElementById("select2").children[i].getAttribute("onmouseout"));
+					span.innerHTML = select2.children[i].innerHTML;					
+					span.setAttribute("onmouseover", select2.children[i].getAttribute("onmouseover"));
+					span.setAttribute("onmouseout", select2.children[i].getAttribute("onmouseout"));
 
-					document.getElementById("select1").appendChild(span);
+					select1.appendChild(span);
 					nodesIndexToBeMoved[arrayIndex] = i;
 					arrayIndex++;
-					//document.getElementById("select1").removeChild(document.getElementById("select1").children[i]);
+					//select1.removeChild(select1.children[i]);
 				}
 			}
 		}
@@ -204,55 +202,54 @@ function moveToLeft() {
 
 	// now, moved together	
 	for (var i = nodesIndexToBeMoved.length - 1; i >=0 ; i--) {
-		document.getElementById("select2").removeChild(document.getElementById("select2").children[nodesIndexToBeMoved[i]]);
+		select2.removeChild(select2.children[nodesIndexToBeMoved[i]]);
 	}
 	
-	for (var i = 0; i <= document.getElementById("select1").children.length - 1; i++) {
-	    for (var j = 0; j <= document.getElementById("select1").children[i].children.length - 1; j++) {
-		document.getElementById("select1").children[i].children[j].checked=false;
+	for (var i = 0; i <= select1.children.length - 1; i++) {
+	    for (var j = 0; j <= select1.children[i].children.length - 1; j++) {
+		select1.children[i].children[j].checked=false;
 	    }
 	}
 }
 
 function moveAllToRight() {
-	var childrenCount = document.getElementById("select2").children.length;
-	for (var i = 0; i <= document.getElementById("select1").children.length - 1; i++) {
-		if (document.getElementById("select1").children[i].tagName == "SPAN") {			
+	var childrenCount = select2.children.length;
+	for (var i = 0; i <= select1.children.length - 1; i++) {
+		if (select1.children[i].tagName == "SPAN") {			
 			var span = document.createElement("span");
-			span.innerHTML = document.getElementById("select1").children[i].innerHTML;
+			span.innerHTML = select1.children[i].innerHTML;
 
-			span.setAttribute("onmouseover", document.getElementById("select1").children[i].getAttribute("onmouseover"));
-			span.setAttribute("onmouseout", document.getElementById("select1").children[i].getAttribute("onmouseout"));
+			span.setAttribute("onmouseover", select1.children[i].getAttribute("onmouseover"));
+			span.setAttribute("onmouseout", select1.children[i].getAttribute("onmouseout"));
 
-			document.getElementById("select2").appendChild(span);
-			alert(document.getElementById("select2").children);
-			//document.getElementById("select1").removeChild(document.getElementById("select1").children[i]);
+			select2.appendChild(span);
+			//select1.removeChild(select1.children[i]);
 		}
 	}
 	// remove together
-	for (var i = document.getElementById("select1").children.length - 1; i >= 0; i--) {
-		if (document.getElementById("select1").children[i].tagName == "SPAN") {			
-			document.getElementById("select1").removeChild(document.getElementById("select1").children[i]);
+	for (var i = select1.children.length - 1; i >= 0; i--) {
+		if (select1.children[i].tagName == "SPAN") {			
+			select1.removeChild(select1.children[i]);
 		}
 	}
 }
 
 function moveAllToLeft() {
-	for (var i = 0; i <= document.getElementById("select2").children.length - 1; i++) {
-		if (document.getElementById("select2").children[i].tagName == "SPAN") {
+	for (var i = 0; i <= select2.children.length - 1; i++) {
+		if (select2.children[i].tagName == "SPAN") {
 			var span = document.createElement("span");
-			span.innerHTML = document.getElementById("select2").children[i].innerHTML ;
+			span.innerHTML = select2.children[i].innerHTML ;
 
-			span.setAttribute("onmouseover", document.getElementById("select2").children[i].getAttribute("onmouseover"));
-			span.setAttribute("onmouseout", document.getElementById("select2").children[i].getAttribute("onmouseout"));
+			span.setAttribute("onmouseover", select2.children[i].getAttribute("onmouseover"));
+			span.setAttribute("onmouseout", select2.children[i].getAttribute("onmouseout"));
 
-			document.getElementById("select1").appendChild(span);
+			select1.appendChild(span);
 		}
 	}	
 	// remove together
-	for (var i = document.getElementById("select2").children.length - 1; i >= 0 ; i--) {
-		if (document.getElementById("select2").children[i].tagName == "SPAN") {
-			document.getElementById("select2").removeChild(document.getElementById("select2").children[i]);
+	for (var i = select2.children.length - 1; i >= 0 ; i--) {
+		if (select2.children[i].tagName == "SPAN") {
+			select2.removeChild(select2.children[i]);
 		}
 	}
 }
@@ -262,44 +259,44 @@ function moveToNext(last) {
 	var arrayIndex = 0;
 	var lastSelected = -1;
 
-	for (var i = 0; i <= document.getElementById("select2").children.length - 1; i++) {
-		if (document.getElementById("select2").children[i].tagName == "SPAN") {
+	for (var i = 0; i <= select2.children.length - 1; i++) {
+		if (select2.children[i].tagName == "SPAN") {
 
-			for (var j = 0; j <= document.getElementById("select2").children[i].children.length - 1; j++) {
-				if (document.getElementById("select2").children[i].children[j].tagName == "INPUT" && document.getElementById("select2").children[i].children[j].checked) {			
+			for (var j = 0; j <= select2.children[i].children.length - 1; j++) {
+				if (select2.children[i].children[j].tagName == "INPUT" && select2.children[i].children[j].checked) {			
 					//var span = document.createElement("span");
-					//span.innerHTML = document.getElementById("select2").children[i].innerHTML ;
-					//var checkBox = document.createElement(document.getElementById("select1").children[i].innerHTML);
+					//span.innerHTML = select2.children[i].innerHTML ;
+					//var checkBox = document.createElement(select1.children[i].innerHTML);
 					//span.appendChild(checkBox);
-					// document.getElementById("select1").appendChild(span);
+					// select1.appendChild(span);
 					nodesIndexToBeMoved[arrayIndex] = i;
 					lastSelected = i + 1;
 					arrayIndex++;
-					//document.getElementById("select1").removeChild(document.getElementById("select1").children[i]);
+					//select1.removeChild(select1.children[i]);
 				}
 			}
 		}
 	}
 	if (last == "last") {
-		lastSelected = document.getElementById("select2").children.length - 1;
+		lastSelected = select2.children.length - 1;
 	}
 	var inserted = false;
 	// 为了保持原来的顺序
 	for (var i = nodesIndexToBeMoved.length -1; i >= 0; i--) {		
 		var span = document.createElement("span");
-		span.innerHTML = document.getElementById("select2").children[nodesIndexToBeMoved[i]].innerHTML ;
-		span.setAttribute("onmouseover", document.getElementById("select2").children[i].getAttribute("onmouseover"));
-		span.setAttribute("onmouseout", document.getElementById("select2").children[i].getAttribute("onmouseout"));
-		if (lastSelected != -1 && lastSelected <= document.getElementById("select2").children.length - 1) {
+		span.innerHTML = select2.children[nodesIndexToBeMoved[i]].innerHTML ;
+		span.setAttribute("onmouseover", select2.children[i].getAttribute("onmouseover"));
+		span.setAttribute("onmouseout", select2.children[i].getAttribute("onmouseout"));
+		if (lastSelected != -1 && lastSelected <= select2.children.length - 1) {
 			inserted = true;
-			document.getElementById("select2").children[lastSelected].insertAdjacentElement("AfterEnd",span);
+			select2.children[lastSelected].insertAdjacentElement("AfterEnd",span);
 		}
 	}
 	
 	// now, if inserted, removed 
 	if (inserted == true) { 
 		for (var i = nodesIndexToBeMoved.length - 1; i >=0 ; i--) {
-			document.getElementById("select2").removeChild(document.getElementById("select2").children[nodesIndexToBeMoved[i]]);
+			select2.removeChild(select2.children[nodesIndexToBeMoved[i]]);
 		}	
 	}
 }
@@ -309,15 +306,15 @@ function moveToPrevious(first) {
 	var arrayIndex = 0;
 	var firstSelected = -1;
 	// 记录下需要删除的节点，再批量插入和删除
-	for (var i = document.getElementById("select2").children.length - 1; i >= 0; i--) {
-		if (document.getElementById("select2").children[i].tagName == "SPAN") {
+	for (var i = select2.children.length - 1; i >= 0; i--) {
+		if (select2.children[i].tagName == "SPAN") {
 
-			for (var j = 0; j <= document.getElementById("select2").children[i].children.length - 1; j++) {
-				if (document.getElementById("select2").children[i].children[j].tagName == "INPUT" && document.getElementById("select2").children[i].children[j].checked) {
+			for (var j = 0; j <= select2.children[i].children.length - 1; j++) {
+				if (select2.children[i].children[j].tagName == "INPUT" && select2.children[i].children[j].checked) {
 					nodesIndexToBeMoved[arrayIndex] = i;
 					firstSelected = i - 1;
 					arrayIndex++;
-					//document.getElementById("select1").removeChild(document.getElementById("select1").children[i]);
+					//select1.removeChild(select1.children[i]);
 				}
 			}
 		}
@@ -329,12 +326,12 @@ function moveToPrevious(first) {
 	// insert
 	for (var i = nodesIndexToBeMoved.length -1; i >= 0; i--) {		
 		var span = document.createElement("span");
-		span.innerHTML = document.getElementById("select2").children[nodesIndexToBeMoved[i]].innerHTML;
-		span.setAttribute("onmouseover", document.getElementById("select2").children[i].getAttribute("onmouseover"));
-		span.setAttribute("onmouseout", document.getElementById("select2").children[i].getAttribute("onmouseout"));
+		span.innerHTML = select2.children[nodesIndexToBeMoved[i]].innerHTML;
+		span.setAttribute("onmouseover", select2.children[i].getAttribute("onmouseover"));
+		span.setAttribute("onmouseout", select2.children[i].getAttribute("onmouseout"));
 		if (firstSelected >= 0) {
 			inserted = true;
-			document.getElementById("select2").children[firstSelected].insertAdjacentElement("BeforeBegin",span);
+			select2.children[firstSelected].insertAdjacentElement("BeforeBegin",span);
 			// 
 			firstSelected++;
 			for (var j = nodesIndexToBeMoved.length -1; j >= 0; j--) {
@@ -346,7 +343,7 @@ function moveToPrevious(first) {
 	// now, if inserted, removed 
 	if (inserted == true) { 
 		for (var i = 0; i <= nodesIndexToBeMoved.length - 1 ; i++) {
-			document.getElementById("select2").removeChild(document.getElementById("select2").children[nodesIndexToBeMoved[i]]);
+			select2.removeChild(select2.children[nodesIndexToBeMoved[i]]);
 		}	
 	}
 }
@@ -359,26 +356,14 @@ function moveToPrevious(first) {
 <SCRIPT language=JAVASCRIPT1.2>
 
 function f_submit(){
-    var childrens=document.getElementById("select2").children;
-    
+    var childrens=select2.all;
     var returnId=new Array(2);
     var reptId="",reptName="";
     if(childrens.length>0){
 	for (var i = 0; i <= childrens.length - 1; i++) {
-		
 		if(childrens[i].tagName=='INPUT'){
-			//alert("aaa="+childrens[i].value);
 			reptId+=","+childrens[i].value;
 			reptName+=","+childrens[i].id;
-		}else{
-			var temp2 = childrens[i].innerHTML;
-			var tempId = temp2.substring(temp2.indexOf('id="')+4);
-			tempId = tempId.substring(0,tempId.indexOf('"'));
-			
-			var tempValue = temp2.substring(temp2.indexOf('value="')+7);
-			tempValue = tempValue.substring(0,tempValue.indexOf('"'));
-			reptId+=","+tempValue;
-			reptName+=","+tempId;
 		}
 	}
 	if(reptId.indexOf(',')!=-1) reptId=reptId.substring(1);

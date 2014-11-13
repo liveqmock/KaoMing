@@ -24,20 +24,20 @@
 
 %>
 <body  >
-  <table width="90%" border="0" align="center" cellpadding="2" cellspacing="1" class="content12">
+  <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" class="content12">
   <tr>
     <td>零件销售&gt;询价单明细&gt;客户报价</td>
   </tr>
 </table>
 <br>
-<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="content12">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="content12">
   <tr> 
     <td ><p>客户名称： <%=custName%> </p></td>
   </tr>
 </table>
 <br>
 
-<table width="90%" border="0" align="center" cellpadding="0" cellspacing="1" class="content12">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="1" class="content12">
 
 
   <tr bgcolor="#CCCCCC"> 
@@ -51,6 +51,8 @@
        <td><strong>利润单价</strong></td>
        <td><strong>经办人</strong></td>
        <td><strong>询价时间</strong></td>
+      <td><strong>销售单</strong></td>
+      <td><strong>类型</strong></td>
   </tr>
          
        

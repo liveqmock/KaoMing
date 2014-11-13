@@ -108,7 +108,7 @@
 	function f_queryC(){
 		var customerId=document.forms[0].customerId.value;
 		if(customerId!=''){
-			window.open("saleInfoAction.do?method=custPrice&customerId="+customerId,"","width=700,height=300,left=50,top=10,menubar=no,toolbar=no,resizable=yes,scrolling=yes,scrollbars=yes");
+			window.open("saleInfoAction.do?method=custPrice&customerId="+customerId,"","width=900,height=300,left=50,top=10,menubar=no,toolbar=no,resizable=yes,scrolling=yes,scrollbars=yes");
 		}else{
 			alert("请先选择客户");
 		}
@@ -116,7 +116,7 @@
 	function f_queryP(){
 		var stuffNo=document.forms[0].stuffNo.value;
 		if(stuffNo!=''){
-			window.open("saleInfoAction.do?method=historyPrice&stuffNo="+stuffNo,"","width=700,height=300,left=50,top=10,menubar=no,toolbar=no,resizable=yes,scrolling=yes,scrollbars=yes");
+			window.open("saleInfoAction.do?method=historyPrice&stuffNo="+stuffNo,"","width=900,height=300,left=50,top=10,menubar=no,toolbar=no,resizable=yes,scrolling=yes,scrollbars=yes");
 		}else{
 			alert("请先输入料号");
 		}
