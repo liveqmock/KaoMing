@@ -3,12 +3,7 @@ package com.dne.sie.util;
 import javax.servlet.*;
 import java.io.IOException;
 
-/**
- * 字符转码通用类
- * @author xt
- * @version 1.1.5.6
- * @see SetCharacterEncodingFilter.java 
- */
+
 public class SetCharacterEncodingFilter
     implements Filter {
 
@@ -48,7 +43,7 @@ public class SetCharacterEncodingFilter
    * interpret request parameters for this request.
    *
    * @param request The servlet request we are processing
-   * @param result The servlet response we are creating
+   * @param response The servlet response we are creating
    * @param chain The filter chain we are processing
    *
    * @exception IOException if an input/output error occurs
