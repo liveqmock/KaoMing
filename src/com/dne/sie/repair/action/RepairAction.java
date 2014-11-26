@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dne.sie.maintenance.bo.CustomerInfoBo;
 import org.apache.struts.action.ActionForm;
 
 import com.dne.sie.common.tools.FormNumberBuilder;
@@ -440,8 +441,16 @@ public class RepairAction extends ControlAction {
 
         RepairServiceForm rsf = RepairListBo.getInstance().getRepairDetail(new Long(repairNo));
 
-        request.setAttribute("partsList",SaleInfoBo.getInstance().getSalePartsListByNo(new Long(repairNo)));
+//        request.setAttribute("partsList",SaleInfoBo.getInstance().getSalePartsListByNo(new Long(repairNo)));
+        request.setAttribute("partsList", SaleInfoBo.getInstance().detailList(rsf.getSaleNo()));
+        RepairFeeInfoForm rfi = RepairListBo.getInstance().getRepairFeeInfo(new Long(repairNo));
+        Double quote = 0D;
+        if(rfi!=null && rfi.getRepairQuote()!=null){
+            quote = rfi.getRepairQuote();
+        }
+        request.setAttribute("quote", quote);
         request.setAttribute("repair", rsf);
+        request.setAttribute("shb2", CustomerInfoBo.getInstance().find("SHB2"));
 
         return "repairPrint";
     }

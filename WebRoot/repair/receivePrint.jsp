@@ -9,6 +9,8 @@ try {
 	RepairServiceForm rsf = (RepairServiceForm) request.getAttribute("repair");
 	ArrayList partsList = (ArrayList) request.getAttribute("partsList");
 	CustomerInfoForm cif = rsf.getCustomInfoForm();
+    CustomerInfoForm shb2 = (CustomerInfoForm) request.getAttribute("shb2");
+    Double quote = (Double) request.getAttribute("quote");
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -53,20 +55,20 @@ try {
 			</tr>
 			<tr>
 				<td width="65" rowspan="2"><b>报价</b></td>
-				<td colspan="7">台湾高明精机工业股份有限公司大陆办事处</td>
+				<td colspan="7"><%=shb2.getRemark()==null?"":shb2.getRemark()%></td>
 			</tr>
 			<tr>
-				<td colspan="7">上海晨冉机电有限公司</td>
+				<td colspan="7"><%=shb2.getCustomerName()==null?"":shb2.getCustomerName()%></td>
 			</tr>
 			<tr>
 				<td width="65"><b>联系人</b></td>
-				<td width="80">蒋芳</td>
+				<td width="80"><%=shb2.getLinkman()==null?"":shb2.getLinkman()%></td>
 				<td width="65"><b>电话</b></td>
-				<td>021-62128864</td>
+				<td><%=shb2.getPhone()==null?"":shb2.getPhone()%></td>
 				<td width="65"><b>传真</b></td>
-				<td>021-62128854</td>
+				<td><%=shb2.getFax()==null?"":shb2.getFax()%></td>
 				<td width="65"><b>报价单号</b></td>
-				<td></td>
+				<td><%=rsf.getServiceSheetNo()%></td>
 			</tr>
 		</table>
 		<div class="root">
@@ -90,38 +92,42 @@ try {
 		<table border="1" cellspacing="1">
 			<tr>
 				<td width="210"><b>零件名称</b></td>
-				<td width="240"><b>数量</b></td>
-				<td width="220"><b>价格</b></td>
+				<td width="160"><b>数量</b></td>
+				<td width="140"><b>单价</b></td>
+                <td width="140"><b>总价</b></td>
 			</tr>
 			 <%
+                 double totleQuote = 0;
 				 if(partsList!=null){
 				 	for(int i=0;i<partsList.size();i++){
-				 		Object[] obj = (Object[])partsList.get(i);
+				 		String[] obj = (String[])partsList.get(i);
+                        double tmp = Integer.parseInt(obj[5]) * Double.parseDouble(obj[6]);
+                        totleQuote += tmp;
 			  %>
-			<tr><td><%=obj[3] %></td><td><%=obj[4] %></td><td><%=obj[5] %></td></tr>
+			    <tr><td><%=obj[4] %></td><td><%=obj[5] %></td><td><%=obj[6] %></td><td><%=tmp %></td></tr>
 			<%}} %>
 		</table>
 		<div class="root"></div>
 		<table border="1" cellspacing="1">
 			<tr>
 				<td width="210"><b>维修费</b></td>
-				<td width=""><%=rsf.getRepairFee()==null?"":"￥"+rsf.getRepairFee() %>元</td>
+				<td width=""><%="￥"+quote %>元</td>
 			</tr>
 			<tr>
 				<td width="210"><b>零件金额</b></td>
-				<td><%=rsf.getPartsFee()==null?"":"￥"+rsf.getPartsFee()%>元</td>
+				<td><%=totleQuote%>元</td>
 			</tr>
 			<tr>
 				<td width="210"><b>17%增值税</b></td>
-				<td><%=rsf.getVat()==null?"":"￥"+rsf.getVat() %>元</td>
+				<td><%=Operate.toFix((quote+totleQuote) * 0.17,2)%>元</td>
 			</tr>
 			<tr>
 				<td width="210"><b>总计金额（小写）</b></td>
-				<td><%=rsf.getTotalFee()==null?"":"￥"+rsf.getTotalFee() %>元</td>
+				<td><%=Operate.toFix((quote+totleQuote) * 1.17,2)%>元</td>
 			</tr>
 			<tr>
 				<td width="210"><b>总计金额（大写）</b></td>
-				<td>人民币：<%=rsf.getTotalFee()==null?"":ConvertMoney.convertMoneyFormat((Double)rsf.getTotalFee()) %></td>
+				<td>人民币：<%=(quote+totleQuote)==0?"":ConvertMoney.convertMoneyFormat((quote+totleQuote) * 1.17) %></td>
 			</tr>
 		</table>
 		<div class="root"></div>
@@ -133,15 +139,15 @@ try {
 			<tr>
 				<td width="210" rowspan="4"><b>银行资料</b></td>
 				<td>单位名称</td>
-				<td>上海晨冉机电有限公司</td>
+				<td><%=shb2.getCustomerName()==null?"":shb2.getCustomerName()%></td>
 			</tr>
 			<tr>
 				<td>银行账号</td>
-				<td>175549-11006530418201</td>
+				<td><%=shb2.getBankAccount()==null?"":shb2.getBankAccount()%></td>
 			</tr>
 			<tr>
 				<td>开户行：</td>
-				<td>深圳发展银行上海支行长宁分行</td>
+				<td><%=shb2.getBank()==null?"":shb2.getBank()%></td>
 			</tr>
 		</table>
 		<div class="root"></div>

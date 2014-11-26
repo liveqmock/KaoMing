@@ -7,7 +7,7 @@
 	<display-name>KaoMing</display-name>
 	<context-param id="ContextParam_1">
 		<param-name>encoding</param-name>
-		<param-value>GBK</param-value>
+		<param-value>UTF-8</param-value>
 	</context-param>
 	
 	<filter>

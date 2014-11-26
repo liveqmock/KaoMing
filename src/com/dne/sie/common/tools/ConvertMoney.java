@@ -2,99 +2,99 @@ package com.dne.sie.common.tools;
 
 public class ConvertMoney {
 
-	public static String[] STANDARD_STR = { "·Ö", "½Ç", "", "", "Ê°", "°Û", "Çª",
-	    "Íò", "Ê°", "°Û", "Çª", "ÒÚ", "Ê°", "°Û", "Çª", "Íò", "Ê°", "°Û", "Çª"};
+    public static String[] STANDARD_STR = { "åˆ†", "è§’", "", "", "æ‹¾", "ä½°", "ä»Ÿ",
+            "ä¸‡", "æ‹¾", "ä½°", "ä»Ÿ", "äº¿", "æ‹¾", "ä½°", "ä»Ÿ", "ä¸‡", "æ‹¾", "ä½°", "ä»Ÿ"};
 
-	public static String convertMoneyFormat(double src) {
-	  String result = "";
-	  if (src == 0)
-	    return "ÁãÔªÕû";
+    public static String convertMoneyFormat(double src) {
+        String result = "";
+        if (src == 0)
+            return "é›¶å…ƒæ•´";
 
-	  boolean isNegative = (src < 0) ? true : false;
-	  long source = Math.round(src * 100.0);
-	  if (isNegative)
-	    source = -source;
+        boolean isNegative = (src < 0) ? true : false;
+        long source = Math.round(src * 100.0);
+        if (isNegative)
+            source = -source;
 
-	  String str = Long.toString(source);
-	  int length = str.length() + 1;
-	  if (length < 4) {
-	    str = "0.00".substring(0, 5 - length) + str;
-	    length = 4;
-	  } else
-	    str = str.substring(0, length - 3) + "." + str.substring(length - 3);
+        String str = Long.toString(source);
+        int length = str.length() + 1;
+        if (length < 4) {
+            str = "0.00".substring(0, 5 - length) + str;
+            length = 4;
+        } else
+            str = str.substring(0, length - 3) + "." + str.substring(length - 3);
 
-	  char a;
-	  for (int i = 0; i < length; i++) {
-	    a = str.charAt(i);
-	    // ×ª»»Îª¶ÔÓ¦Êý×Ö£¨Ð¡Êýµã×ªÎª»õ±Òµ¥Î»¡°Ôª¡±£©
-	    switch (a) {
-	    case '.':
-	    result += "Ôª";
-	    break;
-	    case '1':
-	    result += "Ò¼";
-	    break;
-	    case '2':
-	    result += "·¡";
-	    break;
-	    case '3':
-	    result += "Èþ";
-	    break;
-	    case '4':
-	    result += "ËÁ";
-	    break;
-	    case '5':
-	    result += "Îé";
-	    break;
-	    case '6':
-	    result += "Â½";
-	    break;
-	    case '7':
-	    result += "Æâ";
-	    break;
-	    case '8':
-	    result += "°Æ";
-	    break;
-	    case '9':
-	    result += "¾Á";
-	    break;
-	    case '0':
-	    default:
-	    result += "Áã";
-	    }
-	    
-	    // ¼ÓÉÏ±íÊ¾ÊýÁ¿¼¶µÄÁ¿¸Ù
-	    result += STANDARD_STR[length - i - 1];
-	  }
+        char a;
+        for (int i = 0; i < length; i++) {
+            a = str.charAt(i);
+            // è½¬æ¢ä¸ºå¯¹åº”æ•°å­—ï¼ˆå°æ•°ç‚¹è½¬ä¸ºè´§å¸å•ä½â€œå…ƒâ€ï¼‰
+            switch (a) {
+                case '.':
+                    result += "å…ƒ";
+                    break;
+                case '1':
+                    result += "å£¹";
+                    break;
+                case '2':
+                    result += "è´°";
+                    break;
+                case '3':
+                    result += "å";
+                    break;
+                case '4':
+                    result += "è‚†";
+                    break;
+                case '5':
+                    result += "ä¼";
+                    break;
+                case '6':
+                    result += "é™†";
+                    break;
+                case '7':
+                    result += "æŸ’";
+                    break;
+                case '8':
+                    result += "æŒ";
+                    break;
+                case '9':
+                    result += "çŽ–";
+                    break;
+                case '0':
+                default:
+                    result += "é›¶";
+            }
 
-	  // È¥³ýÈßÓà×Ö´®
-	  result = result.replaceAll("ÁãÊ°", "Áã");
-	  result = result.replaceAll("Áã°Û", "Áã");
-	  result = result.replaceAll("ÁãÇª", "Áã");
-	  result = result.replaceAll("ÁãÁãÁã", "Áã");
-	  result = result.replaceAll("ÁãÁã", "Áã");
-	  result = result.replaceAll("Áã½ÇÁã·Ö", "Õû");
-	  result = result.replaceAll("Áã·Ö", "Õû");
-	  result = result.replaceAll("Áã½Ç", "Áã");
-	  result = result.replaceAll("ÁãÒÚÁãÍòÁãÔª", "ÒÚÔª");
-	  result = result.replaceAll("ÒÚÁãÍòÁãÔª", "ÒÚÔª");
-	  result = result.replaceAll("ÁãÒÚÁãÍò", "ÒÚ");
-	  result = result.replaceAll("ÁãÍòÁãÔª", "ÍòÔª");
-	  result = result.replaceAll("ÍòÁãÔª", "ÍòÔª");
-	  result = result.replaceAll("ÁãÒÚ", "ÒÚ");
-	  result = result.replaceAll("ÁãÍò", "Íò");
-	  result = result.replaceAll("ÁãÔª", "Ôª");
-	  result = result.replaceAll("ÁãÁã", "Áã");
+            // åŠ ä¸Šè¡¨ç¤ºæ•°é‡çº§çš„é‡çº²
+            result += STANDARD_STR[length - i - 1];
+        }
 
-	       // ÌØÊâ´¦Àí
-	  if (result.startsWith("Ôª"))
-	    result = result.substring(1);
+        // åŽ»é™¤å†—ä½™å­—ä¸²
+        result = result.replaceAll("é›¶æ‹¾", "é›¶");
+        result = result.replaceAll("é›¶ä½°", "é›¶");
+        result = result.replaceAll("é›¶ä»Ÿ", "é›¶");
+        result = result.replaceAll("é›¶é›¶é›¶", "é›¶");
+        result = result.replaceAll("é›¶é›¶", "é›¶");
+        result = result.replaceAll("é›¶è§’é›¶åˆ†", "æ•´");
+        result = result.replaceAll("é›¶åˆ†", "æ•´");
+        result = result.replaceAll("é›¶è§’", "é›¶");
+        result = result.replaceAll("é›¶äº¿é›¶ä¸‡é›¶å…ƒ", "äº¿å…ƒ");
+        result = result.replaceAll("äº¿é›¶ä¸‡é›¶å…ƒ", "äº¿å…ƒ");
+        result = result.replaceAll("é›¶äº¿é›¶ä¸‡", "äº¿");
+        result = result.replaceAll("é›¶ä¸‡é›¶å…ƒ", "ä¸‡å…ƒ");
+        result = result.replaceAll("ä¸‡é›¶å…ƒ", "ä¸‡å…ƒ");
+        result = result.replaceAll("é›¶äº¿", "äº¿");
+        result = result.replaceAll("é›¶ä¸‡", "ä¸‡");
+        result = result.replaceAll("é›¶å…ƒ", "å…ƒ");
+        result = result.replaceAll("é›¶é›¶", "é›¶");
 
-	       // ¸ºÊýÖ®Ç°¼ÓÉÏ¡°¸º¡±
-	  if (isNegative)
-	    result = "¸º" + result;
+        // ç‰¹æ®Šå¤„ç†
+        if (result.startsWith("å…ƒ"))
+            result = result.substring(1);
 
-	  return result;
-	}
+        // è´Ÿæ•°ä¹‹å‰åŠ ä¸Šâ€œè´Ÿâ€
+        if (isNegative)
+            result = "è´Ÿ" + result;
+
+        return result;
+    }
 
 }
