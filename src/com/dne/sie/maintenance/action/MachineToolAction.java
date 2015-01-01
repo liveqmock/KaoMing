@@ -17,227 +17,227 @@ import com.dne.sie.maintenance.form.MachineToolForm;
 import com.dne.sie.util.action.ControlAction;
 
 public class MachineToolAction extends ControlAction {
-	
-	
 
-	/**
-	* ¿Í»§±íĞÅÏ¢ ÁĞ±íÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-   public String machineToolList(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "machineToolList";
-		MachineToolForm pif=(MachineToolForm)form;
-		MachineToolBo pib = MachineToolBo.getInstance();
-		request.setAttribute("machineToolList",pib.list(pif));
-		
-		return forward;
-   }
 
-  
-  /**
-	* ¿Í»§±íĞÅÏ¢ ĞŞ¸ÄÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String machineToolEdit(HttpServletRequest request, ActionForm form) {
-		String forward = "machineToolEdit";
-		try{
-			String machineId=request.getParameter("ids");
-			if(machineId!=null&&!machineId.isEmpty()){
-				request.setAttribute("machineToolForm", MachineToolBo.getInstance().find(new Long(machineId)));
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
-  
-  
 
-  /**
-	* ¿Í»§±íĞÅÏ¢ ²åÈë²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String insertMachineTool(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		try{
-			MachineToolForm pif=(MachineToolForm)form;
-		    pif.setCreateBy((Long)request.getSession().getAttribute("userId"));
-			MachineToolBo cibo = MachineToolBo.getInstance();
-			pif.setPurchaseDate(Operate.toDate(pif.getPurchaseDateStr()));
-			pif.setExtendedWarrantyDate(Operate.toDate(pif.getExtendedWarrantyDateStr()));
-			int tag=cibo.add(pif);
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "saveMachineTool");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
-  
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ åˆ—è¡¨é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String machineToolList(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "machineToolList";
+        MachineToolForm pif=(MachineToolForm)form;
+        MachineToolBo pib = MachineToolBo.getInstance();
+        request.setAttribute("machineToolList",pib.list(pif));
 
-  /**
-	* ¿Í»§±íĞÅÏ¢ ĞŞ¸Ä²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String updateMachineTool(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		try{
-			MachineToolForm pif=(MachineToolForm)form;
-			MachineToolBo cibo = MachineToolBo.getInstance();
-			pif.setUpdateBy((Long)request.getSession().getAttribute("userId"));
-			pif.setUpdateDate(new Date());
-			pif.setPurchaseDate(Operate.toDate(pif.getPurchaseDateStr()));
-			pif.setExtendedWarrantyDate(Operate.toDate(pif.getExtendedWarrantyDateStr()));
-			int tag=cibo.modify(pif);
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "saveMachineTool");
-		
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
-  
+        return forward;
+    }
 
-  /**
-	* ¿Í»§±íĞÅÏ¢ É¾³ı²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String deleteMachineTool(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		try{
-			String sysId=request.getParameter("ids");
-			int tag=MachineToolBo.getInstance().delete(sysId);
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "saveMachineTool");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-  }
-  
-  
 
-	/**
-	 * Ğ£ÑéÓÃ»§idÊÇ·ñ´æÔÚ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public void ajaxChkSerial(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
-		PrintWriter writer = null;
-		try{
-			String machineId=request.getParameter("machineId");
-			String serialNo=request.getParameter("serialNo");
-			MachineToolBo ubo = MachineToolBo.getInstance();
-			String strXml="false";
-			if(ubo.chkSerial(machineId,serialNo)){
-				strXml="true";
-			}
-		
-			writer = response.getWriter();			
-			response.setContentType("text/xml");					
-			response.setHeader("Cache-Control", "no-cache");      
-			writer.println("<xml>");
-			
-			writer.println("<ifUse>"+strXml+"</ifUse>");
-		
-			writer.println("</xml>");
-			
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			if(writer!=null){
-				writer.flush();
-				writer.close();
-			}
-		}
-	
-	}
-	
-	
-	public String getSerialInfo(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try{
-			response.setContentType("text/html;charset=UTF-8");
-			
-			//diable cache
-	        // Set to expire far in the past.
-	        response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-	
-	        // Set standard HTTP/1.1 no-cache headers.
-	        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-	
-	        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-	        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-	
-	        // Set standard HTTP/1.0 no-cache header.
-	        response.setHeader("Pragma", "no-cache");
-			
-			//µÃµ½Ò³ÃæÉÏÊäÈëµÄÖµ
-			String inputValue = request.getParameter("inputValue");
-			//ÖĞÎÄĞèÒª×ª»»£¬Ê¹ÓÃjavascriptµÄescape±àÂë£¬ËùÓĞ×Ö·û¼¯¶¼¿ÉÓÃ
-			inputValue = EscapeUnescape.unescape(inputValue);
-			//µÃµ½ËùÓĞ¾­ÏúÉÌµÄÃû×ÖºÍid
-			List machineList = MachineToolBo.getInstance().getSerialListByName(inputValue);
-			
-			String modelCode = "";		
-			String serialNo = "";		
-			String warrantyCardNo = "";		
-			String purchaseDate = "";		
-			String extendedWarrantyDate = "";	
-			
-			String StrongDealerName = "";
-			
-			StringBuffer buffer = new StringBuffer();
-			for (int i = 0; i < machineList.size(); i++) {
-				Object[] obj = (Object[]) machineList.get(i);
-			
-				modelCode = obj[0].toString();
-				serialNo = obj[1].toString();
-				warrantyCardNo = obj[2]==null?"":obj[2].toString();
-				purchaseDate = obj[3]==null?"":Operate.trimDate((Date)obj[3]);
-				extendedWarrantyDate = obj[4]==null?"":Operate.trimDate((Date)obj[4]);
-				
-				if(serialNo.indexOf(inputValue) != -1) {
-					//°ÑÊäÈëµÄÖµºÍÊı¾İ¿âµÄÊı¾İ±È½Ïºó,¼Ó´Ö
-					StrongDealerName = serialNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
-					
-					buffer.append("<div onselect=\"this.text.value = '")
-						  .append(serialNo)
-						  .append("';$('modelCode').value = '")
-						  .append(modelCode)
-						  .append("';$('warrantyCardNo').value = '")
-						  .append(warrantyCardNo)
-						  .append("';$('purchaseDateStr').value = '")
-						  .append(purchaseDate)
-						  .append("';$('extendedWarrantyDate').value = '")
-						  .append(extendedWarrantyDate)
-						  .append("'\">")
-						  .append(StrongDealerName)
-						  .append("</div>");
-				}
-			}
-			PrintWriter out = response.getWriter();
-			out.println(buffer.toString());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ ä¿®æ”¹é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String machineToolEdit(HttpServletRequest request, ActionForm form) {
+        String forward = "machineToolEdit";
+        try{
+            String machineId=request.getParameter("ids");
+            if(machineId!=null&&!machineId.isEmpty()){
+                request.setAttribute("machineToolForm", MachineToolBo.getInstance().find(new Long(machineId)));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ æ’å…¥æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String insertMachineTool(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        try{
+            MachineToolForm pif=(MachineToolForm)form;
+            pif.setCreateBy((Long)request.getSession().getAttribute("userId"));
+            MachineToolBo cibo = MachineToolBo.getInstance();
+            pif.setPurchaseDate(Operate.toDate(pif.getPurchaseDateStr()));
+            pif.setExtendedWarrantyDate(Operate.toDate(pif.getExtendedWarrantyDateStr()));
+            int tag=cibo.add(pif);
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "saveMachineTool");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ ä¿®æ”¹æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String updateMachineTool(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        try{
+            MachineToolForm pif=(MachineToolForm)form;
+            MachineToolBo cibo = MachineToolBo.getInstance();
+            pif.setUpdateBy((Long)request.getSession().getAttribute("userId"));
+            pif.setUpdateDate(new Date());
+            pif.setPurchaseDate(Operate.toDate(pif.getPurchaseDateStr()));
+            pif.setExtendedWarrantyDate(Operate.toDate(pif.getExtendedWarrantyDateStr()));
+            int tag=cibo.modify(pif);
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "saveMachineTool");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * å®¢æˆ·è¡¨ä¿¡æ¯ åˆ é™¤æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String deleteMachineTool(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        try{
+            String sysId=request.getParameter("ids");
+            int tag=MachineToolBo.getInstance().delete(sysId);
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "saveMachineTool");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+    /**
+     * æ ¡éªŒç”¨æˆ·idæ˜¯å¦å­˜åœ¨
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public void ajaxChkSerial(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+        PrintWriter writer = null;
+        try{
+            String machineId=request.getParameter("machineId");
+            String serialNo=request.getParameter("serialNo");
+            MachineToolBo ubo = MachineToolBo.getInstance();
+            String strXml="false";
+            if(ubo.chkSerial(machineId,serialNo)){
+                strXml="true";
+            }
+
+            writer = response.getWriter();
+            response.setContentType("text/xml");
+            response.setHeader("Cache-Control", "no-cache");
+            writer.println("<xml>");
+
+            writer.println("<ifUse>"+strXml+"</ifUse>");
+
+            writer.println("</xml>");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if(writer!=null){
+                writer.flush();
+                writer.close();
+            }
+        }
+
+    }
+
+
+    public String getSerialInfo(ActionMapping mapping, ActionForm form,
+                                HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            response.setContentType("text/html;charset=UTF-8");
+
+            //diable cache
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+
+            //å¾—åˆ°é¡µé¢ä¸Šè¾“å…¥çš„å€¼
+            String inputValue = request.getParameter("inputValue");
+            //ä¸­æ–‡éœ€è¦è½¬æ¢ï¼Œä½¿ç”¨javascriptçš„escapeç¼–ç ï¼Œæ‰€æœ‰å­—ç¬¦é›†éƒ½å¯ç”¨
+            inputValue = EscapeUnescape.unescape(inputValue);
+            //å¾—åˆ°æ‰€æœ‰ç»é”€å•†çš„åå­—å’Œid
+            List machineList = MachineToolBo.getInstance().getSerialListByName(inputValue);
+
+            String modelCode = "";
+            String serialNo = "";
+            String warrantyCardNo = "";
+            String purchaseDate = "";
+            String extendedWarrantyDate = "";
+
+            String StrongDealerName = "";
+
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < machineList.size(); i++) {
+                Object[] obj = (Object[]) machineList.get(i);
+
+                modelCode = obj[0].toString();
+                serialNo = obj[1].toString();
+                warrantyCardNo = obj[2]==null?"":obj[2].toString();
+                purchaseDate = obj[3]==null?"":Operate.trimDate((Date)obj[3]);
+                extendedWarrantyDate = obj[4]==null?"":Operate.trimDate((Date)obj[4]);
+
+                if(serialNo.indexOf(inputValue) != -1) {
+                    //æŠŠè¾“å…¥çš„å€¼å’Œæ•°æ®åº“çš„æ•°æ®æ¯”è¾ƒå,åŠ ç²—
+                    StrongDealerName = serialNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+
+                    buffer.append("<div onselect=\"this.text.value = '")
+                            .append(serialNo)
+                            .append("';document.forms[0].modelCode.value = '")
+                            .append(modelCode)
+                            .append("';document.forms[0].warrantyCardNo.value = '")
+                            .append(warrantyCardNo)
+                            .append("';document.forms[0].purchaseDateStr.value = '")
+                            .append(purchaseDate)
+                            .append("';document.forms[0].extendedWarrantyDate.value = '")
+                            .append(extendedWarrantyDate)
+                            .append("'\">")
+                            .append(StrongDealerName)
+                            .append("</div>");
+                }
+            }
+            PrintWriter out = response.getWriter();
+            out.println(buffer.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

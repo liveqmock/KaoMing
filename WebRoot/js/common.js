@@ -5,7 +5,7 @@ function middleOpen(myUrl,myName,myStyle){
 	var heightStart = myStyle.indexOf("height=");
 	var hetghtEnd = 0;
 	for(var i=heightStart;i<=myStyle.length;i++){
-		if((myStyle.charAt(i) == ',') || (i==myStyle.length)){//Óöµ½¡°£¬¡±ÍË³ö£¬±íÊ¾½áÊø,»òÒÑ¾­µ½´ï×Ö·û´®Ä©Î²
+		if((myStyle.charAt(i) == ',') || (i==myStyle.length)){//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½Ä©Î²
 			hetghtEnd = i;
 			break;
 		}
@@ -14,16 +14,16 @@ function middleOpen(myUrl,myName,myStyle){
 	var widthiStart = myStyle.indexOf("width=");
 	var widthEnd = 0;
 	for(var i=widthiStart;i<=myStyle.length;i++){
-		if((myStyle.charAt(i) == ',') || (i==myStyle.length)){//Óöµ½¡°£¬¡±ÍË³ö£¬±íÊ¾½áÊø,»òÒÑ¾­µ½´ï×Ö·û´®Ä©Î²
+		if((myStyle.charAt(i) == ',') || (i==myStyle.length)){//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½Ä©Î²
 			widthEnd = i;
 			break;
 		}
 	}
 	var myWidth = myStyle.substring(widthiStart+6,widthEnd);
-	var openWindowHeight = parseInt(myHeight);//ÌáÈ¡¸ß¶È
-	var openWindowWidth = parseInt(myWidth);//ÌáÈ¡¿í¶È
-	if(isNaN(openWindowHeight) || isNaN(openWindowWidth)){//Èç¹ûÌáÈ¡µÄÖµ²»ÕýÈ·£¬ÍË³ö£¬ÌáÊ¾£¡
-		alert("ÎÞ·¨´ò¿ªÒ³Ãæ£¬ÇëÁªÏµÎ¬»¤ÈËÔ±£¡");
+	var openWindowHeight = parseInt(myHeight);//ï¿½ï¿½È¡ï¿½ß¶ï¿½
+	var openWindowWidth = parseInt(myWidth);//ï¿½ï¿½È¡ï¿½ï¿½ï¿½
+	if(isNaN(openWindowHeight) || isNaN(openWindowWidth)){//ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+		alert("ï¿½Þ·ï¿½ï¿½ï¿½Ò³ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ÏµÎ¬ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
 		return;
 	}
 	var popTop = (clientScreenHeight-openWindowHeight)/2;
@@ -48,13 +48,13 @@ function middleOpen(myUrl,myName,myStyle){
 	    {
 	     if(value.indexOf(".")<0) value += ".";
 	     for(var i=0;i<2;i++)
-		  value = value.toString();// Èç¹û²»¼ÓÕâ¾ä»°£¬»áÅöµ½¼ÓÁ½¸öÁãµÄÇé¿ö59.89999999999998
+		  value = value.toString();// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä»°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½59.89999999999998
 	      value += "0";
 	    }
 	    
 	    return value;
    }
-//ÊÇ·ñÎªÓÐÐ§×Ö·û""
+//ï¿½Ç·ï¿½Îªï¿½ï¿½Ð§ï¿½Ö·ï¿½""
 function getValidStr(str) {
 	str+="";
 	if (str=="undefined" || str=="null")
@@ -63,14 +63,14 @@ function getValidStr(str) {
 		return str;
 }
 
-//È¥µôÁ½¶Ë¿Õ¸ñ
+//È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿Õ¸ï¿½
 function trim(str){
 	str=getValidStr(str);
 	if (!str) return "";
 	for(var i=str.length-1; i>=0; i--){
 		if (str.charCodeAt(i, 10)!=32) break;
 	}
-	// ÐÞÕýÖ»È¥³ýºóÃæ¿Õ¸ñµÄBUG
+	// ï¿½ï¿½ï¿½ï¿½Ö»È¥ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½ï¿½BUG
 	for (var j=0; j <= str.length - 1; j++) {
 		if (str.charCodeAt(j) != 32) {
 			break;
@@ -90,7 +90,7 @@ function isNumber(obj){
 	return !isNaN(parseFloat(obj.value));
 }
 
-function formatnumber(value,num) //Ö±½ÓÈ¥Î²
+function formatnumber(value,num) //Ö±ï¿½ï¿½È¥Î²
 {
 	var a,b,c,i
 	a = value.toString();
@@ -118,8 +118,8 @@ function formatnumber(value,num) //Ö±½ÓÈ¥Î²
 	return a
 }
 
-//==============¸ñÊ½»¯×Ö·û´®ÎªÈÕÆÚ=================
-//´«ÈëÈÕÆÚ¸ñÊ½Ê¾Àý£º2006-2-12
+//==============ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Ö·ï¿½Îªï¿½ï¿½ï¿½ï¿½=================
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Ê½Ê¾ï¿½ï¿½2006-2-12
 function formatStringToDate(str){
 	var strs = str.split("-");
 	var year = parseInt(strs[0]);
@@ -143,15 +143,15 @@ function arrayContains(objArray,objValue){
 	return booRet;
 }
 
-//initData-³õÊ¼Êý¾Ý;segment-Ã¿¶Î³¤¶È
+//initData-ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½;segment-Ã¿ï¿½Î³ï¿½ï¿½ï¿½
 function stringToArray(initData,segment){
 	var orgs = new Array(1);
 	if( initData!=''&&initData.length>0 ){	
-		var alSize=initData.length;		//initData×Ü³¤¶È
-		if(alSize>segment){			//Èç¹ûÐèÒª·Ö¶Î
+		var alSize=initData.length;		//initDataï¿½Ü³ï¿½ï¿½ï¿½
+		if(alSize>segment){			//ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ö¶ï¿½
 			var quotient=Math.floor(alSize/segment);	
 			var residue=alSize%segment;
-			if(residue!=0) quotient++;		//·Ö³öµÄ¶ÎÊý
+			if(residue!=0) quotient++;		//ï¿½Ö³ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
 			//alert("quotient="+quotient);
 			//alert("residue="+residue);
 			var strTemp=new Array(quotient);
@@ -159,7 +159,7 @@ function stringToArray(initData,segment){
 				if(i!=quotient-1){
 					strTemp[i]=initData.substring(i*segment,(i+1)*segment);
 				}else{
-					strTemp[i]=initData.substring(segment*i,alSize);		//×îºóÒ»¶Î
+					strTemp[i]=initData.substring(segment*i,alSize);		//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 				}
 			}
 			orgs=strTemp;
@@ -176,7 +176,7 @@ function cleanHiddenValue(hiddenElementName){
 	if(hiddenElmt != null){
 		hiddenElmt.value = "";
 	}else{
-		alert("(NeWSIS Debug)ÐèÒªÇå³ýµÄhiddenÓò²»´æÔÚ£¬ÄúÊäÈëµÄhiddenÓòÎª£º"+hiddenElementName);
+		alert("(NeWSIS Debug)ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½hiddenï¿½ò²»´ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½hiddenï¿½ï¿½Îªï¿½ï¿½"+hiddenElementName);
 	}
 }
 
@@ -255,7 +255,7 @@ function checkNowTime()
 //	var nowDate = new Date();
 //	var intTime = nowDate.getHours();
 //	if(intTime>=6&&intTime<=21){
-//		alert("±¨±íÕýÔÚÓÅ»¯,Çë¹ýºóÔÙ²éÑ¯£¡£¡£¡");
+//		alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å»ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Ù²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 //		return false;
 //	}
 //	return true;
@@ -294,12 +294,12 @@ function chk_page_num(num,oThis){
 //      }
 //  }
 //  if(isNaN(intNumPerPage)||(intNumPerPage<1)||intNumPerPage.indexOf('.')!=-1){
-//	 alert("ÄãÊäÈëÁË²»ºÏ·¨µÄÃ¿Ò³¼ÇÂ¼Êý£¡");
+//	 alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½Ï·ï¿½ï¿½ï¿½Ã¿Ò³ï¿½ï¿½Â¼ï¿½ï¿½");
 //     flag=false;  }else if(intNumPerPage>num){
-//	 alert("Ã¿Ò³¼ÇÂ¼ÇëÎð³¬¹ý"+num);
+//	 alert("Ã¿Ò³ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ð³¬¹ï¿½"+num);
 //     flag=false;  }
 //  if(isNaN(intGoto)||(intGoto<1)||intGoto.indexOf('.')!=-1){
-//	alert("ÄãÊäÈëÁË²»ºÏ·¨µÄµ±Ç°Ò³Êý£¡");
+//	alert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½Ï·ï¿½ï¿½Äµï¿½Ç°Ò³ï¿½ï¿½");
 //    flag=false;  }
 //  if (flag){
 //      document.all.hiddenGoto.value = intGoto;      
@@ -342,7 +342,7 @@ function getParentByTagName(oElement,sTagName){
 function getChildByTagNameTimes(oElement,sTagName,times){
   var oChild=oElement;
   var count = 0;
-  for(i=0;i<oChild.all.length;i++){
+  /*for(var i=0;i<oChild.all.length;i++){
 	if(oChild.all[i].tagName.toLowerCase()==sTagName.toLowerCase()){
 		if(count < times-1){
 			count++;
@@ -351,7 +351,7 @@ function getChildByTagNameTimes(oElement,sTagName,times){
 			break;
 		}
 	}
-  }
+  }*/
   return null;
 }
 function getChildByIdTimes(oElement,sId,times){

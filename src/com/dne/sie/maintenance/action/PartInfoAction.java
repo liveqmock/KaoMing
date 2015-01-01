@@ -1,21 +1,21 @@
 package com.dne.sie.maintenance.action;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 import java.util.List;
 import sun.misc.BASE64Decoder;
 
-//Java À©Õ¹Àà
+//Java æ‰©å±•ç±»
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-//µÚÈı·½Àà
+//ç¬¬ä¸‰æ–¹ç±»
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
-//×Ô¶¨ÒåÀà
+//è‡ªå®šä¹‰ç±»
 import com.dne.sie.support.userRole.bo.UserBo;
 import com.dne.sie.util.action.ControlAction;
 import com.dne.sie.common.tools.EscapeUnescape;
@@ -24,473 +24,473 @@ import com.dne.sie.maintenance.form.PartInfoForm;
 
 
 /**
- * Áã¼şĞÅÏ¢Action´¦ÀíÀà
+ * é›¶ä»¶ä¿¡æ¯Actionå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
  */
 public class PartInfoAction extends ControlAction {
-	
-	/**
-	 * µÃµ½ËùÓĞÁã¼şÁÏºÅºÍÃû³Æ
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public String getPartInfo(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try{
-			response.setContentType("text/html;charset=UTF-8");
-			
-			//diable cache
-	        // Set to expire far in the past.
-	        response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-	
-	        // Set standard HTTP/1.1 no-cache headers.
-	        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-	
-	        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-	        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-	
-	        // Set standard HTTP/1.0 no-cache header.
-	        response.setHeader("Pragma", "no-cache");
-			
-			//µÃµ½Ò³ÃæÉÏÊäÈëµÄÖµ
-			String inputValue = request.getParameter("inputValue");
-			//ÖĞÎÄĞèÒª×ª»»£¬Ê¹ÓÃjavascriptµÄescape±àÂë£¬ËùÓĞ×Ö·û¼¯¶¼¿ÉÓÃ
-			inputValue = EscapeUnescape.unescape(inputValue);
-			//µÃµ½ËùÓĞ¾­ÏúÉÌµÄÃû×ÖºÍid
-			List partList = PartInfoBo.getInstance().findByStuff(inputValue);
-			
-			String stuffNo = "";		
-			String skuCode = "";		
-			String shortCode = "";		
-			String standard = "";		
-			String skuUnit = "";	
-			String StrongDealerName = "";
-			StringBuffer buffer = new StringBuffer();
-			for (int i = 0; i < partList.size(); i++) {
-				PartInfoForm pif = (PartInfoForm) partList.get(i);
-				stuffNo = pif.getStuffNo();
-				skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
-				shortCode = pif.getShortCode()==null?"":pif.getShortCode();
-				standard = pif.getStandard()==null?"":pif.getStandard();
-				skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
-				if(stuffNo.indexOf(inputValue) != -1) {
-					//°ÑÊäÈëµÄÖµºÍÊı¾İ¿âµÄÊı¾İ±È½Ïºó,¼Ó´Ö
-					StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
-					//StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
-					buffer.append("<div onselect=\"this.text.value = '")
-						  .append(stuffNo)
-						  .append("';$('skuCode').value = '")
-						  .append(skuCode)
-						  .append("';$('shortCode').value = '")
-						  .append(shortCode)
-						  .append("';$('standard').value = '")
-						  .append(standard)
-						  .append("';$('skuUnit').value = '")
-						  .append(skuUnit)
-						  .append("'\">")
-						  .append(StrongDealerName)
-						  .append("</div>");
-				}
-			}
-			PrintWriter out = response.getWriter();
-			out.println(buffer.toString());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	 * Î¬ĞŞĞ¯´øÁã¼şµÄÉêÇëÀ¸
-	 * ´Ë´¦²éÑ¯Ö»ÏÔÊ¾ÓĞ¿â´æÁã¼ş
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public String getPartInfo4Loan(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try{
-			response.setContentType("text/html;charset=UTF-8");
-			
-			//diable cache
-	        // Set to expire far in the past.
-	        response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-	
-	        // Set standard HTTP/1.1 no-cache headers.
-	        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-	
-	        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-	        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-	
-	        // Set standard HTTP/1.0 no-cache header.
-	        response.setHeader("Pragma", "no-cache");
-			
-			//µÃµ½Ò³ÃæÉÏÊäÈëµÄÖµ
-			String inputValue = request.getParameter("inputValue");
-			//ÖĞÎÄĞèÒª×ª»»£¬Ê¹ÓÃjavascriptµÄescape±àÂë£¬ËùÓĞ×Ö·û¼¯¶¼¿ÉÓÃ
-			inputValue = EscapeUnescape.unescape(inputValue);
-			//µÃµ½ËùÓĞ¾­ÏúÉÌµÄÃû×ÖºÍid
-			List partList = PartInfoBo.getInstance().findByStuffWithStock(inputValue);
-			
-			String stuffNo = "";		
-			String skuCode = "";		
-			String shortCode = "";		
-			String standard = "";		
-			String skuUnit = "";	
-			String StrongDealerName = "";
-			StringBuffer buffer = new StringBuffer();
-			for (int i = 0; i < partList.size(); i++) {
-				PartInfoForm pif = (PartInfoForm) partList.get(i);
-				stuffNo = pif.getStuffNo();
-				skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
-				shortCode = pif.getShortCode()==null?"":pif.getShortCode();
-				standard = pif.getStandard()==null?"":pif.getStandard();
-				skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
-				if(stuffNo.indexOf(inputValue) != -1) {
-					//°ÑÊäÈëµÄÖµºÍÊı¾İ¿âµÄÊı¾İ±È½Ïºó,¼Ó´Ö
-					StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
-					//StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
-					buffer.append("<div onselect=\"this.text.value = '")
-						  .append(stuffNo)
-						  .append("';$('skuCode2').value = '")
-						  .append(skuCode)
-						   .append("';$('skuUnit2').value = '")
-						  .append(skuUnit)
-						  .append("';$('shortCode2').value = '")
-						  .append(shortCode)
-						  .append("';$('standard2').value = '")
-						  .append(standard)						 
-						  .append("'\">")
-						  .append(StrongDealerName)
-						  .append("</div>");
-				}
-			}
-			PrintWriter out = response.getWriter();
-			out.println(buffer.toString());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public String getToolInfo(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try{
-			response.setContentType("text/html;charset=UTF-8");
-			
-			//diable cache
-	        // Set to expire far in the past.
-	        response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-	
-	        // Set standard HTTP/1.1 no-cache headers.
-	        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-	
-	        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-	        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-	
-	        // Set standard HTTP/1.0 no-cache header.
-	        response.setHeader("Pragma", "no-cache");
-			
-			//µÃµ½Ò³ÃæÉÏÊäÈëµÄÖµ
-			String inputValue = request.getParameter("inputValue");
-			//ÖĞÎÄĞèÒª×ª»»£¬Ê¹ÓÃjavascriptµÄescape±àÂë£¬ËùÓĞ×Ö·û¼¯¶¼¿ÉÓÃ
-			inputValue = EscapeUnescape.unescape(inputValue);
-			//µÃµ½ËùÓĞ¾­ÏúÉÌµÄÃû×ÖºÍid
-			List partList = PartInfoBo.getInstance().findToolByStuff(inputValue);
-			
-			String stuffNo = "";		
-			String skuCode = "";		
-			String standard = "";		
-			String skuUnit = "";	
-			String StrongDealerName = "";
-			StringBuffer buffer = new StringBuffer();
-			for (int i = 0; i < partList.size(); i++) {
-				PartInfoForm pif = (PartInfoForm) partList.get(i);
-				stuffNo = pif.getStuffNo();
-				skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
-				standard = pif.getStandard()==null?"":pif.getStandard();
-				skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
-				if(stuffNo.indexOf(inputValue) != -1) {
-					//°ÑÊäÈëµÄÖµºÍÊı¾İ¿âµÄÊı¾İ±È½Ïºó,¼Ó´Ö
-					StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
-					//StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
-					buffer.append("<div onselect=\"this.text.value = '")
-						  .append(stuffNo)
-						  .append("';$('skuCode').value = '")
-						  .append(skuCode)
-						  .append("';$('standard').value = '")
-						  .append(standard)
-						  .append("';$('skuUnit').value = '")
-						  .append(skuUnit)
-						  .append("'\">")
-						  .append(StrongDealerName)
-						  .append("</div>");
-				}
-			}
-			PrintWriter out = response.getWriter();
-			out.println(buffer.toString());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	
-	
-	public String getToolInfo4Loan(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try{
-			response.setContentType("text/html;charset=UTF-8");
-			
-			//diable cache
-	        // Set to expire far in the past.
-	        response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
-	
-	        // Set standard HTTP/1.1 no-cache headers.
-	        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-	
-	        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-	        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-	
-	        // Set standard HTTP/1.0 no-cache header.
-	        response.setHeader("Pragma", "no-cache");
-			
-			//µÃµ½Ò³ÃæÉÏÊäÈëµÄÖµ
-			String inputValue = request.getParameter("inputValue");
-			//ÖĞÎÄĞèÒª×ª»»£¬Ê¹ÓÃjavascriptµÄescape±àÂë£¬ËùÓĞ×Ö·û¼¯¶¼¿ÉÓÃ
-			inputValue = EscapeUnescape.unescape(inputValue);
-			//µÃµ½ËùÓĞ¾­ÏúÉÌµÄÃû×ÖºÍid
-			List partList = PartInfoBo.getInstance().findToolByStuffWithStock(inputValue);
-			
-			String stuffNo = "";		
-			String skuCode = "";		
-			String standard = "";		
-			String skuUnit = "";	
-			String StrongDealerName = "";
-			StringBuffer buffer = new StringBuffer();
-			for (int i = 0; i < partList.size(); i++) {
-				PartInfoForm pif = (PartInfoForm) partList.get(i);
-				stuffNo = pif.getStuffNo();
-				skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
-				standard = pif.getStandard()==null?"":pif.getStandard();
-				skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
-				if(stuffNo.indexOf(inputValue) != -1) {
-					//°ÑÊäÈëµÄÖµºÍÊı¾İ¿âµÄÊı¾İ±È½Ïºó,¼Ó´Ö
-					StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
-					//StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
-					buffer.append("<div onselect=\"this.text.value = '")
-						  .append(stuffNo)
-						  .append("';$('skuCode3').value = '")
-						  .append(skuCode)
-						  .append("';$('standard3').value = '")
-						  .append(standard)
-						  .append("';$('skuUnit3').value = '")
-						  .append(skuUnit)
-						  .append("'\">")
-						  .append(StrongDealerName)
-						  .append("</div>");
-				}
-			}
-			PrintWriter out = response.getWriter();
-			out.println(buffer.toString());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	* Áã¼şĞÅÏ¢ ÁĞ±íÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-   public String partInfoList(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "partInfoList";
-		PartInfoForm pif=(PartInfoForm)form;
-		PartInfoBo pib = PartInfoBo.getInstance();
-		request.setAttribute("partInfoList",pib.list(pif));
-		
-		return forward;
-   }
-   
-   /**
-	* Áã¼şĞÅÏ¢ ĞÂÔöÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String addPartInfo(HttpServletRequest request, ActionForm form) throws Exception {
-		String forward = "partInfoAdd";
-		
-		return forward;
-  }
-  
-  /**
-	* Áã¼şĞÅÏ¢ ĞŞ¸ÄÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String editPartInfo(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "partInfoEdit";
-		String stuffNo=request.getParameter("ids");
-		request.setAttribute("partInfoForm", PartInfoBo.getInstance().find(stuffNo));
-		request.setAttribute("stuffNo",stuffNo);
-		
-		return forward;
-  }
-  
 
-	/**
-	 * Ğ£ÑéÁÏºÅÊÇ·ñ´æÔÚ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public void chkStuffNo(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
-		
-		try{
-			String stuffNo=request.getParameter("stuffNo");
-			PartInfoBo pib = PartInfoBo.getInstance();
-			String strXml="false";
-			if(pib.chkStuffNo(stuffNo)){
-				strXml="true";
-			}
-		
-			PrintWriter writer = response.getWriter();
-			response.setContentType("text/xml");			
-			response.setHeader("Cache-Control", "no-cache"); 
-			writer.println("<xml>");
-			
-			writer.println("<flag>"+strXml+"</flag>");
-		
-			writer.println("</xml>");
-			writer.flush();
-			writer.close();
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	
-	}
+    /**
+     * å¾—åˆ°æ‰€æœ‰é›¶ä»¶æ–™å·å’Œåç§°
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public String getPartInfo(ActionMapping mapping, ActionForm form,
+                              HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            response.setContentType("text/html;charset=UTF-8");
 
-  /**
-	* Áã¼şĞÅÏ¢ ²åÈë²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String insertPartInfo(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "partInfoList";
-		PartInfoForm pif=(PartInfoForm)form;
-		PartInfoBo.getInstance().add(pif);
-		
-		return forward;
-  }
-  
+            //diable cache
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
 
-  /**
-	* Áã¼şĞÅÏ¢ ĞŞ¸Ä²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String updatePartInfo(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "partInfoList";
-		PartInfoForm pif=(PartInfoForm)form;
-		PartInfoBo.getInstance().modify(pif);
-		
-		return forward;
-  }
-  
-  /**
-	* ÔÚÒµÎñÄ£¿éÖĞ£¬µã»÷¡°²éÑ¯°´Å¥¡±ºó´¥·¢µÄÊÂ¼ş
-	*	@param request HttpServletRequest
-	*	@param form ActionForm
-	*	@return String ·µ»ØforwardÒ³Ãæ	popupPartStart Í¨ÓÃÁã¼şĞÅÏ¢²éÑ¯Ò³Ãæ	
-	*/
-  public String popupPartList(HttpServletRequest request, ActionForm form){
-		String forward="popupPartStart";
-		try{
-			PartInfoForm pif=(PartInfoForm)form;
-			
-			if(pif.getSkuCode()!=null&&!pif.getSkuCode().equals("")){
-				BASE64Decoder decoder = new BASE64Decoder(); 
-				byte[] b = decoder.decodeBuffer(pif.getSkuCode()); 
-				pif.setSkuCode(EscapeUnescape.unescape(EscapeUnescape.unescape(new String(b).toString())).trim());
-				
-			}
-			request.setAttribute("partInfoList",PartInfoBo.getInstance().popList(pif));
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-  
-  
-  public String popupPartListWithStock(HttpServletRequest request, ActionForm form){
-		String forward="popupPartStart";
-		try{
-			PartInfoForm pif=(PartInfoForm)form;
-			//ÏÔÊ¾¿ÉÓÃ¿â´æ
-			pif.setStockFlag("A");
-			
-			if(pif.getSkuCode()!=null&&!pif.getSkuCode().equals("")){
-				BASE64Decoder decoder = new BASE64Decoder(); 
-				byte[] b = decoder.decodeBuffer(pif.getSkuCode()); 
-				pif.setSkuCode(EscapeUnescape.unescape(EscapeUnescape.unescape(new String(b).toString())).trim());
-				
-			}
-			request.setAttribute("partInfoList",PartInfoBo.getInstance().popList(pif));
-			request.setAttribute("stockFlag",pif.getStockFlag());
-			request.setAttribute("partType",pif.getPartType());
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-  
-  public String partInfoViewList(HttpServletRequest request, ActionForm form) throws Exception{
-		String forward = "popupPartStart";
-		PartInfoForm pif=(PartInfoForm)form;
-		request.setAttribute("partInfoList",PartInfoBo.getInstance().popList(pif));
-		request.setAttribute("stockFlag",pif.getStockFlag());
-		return forward;
-  }
-  
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 
-  /**
-	* Áã¼şĞÅÏ¢ ĞŞ¸Ä²Ù×÷
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-  public String updateStuffNo(HttpServletRequest request, ActionForm form) {
-	String forward = "partInfoList";
-	try{
-		String oldStuffNo=request.getParameter("oldStuffNo");
-		String stuffNo=request.getParameter("stuffNo");
-		PartInfoBo.getInstance().updateStuffNo(stuffNo,oldStuffNo);
-	}catch(Exception e){
-		e.printStackTrace();
-	}
-	return forward;
-  }
-  
-  
-  
-	
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+
+            //å¾—åˆ°é¡µé¢ä¸Šè¾“å…¥çš„å€¼
+            String inputValue = request.getParameter("inputValue");
+            //ä¸­æ–‡éœ€è¦è½¬æ¢ï¼Œä½¿ç”¨javascriptçš„escapeç¼–ç ï¼Œæ‰€æœ‰å­—ç¬¦é›†éƒ½å¯ç”¨
+            inputValue = EscapeUnescape.unescape(inputValue);
+            //å¾—åˆ°æ‰€æœ‰ç»é”€å•†çš„åå­—å’Œid
+            List partList = PartInfoBo.getInstance().findByStuff(inputValue);
+
+            String stuffNo = "";
+            String skuCode = "";
+            String shortCode = "";
+            String standard = "";
+            String skuUnit = "";
+            String StrongDealerName = "";
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < partList.size(); i++) {
+                PartInfoForm pif = (PartInfoForm) partList.get(i);
+                stuffNo = pif.getStuffNo();
+                skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
+                shortCode = pif.getShortCode()==null?"":pif.getShortCode();
+                standard = pif.getStandard()==null?"":pif.getStandard();
+                skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
+                if(stuffNo.indexOf(inputValue) != -1) {
+                    //æŠŠè¾“å…¥çš„å€¼å’Œæ•°æ®åº“çš„æ•°æ®æ¯”è¾ƒå,åŠ ç²—
+                    StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+                    //StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
+                    buffer.append("<div onselect=\"this.text.value = '")
+                            .append(stuffNo)
+                            .append("';document.forms[0].skuCode.value = '")
+                            .append(skuCode)
+                            .append("';document.forms[0].shortCode.value = '")
+                            .append(shortCode)
+                            .append("';document.forms[0].standard.value = '")
+                            .append(standard)
+                            .append("';document.forms[0].skuUnit.value = '")
+                            .append(skuUnit)
+                            .append("'\">")
+                            .append(StrongDealerName)
+                            .append("</div>");
+                }
+            }
+            PrintWriter out = response.getWriter();
+            out.println(buffer.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * ç»´ä¿®æºå¸¦é›¶ä»¶çš„ç”³è¯·æ 
+     * æ­¤å¤„æŸ¥è¯¢åªæ˜¾ç¤ºæœ‰åº“å­˜é›¶ä»¶
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public String getPartInfo4Loan(ActionMapping mapping, ActionForm form,
+                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            response.setContentType("text/html;charset=UTF-8");
+
+            //diable cache
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+
+            //å¾—åˆ°é¡µé¢ä¸Šè¾“å…¥çš„å€¼
+            String inputValue = request.getParameter("inputValue");
+            //ä¸­æ–‡éœ€è¦è½¬æ¢ï¼Œä½¿ç”¨javascriptçš„escapeç¼–ç ï¼Œæ‰€æœ‰å­—ç¬¦é›†éƒ½å¯ç”¨
+            inputValue = EscapeUnescape.unescape(inputValue);
+            //å¾—åˆ°æ‰€æœ‰ç»é”€å•†çš„åå­—å’Œid
+            List partList = PartInfoBo.getInstance().findByStuffWithStock(inputValue);
+
+            String stuffNo = "";
+            String skuCode = "";
+            String shortCode = "";
+            String standard = "";
+            String skuUnit = "";
+            String StrongDealerName = "";
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < partList.size(); i++) {
+                PartInfoForm pif = (PartInfoForm) partList.get(i);
+                stuffNo = pif.getStuffNo();
+                skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
+                shortCode = pif.getShortCode()==null?"":pif.getShortCode();
+                standard = pif.getStandard()==null?"":pif.getStandard();
+                skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
+                if(stuffNo.indexOf(inputValue) != -1) {
+                    //æŠŠè¾“å…¥çš„å€¼å’Œæ•°æ®åº“çš„æ•°æ®æ¯”è¾ƒå,åŠ ç²—
+                    StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+                    //StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
+                    buffer.append("<div onselect=\"this.text.value = '")
+                            .append(stuffNo)
+                            .append("';document.forms[0].skuCode2.value = '")
+                            .append(skuCode)
+                            .append("';document.forms[0].skuUnit2.value = '")
+                            .append(skuUnit)
+                            .append("';document.forms[0].shortCode2.value = '")
+                            .append(shortCode)
+                            .append("';document.forms[0].standard2.value = '")
+                            .append(standard)
+                            .append("'\">")
+                            .append(StrongDealerName)
+                            .append("</div>");
+                }
+            }
+            PrintWriter out = response.getWriter();
+            out.println(buffer.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getToolInfo(ActionMapping mapping, ActionForm form,
+                              HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            response.setContentType("text/html;charset=UTF-8");
+
+            //diable cache
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+
+            //å¾—åˆ°é¡µé¢ä¸Šè¾“å…¥çš„å€¼
+            String inputValue = request.getParameter("inputValue");
+            //ä¸­æ–‡éœ€è¦è½¬æ¢ï¼Œä½¿ç”¨javascriptçš„escapeç¼–ç ï¼Œæ‰€æœ‰å­—ç¬¦é›†éƒ½å¯ç”¨
+            inputValue = EscapeUnescape.unescape(inputValue);
+            //å¾—åˆ°æ‰€æœ‰ç»é”€å•†çš„åå­—å’Œid
+            List partList = PartInfoBo.getInstance().findToolByStuff(inputValue);
+
+            String stuffNo = "";
+            String skuCode = "";
+            String standard = "";
+            String skuUnit = "";
+            String StrongDealerName = "";
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < partList.size(); i++) {
+                PartInfoForm pif = (PartInfoForm) partList.get(i);
+                stuffNo = pif.getStuffNo();
+                skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
+                standard = pif.getStandard()==null?"":pif.getStandard();
+                skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
+                if(stuffNo.indexOf(inputValue) != -1) {
+                    //æŠŠè¾“å…¥çš„å€¼å’Œæ•°æ®åº“çš„æ•°æ®æ¯”è¾ƒå,åŠ ç²—
+                    StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+                    //StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
+                    buffer.append("<div onselect=\"this.text.value = '")
+                            .append(stuffNo)
+                            .append("';document.forms[0].skuCode.value = '")
+                            .append(skuCode)
+                            .append("';document.forms[0].standard.value = '")
+                            .append(standard)
+                            .append("';document.forms[0].skuUnit.value = '")
+                            .append(skuUnit)
+                            .append("'\">")
+                            .append(StrongDealerName)
+                            .append("</div>");
+                }
+            }
+            PrintWriter out = response.getWriter();
+            out.println(buffer.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public String getToolInfo4Loan(ActionMapping mapping, ActionForm form,
+                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            response.setContentType("text/html;charset=UTF-8");
+
+            //diable cache
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+
+            //å¾—åˆ°é¡µé¢ä¸Šè¾“å…¥çš„å€¼
+            String inputValue = request.getParameter("inputValue");
+            //ä¸­æ–‡éœ€è¦è½¬æ¢ï¼Œä½¿ç”¨javascriptçš„escapeç¼–ç ï¼Œæ‰€æœ‰å­—ç¬¦é›†éƒ½å¯ç”¨
+            inputValue = EscapeUnescape.unescape(inputValue);
+            //å¾—åˆ°æ‰€æœ‰ç»é”€å•†çš„åå­—å’Œid
+            List partList = PartInfoBo.getInstance().findToolByStuffWithStock(inputValue);
+
+            String stuffNo = "";
+            String skuCode = "";
+            String standard = "";
+            String skuUnit = "";
+            String StrongDealerName = "";
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < partList.size(); i++) {
+                PartInfoForm pif = (PartInfoForm) partList.get(i);
+                stuffNo = pif.getStuffNo();
+                skuCode = pif.getSkuCode()==null?"":pif.getSkuCode();
+                standard = pif.getStandard()==null?"":pif.getStandard();
+                skuUnit = pif.getSkuUnit()==null?"":pif.getSkuUnit();
+                if(stuffNo.indexOf(inputValue) != -1) {
+                    //æŠŠè¾“å…¥çš„å€¼å’Œæ•°æ®åº“çš„æ•°æ®æ¯”è¾ƒå,åŠ ç²—
+                    StrongDealerName = stuffNo.replaceAll(inputValue, "<span class=\"boldfont\">" + inputValue + "</span>");
+                    //StrongDealerName = "<font color=\"red\">" + StrongDealerName + "</font>";
+                    buffer.append("<div onselect=\"this.text.value = '")
+                            .append(stuffNo)
+                            .append("';document.forms[0].skuCode3.value = '")
+                            .append(skuCode)
+                            .append("';document.forms[0].standard3.value = '")
+                            .append(standard)
+                            .append("';document.forms[0].skuUnit3.value = '")
+                            .append(skuUnit)
+                            .append("'\">")
+                            .append(StrongDealerName)
+                            .append("</div>");
+                }
+            }
+            PrintWriter out = response.getWriter();
+            out.println(buffer.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * é›¶ä»¶ä¿¡æ¯ åˆ—è¡¨é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String partInfoList(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "partInfoList";
+        PartInfoForm pif=(PartInfoForm)form;
+        PartInfoBo pib = PartInfoBo.getInstance();
+        request.setAttribute("partInfoList",pib.list(pif));
+
+        return forward;
+    }
+
+    /**
+     * é›¶ä»¶ä¿¡æ¯ æ–°å¢é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String addPartInfo(HttpServletRequest request, ActionForm form) throws Exception {
+        String forward = "partInfoAdd";
+
+        return forward;
+    }
+
+    /**
+     * é›¶ä»¶ä¿¡æ¯ ä¿®æ”¹é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String editPartInfo(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "partInfoEdit";
+        String stuffNo=request.getParameter("ids");
+        request.setAttribute("partInfoForm", PartInfoBo.getInstance().find(stuffNo));
+        request.setAttribute("stuffNo",stuffNo);
+
+        return forward;
+    }
+
+
+    /**
+     * æ ¡éªŒæ–™å·æ˜¯å¦å­˜åœ¨
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public void chkStuffNo(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+
+        try{
+            String stuffNo=request.getParameter("stuffNo");
+            PartInfoBo pib = PartInfoBo.getInstance();
+            String strXml="false";
+            if(pib.chkStuffNo(stuffNo)){
+                strXml="true";
+            }
+
+            PrintWriter writer = response.getWriter();
+            response.setContentType("text/xml");
+            response.setHeader("Cache-Control", "no-cache");
+            writer.println("<xml>");
+
+            writer.println("<flag>"+strXml+"</flag>");
+
+            writer.println("</xml>");
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * é›¶ä»¶ä¿¡æ¯ æ’å…¥æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String insertPartInfo(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "partInfoList";
+        PartInfoForm pif=(PartInfoForm)form;
+        PartInfoBo.getInstance().add(pif);
+
+        return forward;
+    }
+
+
+    /**
+     * é›¶ä»¶ä¿¡æ¯ ä¿®æ”¹æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String updatePartInfo(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "partInfoList";
+        PartInfoForm pif=(PartInfoForm)form;
+        PartInfoBo.getInstance().modify(pif);
+
+        return forward;
+    }
+
+    /**
+     * åœ¨ä¸šåŠ¡æ¨¡å—ä¸­ï¼Œç‚¹å‡»â€œæŸ¥è¯¢æŒ‰é’®â€åè§¦å‘çš„äº‹ä»¶
+     *	@param request HttpServletRequest
+     *	@param form ActionForm
+     *	@return String è¿”å›forwardé¡µé¢	popupPartStart é€šç”¨é›¶ä»¶ä¿¡æ¯æŸ¥è¯¢é¡µé¢
+     */
+    public String popupPartList(HttpServletRequest request, ActionForm form){
+        String forward="popupPartStart";
+        try{
+            PartInfoForm pif=(PartInfoForm)form;
+
+            if(pif.getSkuCode()!=null&&!pif.getSkuCode().equals("")){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] b = decoder.decodeBuffer(pif.getSkuCode());
+                pif.setSkuCode(EscapeUnescape.unescape(EscapeUnescape.unescape(new String(b).toString())).trim());
+
+            }
+            request.setAttribute("partInfoList",PartInfoBo.getInstance().popList(pif));
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    public String popupPartListWithStock(HttpServletRequest request, ActionForm form){
+        String forward="popupPartStart";
+        try{
+            PartInfoForm pif=(PartInfoForm)form;
+            //æ˜¾ç¤ºå¯ç”¨åº“å­˜
+            pif.setStockFlag("A");
+
+            if(pif.getSkuCode()!=null&&!pif.getSkuCode().equals("")){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] b = decoder.decodeBuffer(pif.getSkuCode());
+                pif.setSkuCode(EscapeUnescape.unescape(EscapeUnescape.unescape(new String(b).toString())).trim());
+
+            }
+            request.setAttribute("partInfoList",PartInfoBo.getInstance().popList(pif));
+            request.setAttribute("stockFlag",pif.getStockFlag());
+            request.setAttribute("partType",pif.getPartType());
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    public String partInfoViewList(HttpServletRequest request, ActionForm form) throws Exception{
+        String forward = "popupPartStart";
+        PartInfoForm pif=(PartInfoForm)form;
+        request.setAttribute("partInfoList",PartInfoBo.getInstance().popList(pif));
+        request.setAttribute("stockFlag",pif.getStockFlag());
+        return forward;
+    }
+
+
+    /**
+     * é›¶ä»¶ä¿¡æ¯ ä¿®æ”¹æ“ä½œ
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String updateStuffNo(HttpServletRequest request, ActionForm form) {
+        String forward = "partInfoList";
+        try{
+            String oldStuffNo=request.getParameter("oldStuffNo");
+            String stuffNo=request.getParameter("stuffNo");
+            PartInfoBo.getInstance().updateStuffNo(stuffNo,oldStuffNo);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+
 }
 

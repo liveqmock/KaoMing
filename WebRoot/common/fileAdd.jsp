@@ -3,7 +3,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/style.css">
-<title>upload文件</title><SCRIPT language="javascript" src="<%= request.getContextPath()%>/js/screen.js"></SCRIPT>
+<title>upload文件</title>
 <SCRIPT language="javascript" src="<%= request.getContextPath()%>/js/common.js"></SCRIPT>
 </head>
 
