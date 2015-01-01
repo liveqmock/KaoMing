@@ -600,11 +600,13 @@
 		repairVal[2]=document.forms[0].ticketsAllCosts;
 		repairVal[3]=document.forms[0].laborCosts;
 		for(var x=0;x<repairVal.length;x++){
-			if(repairVal[x].value==''){
-				repairVal[x].focus();
-				alert("请输入维修费用！");
-				return true;
-			}
+            if(repairVal[x] != null) {
+                if (repairVal[x].value == '') {
+                    repairVal[x].focus();
+                    alert("请输入维修费用！");
+                    return true;
+                }
+            }
 		}
 		<%}%>
 		return false;

@@ -130,8 +130,10 @@ function doRefresh(){
 							<td>
 									<html:select property="rr90" styleClass="form">
 									<option value="">全部</option>
-									<html:option value="Y">是</html:option>
-			 						<html:option value="N">否</html:option>
+									<html:option value="N">初次维修</html:option>
+			 						<html:option value="C">返修</html:option>
+                                    <html:option value="R">90天内返修</html:option>
+                                    <html:option value="T">同故障返修</html:option>
  								    </html:select>
 							</td>
                       </tr>
