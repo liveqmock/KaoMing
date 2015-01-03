@@ -18,255 +18,268 @@ import com.dne.sie.stock.form.StockToolsInfoForm;
 import com.dne.sie.util.bo.CommBo;
 
 public class RepairOperateBo extends CommBo{
-	//private static Logger logger = Logger.getLogger(RepairOperateBo.class);
+    //private static Logger logger = Logger.getLogger(RepairOperateBo.class);
 
-	private static final RepairOperateBo INSTANCE = new RepairOperateBo();
-		
-	private RepairOperateBo(){
-	}
-	
-	public static final RepairOperateBo getInstance() {
-	   return INSTANCE;
-	}
-	
-	/**
-	 * Î¬ÐÞÁã¼þ/¹¤¾ß½èÓÃÁÐ±í
-	 * @param RepairPartForm ²éÑ¯Ìõ¼þ
-	 * @return ²éÑ¯½á¹û
-	 */
-	public ArrayList loanOutList(RepairPartForm prQuery) {
-		ArrayList dataList = null;
-		ArrayList alData = new ArrayList();
-		RepairPartQuery sooq = new RepairPartQuery(prQuery);
+    private static final RepairOperateBo INSTANCE = new RepairOperateBo();
 
-		int count = 0;
-		try {
-			dataList = (ArrayList) sooq.doListQuery(prQuery.getFromPage(),prQuery.getToPage());
+    private RepairOperateBo(){
+    }
 
-			count = sooq.doCountQuery();
-			CommonSearch cs = CommonSearch.getInstance();
-			for (int i = 0; dataList!=null&&i < dataList.size(); i++) {
-				RepairPartForm rpf = (RepairPartForm) dataList.get(i);
-				String[] data = new String[11];
-				data[0] = rpf.getPartsId().toString() + DicInit.SPLIT1 + rpf.getVersion();
-				data[1] = rpf.getServiceSheetNo();
-				data[2] = rpf.getStuffNo();
-				data[3] = rpf.getSkuCode();
-				data[4] = rpf.getSkuUnit();
-				data[5] = rpf.getStandard();
-				data[6] = rpf.getApplyQty().toString();
-				data[7] = cs.findUserNameByUserId(rpf.getCreateBy());
-				data[8] = rpf.getCreateDate().toLocaleString();
-				data[9] = rpf.getRepairPartStatus();
-				data[10] = rpf.getRepairPartType();
-				
-				alData.add(data);
-			}
-			alData.add(0, count + "");
+    public static final RepairOperateBo getInstance() {
+        return INSTANCE;
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return alData;
-	}
-	
-	
-	/**
-	 * »ñÈ¡¾­°ìÈË
-	 * @param String 
-	 * @return Float
-	 */
-   public List getPartCreateByList() {
-	   List al=new ArrayList();
-	   	try{
-	   		String hql="select distinct sif.createBy,uf.userName from RepairPartForm as sif," +
-	   				"UserForm as uf where uf.id=sif.createBy ";
-	   		al=this.getDao().list(hql);
-	   		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return al;
-   }
-   
-   
+    /**
+     * ç»´ä¿®é›¶ä»¶/å·¥å…·å€Ÿç”¨åˆ—è¡¨
+     * @param prQuery æŸ¥è¯¢æ¡ä»¶
+     * @return æŸ¥è¯¢ç»“æžœ
+     */
+    public ArrayList loanOutList(RepairPartForm prQuery) {
+        ArrayList dataList = null;
+        ArrayList alData = new ArrayList();
+        RepairPartQuery sooq = new RepairPartQuery(prQuery);
 
-	/**
-	  * ³ö¿âÈ·ÈÏ£¬ÐÞ¸ÄÎ¬ÐÞÁã¼þÉêÇë±í(td_repair_parts_info)ÐÅÏ¢£¬
-	  * 	ÐÞ¸Ä¿â´æÐÅÏ¢±í(TD_STOCK_INFO)ÊýÁ¿Îª0£¬»òdelete ¹¤¾ß±í(TD_STOCK_TOOLS_INFO)Êý¾Ý
-	  * 	²åÈë³öÈë¿âÁ÷Ë®±í(td_stock_flow)Ò»Ìõ³ö¿â¼ÇÂ¼
-	  * @param String ´ý³ö¿â¼ÇÂ¼id£»
-	  * @param Long ³ö¿âÈË
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
-	public int stockPartOut(String ids, Long userId) throws VersionException {
-		int tag = -1;
+        int count = 0;
+        try {
+            dataList = (ArrayList) sooq.doListQuery(prQuery.getFromPage(),prQuery.getToPage());
 
-		ArrayList opList = new ArrayList();
-		
-		try {
-			StockInfoListBo sil=StockInfoListBo.getInstance();
-			StockInBo sib=StockInBo.getInstance();
-			StockOutBo sob = StockOutBo.getInstance();
-			
-			String[] temp = ids.split(",");
-			HashSet hs = new HashSet();
-			for (int i = 0; i < temp.length; i++) {
-				hs.add(temp[i]);
-			}
-			ids = Operate.arrayListToString(new ArrayList(hs));
-			String versionId = Operate.toVersionData(ids);
-			String strHql = "from RepairPartForm as prf where CONCAT(prf.id,',',prf.version) in (" + versionId + ")";
-			ArrayList dateList = (ArrayList) this.listVersion(strHql, ids.split(",").length);
-			for (int i = 0; i < dateList.size(); i++) { 
-				RepairPartForm prf = (RepairPartForm) dateList.get(i);
-				prf.setRepairPartStatus("X");		//ÒÑÐ¯´ø´ý·µ»¹
-				prf.setUpdateBy(userId);
-				Object prfO = new Object[]{prf,"u"};
-				opList.add(prfO);
-				
-				ArrayList stockInfoList =  (ArrayList) this.getDao().list( "from StockInfoForm as sif where sif.requestId=? and sif.stockStatus='R'", prf.getPartsId());
-				
-				for (int j = 0; j < stockInfoList.size(); j++) {
-					StockInfoForm sif = (StockInfoForm) stockInfoList.get(j);
-					sif.setSkuNum(new Integer(0));
-					sif.setUpdateBy(userId);
-					sif.setUpdateDate(new Date());
-					sif.setFlowNo(FormNumberBuilder.getStockFlowId());
-					sif.setTransportMode(null);
-					
-					StockFlowForm sff = sib.infoToFlow(sif);
-					
-					sff.setSkuNum(prf.getApplyQty());	//³ö¿âÊýÁ¿
-					sff.setRestNum(sob.getRestStock(sif.getStuffNo(), prf.getApplyQty(), "O"));	//½á´æÊýÁ¿
+            count = sooq.doCountQuery();
+            CommonSearch cs = CommonSearch.getInstance();
+            for (int i = 0; dataList!=null&&i < dataList.size(); i++) {
+                RepairPartForm rpf = (RepairPartForm) dataList.get(i);
+                String[] data = new String[12];
+                data[0] = rpf.getPartsId().toString() + DicInit.SPLIT1 + rpf.getVersion();
+                data[1] = rpf.getServiceSheetNo();
+                data[2] = rpf.getStuffNo();
+                data[3] = rpf.getSkuCode();
+                data[4] = rpf.getSkuUnit();
+                data[5] = rpf.getStandard();
+                data[6] = rpf.getApplyQty().toString();
+                data[7] = cs.findUserNameByUserId(rpf.getCreateBy());
+                data[8] = rpf.getCreateDate().toLocaleString();
+                data[9] = rpf.getRepairPartStatus();
+                data[10] = rpf.getRepairPartType();
+                data[11] = this.getRepairPartStockBin(rpf.getPartsId());
+                alData.add(data);
+            }
+            alData.add(0, count + "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return alData;
+    }
+
+
+    public String getRepairPartStockBin(Long partId) throws Exception{
+        ArrayList stockInfoList =  (ArrayList) this.getDao().list( "from StockInfoForm as sif where sif.requestId=? and sif.stockStatus='R' order by stockId desc", partId);
+        if(stockInfoList!=null && !stockInfoList.isEmpty()){
+            StockInfoForm sif = (StockInfoForm)stockInfoList.get(0);
+            if(sif!=null){
+                return sif.getBinCode();
+            }
+        }
+        return "";
+    }
+
+
+
+
+    /**
+     * èŽ·å–ç»åŠžäºº
+     * @return Float
+     */
+    public List getPartCreateByList() {
+        List al=new ArrayList();
+        try{
+            String hql="select distinct sif.createBy,uf.userName from RepairPartForm as sif," +
+                    "UserForm as uf where uf.id=sif.createBy ";
+            al=this.getDao().list(hql);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }
+
+
+
+    /**
+     * å‡ºåº“ç¡®è®¤ï¼Œä¿®æ”¹ç»´ä¿®é›¶ä»¶ç”³è¯·è¡¨(td_repair_parts_info)ä¿¡æ¯ï¼Œ
+     * 	ä¿®æ”¹åº“å­˜ä¿¡æ¯è¡¨(TD_STOCK_INFO)æ•°é‡ä¸º0ï¼Œæˆ–delete å·¥å…·è¡¨(TD_STOCK_TOOLS_INFO)æ•°æ®
+     * 	æ’å…¥å‡ºå…¥åº“æµæ°´è¡¨(td_stock_flow)ä¸€æ¡å‡ºåº“è®°å½•
+     * @param ids å¾…å‡ºåº“è®°å½•idï¼›
+     * @param userId å‡ºåº“äºº
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int stockPartOut(String ids, Long userId) throws VersionException {
+        int tag = -1;
+
+        ArrayList opList = new ArrayList();
+
+        try {
+            StockInfoListBo sil=StockInfoListBo.getInstance();
+            StockInBo sib=StockInBo.getInstance();
+            StockOutBo sob = StockOutBo.getInstance();
+
+            String[] temp = ids.split(",");
+            HashSet hs = new HashSet();
+            for (int i = 0; i < temp.length; i++) {
+                hs.add(temp[i]);
+            }
+            ids = Operate.arrayListToString(new ArrayList(hs));
+            String versionId = Operate.toVersionData(ids);
+            String strHql = "from RepairPartForm as prf where CONCAT(prf.id,',',prf.version) in (" + versionId + ")";
+            ArrayList dateList = (ArrayList) this.listVersion(strHql, ids.split(",").length);
+            for (int i = 0; i < dateList.size(); i++) {
+                RepairPartForm prf = (RepairPartForm) dateList.get(i);
+                prf.setRepairPartStatus("X");		//å·²æºå¸¦å¾…è¿”è¿˜
+                prf.setUpdateBy(userId);
+                Object prfO = new Object[]{prf,"u"};
+                opList.add(prfO);
+
+                ArrayList stockInfoList =  (ArrayList) this.getDao().list( "from StockInfoForm as sif where sif.requestId=? and sif.stockStatus='R'", prf.getPartsId());
+
+                for (int j = 0; j < stockInfoList.size(); j++) {
+                    StockInfoForm sif = (StockInfoForm) stockInfoList.get(j);
+                    sif.setSkuNum(new Integer(0));
+                    sif.setUpdateBy(userId);
+                    sif.setUpdateDate(new Date());
+                    sif.setFlowNo(FormNumberBuilder.getStockFlowId());
+                    sif.setTransportMode(null);
+
+                    StockFlowForm sff = sib.infoToFlow(sif);
+
+                    sff.setSkuNum(prf.getApplyQty());	//å‡ºåº“æ•°é‡
+                    sff.setRestNum(sob.getRestStock(sif.getStuffNo(), prf.getApplyQty(), "O"));	//ç»“å­˜æ•°é‡
 //					if(sff.getRestNum()==0){
 //						strStuffNo+="','"+sif.getStuffNo();
 //					}
-					
-					sff.setInFlowNo(sif.getFlowNo());
-					sff.setFlowType("O");		//³ö¿â
-					sff.setFlowItem("V"); 		//Ð¯´øÁã¼þ³ö¿â
-					
-					sff.setFeeType(prf.getWarrantyType());
-					sff.setFormNo(prf.getServiceSheetNo());
-					sff.setCreateBy(userId);
-					sff.setRequestId(prf.getPartsId());
-					
-					
-					sff.setCustomerName((String)(sil.getRepairFormNo(prf.getPartsId()))[1]);
-					
-					Object sffO = new Object[]{sff,"i"};
-					opList.add(sffO);
-					Object sifO = new Object[]{sif,"d"};
-					opList.add(sifO);
+
+                    sff.setInFlowNo(sif.getFlowNo());
+                    sff.setFlowType("O");		//å‡ºåº“
+                    sff.setFlowItem("V"); 		//æºå¸¦é›¶ä»¶å‡ºåº“
+
+                    sff.setFeeType(prf.getWarrantyType());
+                    sff.setFormNo(prf.getServiceSheetNo());
+                    sff.setCreateBy(userId);
+                    sff.setRequestId(prf.getPartsId());
 
 
-				} //end for
+                    sff.setCustomerName((String)(sil.getRepairFormNo(prf.getPartsId()))[1]);
 
-			} //end for
-			if (this.getBatchDao().allDMLBatch(opList)) {
-				tag = 1;
-			}
-		
+                    Object sffO = new Object[]{sff,"i"};
+                    opList.add(sffO);
+                    Object sifO = new Object[]{sif,"d"};
+                    opList.add(sifO);
 
-		} catch (VersionException ve) {
-			throw ve;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-		return tag;
-	}
-	
-	
+                } //end for
 
-	/**
-	  * ³ö¿âÈ·ÈÏ£¬ÐÞ¸ÄÎ¬ÐÞÁã¼þÉêÇë±í(td_repair_parts_info)ÐÅÏ¢£¬
-	  * 	ÐÞ¸Ä¿â´æÐÅÏ¢±í(TD_STOCK_INFO)ÊýÁ¿Îª0£¬»òdelete ¹¤¾ß±í(TD_STOCK_TOOLS_INFO)Êý¾Ý
-	  * 	²åÈë³öÈë¿âÁ÷Ë®±í(td_stock_flow)Ò»Ìõ³ö¿â¼ÇÂ¼
-	  * @param String ´ý³ö¿â¼ÇÂ¼id£»
-	  * @param Long ³ö¿âÈË
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
-	public int stockToolOut(String ids, Long userId) throws VersionException {
-		int tag = -1;
+            } //end for
+            if (this.getBatchDao().allDMLBatch(opList)) {
+                tag = 1;
+            }
 
-		ArrayList opList = new ArrayList();
-		
-		try {
-			StockInfoListBo sil=StockInfoListBo.getInstance();
-			StockInBo sib=StockInBo.getInstance();
-			StockToolsBo stb = StockToolsBo.getInstance();
-			StockOutBo sob = StockOutBo.getInstance();
-			
-			String[] temp = ids.split(",");
-			HashSet hs = new HashSet();
-			for (int i = 0; i < temp.length; i++) {
-				hs.add(temp[i]);
-			}
-			ids = Operate.arrayListToString(new ArrayList(hs));
-			String versionId = Operate.toVersionData(ids);
-			String strHql = "from RepairPartForm as prf where CONCAT(prf.id,',',prf.version) in (" + versionId + ")";
-			ArrayList dateList = (ArrayList) this.listVersion(strHql, ids.split(",").length);
-			for (int i = 0; i < dateList.size(); i++) { 
-				RepairPartForm prf = (RepairPartForm) dateList.get(i);
-				prf.setRepairPartStatus("X");		//ÒÑÐ¯´ø´ý·µ»¹
-				prf.setUpdateBy(userId);
-				
-				Object prfO = new Object[]{prf,"u"};
-				opList.add(prfO);
-				
-				ArrayList stockInfoList =  (ArrayList) this.getDao().list( "from StockToolsInfoForm as sif where sif.requestId=? and sif.stockStatus='R'", prf.getPartsId());
-				
-				for (int j = 0; j < stockInfoList.size(); j++) {
-					StockToolsInfoForm sif = (StockToolsInfoForm) stockInfoList.get(j);
-					sif.setSkuNum(new Integer(0));
-					sif.setUpdateBy(userId);
-					sif.setUpdateDate(new Date());
-					sif.setFlowNo(FormNumberBuilder.getStockFlowId());
-					
-					StockFlowForm sff = stb.infoToFlow(sif);
-					
-					sff.setSkuNum(prf.getApplyQty());	//³ö¿âÊýÁ¿
-					sff.setRestNum(sob.getRestStock(sif.getStuffNo(), prf.getApplyQty(), "O"));	//½á´æÊýÁ¿
+
+        } catch (VersionException ve) {
+            throw ve;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tag;
+    }
+
+
+
+    /**
+     * å‡ºåº“ç¡®è®¤ï¼Œä¿®æ”¹ç»´ä¿®é›¶ä»¶ç”³è¯·è¡¨(td_repair_parts_info)ä¿¡æ¯ï¼Œ
+     * 	ä¿®æ”¹åº“å­˜ä¿¡æ¯è¡¨(TD_STOCK_INFO)æ•°é‡ä¸º0ï¼Œæˆ–delete å·¥å…·è¡¨(TD_STOCK_TOOLS_INFO)æ•°æ®
+     * 	æ’å…¥å‡ºå…¥åº“æµæ°´è¡¨(td_stock_flow)ä¸€æ¡å‡ºåº“è®°å½•
+     * @param ids å¾…å‡ºåº“è®°å½•idï¼›
+     * @param userId å‡ºåº“äºº
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int stockToolOut(String ids, Long userId) throws VersionException {
+        int tag = -1;
+
+        ArrayList opList = new ArrayList();
+
+        try {
+            StockInfoListBo sil=StockInfoListBo.getInstance();
+            StockInBo sib=StockInBo.getInstance();
+            StockToolsBo stb = StockToolsBo.getInstance();
+            StockOutBo sob = StockOutBo.getInstance();
+
+            String[] temp = ids.split(",");
+            HashSet hs = new HashSet();
+            for (int i = 0; i < temp.length; i++) {
+                hs.add(temp[i]);
+            }
+            ids = Operate.arrayListToString(new ArrayList(hs));
+            String versionId = Operate.toVersionData(ids);
+            String strHql = "from RepairPartForm as prf where CONCAT(prf.id,',',prf.version) in (" + versionId + ")";
+            ArrayList dateList = (ArrayList) this.listVersion(strHql, ids.split(",").length);
+            for (int i = 0; i < dateList.size(); i++) {
+                RepairPartForm prf = (RepairPartForm) dateList.get(i);
+                prf.setRepairPartStatus("X");		//å·²æºå¸¦å¾…è¿”è¿˜
+                prf.setUpdateBy(userId);
+
+                Object prfO = new Object[]{prf,"u"};
+                opList.add(prfO);
+
+                ArrayList stockInfoList =  (ArrayList) this.getDao().list( "from StockToolsInfoForm as sif where sif.requestId=? and sif.stockStatus='R'", prf.getPartsId());
+
+                for (int j = 0; j < stockInfoList.size(); j++) {
+                    StockToolsInfoForm sif = (StockToolsInfoForm) stockInfoList.get(j);
+                    sif.setSkuNum(new Integer(0));
+                    sif.setUpdateBy(userId);
+                    sif.setUpdateDate(new Date());
+                    sif.setFlowNo(FormNumberBuilder.getStockFlowId());
+
+                    StockFlowForm sff = stb.infoToFlow(sif);
+
+                    sff.setSkuNum(prf.getApplyQty());	//å‡ºåº“æ•°é‡
+                    sff.setRestNum(sob.getRestStock(sif.getStuffNo(), prf.getApplyQty(), "O"));	//ç»“å­˜æ•°é‡
 //					if(sff.getRestNum()==0){
 //						strStuffNo+="','"+sif.getStuffNo();
 //					}
-					
-					sff.setInFlowNo(sif.getFlowNo());
-					sff.setFlowType("O");		//³ö¿â
-					sff.setFlowItem("U"); 		//Ð¯´øÁã¼þ³ö¿â
-					
-					sff.setFeeType(prf.getWarrantyType());
-					sff.setFormNo(prf.getServiceSheetNo());
-					sff.setCreateBy(userId);
-					sff.setRequestId(prf.getPartsId());
-					
-					sff.setCustomerName((String)(sil.getRepairFormNo(prf.getPartsId()))[1]);
-					
-					Object sffO = new Object[]{sff,"i"};
-					opList.add(sffO);
-					Object sifO = new Object[]{sif,"d"};
-					opList.add(sifO);
+
+                    sff.setInFlowNo(sif.getFlowNo());
+                    sff.setFlowType("O");		//å‡ºåº“
+                    sff.setFlowItem("U"); 		//æºå¸¦é›¶ä»¶å‡ºåº“
+
+                    sff.setFeeType(prf.getWarrantyType());
+                    sff.setFormNo(prf.getServiceSheetNo());
+                    sff.setCreateBy(userId);
+                    sff.setRequestId(prf.getPartsId());
+
+                    sff.setCustomerName((String)(sil.getRepairFormNo(prf.getPartsId()))[1]);
+
+                    Object sffO = new Object[]{sff,"i"};
+                    opList.add(sffO);
+                    Object sifO = new Object[]{sif,"d"};
+                    opList.add(sifO);
 
 
 
-				} //end for
+                } //end for
 
-			} //end for
-			if (this.getBatchDao().allDMLBatch(opList)) {
-				tag = 1;
-			}
-		
+            } //end for
+            if (this.getBatchDao().allDMLBatch(opList)) {
+                tag = 1;
+            }
 
-		} catch (VersionException ve) {
-			throw ve;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-		return tag;
-	}
-	
+        } catch (VersionException ve) {
+            throw ve;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tag;
+    }
+
 
 }

@@ -87,6 +87,7 @@
         <td><strong> 零件名称</strong></td>
         <td><strong> 数量</strong></td>
         <td><strong> 单位</strong></td>
+        <td><strong> 仓位</strong></td>
         <td><strong> 价格</strong></td>
         <td><strong> 销售单号码</strong></td>
         <td><strong> 申请人</strong></td>
@@ -108,6 +109,7 @@
           <td ><%=temp[2]==null?"":temp[2]%></td>
           <td >&nbsp;<%=temp[3]==null?"":temp[3]%></td>
           <td ><%=temp[4]==null?"":temp[4]%></td>
+          <td ><%=temp[10]==null?"":temp[10]%></td>
           <td >&nbsp;<%=temp[5]==null?"":temp[5]%></td>
           <td ><%=temp[6]==null?"":temp[6]%></td>
           <td ><%=temp[7]==null?"":temp[7]%></td>

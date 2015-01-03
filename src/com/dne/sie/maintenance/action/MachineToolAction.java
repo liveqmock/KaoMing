@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dne.sie.maintenance.bo.CustomerInfoBo;
+import com.dne.sie.maintenance.form.CustomerInfoForm;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
@@ -199,6 +201,8 @@ public class MachineToolAction extends ControlAction {
             String warrantyCardNo = "";
             String purchaseDate = "";
             String extendedWarrantyDate = "";
+            String customerId = "";
+            String customerName = "";
 
             String StrongDealerName = "";
 
@@ -209,8 +213,31 @@ public class MachineToolAction extends ControlAction {
                 modelCode = obj[0].toString();
                 serialNo = obj[1].toString();
                 warrantyCardNo = obj[2]==null?"":obj[2].toString();
-                purchaseDate = obj[3]==null?"":Operate.trimDate((Date)obj[3]);
+                purchaseDate = obj[3]==null?"":Operate.trimDate((Date) obj[3]);
                 extendedWarrantyDate = obj[4]==null?"":Operate.trimDate((Date)obj[4]);
+                customerId = obj[5]==null?"":obj[5].toString();
+                customerName = obj[6]==null?"":obj[6].toString();
+
+                StringBuffer customInfo= new StringBuffer("");
+                if(!customerId.isEmpty()){
+                    CustomerInfoForm cif = CustomerInfoBo.getInstance().find(customerId);
+                    customInfo.append("';document.forms[0].linkman.value = '")
+                            .append(cif.getLinkman())
+                            .append("';document.forms[0].phone.value = '")
+                            .append(cif.getPhone())
+                            .append("';document.forms[0].cityName.value = '")
+                            .append(cif.getCityName())
+                            .append("';document.forms[0].fax.value = '")
+                            .append(cif.getFax())
+                            .append("';document.forms[0].shippingAddress.value = '")
+                            .append(cif.getAddress())
+                            .append("';document.forms[0].address.value = '")
+                            .append(cif.getAddress())
+                            .append("';document.forms[0].mobile.value = '")
+                            .append(cif.getMobile())
+                            .append("';document.forms[0].provinceName.value = '")
+                            .append(cif.getProvinceName());
+                }
 
                 if(serialNo.indexOf(inputValue) != -1) {
                     //把输入的值和数据库的数据比较后,加粗
@@ -220,15 +247,21 @@ public class MachineToolAction extends ControlAction {
                             .append(serialNo)
                             .append("';document.forms[0].modelCode.value = '")
                             .append(modelCode)
+                            .append("';document.forms[0].customerId.value = '")
+                            .append(customerId)
+                            .append("';document.forms[0].customerName.value = '")
+                            .append(customerName)
                             .append("';document.forms[0].warrantyCardNo.value = '")
                             .append(warrantyCardNo)
                             .append("';document.forms[0].purchaseDateStr.value = '")
                             .append(purchaseDate)
+                            .append(customInfo)
                             .append("';document.forms[0].extendedWarrantyDate.value = '")
                             .append(extendedWarrantyDate)
                             .append("'\">")
                             .append(StrongDealerName)
                             .append("</div>");
+                    System.out.println(buffer);
                 }
             }
             PrintWriter out = response.getWriter();

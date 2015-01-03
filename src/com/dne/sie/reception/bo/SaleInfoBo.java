@@ -13,6 +13,7 @@ import com.dne.sie.reception.form.SaleInfoForm;
 import com.dne.sie.reception.form.SalePaymentForm;
 import com.dne.sie.reception.queryBean.SaleInfoQuery;
 import com.dne.sie.repair.bo.RepairHandleBo;
+import com.dne.sie.repair.form.RepairPartForm;
 import com.dne.sie.repair.form.RepairServiceForm;
 import com.dne.sie.repair.form.RepairServiceStatusForm;
 import com.dne.sie.stock.bo.ReqAllocateBo;
@@ -50,7 +51,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 列表查询拼装
-     * @param SaleInfoForm 查询条件
+     * @param dept 查询条件
      * @return ArrayList 查询结果
      */
     public ArrayList list(SaleInfoForm dept) throws Exception {
@@ -98,7 +99,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 销售明细 TD_SALES_DETAIL查询拼装
-     * @param SaleInfoForm 查询条件
+     * @param saleNo 查询条件
      * @return ArrayList 查询结果
      */
     public ArrayList detailList(String saleNo) throws Exception {
@@ -168,7 +169,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 根据id查询SaleInfoForm信息
-     * @param String 记录pk
+     * @param id 记录pk
      * @return SaleInfoForm
      */
     public SaleInfoForm findById(String id) throws Exception {
@@ -179,7 +180,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 根据id查询SaleDetailForm信息
-     * @param String 记录pk
+     * @param id 记录pk
      * @return SaleDetailForm
      */
     public SaleDetailForm findByDetailId(Long id) throws Exception {
@@ -191,7 +192,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 根据id查询该权限信息
-     * @param String 权限记录pk
+     * @param id 权限记录pk
      * @return 权限Form
      */
     public List findDetailList(String id)  throws Exception {
@@ -210,7 +211,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 插入一条权限信息
-     * @param SaleInfoForm 权限信息Form
+     * @param rf 权限信息Form
      * @return 是否成功标志
      */
     public int add(SaleInfoForm rf) throws Exception {
@@ -226,7 +227,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 修改一条权限信息
-     * @param SaleInfoForm 权限信息Form
+     * @param rf 权限信息Form
      * @return 是否成功标志
      */
     public int modify(SaleInfoForm rf) throws Exception {
@@ -256,7 +257,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 询价回复确认
-     * @param SaleInfoForm 查询条件
+     * @param
      * @return ArrayList 查询结果
      */
     public int saleAskSave(String[][] para,String flag,Long updateBy,
@@ -341,7 +342,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 报价核算确认
-     * @param SaleInfoForm
+     * @param
      * @return tag
      */
     public int saleCheckConfirm(ArrayList detailList,String[] ids,String flag) throws VersionException,Exception {
@@ -381,7 +382,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * String的金额转Float
-     * @param String
+     * @param
      * @return Float
      */
     public static Float toFloat(String money,String flag) throws Exception,ComException{
@@ -393,7 +394,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 合并
-     * @param String
+     * @param
      * @return Float
      */
     public int mergeDetailConfirm(String saleNoF,String saleNoT,String customerId) throws Exception{
@@ -439,7 +440,6 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 获取订单所有年月
-     * @param String
      * @return Float
      */
     public List<String> getSaleDateList() {
@@ -450,7 +450,6 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 获取经办人
-     * @param String
      * @return Float
      */
     public List getCreateByList() {
@@ -468,7 +467,6 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 获取经办人
-     * @param String
      * @return Float
      */
     public List getPartCreateByList() {
@@ -562,7 +560,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 插入一行销售单付费金额\开票金额
-     * @param SalePaymentForm
+     * @param spf
      * @return Float 客户已付总额
      */
     public Float addPayment(SalePaymentForm spf) throws Exception {
@@ -633,7 +631,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 更新SaleInfoForm大单状态，为小单的最旧状态
-     * @param requestForm   saleNo
+     * @param    saleNo
      * @return boolean
      */
     public int renewSaleStatus(String saleNo) throws Exception{
@@ -664,7 +662,7 @@ public class SaleInfoBo extends CommBo {
 
     /**
      * 更新SaleInfoForm大单状态，为小单的最旧状态
-     * @param requestForm   saleNo
+     * @param    saleNo
      * @return boolean
      */
     public int renewSaleInfo(String saleNo) throws Exception{
@@ -841,8 +839,8 @@ public class SaleInfoBo extends CommBo {
                 String chkHql="select count(*) from SaleDetailForm as sdf " +
                         "where sdf.saleNo='"+sdf.getSaleNo()+"' and sdf.delFlag=0";
                 Long count=(Long)this.getDao().uniqueResult(chkHql);
+                SaleInfoForm sif=this.findById(sdf.getSaleNo());
                 if(count==0){	//该单的所有零件都已取消
-                    SaleInfoForm sif=this.findById(sdf.getSaleNo());
                     sif.setDelFlag(new Integer(1));
                     sif.setUpdateBy(userId);
                     sif.setUpdateDate(new Date());
@@ -850,6 +848,18 @@ public class SaleInfoBo extends CommBo {
                 }else{	//更新大单状态
                     this.renewSaleInfo(sdf.getSaleNo());
                 }
+
+                //维修单关联取消
+                if(sif.getRepairNo()!=null && sif.getRepairNo().longValue()!=0){
+                    RepairPartForm returnForm = (RepairPartForm) this.getDao().findById(RepairPartForm.class,saleDetailId);
+                    if(returnForm!=null){
+                        returnForm.setRepairPartStatus("C");
+                        returnForm.setUpdateDate(new Date());
+                        returnForm.setUpdateBy(userId);
+                        this.getDao().update(returnForm);
+                    }
+                }
+
                 tag[0]="1";
             }
         }catch(Exception e){

@@ -64,6 +64,7 @@
         <td><strong> 单位</strong></td>
         <td><strong> 规格</strong></td>
         <td><strong> 数量</strong></td>
+        <td><strong> 仓位</strong></td>
         <td><strong> 申请人</strong></td>
         <td><strong> 申请日期</strong></td>
                 
@@ -85,6 +86,7 @@
           <td ><%=temp[4]==null?"":temp[4]%></td>
           <td >&nbsp;<%=temp[5]==null?"":temp[5]%></td>
           <td ><%=temp[6]==null?"":temp[6]%></td>
+          <td ><%=temp[11]==null?"":temp[11]%></td>
           <td ><%=temp[7]==null?"":temp[7]%></td>
           <td ><%=temp[8]==null?"":temp[8]%></td>
         </tr>      

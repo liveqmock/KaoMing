@@ -6,289 +6,289 @@ import com.dne.sie.util.form.CommForm;
 
 
 /**
- * ø‚¥Ê–≈œ¢Form¥¶¿Ì¿‡
+ * Â∫ìÂ≠ò‰ø°ÊÅØFormÂ§ÑÁêÜÁ±ª
  * @author xt
  * @version 1.1.5.6
- * @see StockInfoForm.java <br>
+ * @see StockInfoForm <br>
  */
 public class StockInfoForm   extends CommForm  {
 
 
-/****************Fields ************   */ 
-	
-	 //pk
-     private Long stockId;
-     //¡„º˛√˚≥∆
-     private String skuCode;
-     //ºÚ≥∆
-     private String shortCode;
-     //πÊ∏Ò
-     private String standard;
-     //¡œ∫≈
-     private String stuffNo;
-     //µ•Œª
-     private String skuUnit;
-     //¡„º˛ ˝¡ø
-     private Integer skuNum;
-     //≥…±æµ•º€(RMB)
-     private Float perCost;
-     
-     //Ω¯º€($)
-     private Float orderDollar;
-     //TW‘À∑—(RMB)
-     private Float freightTW;
+    /****************Fields ************   */
 
-     //‘À ‰∑Ω Ω
-     private String transportMode;
-     
-     //¡„º˛ Ù–‘(A,B)
-     private String skuType;
-     //±∏◊¢
-     private String remark;
-     //≤÷Œª
-     private String binCode;
-     //ø‚¥Ê◊¥Ã¨
-     private String stockStatus;
-     //»Îø‚¡˜ÀÆ∫≈
-     private Long flowNo;
-     //∑¢∆±∫≈
-     private String invoiceNo;
-     
-     private Integer  skuNumTax;
-     private Float perCostTax;
-    
-	 
-	 //»Îø‚»À
-     private Long createBy;
-     //µΩø‚»’∆⁄
-     private Date createDate;
-     private Long updateBy;
-     private Date updateDate;
-     
-     
-	//****************for stockInfoListQuery start ************
-     
-     private String dateScope;
-     //»Îø‚∆ º»’∆⁄
-     private String inDate1;
-     //»Îø‚÷’÷π»’∆⁄
- 	 private String inDate2;
- 	 
- 	private Double realCost1;	//◊ÓµÕ≥…±æ
-	private Double realCost2;	//◊Ó∏ﬂ≥…±æ
-	
-	private String binCode1;	//∆ º≤÷Œª∫≈
-	private String binCode2;	//÷’÷π≤÷Œª∫≈
-	 
- 	 
- 	private String strSkuNum;
- 	private String strPerCost;
- 	private Long requestId;
- 	
- 	 //****************for stockInfoListQuery end ************
- 	 
- 	 
-	public Long getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(Long createBy) {
-		this.createBy = createBy;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public Long getFlowNo() {
-		return flowNo;
-	}
-	public void setFlowNo(Long flowNo) {
-		this.flowNo = flowNo;
-	}
-	public String getInDate1() {
-		return inDate1;
-	}
-	public void setInDate1(String inDate1) {
-		this.inDate1 = inDate1;
-	}
-	public String getInDate2() {
-		return inDate2;
-	}
-	public void setInDate2(String inDate2) {
-		this.inDate2 = inDate2;
-	}
-	public Float getPerCost() {
-		return perCost;
-	}
-	public void setPerCost(Float perCost) {
-		this.perCost = perCost;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	
-	public String getShortCode() {
-		return shortCode;
-	}
-	public void setShortCode(String shortCode) {
-		this.shortCode = shortCode;
-	}
-	
-	public String getSkuUnit() {
-		return skuUnit;
-	}
-	public void setSkuUnit(String skuUnit) {
-		this.skuUnit = skuUnit;
-	}
-	public String getSkuCode() {
-		return skuCode;
-	}
-	public void setSkuCode(String skuCode) {
-		this.skuCode = skuCode;
-	}
-	public Integer getSkuNum() {
-		return skuNum;
-	}
-	public void setSkuNum(Integer skuNum) {
-		this.skuNum = skuNum;
-	}
-	public String getStandard() {
-		return standard;
-	}
-	public void setStandard(String standard) {
-		this.standard = standard;
-	}
-	public Long getStockId() {
-		return stockId;
-	}
-	public void setStockId(Long stockId) {
-		this.stockId = stockId;
-	}
-	public String getStockStatus() {
-		return stockStatus;
-	}
-	public void setStockStatus(String stockStatus) {
-		this.stockStatus = stockStatus;
-	}
-	public String getStuffNo() {
-		return stuffNo;
-	}
-	public void setStuffNo(String stuffNo) {
-		this.stuffNo = stuffNo;
-	}
-	public Long getUpdateBy() {
-		return updateBy;
-	}
-	public void setUpdateBy(Long updateBy) {
-		this.updateBy = updateBy;
-	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	public String getDateScope() {
-		return dateScope;
-	}
-	public void setDateScope(String dateScope) {
-		this.dateScope = dateScope;
-	}
-	public String getStrPerCost() {
-		return strPerCost;
-	}
-	public void setStrPerCost(String strPerCost) {
-		this.strPerCost = strPerCost;
-	}
-	public String getStrSkuNum() {
-		return strSkuNum;
-	}
-	public void setStrSkuNum(String strSkuNum) {
-		this.strSkuNum = strSkuNum;
-	}
-	public String getSkuType() {
-		return skuType;
-	}
-	public void setSkuType(String skuType) {
-		this.skuType = skuType;
-	}
-	public Long getRequestId() {
-		return requestId;
-	}
-	public void setRequestId(Long requestId) {
-		this.requestId = requestId;
-	}
-	public String getBinCode() {
-		return binCode;
-	}
-	public void setBinCode(String binCode) {
-		this.binCode = binCode;
-	}
-	public Double getRealCost1() {
-		return realCost1;
-	}
-	public void setRealCost1(Double realCost1) {
-		this.realCost1 = realCost1;
-	}
-	public Double getRealCost2() {
-		return realCost2;
-	}
-	public void setRealCost2(Double realCost2) {
-		this.realCost2 = realCost2;
-	}
-	public String getBinCode1() {
-		return binCode1;
-	}
-	public void setBinCode1(String binCode1) {
-		this.binCode1 = binCode1;
-	}
-	public String getBinCode2() {
-		return binCode2;
-	}
-	public void setBinCode2(String binCode2) {
-		this.binCode2 = binCode2;
-	}
-	public Float getOrderDollar() {
-		return orderDollar;
-	}
-	public void setOrderDollar(Float orderDollar) {
-		this.orderDollar = orderDollar;
-	}
-	public Float getFreightTW() {
-		return freightTW;
-	}
-	public void setFreightTW(Float freightTW) {
-		this.freightTW = freightTW;
-	}
-	public String getTransportMode() {
-		return transportMode;
-	}
-	public void setTransportMode(String transportMode) {
-		this.transportMode = transportMode;
-	}
-	public String getInvoiceNo() {
-		return invoiceNo;
-	}
-	public void setInvoiceNo(String invoiceNo) {
-		this.invoiceNo = invoiceNo;
-	}
-	public Integer getSkuNumTax() {
-		return skuNumTax;
-	}
-	public void setSkuNumTax(Integer skuNumTax) {
-		this.skuNumTax = skuNumTax;
-	}
-	public Float getPerCostTax() {
-		return perCostTax;
-	}
-	public void setPerCostTax(Float perCostTax) {
-		this.perCostTax = perCostTax;
-	}
-	
-	
+    //pk
+    private Long stockId;
+    //Èõ∂‰ª∂ÂêçÁß∞
+    private String skuCode;
+    //ÁÆÄÁß∞
+    private String shortCode;
+    //ËßÑÊ†º
+    private String standard;
+    //ÊñôÂè∑
+    private String stuffNo;
+    //Âçï‰Ωç
+    private String skuUnit;
+    //Èõ∂‰ª∂Êï∞Èáè
+    private Integer skuNum;
+    //ÊàêÊú¨Âçï‰ª∑(RMB)
+    private Float perCost;
+
+    //Ëøõ‰ª∑($)
+    private Float orderDollar;
+    //TWËøêË¥π(RMB)
+    private Float freightTW;
+
+    //ËøêËæìÊñπÂºè
+    private String transportMode;
+
+    //Èõ∂‰ª∂Â±ûÊÄß(A,B)
+    private String skuType;
+    //Â§áÊ≥®
+    private String remark;
+    //‰ªì‰Ωç
+    private String binCode;
+    //Â∫ìÂ≠òÁä∂ÊÄÅ
+    private String stockStatus;
+    //ÂÖ•Â∫ìÊµÅÊ∞¥Âè∑
+    private Long flowNo;
+    //ÂèëÁ•®Âè∑
+    private String invoiceNo;
+
+    private Integer  skuNumTax;
+    private Float perCostTax;
+
+
+    //ÂÖ•Â∫ì‰∫∫
+    private Long createBy;
+    //Âà∞Â∫ìÊó•Êúü
+    private Date createDate;
+    private Long updateBy;
+    private Date updateDate;
+
+
+    //****************for stockInfoListQuery start ************
+
+    private String dateScope;
+    //ÂÖ•Â∫ìËµ∑ÂßãÊó•Êúü
+    private String inDate1;
+    //ÂÖ•Â∫ìÁªàÊ≠¢Êó•Êúü
+    private String inDate2;
+
+    private Double realCost1;	//ÊúÄ‰ΩéÊàêÊú¨
+    private Double realCost2;	//ÊúÄÈ´òÊàêÊú¨
+
+    private String binCode1;	//Ëµ∑Âßã‰ªì‰ΩçÂè∑
+    private String binCode2;	//ÁªàÊ≠¢‰ªì‰ΩçÂè∑
+
+
+    private String strSkuNum;
+    private String strPerCost;
+    private Long requestId;
+
+    //****************for stockInfoListQuery end ************
+
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Long getFlowNo() {
+        return flowNo;
+    }
+    public void setFlowNo(Long flowNo) {
+        this.flowNo = flowNo;
+    }
+    public String getInDate1() {
+        return inDate1;
+    }
+    public void setInDate1(String inDate1) {
+        this.inDate1 = inDate1;
+    }
+    public String getInDate2() {
+        return inDate2;
+    }
+    public void setInDate2(String inDate2) {
+        this.inDate2 = inDate2;
+    }
+    public Float getPerCost() {
+        return perCost;
+    }
+    public void setPerCost(Float perCost) {
+        this.perCost = perCost;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getShortCode() {
+        return shortCode;
+    }
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
+    }
+
+    public String getSkuUnit() {
+        return skuUnit;
+    }
+    public void setSkuUnit(String skuUnit) {
+        this.skuUnit = skuUnit;
+    }
+    public String getSkuCode() {
+        return skuCode;
+    }
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+    public Integer getSkuNum() {
+        return skuNum;
+    }
+    public void setSkuNum(Integer skuNum) {
+        this.skuNum = skuNum;
+    }
+    public String getStandard() {
+        return standard;
+    }
+    public void setStandard(String standard) {
+        this.standard = standard;
+    }
+    public Long getStockId() {
+        return stockId;
+    }
+    public void setStockId(Long stockId) {
+        this.stockId = stockId;
+    }
+    public String getStockStatus() {
+        return stockStatus;
+    }
+    public void setStockStatus(String stockStatus) {
+        this.stockStatus = stockStatus;
+    }
+    public String getStuffNo() {
+        return stuffNo;
+    }
+    public void setStuffNo(String stuffNo) {
+        this.stuffNo = stuffNo;
+    }
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getDateScope() {
+        return dateScope;
+    }
+    public void setDateScope(String dateScope) {
+        this.dateScope = dateScope;
+    }
+    public String getStrPerCost() {
+        return strPerCost;
+    }
+    public void setStrPerCost(String strPerCost) {
+        this.strPerCost = strPerCost;
+    }
+    public String getStrSkuNum() {
+        return strSkuNum;
+    }
+    public void setStrSkuNum(String strSkuNum) {
+        this.strSkuNum = strSkuNum;
+    }
+    public String getSkuType() {
+        return skuType;
+    }
+    public void setSkuType(String skuType) {
+        this.skuType = skuType;
+    }
+    public Long getRequestId() {
+        return requestId;
+    }
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
+    public String getBinCode() {
+        return binCode;
+    }
+    public void setBinCode(String binCode) {
+        this.binCode = binCode;
+    }
+    public Double getRealCost1() {
+        return realCost1;
+    }
+    public void setRealCost1(Double realCost1) {
+        this.realCost1 = realCost1;
+    }
+    public Double getRealCost2() {
+        return realCost2;
+    }
+    public void setRealCost2(Double realCost2) {
+        this.realCost2 = realCost2;
+    }
+    public String getBinCode1() {
+        return binCode1;
+    }
+    public void setBinCode1(String binCode1) {
+        this.binCode1 = binCode1;
+    }
+    public String getBinCode2() {
+        return binCode2;
+    }
+    public void setBinCode2(String binCode2) {
+        this.binCode2 = binCode2;
+    }
+    public Float getOrderDollar() {
+        return orderDollar;
+    }
+    public void setOrderDollar(Float orderDollar) {
+        this.orderDollar = orderDollar;
+    }
+    public Float getFreightTW() {
+        return freightTW;
+    }
+    public void setFreightTW(Float freightTW) {
+        this.freightTW = freightTW;
+    }
+    public String getTransportMode() {
+        return transportMode;
+    }
+    public void setTransportMode(String transportMode) {
+        this.transportMode = transportMode;
+    }
+    public String getInvoiceNo() {
+        return invoiceNo;
+    }
+    public void setInvoiceNo(String invoiceNo) {
+        this.invoiceNo = invoiceNo;
+    }
+    public Integer getSkuNumTax() {
+        return skuNumTax;
+    }
+    public void setSkuNumTax(Integer skuNumTax) {
+        this.skuNumTax = skuNumTax;
+    }
+    public Float getPerCostTax() {
+        return perCostTax;
+    }
+    public void setPerCostTax(Float perCostTax) {
+        this.perCostTax = perCostTax;
+    }
+
+
 
 }

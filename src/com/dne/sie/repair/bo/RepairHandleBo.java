@@ -396,14 +396,15 @@ public class RepairHandleBo extends CommBo {
                 rmif.setRepairNo(rsf.getRepairNo());
                 rmif.setRepairMan(Long.parseLong(repairManInfo[0]));
                 rmif.setDepartDate(Operate.toSqlDate(repairManInfo[1]));
-                if(repairManInfo[2]!=null&&!repairManInfo[2].equals(""))
-                    rmif.setWorkingHours(new Integer(repairManInfo[2]));
-                if(repairManInfo[3]!=null&&!repairManInfo[3].equals(""))
-                    rmif.setTravelFee(new Double(repairManInfo[3]));
-                if(repairManInfo[4]!=null&&!repairManInfo[4].equals(""))
-                    rmif.setLaborCosts(new Double(repairManInfo[4]));
 
-                if(repairManInfo.length>=6) rmif.setRemark(repairManInfo[5]);
+//                if(repairManInfo[2]!=null&&!repairManInfo[2].equals(""))
+//                    rmif.setWorkingHours(new Integer(repairManInfo[2]));
+//                if(repairManInfo[3]!=null&&!repairManInfo[3].equals(""))
+//                    rmif.setTravelFee(new Double(repairManInfo[3]));
+//                if(repairManInfo[4]!=null&&!repairManInfo[4].equals(""))
+//                    rmif.setLaborCosts(new Double(repairManInfo[4]));
+
+                if(repairManInfo.length>=2) rmif.setRemark(repairManInfo[2]);
                 rmif.setCreateDate(new Date());
                 rmif.setCreateBy(rsf.getUpdateBy());
 

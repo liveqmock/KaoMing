@@ -10,10 +10,10 @@ import org.apache.struts.action.ActionForm;
 import com.dne.sie.common.tools.Operate;
 
 /**
- * 出库操作Query处理类
+ * RequestOperateQuery
  * @author xt
  * @version 1.1.5.6
- * @see RequestOperateQuery.java <br>
+ * @see RequestOperateQuery <br>
  */
 public class RequestOperateQuery extends QueryBean{
 
@@ -97,7 +97,7 @@ public class RequestOperateQuery extends QueryBean{
 	/**
 	 *
 	 * @todo Implement this ces.architect.util.QueryBean method
-	 * @param actionform ActionForm
+	 * @param aform ActionForm
 	 * @return AdvQueryString
 	 */
 	protected AdvQueryString generateCountQuery(ActionForm aform) {
@@ -119,7 +119,7 @@ public class RequestOperateQuery extends QueryBean{
 	/**
 	 *
 	 * @todo Implement this ces.architect.util.QueryBean method
-	 * @param actionform ActionForm
+	 * @param aform ActionForm
 	 * @return AdvQueryString
 	 */
 	protected AdvQueryString generateListQuery(ActionForm aform) {
@@ -128,7 +128,7 @@ public class RequestOperateQuery extends QueryBean{
 		
 		String queryString = "select pa.saleDetailId,pa.stuffNo,si.skuCode,"+
 			"si.skuNum,si.skuUnit,si.perCost, "+
-			"pa.saleNo,pa.createBy,pa.createDate,pa.version "+
+			"pa.saleNo,pa.createBy,pa.createDate,pa.version,si.binCode "+
 			"  from SaleDetailForm as pa,StockInfoForm as si  ";
 		
 		ArrayList paramList = this.queryCondition(form);

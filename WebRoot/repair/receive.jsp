@@ -631,13 +631,9 @@ new AutoTip.AutoComplete("saleNo", function() {
 });
 
 new AutoTip.AutoComplete("serialNo", function() {
-	if(document.forms[0].customerId.value==''){
-		serialAlert.innerHTML="<font color='red'>请先选择客户！</font>";
-	}else{
-		serialAlert.innerHTML="";
-		return "machineToolAction.do?method=getSerialInfo&inputValue=" + (this.text.value);
-	}
-	 
+
+	return "machineToolAction.do?method=getSerialInfo&inputValue=" + (this.text.value);
+
 });
 </script>
 </body>

@@ -1,79 +1,79 @@
 package com.dne.sie.stock.action;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 
-//Java À©Õ¹Àà
+//Java æ‰©å±•ç±»
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-//µÚÈı·½Àà
+//ç¬¬ä¸‰æ–¹ç±»
 import org.apache.struts.action.ActionForm;
 import org.apache.log4j.Logger;
 
-//×Ô¶¨ÒåÀà
+//è‡ªå®šä¹‰ç±»
 import com.dne.sie.common.exception.VersionException;
 import com.dne.sie.reception.form.SaleDetailForm;
 import com.dne.sie.stock.bo.StockOutBo;
 import com.dne.sie.util.action.ControlAction;
 
 public class RequestOperateAction extends ControlAction{
-	
 
-	/**
-	 * ÏúÊÛÁìÓÃ³ö¿âÁĞ±í
-	 * @param request HttpServletRequest
-	 * @param form ActionForm ±íµ¥Êı¾İ
-	 * @return ÏúÊÛÁìÓÃ³ö¿âÒ³Ãæ
-	 */
-	public String saleOutList(HttpServletRequest request, ActionForm form){
-		String forward = "saleOutList";
-	
-		try{
-			SaleDetailForm sdf=(SaleDetailForm)form;
-			//ÒÑ·ÖÅä´ıÁìÈ¡
-			sdf.setPartStatus("L");
-			StockOutBo sib = StockOutBo.getInstance();
-			request.setAttribute("saleList",sib.outOperateList(sdf));
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
 
-	   /**
-	   * ³ö¿âÈ·ÈÏ
-	   * @param request HttpServletRequest
-	   * @param form  ±íµ¥Êı¾İ
-	   * @return Ò³Ãæ
-	   */	
-	  public String stockOutConfirm(HttpServletRequest request,ActionForm form) {
-		  String forward = "resultMessage";
-		  int tag =-1;
+    /**
+     * é”€å”®é¢†ç”¨å‡ºåº“åˆ—è¡¨
+     * @param request HttpServletRequest
+     * @param form ActionForm è¡¨å•æ•°æ®
+     * @return é”€å”®é¢†ç”¨å‡ºåº“é¡µé¢
+     */
+    public String saleOutList(HttpServletRequest request, ActionForm form){
+        String forward = "saleOutList";
 
-		  try{
-				HttpSession session=request.getSession();
-				Long userId=(Long)session.getAttribute("userId");
-				//String outStockRemark=request.getParameter("outStockRemark");
-				String chkId = request.getParameter("ids");
-				
-				if(chkId!=null&&!chkId.equals("")){
-					StockOutBo sob = StockOutBo.getInstance();
-					tag = sob.stockOut(chkId,userId);
-				}
-		
-		
-			  request.setAttribute("tag",tag+"");
-			  request.setAttribute("businessFlag","stockOutConfirm");
+        try{
+            SaleDetailForm sdf=(SaleDetailForm)form;
+            //å·²åˆ†é…å¾…é¢†å–
+            sdf.setPartStatus("L");
+            StockOutBo sib = StockOutBo.getInstance();
+            request.setAttribute("saleList",sib.outOperateList(sdf));
 
-		  }catch(VersionException ve){
-			  forward="versionErr";
-		  }catch(Exception e){
-			  e.printStackTrace();
-		  }
-		  return forward;
-	  }
-		  
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * å‡ºåº“ç¡®è®¤
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String stockOutConfirm(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag =-1;
+
+        try{
+            HttpSession session=request.getSession();
+            Long userId=(Long)session.getAttribute("userId");
+            //String outStockRemark=request.getParameter("outStockRemark");
+            String chkId = request.getParameter("ids");
+
+            if(chkId!=null&&!chkId.equals("")){
+                StockOutBo sob = StockOutBo.getInstance();
+                tag = sob.stockOut(chkId,userId);
+            }
+
+
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag","stockOutConfirm");
+
+        }catch(VersionException ve){
+            forward="versionErr";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
 
 }

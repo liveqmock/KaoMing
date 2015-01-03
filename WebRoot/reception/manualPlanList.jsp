@@ -42,7 +42,7 @@
 				
         <tr class="tableback1"> 
           <td width="80">客户名称：<font color='red'>*</font></td>
-          <td  id="cust"> <input type="hidden" name="customerId" >
+          <td width="120" id="cust"> <input type="hidden" name="customerId" >
                <input name="customerName" type="text" class="form" size="30" >
           </td>
           
@@ -75,7 +75,7 @@
         </tr>
         <tr class="tableback1"> 
           <td width="60">数量：<font color='red'>*</font></td>
-          <td width="172"><input name="orderNum" type="text" class="form" size="16" maxlength="4" onkeydown="f_onlynumber()"></td>
+          <td width="120"><input name="orderNum" type="text" class="form" size="16" maxlength="4" onkeydown="f_onlynumber()"></td>
           <td width="80"> 单价$：<font color='red'>*</font></td>
           <td width="170"><input name="perQuote" type="text" class="form" size="22" maxlength="32"> </td>
           <td width="60">零件单位：</td>
@@ -167,7 +167,12 @@ new AutoTip.AutoComplete("stuffNo", function() {
 });
 new AutoTip.AutoComplete("customerName", function() {
 	 return "customerInfoAction.do?method=getCustInfo&inputValue=" + escape(this.text.value);
-});		
+});
+
+new AutoTip.AutoComplete("modelSerialNo", function() {
+    return "machineToolAction.do?method=getSerialInfo&inputValue=" + (this.text.value);
+
+});
 
 	function f_po_confirm(){
 	    if(chk()!=''&&chk()!=null){
@@ -219,7 +224,7 @@ new AutoTip.AutoComplete("customerName", function() {
 	    }
 	
 	}
-	
+
 
 	
 </script>

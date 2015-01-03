@@ -111,6 +111,7 @@ else if(tag=="-1") alert("操作失败");
                         <td width="13%"><strong>&nbsp;料号</strong></td>
                         <td width="18%"><strong>零件名称</strong></td>
                         <td><strong>数量</strong></td>
+                        <td><strong>仓位</strong></td>
                         <td><strong>类型</strong></td>
                         <td><strong>成本单价(RMB)</strong></td>
                         <td><strong>订购单价($)</strong></td>
@@ -133,6 +134,7 @@ else if(tag=="-1") alert("操作失败");
           <td ><%=temp[1]==null?"":temp[1]%></td>
           <td ><%=temp[2]==null?"":temp[2]%></td>
           <td ><font <%if("0".equals(temp[3])){%>size="3" color="red"<%}%>><%=temp[3]==null?"":temp[3]%></font></td><input type="hidden" name="skuNowNum" value="<%=temp[3]==null?"0":temp[3]%>">
+          <td ><%=temp[7]==null?"":temp[7]%></td>
           <td ><%=DicInit.getSystemName("SKU_TYPE",temp[5])%></td>
           <td ><%=temp[4]==null?"":temp[4]%></td>
           <td ><%=temp[6]==null?"":temp[6]%></td>

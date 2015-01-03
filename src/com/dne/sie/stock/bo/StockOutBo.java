@@ -1,6 +1,5 @@
 package com.dne.sie.stock.bo;
 
-//Java »ù´¡Àà
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,12 +20,7 @@ import com.dne.sie.stock.queryBean.RequestOperateQuery;
 import com.dne.sie.util.bo.CommBo;
 
 
-/**
- * ³ö¿â²Ù×÷BO´¦ÀíÀà
- * @author xt
- * @version 1.1.5.6
- * @see StockOutBo.java <br>
- */
+
 public class StockOutBo extends CommBo{
 	//private static Logger logger = Logger.getLogger(StockOutBo.class);
 
@@ -40,13 +34,6 @@ public class StockOutBo extends CommBo{
 	}
 	
 
-	
-
-	/**
-	* ²éÑ¯¿É¿âµ÷³ö¿âµÄÊý¾Ý£¨ºÏ²¢¿ÉÓÃ¿â´æÏÔÊ¾£©
-	* @param String ²éÑ¯Ìõ¼þ
-	* @return ¸ÃÉêÇë¼ÇÂ¼Form
-	*/
 	public ArrayList adjustOutList(StockInfoForm sifQuery) throws Exception{
 
 		ArrayList alData = new ArrayList();
@@ -59,7 +46,7 @@ public class StockOutBo extends CommBo{
 
 		for (int i = 0; i < dataList.size(); i++) {
 			StockInfoForm sif = (StockInfoForm)dataList.get(i);
-			String[] data = new String[7];
+			String[] data = new String[8];
 			data[0] = sif.getStockId().toString();
 			data[1] = sif.getStuffNo()==null?"":sif.getStuffNo();
 			data[2] = sif.getSkuCode()==null?"":sif.getSkuCode();
@@ -67,19 +54,14 @@ public class StockOutBo extends CommBo{
 			data[4] = sif.getPerCost()==null?"":Operate.roundD(sif.getPerCost(),2)+"";
 			data[5] = DicInit.getSystemName("SKU_TYPE",sif.getSkuType());
 			data[6] = sif.getOrderDollar()==null?"":Operate.roundD(sif.getOrderDollar(),2)+"";
+            data[7] = sif.getBinCode()==null?"":sif.getBinCode();
 			alData.add(data);
 		}
 		alData.add(0, count + "");
 	
 		return alData;	  	
 	} 
-	
-	/**
-	 * ÏÔÊ¾¿É×öÎ»ÒÆµÄÁã¼þ
-	 * @param sifQuery
-	 * @return
-	 * @throws Exception
-	 */
+
 	public ArrayList<?> stockBinMoveList(StockInfoForm sifQuery) throws Exception{
 
 		ArrayList alData = new ArrayList();
@@ -105,18 +87,10 @@ public class StockOutBo extends CommBo{
 		return alData;	  	
 	} 	
 
-	/**
-	* ¿âµ÷³ö¿â
-	* @param String ¿â´æ¼ÇÂ¼id
-	* @param String[] ²ÖÎ»ºÅ
-	* @param Long ÓÃ»§id
-	* @return ÊÇ·ñ³É¹¦
-	*/
 	public int ajustOut(String strIds,String[] outNums,String[] outRemarks,String customerName) throws Exception{
 		int tag=-1;
 		ArrayList dataList = new ArrayList();
 	
-		//×¢Òâ´Ë´¦order byÒªºÍAdjustOutQueryÒ»ÖÂ
 		String strHql="from StockInfoForm as sif where  sif.stockId in ("+strIds+")" +
 			" order by sif.stuffNo,sif.stockId ";
 		//String strStuffNo="";
@@ -145,28 +119,23 @@ public class StockOutBo extends CommBo{
 			sff.setFlowType("O");
 			sff.setRestNum(this.getRestStock(sif.getStuffNo(), outNum, "O"));
 			sff.setCustomerName(customerName);
+            sff.setBinCode(sif.getBinCode());
 			
 			Object[] obj2={sff,"i"};
 			dataList.add(obj2);
 		}
 		if(this.getBatchDao().allDMLBatch(dataList)) tag=1;
-		//½«ÖØ¸´µÄÍ¬Ò»ÁÏºÅµÄ0ÊýÁ¿Áã¼þºÏ²¢
+
 //		if(!"".equals(strStuffNo)){
 //			this.outMerge(strStuffNo);
 //		}
 
 		return tag;		    	
 	} 
-	
-	/**
-	* ³ö¿âÊ±£¬½«ÖØ¸´µÄÍ¬Ò»ÁÏºÅµÄ0ÊýÁ¿Áã¼þºÏ²¢
-	* ÒÑ·ÏÆú£¬ÏÖ×ödelete²Ù×÷
-	* @param String ÁÏºÅ
-	* @return 
-	*/
+
 	public void outMerge(String strStuffNo) throws Exception{
 		/*
-		 mysql²»Ö§³ÖÈç´ËÇ¶Ì×¡£¡£¡£¡£¡£¡£
+		 mysqlï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½×¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		String strDel="delete from StockInfoForm as t where t.stockId not in("+
 		" select max(t2.stockId) from StockInfoForm as t2 where t2.skuNum=0"+ 
 		" and t2.stuffNo in('"+strStuffNo.substring(1)+"') group by t2.stuffNo"+ 
@@ -182,12 +151,6 @@ public class StockOutBo extends CommBo{
 	} 
 	
 
-	/**
-	* Èë¿âÊ±£¬°ÑÔ­ÏÈÎªÁãµÄÁã¼þÉ¾³ý
-	* ÒÑ·ÏÆú
-	* @param String ÁÏºÅ
-	* @return 
-	*/
 	public void inMerge(String strStuffNo) throws Exception{
 //		String strDel="delete from StockInfoForm as t where t.skuNum=0 " +
 //				" and t.stuffNo in('"+strStuffNo+"')";
@@ -195,11 +158,6 @@ public class StockOutBo extends CommBo{
 	} 
 	
 
-	/**
-	* Í³¼ÆÊ£Óà¿â´æ
-	* @param String ÁÏºÅ
-	* @return 
-	*/
 	public Integer getRestStock(String stuffNo,Integer flowNum,String type) throws Exception{
 		Integer restNum=null;
 		String queryString = "select sum(si.skuNum) from StockInfoForm as si  " +
@@ -215,12 +173,7 @@ public class StockOutBo extends CommBo{
 		return restNum;
 	}
 	
-	
-	/**
-	* ¸ù¾Ýid²éÑ¯¸ÃÁ÷Ë®¼ÇÂ¼ÐÅÏ¢
-	* @param String ÉêÇë¼ÇÂ¼pk
-	* @return ¸ÃÉêÇë¼ÇÂ¼Form
-	*/
+
 	public StockFlowForm findById(String id) throws Exception{
 		StockFlowForm sff = null;
 	
@@ -229,11 +182,6 @@ public class StockOutBo extends CommBo{
 		return sff;		    	
 	} 
 
-	/**
-	 * ³ö¿â²Ù×÷ÁÐ±í²éÑ¯Æ´×°
-	 * @param PartsRequestForm ²éÑ¯Ìõ¼þ
-	 * @return ²éÑ¯½á¹û
-	 */
 	public ArrayList outOperateList(SaleDetailForm prQuery) {
 		ArrayList dataList = null;
 		ArrayList alData = new ArrayList();
@@ -247,7 +195,7 @@ public class StockOutBo extends CommBo{
 			CommonSearch cs = CommonSearch.getInstance();
 			for (int i = 0; i < dataList.size(); i++) {
 				Object[] obj = (Object[]) dataList.get(i);
-				String[] data = new String[10];
+				String[] data = new String[11];
 				data[0] = obj[0].toString() + DicInit.SPLIT1 + obj[9].toString();
 				data[1] = obj[1] == null ? "" : obj[1].toString();
 				data[2] = obj[2] == null ? "" : obj[2].toString();
@@ -258,6 +206,7 @@ public class StockOutBo extends CommBo{
 				data[7] = cs.findUserNameByUserId((Long) obj[7]);
 				data[8] = obj[8] == null ? "" : obj[8].toString();
 				data[9] = obj[9] == null ? "" : obj[9].toString();
+                data[10] = obj[10] == null ? "" : obj[10].toString();
 				
 				alData.add(data);
 			}
@@ -269,14 +218,6 @@ public class StockOutBo extends CommBo{
 		return alData;
 	}
 
-	/**
-	  * ³ö¿âÈ·ÈÏ£¬ÐÞ¸ÄÁã¼þÉêÇë±í(td_sales_detail)ÐÅÏ¢£¬
-	  * 	ÐÞ¸Ä¿â´æÐÅÏ¢±í(TD_STOCK_INFO)ÊýÁ¿Îª0£¬
-	  * 	²åÈë³öÈë¿âÁ÷Ë®±í(td_stock_flow)Ò»Ìõ³ö¿â¼ÇÂ¼
-	  * @param String ´ý³ö¿â¼ÇÂ¼id£»
-	  * @param Long ³ö¿âÈË
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
 	public int stockOut(String ids, Long userId) throws VersionException {
 		int tag = -1;
 
@@ -299,7 +240,7 @@ public class StockOutBo extends CommBo{
 			ArrayList dateList = (ArrayList) this.listVersion(strHql, ids.split(",").length);
 			for (int i = 0; i < dateList.size(); i++) { 
 				SaleDetailForm prf = (SaleDetailForm) dateList.get(i);
-				prf.setPartStatus("M");		//ÒÑ³ö¿âÎ´·¢»õ
+				prf.setPartStatus("M");
 				prf.setUpdateBy(userId);
 				
 				Object prfO = new Object[]{prf,"u"};
@@ -317,19 +258,20 @@ public class StockOutBo extends CommBo{
 			
 					StockFlowForm sff = sib.infoToFlow(sif);
 					sff.setFlowId(FormNumberBuilder.getStockFlowId());
-					sff.setSkuNum(sif.getSkuNum());	//³ö¿âÊýÁ¿
-					sff.setRestNum(this.getRestStock(sif.getStuffNo(), sif.getSkuNum(), "O"));	//½á´æÊýÁ¿
+					sff.setSkuNum(sif.getSkuNum());
+					sff.setRestNum(this.getRestStock(sif.getStuffNo(), sif.getSkuNum(), "O"));	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //					if(sff.getRestNum()==0){
 //						strStuffNo+="','"+sif.getStuffNo();
 //					}
 					
 					sff.setInFlowNo(sif.getFlowNo());
-					sff.setFlowType("O");		//³ö¿â
-					sff.setFlowItem("S"); 		//ÏúÊÛ³ö¿â
+					sff.setFlowType("O");
+					sff.setFlowItem("S");
 					sff.setFeeType(prf.getOrderType());
 					sff.setFormNo(prf.getSaleNo());
 					sff.setCreateBy(userId);
 					sff.setRequestId(prf.getSaleDetailId());
+                    sff.setBinCode(sif.getBinCode());
 					
 					Object[] temps = sil.getFormNo(prf.getSaleDetailId());
 					sff.setCustomerName((String)temps[1]);
@@ -360,11 +302,6 @@ public class StockOutBo extends CommBo{
 	}
 	
 
-	/**
-	* ÊÖ¹¤·ÖÅäÐÅÏ¢²éÑ¯
-	* @param String ²éÑ¯Ìõ¼þ
-	* @return ¸ÃÉêÇë¼ÇÂ¼Form
-	*/
 	public ArrayList requestList(SaleDetailForm sdfQuery) throws Exception{
 
 		ArrayList alData = new ArrayList();
@@ -395,12 +332,7 @@ public class StockOutBo extends CommBo{
 	
 		return alData;	  	
 	} 
-	
-	/**
-	 * ÊÖ¹¤·ÖÅä¡£
-	 * @param requestID String[]
-	 * @return int   ·ÖÅä½á¹û
-	 */	
+
 	public int manualAllcate(String[] requestID) throws VersionException,Exception{
 		
 		ReqAllocateBo rao =  new ReqAllocateBo();
@@ -410,12 +342,6 @@ public class StockOutBo extends CommBo{
 	}	
 	
 
-	
-	/**
-	* ²éÑ¯¿É¿âµ÷³ö¿âµÄÊý¾Ý£¨ºÏ²¢¿ÉÓÃ¿â´æÏÔÊ¾£©
-	* @param String ²éÑ¯Ìõ¼þ
-	* @return ¸ÃÉêÇë¼ÇÂ¼Form
-	*/
 	public ArrayList adjustOutTaxList(StockInfoForm sifQuery) throws Exception{
 
 		ArrayList alData = new ArrayList();
@@ -447,7 +373,6 @@ public class StockOutBo extends CommBo{
 		int tag=-1;
 		ArrayList dataList = new ArrayList();
 	
-		//×¢Òâ´Ë´¦order byÒªºÍAdjustOutQueryÒ»ÖÂ
 		String strHql="from StockInfoForm as sif where  sif.stockId in ("+strIds+")" +
 			" order by sif.stuffNo,sif.stockId ";
 		

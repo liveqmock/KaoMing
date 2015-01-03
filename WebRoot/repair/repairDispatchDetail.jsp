@@ -5,7 +5,6 @@
 <%@ page import="java.util.*"%> 
 <%@ page import="com.dne.sie.repair.form.*"%>
 <%@ page import="com.dne.sie.common.tools.*"%>
-<%@ page import="com.dne.sie.maintenance.form.AttachedInfoForm"%>
 <%@ page import="com.dne.sie.maintenance.form.CustomerInfoForm"%>
 
 <%
@@ -641,31 +640,30 @@ function addRepairMan(){
 	var repairMan=document.forms[0].repairMan.value;
 	var repairManName=document.forms[0].repairManName.value;
 	var departDate=document.forms[0].departDate.value;
-	var workingHours=document.forms[0].workingHours.value;
-	var travelFee=document.forms[0].ticketsAllCosts.value;
-	var laborCosts=document.forms[0].laborCosts.value;
+//	var workingHours=document.forms[0].workingHours.value;
+//	var travelFee=document.forms[0].ticketsAllCosts.value;
+//	var laborCosts=document.forms[0].laborCosts.value;
 	var remark=document.forms[0].rm_remark.value;
 	
-	if(f_isNull(document.forms[0].repairMan,'维修员')&&f_isNull(document.forms[0].departDate,'出发日期')&&checkInputDate(document.forms[0].departDate)
-			&&f_isNull(document.forms[0].workingHours,'预计工时')&&f_isNull(document.forms[0].ticketsAllCosts,'车船票')&&f_isNull(document.forms[0].laborCosts,'人工费')){
+	if(f_isNull(document.forms[0].repairMan,'维修员')&&f_isNull(document.forms[0].departDate,'出发日期')
+            &&checkInputDate(document.forms[0].departDate)){
 		
 		var oBody = irisListTable.tBodies[0] ;
 		var oNewRow=oBody.insertRow();
 		oNewRow.className = "tableback2";
 		oNewRow.id = "IRIS_ROW_"+ (travelId++);
-		i=0;
+		var i=0;
 		
 		var oNewCell=oNewRow.insertCell(i++).innerHTML=repairManName=="null"?"":repairManName;
 		repairMans+= "@"+repairMan;
 		var oNewCell=oNewRow.insertCell(i++).innerHTML=departDate=="null"?"":departDate;
 		repairMans+= "#"+departDate;
-		var oNewCell=oNewRow.insertCell(i++).innerHTML=workingHours;
-		repairMans+= "#"+workingHours;
-		
-		var oNewCell=oNewRow.insertCell(i++).innerHTML=travelFee;
-		repairMans+= "#"+travelFee;
-		var oNewCell=oNewRow.insertCell(i++).innerHTML=laborCosts;
-		repairMans+= "#"+laborCosts;
+//		var oNewCell=oNewRow.insertCell(i++).innerHTML=workingHours;
+//		repairMans+= "#"+workingHours;
+//		var oNewCell=oNewRow.insertCell(i++).innerHTML=travelFee;
+//		repairMans+= "#"+travelFee;
+//		var oNewCell=oNewRow.insertCell(i++).innerHTML=laborCosts;
+//		repairMans+= "#"+laborCosts;
 		var oNewCell=oNewRow.insertCell(i++).innerHTML=remark=="null"?"":remark;
 		repairMans+= "#"+remark;
 		
@@ -1052,13 +1050,13 @@ function resetRMInputForm(){
      </tr>
      			 
      
-     <tr> 
-      	<td valign="top"> <table width="100%" border="0" cellpadding="1" cellspacing="1" class="content12">
-      	<tr><td><span class="content14"><strong>维修零件信息</strong></span>
+
+      	<tr><td>
+            <span class="content14"><strong>维修零件信息</strong></span>
 			<tr> 
               <td height="1" colspan="10" background="images/i_line.gif"></td>
             </tr>
-    <table height="280" width="100%" cellspacing="0" cellpadding="1" class="content12" border="0" id="partApplyedParentTable"><!--start of partApplyedParentTable-->
+            <table height="280" width="100%" cellspacing="0" cellpadding="1" class="content12" border="0" id="partApplyedParentTable"><!--start of partApplyedParentTable-->
 	<tr><td width="100%">
 	<div class="scrollDiv" id="partApplyedScrollDiv"><!--start of partApplyedScrollDiv-->
        <table width="100%" border="0" cellpadding="0" cellspacing="1" class="content12" id="partApplyTable">
@@ -1096,9 +1094,8 @@ function resetRMInputForm(){
 	</div> <!--end of partApplyedScrollDiv-->
 	</td></tr>
 	</table> <!--end of partApplyedParentTable-->
-      </td>
-     </tr>
-     
+        </td></tr>
+
      <tr> 
       <td height="2" bgcolor="#ffffff"></td>
      </tr>
@@ -1341,21 +1338,11 @@ function resetRMInputForm(){
          <td width="100">出发日期：<font color="red">*</font></td>
          <td ><input name="departDate" type="text" class="form" size="12" onkeydown='javascript:input_date();'><font color="blue">&nbsp;&nbsp;(标准日期为yyyy-mm-dd格式，下同)</font></td>
         </tr>
-        <tr class="tableback1"> 
-         <td width="100">预计工时：</td>
-         <td ><html:text property="workingHours" styleClass="form" size="12"  maxlength="4" onkeydown="javascript:f_onlynumber();"/></td>
-         <td ></td>
-         <td ></td>
-        </tr>
-        <tr class="tableback2"> 
-         <td>车船票：</td>
-         <td><html:text property="ticketsAllCosts" styleClass="form" size="12" onkeydown="javascript:f_onlymoney();"  maxlength="8"/></td>
-         <td>人工费：</td>
-         <td><html:text property="laborCosts" styleClass="form" size="12" maxlength="8" onkeydown="javascript:f_onlymoney();"/></td>
-        </tr>
-     
-       
-        <tr class="tableback1"> 
+
+        <tr class="tableback1">
+            <input type="hidden" value="workingHours">
+            <input type="hidden" value="ticketsAllCosts">
+            <input type="hidden" value="laborCosts">
          <td>备注：</td>
          <td colspan="5"><input name="rm_remark" type="text" class="form" size="100" ></td>
          
@@ -1379,9 +1366,6 @@ function resetRMInputForm(){
         <tr bgcolor="#CCCCCC"> 
          <td height="18"><b>维修员</b></td>
          <td><b>出发日期</b></td>
-         <td><b>预计工时</b></td>
-         <td><b>车船票</b></td>
-         <td><b>人工费</b></td>
          <td><b>备注</b></td>
         </tr>
      	</thead>
@@ -1399,9 +1383,6 @@ function resetRMInputForm(){
         <tr class="<%=strTr%>" > 
          <td><%=rmi.getRepairManName()%></td>
          <td><%=rmi.getDepartDate()==null?"":Operate.formatYMDDate(rmi.getDepartDate())%></td>
-         <td><%=rmi.getWorkingHours()==null?"":rmi.getWorkingHours()%></td>
-         <td><%=rmi.getTravelFee()==null?"":Operate.toFix(rmi.getTravelFee(),2)%></td>
-         <td><%=rmi.getLaborCosts()==null?"":Operate.toFix(rmi.getLaborCosts(),2)%></td>
          <td><%=rmi.getRemark()==null?"":rmi.getRemark()%></td>
         </tr>
 <%}}%>

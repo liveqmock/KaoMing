@@ -57,9 +57,10 @@
   <table width="100%" border="0" cellpadding="0" cellspacing="1" class="content12">
       <tr bgcolor="#CCCCCC"> 
        <td width="10"><input name="allbox" type="checkbox" onClick="checkAll(this);"></td>
+          <td><strong>机器名称</strong></td>
         <td><strong>客户ID</strong></td>
   		<td><strong>客户名称 </strong></td>
-  		<td><strong>机器名称</strong></td>
+
   		<td><strong>机型</strong></td>
   		<td><strong>机身编码</strong></td>
   		<td><strong>保固书编号</strong></td>
