@@ -720,7 +720,7 @@ public class SaleInfoBo extends CommBo {
         for(int i=0;i<saleNoList.size();i++){
             String saleNo=(String)saleNoList.get(i);
             String strUpdate="update SaleInfoForm sif set sif.saleStatus= " +
-                    " (select min(sd.partStatus) from SaleDetailForm as sd where sd.saleNo='"+saleNo+"')" +
+                    " (select min(sd.partStatus) from SaleDetailForm as sd where sd.saleNo='"+saleNo+"' and sd.delFlag = 0)" +
                     " where sif.saleNo='"+saleNo+"'";
             updateList.add(strUpdate);
         }

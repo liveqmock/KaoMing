@@ -1,36 +1,5 @@
 function middleOpen(myUrl,myName,myStyle){
-	/*
-	var clientScreenHeight = screen.height;
-	var clientScreenWidth = screen.width;
-	var heightStart = myStyle.indexOf("height=");
-	var hetghtEnd = 0;
-	for(var i=heightStart;i<=myStyle.length;i++){
-		if((myStyle.charAt(i) == ',') || (i==myStyle.length)){//�����������˳�����ʾ����,���Ѿ������ַ�ĩβ
-			hetghtEnd = i;
-			break;
-		}
-	}
-	var myHeight = myStyle.substring(heightStart+7,hetghtEnd);
-	var widthiStart = myStyle.indexOf("width=");
-	var widthEnd = 0;
-	for(var i=widthiStart;i<=myStyle.length;i++){
-		if((myStyle.charAt(i) == ',') || (i==myStyle.length)){//�����������˳�����ʾ����,���Ѿ������ַ�ĩβ
-			widthEnd = i;
-			break;
-		}
-	}
-	var myWidth = myStyle.substring(widthiStart+6,widthEnd);
-	var openWindowHeight = parseInt(myHeight);//��ȡ�߶�
-	var openWindowWidth = parseInt(myWidth);//��ȡ���
-	if(isNaN(openWindowHeight) || isNaN(openWindowWidth)){//�����ȡ��ֵ����ȷ���˳�����ʾ��
-		alert("�޷���ҳ�棬����ϵά����Ա��");
-		return;
-	}
-	var popTop = (clientScreenHeight-openWindowHeight)/2;
-	var popleft = (clientScreenWidth-openWindowWidth)/2;
-	var result = window.open(myUrl,myName,myStyle+",top="+popTop+",left="+popleft);
-	result.focus();
-	*/
+
 	return window.open(myUrl,myName,myStyle);
 }
 
@@ -48,13 +17,13 @@ function middleOpen(myUrl,myName,myStyle){
 	    {
 	     if(value.indexOf(".")<0) value += ".";
 	     for(var i=0;i<2;i++)
-		  value = value.toString();// ������仰��������������������59.89999999999998
+		  value = value.toString();
 	      value += "0";
 	    }
 	    
 	    return value;
    }
-//�Ƿ�Ϊ��Ч�ַ�""
+
 function getValidStr(str) {
 	str+="";
 	if (str=="undefined" || str=="null")
@@ -63,14 +32,13 @@ function getValidStr(str) {
 		return str;
 }
 
-//ȥ�����˿ո�
+
 function trim(str){
 	str=getValidStr(str);
 	if (!str) return "";
 	for(var i=str.length-1; i>=0; i--){
 		if (str.charCodeAt(i, 10)!=32) break;
 	}
-	// ����ֻȥ�����ո��BUG
 	for (var j=0; j <= str.length - 1; j++) {
 		if (str.charCodeAt(j) != 32) {
 			break;
@@ -118,8 +86,7 @@ function formatnumber(value,num) //ֱ��ȥβ
 	return a
 }
 
-//==============��ʽ���ַ�Ϊ����=================
-//�������ڸ�ʽʾ��2006-2-12
+
 function formatStringToDate(str){
 	var strs = str.split("-");
 	var year = parseInt(strs[0]);
@@ -143,12 +110,11 @@ function arrayContains(objArray,objValue){
 	return booRet;
 }
 
-//initData-��ʼ���;segment-ÿ�γ���
 function stringToArray(initData,segment){
 	var orgs = new Array(1);
 	if( initData!=''&&initData.length>0 ){	
-		var alSize=initData.length;		//initData�ܳ���
-		if(alSize>segment){			//�����Ҫ�ֶ�
+		var alSize=initData.length;
+		if(alSize>segment){
 			var quotient=Math.floor(alSize/segment);	
 			var residue=alSize%segment;
 			if(residue!=0) quotient++;		//�ֳ��Ķ���
@@ -176,7 +142,7 @@ function cleanHiddenValue(hiddenElementName){
 	if(hiddenElmt != null){
 		hiddenElmt.value = "";
 	}else{
-		alert("(NeWSIS Debug)��Ҫ����hidden�򲻴��ڣ��������hidden��Ϊ��"+hiddenElementName);
+		alert(hiddenElementName);
 	}
 }
 
@@ -302,7 +268,7 @@ function chk_page_num(num,oThis){
 //	alert("�������˲��Ϸ��ĵ�ǰҳ��");
 //    flag=false;  }
 //  if (flag){
-//      document.all.hiddenGoto.value = intGoto;      
+//      document.all.hiddenGoto.value = intGoto;
 //   }
    return flag;
 }

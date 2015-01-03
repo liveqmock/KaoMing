@@ -10,21 +10,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 
 function hrefContent(){
-	<%
-		String doRefresh = request.getParameter("doRefresh");
-		if("off".equals(doRefresh)){
-			// do nothing
-		}else{
-	%>
-			var firstHrefLinkObj = getChildByTagNameTimes(rightDIV,"A",1);
-			if(firstHrefLinkObj == null){
-				alert("您没有查看此模块的权限！");
-			}else{			
-				window.parent.content.location = firstHrefLinkObj;
-			}
-	<%
-		}
-	%>
+
 }
 
 
