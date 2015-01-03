@@ -52,13 +52,13 @@
   </tr>
  <tr class="tableback1"> 
     <td>生日 ：</td>
-    <td><html:text  styleClass="form" property="birthday"  readonly="true" size="14"  />
+    <td><html:text  styleClass="form" property="birthday" styleId="birthday" readonly="true" size="14"  />
     <a onclick="event.cancelBubble=true;" href="javascript:showCalendar('imageOne',true,'birthday');">
 		<img src="googleImg/icon/calendar.gif" id="imageOne" width="18" height="18" border="0" align="absmiddle">
 	</a>
     </td>
     <td>入职日期：</td>
-    <td ><html:text  styleClass="form" property="employedDate"  readonly="true" size="14" />
+    <td ><html:text  styleClass="form" property="employedDate" styleId="employedDate" readonly="true" size="14" />
     <a onclick="event.cancelBubble=true;" href="javascript:showCalendar('imageOne',true,'employedDate');">
 		<img src="googleImg/icon/calendar.gif" id="imageOne" width="18" height="18" border="0" align="absmiddle">
 	</a>

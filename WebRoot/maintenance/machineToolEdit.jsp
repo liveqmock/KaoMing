@@ -61,13 +61,13 @@ try{
           <td><html:text property="warrantyCardNo"  styleClass="form" size="30"  maxlength="40" /></td>
           
 	    <td>验收日期：</td>
-	    <td><html:text  styleClass="form" property="purchaseDateStr"  maxlength="8"  size="20"  onkeydown='javascript:input_date();' />
+	    <td><html:text  styleClass="form" property="purchaseDateStr" styleId="purchaseDateStr" maxlength="8"  size="20"  onkeydown='javascript:input_date();' />
 	    	<a onClick="event.cancelBubble=true;" href="javascript:showCalendar('imageCalendar3',true,'purchaseDateStr');">
 				<img id="imageCalendar3" width="18" height="18" src="<%= request.getContextPath()%>/images/i_colock.gif" border="0" align="absmiddle">
 			</a>
 	    </td>
 	  	<td>延保日期：</td>
-	    <td><html:text  styleClass="form" property="extendedWarrantyDateStr"  maxlength="8"  size="20"  onkeydown='javascript:input_date();' />
+	    <td><html:text  styleClass="form" property="extendedWarrantyDateStr" styleId="extendedWarrantyDateStr" maxlength="8"  size="20"  onkeydown='javascript:input_date();' />
 	    	<a onClick="event.cancelBubble=true;" href="javascript:showCalendar('imageCalendar3',true,'extendedWarrantyDateStr');">
 				<img id="imageCalendar3" width="18" height="18" src="<%= request.getContextPath()%>/images/i_colock.gif" border="0" align="absmiddle">
 			</a>

@@ -47,7 +47,7 @@
   </tr> 
    <tr class="tableback1">
     <td>费用日期：</td>
-    <td ><html:text  styleClass="form" property="feeDate1"   size="16" />
+    <td ><html:text  styleClass="form" property="feeDate1" styleId="feeDate1"  size="16" />
     <a onclick="event.cancelBubble=true;" href="javascript:showCalendar('imageOne',true,'feeDate1');">
 		<img src="googleImg/icon/calendar.gif" id="imageOne" width="18" height="18" border="0" align="absmiddle">
 	</a>

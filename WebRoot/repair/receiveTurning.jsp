@@ -322,13 +322,13 @@ function addNewCust(){
 					
 					<tr class="tableback2">
 						<td >验收日期：</td>
-						<td><input name="purchaseDateStr" type="text" class="form" size="16"  onkeydown='javascript:input_date();'>
+						<td><input name="purchaseDateStr" id="purchaseDateStr" type="text" class="form" size="16"  onkeydown='javascript:input_date();'>
 						<a onClick="event.cancelBubble=true;" href="javascript:showCalendar('imageCalendar1',true,'purchaseDateStr',true);">
 						<img id="imageCalendar1" width="18" height="18" src="<%= request.getContextPath()%>/images/i_colock.gif" border="0" align="absmiddle">
 						</a></td>
 						
 						<td >延保日期：</td>
-						<td><input name="extendedWarrantyDateStr" type="text" class="form" size="16"  onkeydown='javascript:input_date();'>
+						<td><input name="extendedWarrantyDateStr" id="extendedWarrantyDateStr" type="text" class="form" size="16"  onkeydown='javascript:input_date();'>
 						<a onClick="event.cancelBubble=true;" href="javascript:showCalendar('imageCalendar2',false,'extendedWarrantyDateStr');">
 						<img id="imageCalendar1" width="18" height="18" src="<%= request.getContextPath()%>/images/i_colock.gif" border="0" align="absmiddle">
 						</a></td>
@@ -340,7 +340,7 @@ function addNewCust(){
 					
 					<tr class="tableback2">
 						<td >客户要求到达日期：</td>
-						<td><input name="customerVisitDateStr" type="text" class="form"
+						<td><input name="customerVisitDateStr" id="customerVisitDateStr" type="text" class="form"
 							size="16" onkeydown='javascript:input_date();'> <a onClick="event.cancelBubble=true;"
 							href="javascript:showCalendar('imageCalendar3',false,'customerVisitDateStr');">
 						<img id="imageCalendar3" width="18" height="18"
@@ -348,7 +348,7 @@ function addNewCust(){
 						</a></td>
 						
 						<td >预定就位日期：</td>
-						<td colspan="3"><input name="estimateRepairDateStr" type="text" class="form"
+						<td colspan="3"><input name="estimateRepairDateStr" id="estimateRepairDateStr" type="text" class="form"
 							size="16" onkeydown='javascript:input_date();' > <a onClick="event.cancelBubble=true;"
 							href="javascript:showCalendar('imageCalendar2',false,'estimateRepairDateStr');">
 						<img id="imageCalendar2" width="18" height="18"

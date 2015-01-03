@@ -261,7 +261,6 @@ public class MachineToolAction extends ControlAction {
                             .append("'\">")
                             .append(StrongDealerName)
                             .append("</div>");
-                    System.out.println(buffer);
                 }
             }
             PrintWriter out = response.getWriter();

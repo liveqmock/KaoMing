@@ -7,8 +7,8 @@ var serverToday = (clientDate.getYear()) + "-" + (clientDate.getMonth() + 1) + "
 var dateAjax = new sack();
 var date1=new Array;
 var ctlObj;
-var startDateElmtId;
-var endDateElmtId;
+var startDateElmtId = "startDate";
+var endDateElmtId= "endDate";
 /*
  //2007-05-19 sunhj 今天暂时先屏蔽掉这段AJAX取服务器时间的程序
  //因为每个页面load的时候都会使用一次这段ajax，这对服务器的请求有较大压力
@@ -187,7 +187,7 @@ function hideCalendar(){
  数据库中有的日期有时分秒，有的日期没有时分秒。
  1。当传入带时分秒的查询项时，Hibernate对于数据库中Date类型的数据是不以时分秒来查询的（param.setHbType(Hibernate.DATE)），所以如果数据库中的日期有时分秒是查不出来的。例如：数据库中的值为2007-02-12 12:30:59，传入的参数为2007-02-12 00:00:00到2007-02-12 23:59:59
  2。如果传入2007-02-12 00:00:00到2007-02-13 00:00:00由于querybean里面是<=，则会把2007-02-13不带时分秒的数据带出；
- */
+
 function setDate(){
     var date = serverToday;
     date1=date.split("-");
@@ -207,7 +207,7 @@ function setDate(){
         //alert(document.getElementById(startDateElmtId).value);
         //document.getElementById(endDateElmtId).value=tomorrowYear+"-"+tomorrowMonth+"-"+tomorrowDay+" 00:00:00";
         //document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day+" 23:59:59";  // 在后台处理了endDate，不需要在前台处理了
-        document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day;
+        document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day;
         //alert(document.getElementById(endDateElmtId).value);
         changeDateAreaVisible(ctlObj,false);
     } else if (scope == 1) {// current month
@@ -252,24 +252,25 @@ function setDate(){
         changeDateAreaVisible(ctlObj,false);
     }
 }
+ */
 
 /*
  *
  */
 function setDate(){
-    var date = serverToday;
-    date1=date.split("-");
-    var d=new Date(date1[0],date1[1]-1,date1[2]);
-    var year=d.getYear();
-    var month=d.getMonth();
-    month = month+1;
+//    var date = serverToday;
+//    date1=date.split("-");
+    var d=new Date();
+    var year=d.getFullYear();
+    var month=d.getMonth() + 1;
     var day=d.getDate();
     var scope = ctlObj.value;
+
     if (scope == 0) {// current day
-        var tomorrow = new Date(year,month-1,day+1);
-        var tomorrowYear  = tomorrow.getYear();
-        var tomorrowMonth = tomorrow.getMonth()+1;
-        var tomorrowDay   = tomorrow.getDate();
+//        var tomorrow = new Date(year,month-1,day+1);
+//        var tomorrowYear  = tomorrow.getYear();
+//        var tomorrowMonth = tomorrow.getMonth()+1;
+//        var tomorrowDay   = tomorrow.getDate();
         //document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day+" 00:00:00";
         document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day;
         //alert(document.getElementById(startDateElmtId).value);
@@ -328,6 +329,7 @@ function changeDateDisplay(ctlObj1,startDateElmtId1,endDateElmtId1){
 }
 function changeDateAreaVisible(ctlObj,display){
     var objTRElmt=getParentByTagName(ctlObj,"TR");
+    if(objTRElmt!=null){
     if(display == true){
         getChildByTagNameTimes(objTRElmt,"TD",3).style.display = "block";
         getChildByTagNameTimes(objTRElmt,"TD",4).style.display = "block";
@@ -338,6 +340,7 @@ function changeDateAreaVisible(ctlObj,display){
         getChildByTagNameTimes(objTRElmt,"TD",4).style.display = "none";
         getChildByTagNameTimes(objTRElmt,"TD",5).style.display = "none";
         getChildByTagNameTimes(objTRElmt,"TD",6).style.display = "none";
+    }
     }
 }
 /*
@@ -364,10 +367,7 @@ function showQueryDateTR(scopeName,scopeValue){
  传入的参数是日期行的下拉框name
  */
 function getStartDateInputName(scopeObj){
-    var objTRElmt=getParentByTagName(scopeObj,"TR");
-    var startDateTDObj = getChildByTagNameTimes(objTRElmt,"TD",4);
-    var startDateInputObj = getChildByTagNameTimes(startDateTDObj,"INPUT",1);
-    return startDateInputObj.name;
+    return startDateElmtId;
 }
 /*
  sunhj 070108
@@ -377,10 +377,7 @@ function getStartDateInputName(scopeObj){
  传入的参数是日期行的下拉框name
  */
 function getEndDateInputName(scopeObj){
-    var objTRElmt=getParentByTagName(scopeObj,"TR");
-    var endDateTDObj = getChildByTagNameTimes(objTRElmt,"TD",6);
-    var endDateInputObj = getChildByTagNameTimes(endDateTDObj,"INPUT",1);
-    return endDateInputObj.name;
+    return endDateElmtId;
 }
 
 //AJAX

@@ -87,7 +87,7 @@ function doRefresh(){
 	
 	
 %>
-<body bgcolor="#ffffff" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" onload="showQueryDateTR('receiveScope',1)">
+<body bgcolor="#ffffff" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
 <html:form action="repairAction.do?method=repairQueryList" method="post">
 <input name="irisIds" type="hidden">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" class="content12">
@@ -191,18 +191,18 @@ function doRefresh(){
                       <tr> 
                         <td>登记日期：</td>
                         <td><html:select property="receiveScope" styleClass="form" onchange="changeDateDisplay(this,'startDate','endDate')">
+                            <html:option value="4">全部</html:option>
 							<html:option value="1">当月</html:option>
 							<html:option value="0">当日</html:option>
-							<html:option value="3">日期范围</html:option>
 							<html:option value="2">本年</html:option>
-							<html:option value="4">全部</html:option>
+
 						</html:select></td>
 						<td style="display:none">起始日期：</td>
-						<td style="display:none"><html:text property="startDate" styleClass="form" size="16" readonly="true"/>
+						<td style="display:none"><html:text property="startDate" styleId="startDate" styleClass="form" size="16" readonly="true"/>
 						    <a onclick="event.cancelBubble=true;" href="javascript:showCalendar('imageOne',true,'startDate');"> 
 							<img src="<%= request.getContextPath()%>/images/i_colock.gif" id="imageOne" width="18" height="18" border="0" align="absmiddle"> </a></td>
 						<td style="display:none">终止日期：</td>
-						<td style="display:none"><html:text property="endDate" styleClass="form" size="16" readonly="true"/> 
+						<td style="display:none"><html:text property="endDate"  styleId="endDate" styleClass="form" size="16" readonly="true"/>
 						   <a onclick="event.cancelBubble=true;" href="javascript:showCalendar('imageTwo',true,'endDate');"> 
 					 	   <img src="<%= request.getContextPath()%>/images/i_colock.gif" id="imageTwo" width="18" height="18" border="0" align="absmiddle"> </a></td>
                       </tr>
