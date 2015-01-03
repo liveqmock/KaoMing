@@ -3,576 +3,576 @@ document.onclick=hideCalendar;
 
 var clientDate =  new Date();
 
-var serverToday = (clientDate.getYear()) + "-" + (clientDate.getMonth() + 1) + "-" + (clientDate.getDate()) ;  //·şÎñÆ÷½ñÌìµÄÈÕÆÚ£¬Ä¬ÈÏÏÈ¸ø¸ö¿Í»§¶ËÈÕÆÚ
+var serverToday = (clientDate.getYear()) + "-" + (clientDate.getMonth() + 1) + "-" + (clientDate.getDate()) ;  //æœåŠ¡å™¨ä»Šå¤©çš„æ—¥æœŸï¼Œé»˜è®¤å…ˆç»™ä¸ªå®¢æˆ·ç«¯æ—¥æœŸ
 var dateAjax = new sack();
 var date1=new Array;
 var ctlObj;
 var startDateElmtId;
 var endDateElmtId;
 /*
-//2007-05-19 sunhj ½ñÌìÔİÊ±ÏÈÆÁ±ÎµôÕâ¶ÎAJAXÈ¡·şÎñÆ÷Ê±¼äµÄ³ÌĞò
-//ÒòÎªÃ¿¸öÒ³ÃæloadµÄÊ±ºò¶¼»áÊ¹ÓÃÒ»´ÎÕâ¶Îajax£¬Õâ¶Ô·şÎñÆ÷µÄÇëÇóÓĞ½Ï´óÑ¹Á¦
-dateAjax.setVar("method", "getServerDate");
-dateAjax.requestFile = "indexAction.do";
-dateAjax.method = "GET";
-dateAjax.onCompletion =setServerToday;
-dateAjax.runAJAX();
+ //2007-05-19 sunhj ä»Šå¤©æš‚æ—¶å…ˆå±è”½æ‰è¿™æ®µAJAXå–æœåŠ¡å™¨æ—¶é—´çš„ç¨‹åº
+ //å› ä¸ºæ¯ä¸ªé¡µé¢loadçš„æ—¶å€™éƒ½ä¼šä½¿ç”¨ä¸€æ¬¡è¿™æ®µajaxï¼Œè¿™å¯¹æœåŠ¡å™¨çš„è¯·æ±‚æœ‰è¾ƒå¤§å‹åŠ›
+ dateAjax.setVar("method", "getServerDate");
+ dateAjax.requestFile = "indexAction.do";
+ dateAjax.method = "GET";
+ dateAjax.onCompletion =setServerToday;
+ dateAjax.runAJAX();
 
-function setServerToday(){
-	var returnXml = dateAjax.responseXML;
-	var xmlObj = returnXml.getElementsByTagName("xml")[0];
-	var flag = returnXml.getElementsByTagName("flag");
-	if(eval(flag)){
-		serverToday = returnXml.getElementsByTagName("date")[0].firstChild.nodeValue;
-	}else{ //070227 sunhj Èç¹û·şÎñÆ÷·µ»ØÊ±ÓĞÎÊÌâ£¬ÏÖÔÚµÄÁÙÊ±½â¾ö·½°¸»¹ÊÇ·µ»ØÒ»¸ö¿Í»§¶ËÊ±¼ä
-		serverToday = new Date();
-	}
-}*/
+ function setServerToday(){
+ var returnXml = dateAjax.responseXML;
+ var xmlObj = returnXml.getElementsByTagName("xml")[0];
+ var flag = returnXml.getElementsByTagName("flag");
+ if(eval(flag)){
+ serverToday = returnXml.getElementsByTagName("date")[0].firstChild.nodeValue;
+ }else{ //070227 sunhj å¦‚æœæœåŠ¡å™¨è¿”å›æ—¶æœ‰é—®é¢˜ï¼Œç°åœ¨çš„ä¸´æ—¶è§£å†³æ–¹æ¡ˆè¿˜æ˜¯è¿”å›ä¸€ä¸ªå®¢æˆ·ç«¯æ—¶é—´
+ serverToday = new Date();
+ }
+ }*/
 
 function showCalendar(sImg,bOpenBound,sFld1,disableFutureDate){
-	//²ÎÊı·Ö±ğÎª£º±»µã»÷µÄÍ¼Æ¬£¬ÊÇ·ñ¹ıÈ¥µÄÈÕÆÚÊÇ·ñ¿ÉÑ¡£¬ĞèÒª·µ»ØµÄÊäÈë¿ò£¬½«À´µÄÈÕÆÚÊÇ·ñ¿ÉÑ¡
-	//disableFutureDate²»ÌîµÄ»°Ä¬ÈÏÎªfalse£¡£¡£¡
-	var fld1,fld2;
-	var cf=document.getElementById("CalFrame");
-	var wcf=window.frames.CalFrame;
-	var oImg=document.getElementById(sImg);
-	if(!oImg){
-		alert("¿ØÖÆ¶ÔÏó²»´æÔÚ£¡");
-		return;
-	}
-	if(!sFld1){
-		alert("ÊäÈë¿Ø¼şÎ´Ö¸¶¨£¡");
-		return;
-	}
-	fld1=document.getElementById(sFld1);
-	if(!fld1){
-		alert("ÊäÈë¿Ø¼ş²»´æÔÚ£¡");
-		return;
-	}
-	if(fld1.tagName!="INPUT"||fld1.type!="text"){
-		alert("ÊäÈë¿Ø¼şÀàĞÍ´íÎó£¡");
-		return;
-	}
-	if(cf.style.display=="block"){
-		cf.style.display="none";
-		return;
-	}
-	var eT=0,eL=0,p=oImg;
-	var sT=document.body.scrollTop,sL=document.body.scrollLeft;
-	var eH=oImg.height,eW=oImg.width;
-	while(p&&p.tagName!="BODY"){
-		eT+=p.offsetTop;
-		eL+=p.offsetLeft;
-		p=p.offsetParent;
-	}
-	cf.style.top=(document.body.clientHeight-(eT-sT)-eH>=cf.height)?eT+eH:eT-cf.height;
-	cf.style.left=(document.body.clientWidth-(eL-sL)>=cf.width)?eL:eL+eW-cf.width;
-	cf.style.display="block";
-	
-	wcf.openbound=bOpenBound;
-	wcf.fld1=fld1;
-	wcf.fld2=fld2;
-	wcf.disableFutureDate=!disableFutureDate;
-	//wcf.callback=sCallback;
-	wcf.setCurrentDate();
-	wcf.initCalendar();
+    //å‚æ•°åˆ†åˆ«ä¸ºï¼šè¢«ç‚¹å‡»çš„å›¾ç‰‡ï¼Œæ˜¯å¦è¿‡å»çš„æ—¥æœŸæ˜¯å¦å¯é€‰ï¼Œéœ€è¦è¿”å›çš„è¾“å…¥æ¡†ï¼Œå°†æ¥çš„æ—¥æœŸæ˜¯å¦å¯é€‰
+    //disableFutureDateä¸å¡«çš„è¯é»˜è®¤ä¸ºfalseï¼ï¼ï¼
+    var fld1,fld2;
+    var cf=document.getElementById("CalFrame");
+    var wcf=window.frames.CalFrame;
+    var oImg=document.getElementById(sImg);
+    if(!oImg){
+        alert("æ§åˆ¶å¯¹è±¡ä¸å­˜åœ¨ï¼");
+        return;
+    }
+    if(!sFld1){
+        alert("è¾“å…¥æ§ä»¶æœªæŒ‡å®šï¼");
+        return;
+    }
+    fld1=document.getElementById(sFld1);
+    if(!fld1){
+        alert("è¾“å…¥æ§ä»¶ä¸å­˜åœ¨ï¼");
+        return;
+    }
+    if(fld1.tagName!="INPUT"||fld1.type!="text"){
+        alert("è¾“å…¥æ§ä»¶ç±»å‹é”™è¯¯ï¼");
+        return;
+    }
+    if(cf.style.display=="block"){
+        cf.style.display="none";
+        return;
+    }
+    var eT=0,eL=0,p=oImg;
+    var sT=document.body.scrollTop,sL=document.body.scrollLeft;
+    var eH=oImg.height,eW=oImg.width;
+    while(p&&p.tagName!="BODY"){
+        eT+=p.offsetTop;
+        eL+=p.offsetLeft;
+        p=p.offsetParent;
+    }
+    cf.style.top=(document.body.clientHeight-(eT-sT)-eH>=cf.height)?eT+eH:eT-cf.height;
+    cf.style.left=(document.body.clientWidth-(eL-sL)>=cf.width)?eL:eL+eW-cf.width;
+    cf.style.display="block";
+
+    wcf.openbound=bOpenBound;
+    wcf.fld1=fld1;
+    wcf.fld2=fld2;
+    wcf.disableFutureDate=!disableFutureDate;
+    //wcf.callback=sCallback;
+    wcf.setCurrentDate();
+    wcf.initCalendar();
 }
 
-//add by hao 080103 Ö¸¶¨ÌØÊâÈçÆÚÎªµ±Ç°ÈÕÆÚ ÄêÔÂÈÕ year,month,day
+//add by hao 080103 æŒ‡å®šç‰¹æ®Šå¦‚æœŸä¸ºå½“å‰æ—¥æœŸ å¹´æœˆæ—¥ year,month,day
 function showSpeCalendar(sImg,bOpenBound,sFld1,disableFutureDate,year,month,day){
-	//²ÎÊı·Ö±ğÎª£º±»µã»÷µÄÍ¼Æ¬£¬ÊÇ·ñ¹ıÈ¥µÄÈÕÆÚÊÇ·ñ¿ÉÑ¡£¬ĞèÒª·µ»ØµÄÊäÈë¿ò£¬½«À´µÄÈÕÆÚÊÇ·ñ¿ÉÑ¡
-	//disableFutureDate²»ÌîµÄ»°Ä¬ÈÏÎªfalse£¡£¡£¡
-	var fld1,fld2;
-	var cf=document.getElementById("CalFrame");
-	var wcf=window.frames.CalFrame;
-	var oImg=document.getElementById(sImg);
-	if(!oImg){
-		alert("¿ØÖÆ¶ÔÏó²»´æÔÚ£¡");
-		return;
-	}
-	if(!sFld1){
-		alert("ÊäÈë¿Ø¼şÎ´Ö¸¶¨£¡");
-		return;
-	}
-	fld1=document.getElementById(sFld1);
-	if(!fld1){
-		alert("ÊäÈë¿Ø¼ş²»´æÔÚ£¡");
-		return;
-	}
-	if(fld1.tagName!="INPUT"||fld1.type!="text"){
-		alert("ÊäÈë¿Ø¼şÀàĞÍ´íÎó£¡");
-		return;
-	}
-	if(cf.style.display=="block"){
-		cf.style.display="none";
-		return;
-	}
-	var eT=0,eL=0,p=oImg;
-	var sT=document.body.scrollTop,sL=document.body.scrollLeft;
-	var eH=oImg.height,eW=oImg.width;
-	while(p&&p.tagName!="BODY"){
-		eT+=p.offsetTop;
-		eL+=p.offsetLeft;
-		p=p.offsetParent;
-	}
-	cf.style.top=(document.body.clientHeight-(eT-sT)-eH>=cf.height)?eT+eH:eT-cf.height;
-	cf.style.left=(document.body.clientWidth-(eL-sL)>=cf.width)?eL:eL+eW-cf.width;
-	cf.style.display="block";
-	
-	wcf.openbound=bOpenBound;
-	wcf.fld1=fld1;
-	wcf.fld2=fld2;
-	wcf.disableFutureDate=!disableFutureDate;
-	//wcf.callback=sCallback;
-	wcf.setSpeDate(year,month,day);
-	wcf.initCalendar();
+    //å‚æ•°åˆ†åˆ«ä¸ºï¼šè¢«ç‚¹å‡»çš„å›¾ç‰‡ï¼Œæ˜¯å¦è¿‡å»çš„æ—¥æœŸæ˜¯å¦å¯é€‰ï¼Œéœ€è¦è¿”å›çš„è¾“å…¥æ¡†ï¼Œå°†æ¥çš„æ—¥æœŸæ˜¯å¦å¯é€‰
+    //disableFutureDateä¸å¡«çš„è¯é»˜è®¤ä¸ºfalseï¼ï¼ï¼
+    var fld1,fld2;
+    var cf=document.getElementById("CalFrame");
+    var wcf=window.frames.CalFrame;
+    var oImg=document.getElementById(sImg);
+    if(!oImg){
+        alert("æ§åˆ¶å¯¹è±¡ä¸å­˜åœ¨ï¼");
+        return;
+    }
+    if(!sFld1){
+        alert("è¾“å…¥æ§ä»¶æœªæŒ‡å®šï¼");
+        return;
+    }
+    fld1=document.getElementById(sFld1);
+    if(!fld1){
+        alert("è¾“å…¥æ§ä»¶ä¸å­˜åœ¨ï¼");
+        return;
+    }
+    if(fld1.tagName!="INPUT"||fld1.type!="text"){
+        alert("è¾“å…¥æ§ä»¶ç±»å‹é”™è¯¯ï¼");
+        return;
+    }
+    if(cf.style.display=="block"){
+        cf.style.display="none";
+        return;
+    }
+    var eT=0,eL=0,p=oImg;
+    var sT=document.body.scrollTop,sL=document.body.scrollLeft;
+    var eH=oImg.height,eW=oImg.width;
+    while(p&&p.tagName!="BODY"){
+        eT+=p.offsetTop;
+        eL+=p.offsetLeft;
+        p=p.offsetParent;
+    }
+    cf.style.top=(document.body.clientHeight-(eT-sT)-eH>=cf.height)?eT+eH:eT-cf.height;
+    cf.style.left=(document.body.clientWidth-(eL-sL)>=cf.width)?eL:eL+eW-cf.width;
+    cf.style.display="block";
+
+    wcf.openbound=bOpenBound;
+    wcf.fld1=fld1;
+    wcf.fld2=fld2;
+    wcf.disableFutureDate=!disableFutureDate;
+    //wcf.callback=sCallback;
+    wcf.setSpeDate(year,month,day);
+    wcf.initCalendar();
 }
 
 function showCalendarLimit(sImg,bOpenBound,sFld1,limitDate){
-	//²ÎÊı·Ö±ğÎª£º±»µã»÷µÄÍ¼Æ¬£¬ÊÇ·ñ¹ıÈ¥µÄÈÕÆÚÊÇ·ñ¿ÉÑ¡£¬ĞèÒª·µ»ØµÄÊäÈë¿ò£¬½«À´µÄÈÕÆÚÊÇ·ñ¿ÉÑ¡
-	//disableFutureDate²»ÌîµÄ»°Ä¬ÈÏÎªfalse£¡£¡£¡
-	var fld1,fld2;
-	var cf=document.getElementById("CalFrame");
-	var wcf=window.frames.CalFrame;
-	var oImg=document.getElementById(sImg);
-	if(!oImg){
-		alert("¿ØÖÆ¶ÔÏó²»´æÔÚ£¡");
-		return;
-	}
-	if(!sFld1){
-		alert("ÊäÈë¿Ø¼şÎ´Ö¸¶¨£¡");
-		return;
-	}
-	fld1=document.getElementById(sFld1);
-	if(!fld1){
-		alert("ÊäÈë¿Ø¼ş²»´æÔÚ£¡");
-		return;
-	}
-	if(fld1.tagName!="INPUT"||fld1.type!="text"){
-		alert("ÊäÈë¿Ø¼şÀàĞÍ´íÎó£¡");
-		return;
-	}
-	if(cf.style.display=="block"){
-		cf.style.display="none";
-		return;
-	}
-	
-	var eT=0,eL=0,p=oImg;
-	var sT=document.body.scrollTop,sL=document.body.scrollLeft;
-	var eH=oImg.height,eW=oImg.width;
-	while(p&&p.tagName!="BODY"){
-		eT+=p.offsetTop;
-		eL+=p.offsetLeft;
-		p=p.offsetParent;
-	}
-	cf.style.top=(document.body.clientHeight-(eT-sT)-eH>=cf.height)?eT+eH:eT-cf.height;
-	cf.style.left=(document.body.clientWidth-(eL-sL)>=cf.width)?eL:eL+eW-cf.width;
-	cf.style.display="block";
-	
-	wcf.openbound=bOpenBound;
-	wcf.fld1=fld1;
-	wcf.fld2=fld2;
-	wcf.limitDate=!limitDate;
-	//wcf.callback=sCallback;
-	wcf.setCurrentDate();
-	wcf.initCalendar();
+    //å‚æ•°åˆ†åˆ«ä¸ºï¼šè¢«ç‚¹å‡»çš„å›¾ç‰‡ï¼Œæ˜¯å¦è¿‡å»çš„æ—¥æœŸæ˜¯å¦å¯é€‰ï¼Œéœ€è¦è¿”å›çš„è¾“å…¥æ¡†ï¼Œå°†æ¥çš„æ—¥æœŸæ˜¯å¦å¯é€‰
+    //disableFutureDateä¸å¡«çš„è¯é»˜è®¤ä¸ºfalseï¼ï¼ï¼
+    var fld1,fld2;
+    var cf=document.getElementById("CalFrame");
+    var wcf=window.frames.CalFrame;
+    var oImg=document.getElementById(sImg);
+    if(!oImg){
+        alert("æ§åˆ¶å¯¹è±¡ä¸å­˜åœ¨ï¼");
+        return;
+    }
+    if(!sFld1){
+        alert("è¾“å…¥æ§ä»¶æœªæŒ‡å®šï¼");
+        return;
+    }
+    fld1=document.getElementById(sFld1);
+    if(!fld1){
+        alert("è¾“å…¥æ§ä»¶ä¸å­˜åœ¨ï¼");
+        return;
+    }
+    if(fld1.tagName!="INPUT"||fld1.type!="text"){
+        alert("è¾“å…¥æ§ä»¶ç±»å‹é”™è¯¯ï¼");
+        return;
+    }
+    if(cf.style.display=="block"){
+        cf.style.display="none";
+        return;
+    }
+
+    var eT=0,eL=0,p=oImg;
+    var sT=document.body.scrollTop,sL=document.body.scrollLeft;
+    var eH=oImg.height,eW=oImg.width;
+    while(p&&p.tagName!="BODY"){
+        eT+=p.offsetTop;
+        eL+=p.offsetLeft;
+        p=p.offsetParent;
+    }
+    cf.style.top=(document.body.clientHeight-(eT-sT)-eH>=cf.height)?eT+eH:eT-cf.height;
+    cf.style.left=(document.body.clientWidth-(eL-sL)>=cf.width)?eL:eL+eW-cf.width;
+    cf.style.display="block";
+
+    wcf.openbound=bOpenBound;
+    wcf.fld1=fld1;
+    wcf.fld2=fld2;
+    wcf.limitDate=!limitDate;
+    //wcf.callback=sCallback;
+    wcf.setCurrentDate();
+    wcf.initCalendar();
 }
 function hideCalendar(){
-	var cf=document.getElementById("CalFrame");
-	cf.style.display="none";
+    var cf=document.getElementById("CalFrame");
+    cf.style.display="none";
 }
 
 /*
-Ç°¼¸°æÓĞÎÊÌâµÄÔ­Òò 07-02-12 sunhj
-Êı¾İ¿âÖĞÓĞµÄÈÕÆÚÓĞÊ±·ÖÃë£¬ÓĞµÄÈÕÆÚÃ»ÓĞÊ±·ÖÃë¡£
-1¡£µ±´«Èë´øÊ±·ÖÃëµÄ²éÑ¯ÏîÊ±£¬Hibernate¶ÔÓÚÊı¾İ¿âÖĞDateÀàĞÍµÄÊı¾İÊÇ²»ÒÔÊ±·ÖÃëÀ´²éÑ¯µÄ£¨param.setHbType(Hibernate.DATE)£©£¬ËùÒÔÈç¹ûÊı¾İ¿âÖĞµÄÈÕÆÚÓĞÊ±·ÖÃëÊÇ²é²»³öÀ´µÄ¡£ÀıÈç£ºÊı¾İ¿âÖĞµÄÖµÎª2007-02-12 12:30:59£¬´«ÈëµÄ²ÎÊıÎª2007-02-12 00:00:00µ½2007-02-12 23:59:59
-2¡£Èç¹û´«Èë2007-02-12 00:00:00µ½2007-02-13 00:00:00ÓÉÓÚquerybeanÀïÃæÊÇ<=£¬Ôò»á°Ñ2007-02-13²»´øÊ±·ÖÃëµÄÊı¾İ´ø³ö£»
-*/
-function setDate(){	
-	var date = serverToday;
-	date1=date.split("-");			
-	var d=new Date(date1[0],date1[1]-1,date1[2]);
-	var year=d.getYear();
-	var month=d.getMonth();
-	month = month+1;
-	var day=d.getDate();
-	var scope = ctlObj.value;
-	if (scope == 0) {// current day
-		var tomorrow = new Date(year,month-1,day+1);
-		var tomorrowYear  = tomorrow.getYear();
-		var tomorrowMonth = tomorrow.getMonth()+1;
-		var tomorrowDay   = tomorrow.getDate();
-		//document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day+" 00:00:00";
-		document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day;
-		//alert(document.getElementById(startDateElmtId).value);
-		//document.getElementById(endDateElmtId).value=tomorrowYear+"-"+tomorrowMonth+"-"+tomorrowDay+" 00:00:00";
-		//document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day+" 23:59:59";  // ÔÚºóÌ¨´¦ÀíÁËendDate£¬²»ĞèÒªÔÚÇ°Ì¨´¦ÀíÁË
-		document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day;
-		//alert(document.getElementById(endDateElmtId).value);
-		changeDateAreaVisible(ctlObj,false);
-	} else if (scope == 1) {// current month
-		var nextMonthThisDay = new Date(year,month,day);
-		var nextMonthYear  = nextMonthThisDay.getYear();
-		var nextMonthMonth = nextMonthThisDay.getMonth()+1;
+ å‰å‡ ç‰ˆæœ‰é—®é¢˜çš„åŸå›  07-02-12 sunhj
+ æ•°æ®åº“ä¸­æœ‰çš„æ—¥æœŸæœ‰æ—¶åˆ†ç§’ï¼Œæœ‰çš„æ—¥æœŸæ²¡æœ‰æ—¶åˆ†ç§’ã€‚
+ 1ã€‚å½“ä¼ å…¥å¸¦æ—¶åˆ†ç§’çš„æŸ¥è¯¢é¡¹æ—¶ï¼ŒHibernateå¯¹äºæ•°æ®åº“ä¸­Dateç±»å‹çš„æ•°æ®æ˜¯ä¸ä»¥æ—¶åˆ†ç§’æ¥æŸ¥è¯¢çš„ï¼ˆparam.setHbType(Hibernate.DATE)ï¼‰ï¼Œæ‰€ä»¥å¦‚æœæ•°æ®åº“ä¸­çš„æ—¥æœŸæœ‰æ—¶åˆ†ç§’æ˜¯æŸ¥ä¸å‡ºæ¥çš„ã€‚ä¾‹å¦‚ï¼šæ•°æ®åº“ä¸­çš„å€¼ä¸º2007-02-12 12:30:59ï¼Œä¼ å…¥çš„å‚æ•°ä¸º2007-02-12 00:00:00åˆ°2007-02-12 23:59:59
+ 2ã€‚å¦‚æœä¼ å…¥2007-02-12 00:00:00åˆ°2007-02-13 00:00:00ç”±äºquerybeané‡Œé¢æ˜¯<=ï¼Œåˆ™ä¼šæŠŠ2007-02-13ä¸å¸¦æ—¶åˆ†ç§’çš„æ•°æ®å¸¦å‡ºï¼›
+ */
+function setDate(){
+    var date = serverToday;
+    date1=date.split("-");
+    var d=new Date(date1[0],date1[1]-1,date1[2]);
+    var year=d.getYear();
+    var month=d.getMonth();
+    month = month+1;
+    var day=d.getDate();
+    var scope = ctlObj.value;
+    if (scope == 0) {// current day
+        var tomorrow = new Date(year,month-1,day+1);
+        var tomorrowYear  = tomorrow.getYear();
+        var tomorrowMonth = tomorrow.getMonth()+1;
+        var tomorrowDay   = tomorrow.getDate();
+        //document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day+" 00:00:00";
+        document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day;
+        //alert(document.getElementById(startDateElmtId).value);
+        //document.getElementById(endDateElmtId).value=tomorrowYear+"-"+tomorrowMonth+"-"+tomorrowDay+" 00:00:00";
+        //document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day+" 23:59:59";  // åœ¨åå°å¤„ç†äº†endDateï¼Œä¸éœ€è¦åœ¨å‰å°å¤„ç†äº†
+        document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day;
+        //alert(document.getElementById(endDateElmtId).value);
+        changeDateAreaVisible(ctlObj,false);
+    } else if (scope == 1) {// current month
+        var nextMonthThisDay = new Date(year,month,day);
+        var nextMonthYear  = nextMonthThisDay.getYear();
+        var nextMonthMonth = nextMonthThisDay.getMonth()+1;
 
-		//document.getElementById(startDateElmtId).value=year+"-"+month+"-01"+" 00:00:00";
-		document.getElementById(startDateElmtId).value=year+"-"+month+"-01";
-		var day4=31;
-		if(month=='1'||month=='3'||month=='5'||month=='7'||month=='8'||month=='10'||month=='12'){
-		day4 = 31;
-		}else if(month=='4'||month=='6'||month=='9'||month=='11'){
-		day4=30;
-		}else if(year%4==0 && year%100>0 && year%400==0){
-		day4=29;
-		}else if(year%4!=0){
-		day4=28;
-		}
-		//document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4+" 23:59:59";
-		document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4;
-		//document.getElementById(endDateElmtId).value=nextMonthYear+"-"+nextMonthMonth+"-01 00:00:00";
-		changeDateAreaVisible(ctlObj,false);
-	} else if (scope == 2) {// current year
-		document.getElementById(startDateElmtId).value=year+"-01-01";
-		document.getElementById(endDateElmtId).value=year+"-12-31";
-		//document.getElementById(startDateElmtId).value=year+"-01-01 00:00:00";
-		//document.getElementById(endDateElmtId).value=year+"-12-31 23:59:59";
-		//document.getElementById(endDateElmtId).value=(year+1)+"-01-01 00:00:00";
-		changeDateAreaVisible(ctlObj,false);
-	}else if(scope==3){//date range
-		if(document.getElementById(startDateElmtId).value == null || document.getElementById(startDateElmtId).value==""){
-			document.getElementById(startDateElmtId).value="";
-		}
-		if(document.getElementById(endDateElmtId).value == null || document.getElementById(endDateElmtId).value==""){
-			document.getElementById(endDateElmtId).value="";
-		}
-		changeDateAreaVisible(ctlObj,true);
-	}else if(scope==4){//all
-		document.getElementById(startDateElmtId).value="";
-		document.getElementById(endDateElmtId).value="";
-		changeDateAreaVisible(ctlObj,false);
-	}		
+        //document.getElementById(startDateElmtId).value=year+"-"+month+"-01"+" 00:00:00";
+        document.getElementById(startDateElmtId).value=year+"-"+month+"-01";
+        var day4=31;
+        if(month=='1'||month=='3'||month=='5'||month=='7'||month=='8'||month=='10'||month=='12'){
+            day4 = 31;
+        }else if(month=='4'||month=='6'||month=='9'||month=='11'){
+            day4=30;
+        }else if(year%4==0 && year%100>0 && year%400==0){
+            day4=29;
+        }else if(year%4!=0){
+            day4=28;
+        }
+        //document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4+" 23:59:59";
+        document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4;
+        //document.getElementById(endDateElmtId).value=nextMonthYear+"-"+nextMonthMonth+"-01 00:00:00";
+        changeDateAreaVisible(ctlObj,false);
+    } else if (scope == 2) {// current year
+        document.getElementById(startDateElmtId).value=year+"-01-01";
+        document.getElementById(endDateElmtId).value=year+"-12-31";
+        //document.getElementById(startDateElmtId).value=year+"-01-01 00:00:00";
+        //document.getElementById(endDateElmtId).value=year+"-12-31 23:59:59";
+        //document.getElementById(endDateElmtId).value=(year+1)+"-01-01 00:00:00";
+        changeDateAreaVisible(ctlObj,false);
+    }else if(scope==3){//date range
+        if(document.getElementById(startDateElmtId).value == null || document.getElementById(startDateElmtId).value==""){
+            document.getElementById(startDateElmtId).value="";
+        }
+        if(document.getElementById(endDateElmtId).value == null || document.getElementById(endDateElmtId).value==""){
+            document.getElementById(endDateElmtId).value="";
+        }
+        changeDateAreaVisible(ctlObj,true);
+    }else if(scope==4){//all
+        document.getElementById(startDateElmtId).value="";
+        document.getElementById(endDateElmtId).value="";
+        changeDateAreaVisible(ctlObj,false);
+    }
 }
 
 /*
  *
  */
-function setDate(){	
-	var date = serverToday;
-	date1=date.split("-");			
-	var d=new Date(date1[0],date1[1]-1,date1[2]);
-	var year=d.getYear();
-	var month=d.getMonth();
-	month = month+1;
-	var day=d.getDate();
-	var scope = ctlObj.value;
-	if (scope == 0) {// current day
-		var tomorrow = new Date(year,month-1,day+1);
-		var tomorrowYear  = tomorrow.getYear();
-		var tomorrowMonth = tomorrow.getMonth()+1;
-		var tomorrowDay   = tomorrow.getDate();
-		//document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day+" 00:00:00";
-		document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day;
-		//alert(document.getElementById(startDateElmtId).value);
-		//document.getElementById(endDateElmtId).value=tomorrowYear+"-"+tomorrowMonth+"-"+tomorrowDay+" 00:00:00";
-		//document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day+" 23:59:59";  // ÔÚºóÌ¨´¦ÀíÁËendDate£¬²»ĞèÒªÔÚÇ°Ì¨´¦ÀíÁË
-		document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day;
-		//alert(document.getElementById(endDateElmtId).value);
-		changeDateAreaVisible(ctlObj,false);
-	} else if (scope == 1) {// current month
-		var nextMonthThisDay = new Date(year,month,day);
-		var nextMonthYear  = nextMonthThisDay.getYear();
-		var nextMonthMonth = nextMonthThisDay.getMonth()+1;
+function setDate(){
+    var date = serverToday;
+    date1=date.split("-");
+    var d=new Date(date1[0],date1[1]-1,date1[2]);
+    var year=d.getYear();
+    var month=d.getMonth();
+    month = month+1;
+    var day=d.getDate();
+    var scope = ctlObj.value;
+    if (scope == 0) {// current day
+        var tomorrow = new Date(year,month-1,day+1);
+        var tomorrowYear  = tomorrow.getYear();
+        var tomorrowMonth = tomorrow.getMonth()+1;
+        var tomorrowDay   = tomorrow.getDate();
+        //document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day+" 00:00:00";
+        document.getElementById(startDateElmtId).value=year+"-"+month+"-"+day;
+        //alert(document.getElementById(startDateElmtId).value);
+        //document.getElementById(endDateElmtId).value=tomorrowYear+"-"+tomorrowMonth+"-"+tomorrowDay+" 00:00:00";
+        //document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day+" 23:59:59";  // åœ¨åå°å¤„ç†äº†endDateï¼Œä¸éœ€è¦åœ¨å‰å°å¤„ç†äº†
+        document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day;
+        //alert(document.getElementById(endDateElmtId).value);
+        changeDateAreaVisible(ctlObj,false);
+    } else if (scope == 1) {// current month
+        var nextMonthThisDay = new Date(year,month,day);
+        var nextMonthYear  = nextMonthThisDay.getYear();
+        var nextMonthMonth = nextMonthThisDay.getMonth()+1;
 
-		//document.getElementById(startDateElmtId).value=year+"-"+month+"-01"+" 00:00:00";
-		document.getElementById(startDateElmtId).value=year+"-"+month+"-01";
-		var day4=31;
-		if(month=='1'||month=='3'||month=='5'||month=='7'||month=='8'||month=='10'||month=='12'){
-		day4 = 31;
-		}else if(month=='4'||month=='6'||month=='9'||month=='11'){
-		day4=30;
-		}else if(year%4==0 && year%100>0 && year%400==0){
-		day4=29;
-		}else if(year%4!=0){
-		day4=28;
-		}
-		//document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4+" 23:59:59";
-		document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4;
-		//document.getElementById(endDateElmtId).value=nextMonthYear+"-"+nextMonthMonth+"-01 00:00:00";
-		changeDateAreaVisible(ctlObj,false);
-	} else if (scope == 2) {// current year
-		document.getElementById(startDateElmtId).value=year+"-01-01";
-		document.getElementById(endDateElmtId).value=year+"-12-31";
-		//document.getElementById(startDateElmtId).value=year+"-01-01 00:00:00";
-		//document.getElementById(endDateElmtId).value=year+"-12-31 23:59:59";
-		//document.getElementById(endDateElmtId).value=(year+1)+"-01-01 00:00:00";
-		changeDateAreaVisible(ctlObj,false);
-	}else if(scope==3){//date range
-		if(document.getElementById(startDateElmtId).value == null || document.getElementById(startDateElmtId).value==""){
-			document.getElementById(startDateElmtId).value="";
-		}
-		if(document.getElementById(endDateElmtId).value == null || document.getElementById(endDateElmtId).value==""){
-			document.getElementById(endDateElmtId).value="";
-		}
-		changeDateAreaVisible(ctlObj,true);
-	}else if(scope==4){//all
-		document.getElementById(startDateElmtId).value="";
-		document.getElementById(endDateElmtId).value="";
-		changeDateAreaVisible(ctlObj,false);
-	}		
+        //document.getElementById(startDateElmtId).value=year+"-"+month+"-01"+" 00:00:00";
+        document.getElementById(startDateElmtId).value=year+"-"+month+"-01";
+        var day4=31;
+        if(month=='1'||month=='3'||month=='5'||month=='7'||month=='8'||month=='10'||month=='12'){
+            day4 = 31;
+        }else if(month=='4'||month=='6'||month=='9'||month=='11'){
+            day4=30;
+        }else if(year%4==0 && year%100>0 && year%400==0){
+            day4=29;
+        }else if(year%4!=0){
+            day4=28;
+        }
+        //document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4+" 23:59:59";
+        document.getElementById(endDateElmtId).value=year+"-"+month+"-"+day4;
+        //document.getElementById(endDateElmtId).value=nextMonthYear+"-"+nextMonthMonth+"-01 00:00:00";
+        changeDateAreaVisible(ctlObj,false);
+    } else if (scope == 2) {// current year
+        document.getElementById(startDateElmtId).value=year+"-01-01";
+        document.getElementById(endDateElmtId).value=year+"-12-31";
+        //document.getElementById(startDateElmtId).value=year+"-01-01 00:00:00";
+        //document.getElementById(endDateElmtId).value=year+"-12-31 23:59:59";
+        //document.getElementById(endDateElmtId).value=(year+1)+"-01-01 00:00:00";
+        changeDateAreaVisible(ctlObj,false);
+    }else if(scope==3){//date range
+        if(document.getElementById(startDateElmtId).value == null || document.getElementById(startDateElmtId).value==""){
+            document.getElementById(startDateElmtId).value="";
+        }
+        if(document.getElementById(endDateElmtId).value == null || document.getElementById(endDateElmtId).value==""){
+            document.getElementById(endDateElmtId).value="";
+        }
+        changeDateAreaVisible(ctlObj,true);
+    }else if(scope==4){//all
+        document.getElementById(startDateElmtId).value="";
+        document.getElementById(endDateElmtId).value="";
+        changeDateAreaVisible(ctlObj,false);
+    }
 }
 function changeDateDisplay(ctlObj1,startDateElmtId1,endDateElmtId1){
-	 ctlObj=ctlObj1;
-	 startDateElmtId=startDateElmtId1;
-	 endDateElmtId=endDateElmtId1;
-	 setDate();
+    ctlObj=ctlObj1;
+    startDateElmtId=startDateElmtId1;
+    endDateElmtId=endDateElmtId1;
+    setDate();
 }
 function changeDateAreaVisible(ctlObj,display){
-	var objTRElmt=getParentByTagName(ctlObj,"TR");
-	if(display == true){
-		getChildByTagNameTimes(objTRElmt,"TD",3).style.display = "block";
-		getChildByTagNameTimes(objTRElmt,"TD",4).style.display = "block";
-		getChildByTagNameTimes(objTRElmt,"TD",5).style.display = "block";
-		getChildByTagNameTimes(objTRElmt,"TD",6).style.display = "block";
-	}else{
-		getChildByTagNameTimes(objTRElmt,"TD",3).style.display = "none";
-		getChildByTagNameTimes(objTRElmt,"TD",4).style.display = "none";
-		getChildByTagNameTimes(objTRElmt,"TD",5).style.display = "none";
-		getChildByTagNameTimes(objTRElmt,"TD",6).style.display = "none";
-	}
+    var objTRElmt=getParentByTagName(ctlObj,"TR");
+    if(display == true){
+        getChildByTagNameTimes(objTRElmt,"TD",3).style.display = "block";
+        getChildByTagNameTimes(objTRElmt,"TD",4).style.display = "block";
+        getChildByTagNameTimes(objTRElmt,"TD",5).style.display = "block";
+        getChildByTagNameTimes(objTRElmt,"TD",6).style.display = "block";
+    }else{
+        getChildByTagNameTimes(objTRElmt,"TD",3).style.display = "none";
+        getChildByTagNameTimes(objTRElmt,"TD",4).style.display = "none";
+        getChildByTagNameTimes(objTRElmt,"TD",5).style.display = "none";
+        getChildByTagNameTimes(objTRElmt,"TD",6).style.display = "none";
+    }
 }
 /*
-sunhj 070108
-ÏÖÔÚµÄ×ö·¨ÊÇÈÕÆÚ·¶Î§µÄÆğÊ¼ÖÕÖ¹ÊäÈë¿òµÄTDÄ¬ÈÏÎªdisplay:none
-Èç¹ûÔÚloadÒ³ÃæµÄÊ±ºò¾ÍĞèÒªÏÔÊ¾ÕâÁ½¸öÊäÈë¿òÔòĞèÒªÔÚbody.onloadµ÷showQueryDateTR·½·¨
-*/
+ sunhj 070108
+ ç°åœ¨çš„åšæ³•æ˜¯æ—¥æœŸèŒƒå›´çš„èµ·å§‹ç»ˆæ­¢è¾“å…¥æ¡†çš„TDé»˜è®¤ä¸ºdisplay:none
+ å¦‚æœåœ¨loadé¡µé¢çš„æ—¶å€™å°±éœ€è¦æ˜¾ç¤ºè¿™ä¸¤ä¸ªè¾“å…¥æ¡†åˆ™éœ€è¦åœ¨body.onloadè°ƒshowQueryDateTRæ–¹æ³•
+ */
 function showQueryDateTR(scopeName,scopeValue){
-	var scopeObj = eval("document.forms[0]."+scopeName);
-	//changeDateDisplay(scopeObj,'startDate','endDate');
-	changeDateDisplay(scopeObj,getStartDateInputName(scopeObj),getEndDateInputName(scopeObj));
-	if(scopeObj.value == scopeValue){
-		changeDateAreaVisible(scopeObj,true);
-	}else{
-		changeDateAreaVisible(scopeObj,false);
-	}
+    var scopeObj = eval("document.forms[0]."+scopeName);
+    //changeDateDisplay(scopeObj,'startDate','endDate');
+    changeDateDisplay(scopeObj,getStartDateInputName(scopeObj),getEndDateInputName(scopeObj));
+    if(scopeObj.value == scopeValue){
+        changeDateAreaVisible(scopeObj,true);
+    }else{
+        changeDateAreaVisible(scopeObj,false);
+    }
 }
 
 /*
-sunhj 070108
-ÏÂÃæÕâ¸ö·½·¨ÊÇÎªÁËÈ¡³östartDateµÄinput¿òname
-ÕâÊÇÒòÎª²»ÊÇËùÓĞÈËµÄstartDateµÄinput¿òname=startDate£¬¶øÔÚshowQueryDateTR·½·¨ÖĞÇ°Ò»°æ±¾Ğ´ËÀÁËstartDateµ¼ÖÂµÄ
-ĞèÒª×¢Òâ´Ë·½·¨È¡startDateµÄinput¿ònameÊ¹ÓÃµ½ÁËÕâ¸öinput¿òËùÔÚµÄTD£¬ËùÒÔĞèÒªÒ³ÃæÉÏ±£Ö¤°´ÕÕÏÖÓĞ¸ñÊ½À´ÅÅ°æ
-´«ÈëµÄ²ÎÊıÊÇÈÕÆÚĞĞµÄÏÂÀ­¿òname
-*/
+ sunhj 070108
+ ä¸‹é¢è¿™ä¸ªæ–¹æ³•æ˜¯ä¸ºäº†å–å‡ºstartDateçš„inputæ¡†name
+ è¿™æ˜¯å› ä¸ºä¸æ˜¯æ‰€æœ‰äººçš„startDateçš„inputæ¡†name=startDateï¼Œè€Œåœ¨showQueryDateTRæ–¹æ³•ä¸­å‰ä¸€ç‰ˆæœ¬å†™æ­»äº†startDateå¯¼è‡´çš„
+ éœ€è¦æ³¨æ„æ­¤æ–¹æ³•å–startDateçš„inputæ¡†nameä½¿ç”¨åˆ°äº†è¿™ä¸ªinputæ¡†æ‰€åœ¨çš„TDï¼Œæ‰€ä»¥éœ€è¦é¡µé¢ä¸Šä¿è¯æŒ‰ç…§ç°æœ‰æ ¼å¼æ¥æ’ç‰ˆ
+ ä¼ å…¥çš„å‚æ•°æ˜¯æ—¥æœŸè¡Œçš„ä¸‹æ‹‰æ¡†name
+ */
 function getStartDateInputName(scopeObj){
-	var objTRElmt=getParentByTagName(scopeObj,"TR");
-	var startDateTDObj = getChildByTagNameTimes(objTRElmt,"TD",4);
-	var startDateInputObj = getChildByTagNameTimes(startDateTDObj,"INPUT",1);
-	return startDateInputObj.name;
+    var objTRElmt=getParentByTagName(scopeObj,"TR");
+    var startDateTDObj = getChildByTagNameTimes(objTRElmt,"TD",4);
+    var startDateInputObj = getChildByTagNameTimes(startDateTDObj,"INPUT",1);
+    return startDateInputObj.name;
 }
 /*
-sunhj 070108
-ÏÂÃæÕâ¸ö·½·¨ÊÇÎªÁËÈ¡³öendDateµÄinput¿òname
-ÕâÊÇÒòÎª²»ÊÇËùÓĞÈËµÄendDateµÄinput¿òname=endDate£¬¶øÔÚshowQueryDateTR·½·¨ÖĞÇ°Ò»°æ±¾Ğ´ËÀÁËstartDateµ¼ÖÂµÄ
-ĞèÒª×¢Òâ´Ë·½·¨È¡endDateµÄinput¿ònameÊ¹ÓÃµ½ÁËÕâ¸öinput¿òËùÔÚµÄTD£¬ËùÒÔĞèÒªÒ³ÃæÉÏ±£Ö¤°´ÕÕÏÖÓĞ¸ñÊ½À´ÅÅ°æ
-´«ÈëµÄ²ÎÊıÊÇÈÕÆÚĞĞµÄÏÂÀ­¿òname
-*/
+ sunhj 070108
+ ä¸‹é¢è¿™ä¸ªæ–¹æ³•æ˜¯ä¸ºäº†å–å‡ºendDateçš„inputæ¡†name
+ è¿™æ˜¯å› ä¸ºä¸æ˜¯æ‰€æœ‰äººçš„endDateçš„inputæ¡†name=endDateï¼Œè€Œåœ¨showQueryDateTRæ–¹æ³•ä¸­å‰ä¸€ç‰ˆæœ¬å†™æ­»äº†startDateå¯¼è‡´çš„
+ éœ€è¦æ³¨æ„æ­¤æ–¹æ³•å–endDateçš„inputæ¡†nameä½¿ç”¨åˆ°äº†è¿™ä¸ªinputæ¡†æ‰€åœ¨çš„TDï¼Œæ‰€ä»¥éœ€è¦é¡µé¢ä¸Šä¿è¯æŒ‰ç…§ç°æœ‰æ ¼å¼æ¥æ’ç‰ˆ
+ ä¼ å…¥çš„å‚æ•°æ˜¯æ—¥æœŸè¡Œçš„ä¸‹æ‹‰æ¡†name
+ */
 function getEndDateInputName(scopeObj){
-	var objTRElmt=getParentByTagName(scopeObj,"TR");
-	var endDateTDObj = getChildByTagNameTimes(objTRElmt,"TD",6);
-	var endDateInputObj = getChildByTagNameTimes(endDateTDObj,"INPUT",1);
-	return endDateInputObj.name;
+    var objTRElmt=getParentByTagName(scopeObj,"TR");
+    var endDateTDObj = getChildByTagNameTimes(objTRElmt,"TD",6);
+    var endDateInputObj = getChildByTagNameTimes(endDateTDObj,"INPUT",1);
+    return endDateInputObj.name;
 }
 
 //AJAX
 function sack(file) {
-	this.xmlhttp = null;
+    this.xmlhttp = null;
 
-	this.resetData = function() {
-		this.method = "POST";
-  		this.queryStringSeparator = "?";
-		this.argumentSeparator = "&";
-		this.URLString = "";
-		this.encodeURIString = true;
-  		this.execute = false;
-  		this.element = null;
-		this.elementObj = null;
-		this.requestFile = file;
-		this.vars = new Object();
-		this.responseStatus = new Array(2);
-  	};
+    this.resetData = function() {
+        this.method = "POST";
+        this.queryStringSeparator = "?";
+        this.argumentSeparator = "&";
+        this.URLString = "";
+        this.encodeURIString = true;
+        this.execute = false;
+        this.element = null;
+        this.elementObj = null;
+        this.requestFile = file;
+        this.vars = new Object();
+        this.responseStatus = new Array(2);
+    };
 
-	this.resetFunctions = function() {
-  		this.onLoading = function() { };
-  		this.onLoaded = function() { };
-  		this.onInteractive = function() { };
-  		this.onCompletion = function() { };
-  		this.onError = function() { };
-		this.onFail = function() { };
-	};
+    this.resetFunctions = function() {
+        this.onLoading = function() { };
+        this.onLoaded = function() { };
+        this.onInteractive = function() { };
+        this.onCompletion = function() { };
+        this.onError = function() { };
+        this.onFail = function() { };
+    };
 
-	this.reset = function() {
-		this.resetFunctions();
-		this.resetData();
-	};
+    this.reset = function() {
+        this.resetFunctions();
+        this.resetData();
+    };
 
-	this.createAJAX = function() {
-		try {
-			this.xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-		} catch (e1) {
-			try {
-				this.xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e2) {
-				this.xmlhttp = null;
-			}
-		}
+    this.createAJAX = function() {
+        try {
+            this.xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e1) {
+            try {
+                this.xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e2) {
+                this.xmlhttp = null;
+            }
+        }
 
-		if (! this.xmlhttp) {
-			if (typeof XMLHttpRequest != "undefined") {
-				this.xmlhttp = new XMLHttpRequest();
-			} else {
-				this.failed = true;
-			}
-		}
-	};
+        if (! this.xmlhttp) {
+            if (typeof XMLHttpRequest != "undefined") {
+                this.xmlhttp = new XMLHttpRequest();
+            } else {
+                this.failed = true;
+            }
+        }
+    };
 
-	this.setVar = function(name, value){
-		this.vars[name] = Array(value, false);
-	};
+    this.setVar = function(name, value){
+        this.vars[name] = Array(value, false);
+    };
 
-	this.encVar = function(name, value, returnvars) {
-		if (true == returnvars) {
-			return Array(encodeURIComponent(name), encodeURIComponent(value));
-		} else {
-			this.vars[encodeURIComponent(name)] = Array(encodeURIComponent(value), true);
-		}
-	}
+    this.encVar = function(name, value, returnvars) {
+        if (true == returnvars) {
+            return Array(encodeURIComponent(name), encodeURIComponent(value));
+        } else {
+            this.vars[encodeURIComponent(name)] = Array(encodeURIComponent(value), true);
+        }
+    }
 
-	this.processURLString = function(string, encode) {
-		encoded = encodeURIComponent(this.argumentSeparator);
-		regexp = new RegExp(this.argumentSeparator + "|" + encoded);
-		varArray = string.split(regexp);
-		for (i = 0; i < varArray.length; i++){
-			urlVars = varArray[i].split("=");
-			if (true == encode){
-				this.encVar(urlVars[0], urlVars[1]);
-			} else {
-				this.setVar(urlVars[0], urlVars[1]);
-			}
-		}
-	}
+    this.processURLString = function(string, encode) {
+        encoded = encodeURIComponent(this.argumentSeparator);
+        regexp = new RegExp(this.argumentSeparator + "|" + encoded);
+        varArray = string.split(regexp);
+        for (i = 0; i < varArray.length; i++){
+            urlVars = varArray[i].split("=");
+            if (true == encode){
+                this.encVar(urlVars[0], urlVars[1]);
+            } else {
+                this.setVar(urlVars[0], urlVars[1]);
+            }
+        }
+    }
 
-	this.createURLString = function(urlstring) {
-		if (this.encodeURIString && this.URLString.length) {
-			this.processURLString(this.URLString, true);
-		}
+    this.createURLString = function(urlstring) {
+        if (this.encodeURIString && this.URLString.length) {
+            this.processURLString(this.URLString, true);
+        }
 
-		if (urlstring) {
-			if (this.URLString.length) {
-				this.URLString += this.argumentSeparator + urlstring;
-			} else {
-				this.URLString = urlstring;
-			}
-		}
+        if (urlstring) {
+            if (this.URLString.length) {
+                this.URLString += this.argumentSeparator + urlstring;
+            } else {
+                this.URLString = urlstring;
+            }
+        }
 
-		// prevents caching of URLString
-		this.setVar("rndval", new Date().getTime());
+        // prevents caching of URLString
+        this.setVar("rndval", new Date().getTime());
 
-		urlstringtemp = new Array();
-		for (key in this.vars) {
-			if (false == this.vars[key][1] && true == this.encodeURIString) {
-				encoded = this.encVar(key, this.vars[key][0], true);
-				delete this.vars[key];
-				this.vars[encoded[0]] = Array(encoded[1], true);
-				key = encoded[0];
-			}
+        urlstringtemp = new Array();
+        for (key in this.vars) {
+            if (false == this.vars[key][1] && true == this.encodeURIString) {
+                encoded = this.encVar(key, this.vars[key][0], true);
+                delete this.vars[key];
+                this.vars[encoded[0]] = Array(encoded[1], true);
+                key = encoded[0];
+            }
 
-			urlstringtemp[urlstringtemp.length] = key + "=" + this.vars[key][0];
-		}
-		if (urlstring){
-			this.URLString += this.argumentSeparator + urlstringtemp.join(this.argumentSeparator);
-		} else {
-			this.URLString += urlstringtemp.join(this.argumentSeparator);
-		}
-	}
+            urlstringtemp[urlstringtemp.length] = key + "=" + this.vars[key][0];
+        }
+        if (urlstring){
+            this.URLString += this.argumentSeparator + urlstringtemp.join(this.argumentSeparator);
+        } else {
+            this.URLString += urlstringtemp.join(this.argumentSeparator);
+        }
+    }
 
-	this.runResponse = function() {
-		eval(this.response);
-	}
+    this.runResponse = function() {
+        eval(this.response);
+    }
 
-	this.runAJAX = function(urlstring) {
-		if (this.failed) {
-			this.onFail();
-		} else {
-			this.createURLString(urlstring);
-			if (this.element) {
-				this.elementObj = document.getElementById(this.element);
-			}
-			if (this.xmlhttp) {
-				var self = this;
-				if (this.method == "GET") {
-					totalurlstring = this.requestFile + this.queryStringSeparator + this.URLString;
-					this.xmlhttp.open(this.method, totalurlstring, true);
-				}else if(this.method == "FILE") {
-					this.xmlhttp.open(this.method, this.requestFile, true);
-					try {
-						this.xmlhttp.setRequestHeader("Content-Type", "multipart/form-data")
-					} catch (e) { }
-				} else {
-					this.xmlhttp.open(this.method, this.requestFile, true);
-					try {
-						this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-					} catch (e) { }
-				}
+    this.runAJAX = function(urlstring) {
+        if (this.failed) {
+            this.onFail();
+        } else {
+            this.createURLString(urlstring);
+            if (this.element) {
+                this.elementObj = document.getElementById(this.element);
+            }
+            if (this.xmlhttp) {
+                var self = this;
+                if (this.method == "GET") {
+                    totalurlstring = this.requestFile + this.queryStringSeparator + this.URLString;
+                    this.xmlhttp.open(this.method, totalurlstring, true);
+                }else if(this.method == "FILE") {
+                    this.xmlhttp.open(this.method, this.requestFile, true);
+                    try {
+                        this.xmlhttp.setRequestHeader("Content-Type", "multipart/form-data")
+                    } catch (e) { }
+                } else {
+                    this.xmlhttp.open(this.method, this.requestFile, true);
+                    try {
+                        this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+                    } catch (e) { }
+                }
 
-				this.xmlhttp.onreadystatechange = function() {
-					switch (self.xmlhttp.readyState) {
-						case 1:
-							self.onLoading();
-							break;
-						case 2:
-							self.onLoaded();
-							break;
-						case 3:
-							self.onInteractive();
-							break;
-						case 4:
-							self.response = self.xmlhttp.responseText;
-							self.responseXML = self.xmlhttp.responseXML;
-							self.responseStatus[0] = self.xmlhttp.status;
-							self.responseStatus[1] = self.xmlhttp.statusText;
+                this.xmlhttp.onreadystatechange = function() {
+                    switch (self.xmlhttp.readyState) {
+                        case 1:
+                            self.onLoading();
+                            break;
+                        case 2:
+                            self.onLoaded();
+                            break;
+                        case 3:
+                            self.onInteractive();
+                            break;
+                        case 4:
+                            self.response = self.xmlhttp.responseText;
+                            self.responseXML = self.xmlhttp.responseXML;
+                            self.responseStatus[0] = self.xmlhttp.status;
+                            self.responseStatus[1] = self.xmlhttp.statusText;
 
-							if (self.execute) {
-								self.runResponse();
-							}
+                            if (self.execute) {
+                                self.runResponse();
+                            }
 
-							if (self.elementObj) {
-								elemNodeName = self.elementObj.nodeName;
-								elemNodeName.toLowerCase();
-								if (elemNodeName == "input"
-								|| elemNodeName == "select"
-								|| elemNodeName == "option"
-								|| elemNodeName == "textarea") {
-									self.elementObj.value = self.response;
-								} else {
-									self.elementObj.innerHTML = self.response;
-								}
-							}
-							if (self.responseStatus[0] == "200") {
-								self.onCompletion();
-							} else {
-								self.onError();
-							}
+                            if (self.elementObj) {
+                                elemNodeName = self.elementObj.nodeName;
+                                elemNodeName.toLowerCase();
+                                if (elemNodeName == "input"
+                                    || elemNodeName == "select"
+                                    || elemNodeName == "option"
+                                    || elemNodeName == "textarea") {
+                                    self.elementObj.value = self.response;
+                                } else {
+                                    self.elementObj.innerHTML = self.response;
+                                }
+                            }
+                            if (self.responseStatus[0] == "200") {
+                                self.onCompletion();
+                            } else {
+                                self.onError();
+                            }
 
-							self.URLString = "";
-							break;
-					}
-				};
+                            self.URLString = "";
+                            break;
+                    }
+                };
 
-				this.xmlhttp.send(this.URLString);
-			}
-		}
-	};
+                this.xmlhttp.send(this.URLString);
+            }
+        }
+    };
 
-	this.reset();
-	this.createAJAX();
+    this.reset();
+    this.createAJAX();
 }

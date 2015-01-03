@@ -14,7 +14,6 @@
 <SCRIPT language="javascript" src="<%= request.getContextPath()%>/js/commonSelect.js"></SCRIPT>
 <script language=javascript src="<%= request.getContextPath()%>/js/popCalendar.js"></script>
 <script language=javascript src="<%= request.getContextPath()%>/js/checkValid.js"></script>
-<script language=javascript src="js/popSortTable.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function view(id){
@@ -39,13 +38,24 @@ function doReset(){
 }
 
 function f_position(){
-	var irisIds=window.showModalDialog("repairAction.do?method=positionQuery","","dialogHeight: 300px; dialogWidth: 420px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
+    middleOpen("repairAction.do?method=positionQuery","",
+            "height= 300, width= 420,toolbar=no,scrollbars=no, resizable=no,location=no, status=no");
 	//alert(irisIds);
-	if(irisIds!=null&&irisIds!=''){
-		document.forms[0].irisIds.value=irisIds;
-		doSubmit();
-	}
+//	if(irisIds!=null&&irisIds!=''){
+//		document.forms[0].irisIds.value=irisIds;
+//		doSubmit();
+//	}
 	
+}
+
+function setValue(irisIds){
+    if(irisIds!=null&&irisIds!=''&&irisIds.length>1) {
+        if(irisIds.substring(0,1) == ','){
+            irisIds = irisIds.substring(1);
+        }
+        document.forms[0].irisIds.value = irisIds;
+        doSubmit();
+    }
 }
 
 function f_excel(){

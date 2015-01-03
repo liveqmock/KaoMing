@@ -21,7 +21,7 @@
   </tr>
 </table>
 <br>
-<table HEIGHT="380" width="100%" cellspacing="0" cellpadding="0" border="0" id="irisTree">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" id="irisTree">
 
                 <tr > 
                   <table width="100%" border="0" cellspacing="0" cellpadding="0" >
@@ -101,10 +101,14 @@ function f_position(){
   	 <%}%>
   	 //alert(allValue);
   	 if(allValue!=''){
-  	 	allValue=allValue.substring(1);
-  	 	returnValue=allValue;
-		self.close();
-  	 }else{
+//  	 	allValue=allValue.substring(1);
+//  	 	returnValue=allValue;
+//		self.close();
+         if(window.opener) {
+             window.opener.setValue(allValue) ;
+         }
+         window.close();
+     }else{
   	 	alert("请选先选择障位置！");
   	 	return false;
   	 }

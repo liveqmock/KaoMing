@@ -20,7 +20,6 @@
 	A:hover {COLOR: red}
 	A.bt {COLOR: #888888}
 </STYLE>
-<link rel="stylesheet" href="css/style.css">
 
 <SCRIPT language="javascript">
 <!--//
