@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=GBK"%>
 <%@ taglib uri=  "/WEB-INF/tlds/struts-html.tld" prefix="html" %>
+<%@ taglib uri=  "/WEB-INF/tlds/common.tld" prefix="comtld" %>
 <%@ page import="java.util.ArrayList"%> 
  <%@ page import="com.dne.sie.common.tools.DicInit"%>
 
@@ -8,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gbk">
 <title>roleList</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
-<link href="css/styles.css" rel="stylesheet" type="text/css" />
+<link href="css/styles2.css" rel="stylesheet" type="text/css" />
 <SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 <script language=javascript src="js/common.js"></script>
 </head>
@@ -65,7 +66,8 @@
         <tr> 
       <td height="1" bgcolor="#677789" colspan="11"></td>
     </tr>
-    
+         <comtld:pageControl numOfRcds="<%=count%>">
+         </comtld:pageControl>
     </table>
     
               <tr align="left">

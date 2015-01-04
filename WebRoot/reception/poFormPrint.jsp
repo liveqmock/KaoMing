@@ -12,7 +12,45 @@
 table
 {
 	font-size: 12pt;
-	
+    font-family:'方正姚体';
+}
+
+@font-face
+{
+    font-family:'方正姚体';
+    mso-font-alt:'方正姚体';
+    text-align:right;text-indent:249.95pt;
+    mso-char-indent-count:22.0
+}
+
+.border1 {
+    border:solid windowtext 1.0pt;
+    mso-border-alt:solid windowtext .5pt;
+    padding:0cm 1.4pt 0cm 1.4pt;
+}
+.borderrow1{
+    border:solid windowtext 1.0pt;
+    border-left:none;
+    mso-border-left-alt:solid windowtext .5pt;
+    mso-border-alt: solid windowtext .5pt;
+    padding:0cm 1.4pt 0cm 1.4pt;
+}
+.bordercol1{
+    border:solid windowtext 1.0pt;
+    border-top:none;
+    mso-border-top-alt:solid windowtext .5pt;
+    mso-border-alt:solid windowtext .5pt;
+    padding:0cm 1.4pt 0cm 1.4pt;
+}
+.border2{
+    border-top:none;
+    /*border-left: none;*/
+    border-bottom:solid windowtext 1.0pt;
+    border-right:solid windowtext 1.0pt;
+    mso-border-top-alt:solid windowtext .5pt;
+    /*mso-border-left-alt:solid windowtext .5pt;*/
+    mso-border-alt:solid windowtext .5pt;
+    padding:0cm 1.4pt 0cm 1.4pt;
 }
 -->
 </style>
@@ -49,9 +87,10 @@ try{
 		<p align="right" style="line-height:15px;">上海市静安区镇宁路号<b> 200 </b>号 东峰<b> 9A </b>座
 		</td>
 	</tr>
-	 <tr> 
-    <td height="2" colspan="6" bgcolor="#677789"></td>
-  </tr>
+	<tr>
+        <td height="2" colspan="6" bgcolor="#677789" style='width:37.4pt;border:none;border-bottom:solid windowtext 1.0pt;
+  mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 1.4pt 0cm 1.4pt'></td>
+    </tr>
 </table>
 
 <table border="0" width="98%" height="117">
@@ -69,40 +108,58 @@ try{
 		<p style="line-height:8px;">主旨:&nbsp;&nbsp; 订购单</font></td>
 	</tr>
 	<tr> 
-    <td height="1" colspan="6" bgcolor="#677789"></td>
+    <td height="1" colspan="6" bgcolor="#677789" style='width:37.4pt;border:none;border-bottom:solid windowtext 1.0pt;
+  mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 1.4pt 0cm 1.4pt'></td>
   </tr>
 </table>
  
 <p align="center"><b><font size="6">订购单</font></b></p>
 <p>订 购 单 号： <%=pf.getOrderNo()%></p>
 <p>客 户 名 称： <%=pf.getCustomerName()%></p>
-<p>交 货 时 间： <%=pf.getDeliveryTime()==null?"":pf.getDeliveryTime()%></p></p>
+<p>交 货 时 间： <%=pf.getDeliveryTime()==null?"15天":pf.getDeliveryTime()%></p></p>
 <p>交 货 地 点： <%=pf.getShippingAddress()==null?"上海办":pf.getShippingAddress()%></p>
-<table border="1" width="96%" id="table1">
-	<tr>
-		<td width="59" align="center">项次</td>
-		<td align="center">零件名称</td>
-		<td width="160" align="center">料号</td>
-		<td >机型</td>
-		<td >机身编码</td>
-		<td align="center">数量</td>
-		<td align="center">价格$（单价）</td>
+<table  width="96%" id="table1" border=0 cellspacing=0 cellpadding=0>
+	<tr >
+		<td class="border1" width="5%" align="center" >项次</td>
+		<td class="borderrow1" width="20%" align="center">零件名称</td>
+		<td class="borderrow1" width="15%" align="center">零件号码</td>
+        <td class="borderrow1" width="5%"align="center">数量</td>
+        <td class="borderrow1" width="10%"align="center">价格$（单价）</td>
+		<td class="borderrow1" width="20%" >机型</td>
+		<td class="borderrow1" width="15%" >机身编码</td>
+
 	</tr>
 	
-	<%for(int i=0;i<poFormPrintList.size();i++){
-			PoForm pof=(PoForm)poFormPrintList.get(i);
+	<%
+    int allNum =0;
+    float allPrice=0F;
+    for(int i=0;i<poFormPrintList.size();i++){
+		PoForm pof=(PoForm)poFormPrintList.get(i);
+        allNum += pof.getOrderNum();
+        allPrice += pof.getPerQuote()*pof.getOrderNum();
 	%>
-	<tr>
-		<td align="center"><%=(i+1)%></td>
-		<td align="left"><%=pof.getSkuCode()%></td>
-		<td align="left"><%=pof.getStuffNo()%></td>
-		<td align="left"><%=pof.getModelCode()%></td>
-		<td align="left"><%=pof.getModelSerialNo()%></td>
-		<td align="center"><%=pof.getOrderNum()%></td>
-		<td align="center"><%=Operate.toFix(pof.getPerQuote(),2)%></td>
+	<tr >
+		<td class="bordercol1" align="center"><%=(i+1)%></td>
+		<td class="border2" align="left"><%=pof.getSkuCode()%></td>
+		<td class="border2" align="left"><%=pof.getStuffNo()%></td>
+        <td class="border2" align="center"><%=pof.getOrderNum()%></td>
+        <td class="border2" align="center"><%=Operate.toFix(pof.getPerQuote(),2)%></td>
+		<td class="border2" align="left"><%=pof.getModelCode()%></td>
+		<td class="border2" align="left"><%=pof.getModelSerialNo()%></td>
+
 	</tr>
+
 	<%}%>
-	
+    <tr >
+        <td class="bordercol1" align="center">合计</td>
+        <td class="border2" align="left"></td>
+        <td class="border2" align="left"></td>
+        <td class="border2" align="center"><%=allNum%></td>
+        <td class="border2" align="center"><%=Operate.toFix(allPrice, 2)%></td>
+        <td class="border2" align="left"></td>
+        <td class="border2" align="left"></td>
+
+    </tr>
 	
 </table>
 <p>　</p>
@@ -113,19 +170,6 @@ try{
 
 
   
-  
-    <table>
-    
-  <tr align="center">
-      <td >
-  	<input type="button" onclick="f_print1()" value='页面设置' class="NOPRINT">
-  	<input type="button" onclick="f_print2()" value='打印预览' class="NOPRINT">
-  	<input type="button" onclick="f_print3()" value='直接打印'  class="NOPRINT">
-      </td>
-  </tr>
-  
-</table>
-  
 </form>
 </body>
 <%
@@ -134,40 +178,3 @@ try{
 }%>
 </html>
 
-
-<SCRIPT language=JAVASCRIPT1.2>
-
-function f_print3(){
-    document.all.WebBrowser.ExecWB(6,1);  
-       
-}
-
-
-function f_print1(){
-   
-   document.all.WebBrowser.ExecWB(8,1);  
-       
-}
-
-function f_print2(){
-  
-  document.all.WebBrowser.ExecWB(7,1);
-       
-}
-
-function PageSetup_Null() { //清空页眉和页脚
-  var HKEY_Root,HKEY_Path,HKEY_Key; 
-  HKEY_Root="HKEY_CURRENT_USER"; 
-  HKEY_Path="\\Software\\Microsoft\\Internet Explorer\\PageSetup\\"; 
-  
-  try{
-  	var Wsh=new ActiveXObject("WScript.Shell"); 
-  	HKEY_Key="header"; 
-  	Wsh.RegWrite(HKEY_Root+HKEY_Path+HKEY_Key,"");
-  	HKEY_Key="footer"; 
-  	Wsh.RegWrite(HKEY_Root+HKEY_Path+HKEY_Key,""); 
-  }catch(e){} 
-} 
-
-
-</SCRIPT>
