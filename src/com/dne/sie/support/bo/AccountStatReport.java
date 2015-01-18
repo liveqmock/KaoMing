@@ -1,956 +1,940 @@
 package com.dne.sie.support.bo;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.format.Border;
-import jxl.format.BorderLineStyle;
-import jxl.write.Label;
-import jxl.write.NumberFormat;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-
-import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionForm;
-
 import com.dne.sie.common.dbo.DBOperation;
 import com.dne.sie.common.exception.ReportException;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.support.form.AccountStatisticsForm;
 import com.dne.sie.support.queryBean.AccountStatisticsQuery;
-import com.dne.sie.util.hibernate.HbConn;
-import com.dne.sie.util.report.ReportForm;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.write.*;
+import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * ·ÑÓÃÍ³¼Æ±¨±í
+ * è´¹ç”¨ç»Ÿè®¡æŠ¥è¡¨
  * @author xt
  * @version Version 1.1.5.6
  */
 public class AccountStatReport {
-	private static Logger logger = Logger.getLogger(AccountStatReport.class);
+    private static Logger logger = Logger.getLogger(AccountStatReport.class);
 
-	private static final AccountStatReport INSTANCE = new AccountStatReport();
-		
-	private AccountStatReport(){
-	}
-	
-	public static final AccountStatReport getInstance() {
-	   return INSTANCE;
-	}
-	
-	private static final String[] reportsPath=Operate.getReportPath();
-	
-	private static final String[] SheetNames={"ÏÖ½ğÈÕ¼ÇÕË","Ö§³öÃ÷Ï¸ÕË","ÊÕÖ§Ã÷Ï¸ÕË","ÒøĞĞ´æ¿îÊÕÖ§±í","ÒøĞĞÈÕ¼ÇÕË"};
-	
-	
-	public String createReportFile(String[] query) throws Exception{
+    private static final AccountStatReport INSTANCE = new AccountStatReport();
+
+    private AccountStatReport(){
+    }
+
+    public static final AccountStatReport getInstance() {
+        return INSTANCE;
+    }
+
+    private static final String[] reportsPath=Operate.getReportPath();
+
+    private static final String[] SheetNames={"ç°é‡‘æ—¥è®°è´¦","æ”¯å‡ºæ˜ç»†è´¦","æ”¶æ”¯æ˜ç»†è´¦","é“¶è¡Œå­˜æ¬¾æ”¶æ”¯è¡¨","é“¶è¡Œæ—¥è®°è´¦"};
+
+
+    public String createReportFile(String[] query) throws Exception{
 //		System.out.println("---month="+query[0]);
-		return reportQuery(query);
-	}
-	
+        return reportQuery(query);
+    }
 
 
 
-	/**
-	 * ¸ù¾İsql²éÑ¯³öµÄÊı¾İ,Í¨¹ıjxl°üĞ´³ÉxlsÎÄ¼ş
-	 * @param query - whereÌõ¼ş
-	 * @return fileName - Éú³ÉÎÄ¼şÃû
-	 */
-	private String reportQuery(String[] query) throws ReportException,Exception{
-	
-		WritableWorkbook workbook=null;
-		OutputStream os=null;
-		String writePath=null;
-		String downLoadPath=null;
-		WorkbookSettings ws=null;
 
-		String fileName="account"+query[0];
-		
-		try{
-			AccountStatisticsForm asf = new AccountStatisticsForm();
-			asf.setAccountMonth(new Integer(query[0]));
-			
-			AccountStatisticsQuery uq = new AccountStatisticsQuery(asf);
-			List asfList=uq.doListQuery();
-			asf = (AccountStatisticsForm)asfList.get(0);
-			
-			String bgDay=query[0].substring(0,4)+"-"+query[0].substring(4,6)+"-01";
-			String endDay=Operate.trimDate(Operate.getLastDayOfMonth(bgDay));
-			
-			writePath=reportsPath[0]+"accountStat/";
-			downLoadPath=reportsPath[1]+"accountStat/";
-			File f=new File(writePath);
-			if(!f.exists()){
-				f.mkdirs();
-			}
-			fileName=fileName+Operate.getSectTime()+".xls";
+    /**
+     * æ ¹æ®sqlæŸ¥è¯¢å‡ºçš„æ•°æ®,é€šè¿‡jxlåŒ…å†™æˆxlsæ–‡ä»¶
+     * @param query - whereæ¡ä»¶
+     * @return fileName - ç”Ÿæˆæ–‡ä»¶å
+     */
+    private String reportQuery(String[] query) throws ReportException,Exception{
 
-			ws=new WorkbookSettings();
-			
-			os=new FileOutputStream(writePath+fileName);
-			workbook=Workbook.createWorkbook(os,ws); 
-			
-			//sheet¶ÔÏóÊı×é£¬³¤¶ÈÎªÒ³µÄ¸öÊı
-			WritableSheet[] sheets = new WritableSheet[SheetNames.length];
-			
-			//ÉèÖÃ´ÖÌåÑùÊ½,±êÌâ¼Ó´Ö
-			WritableFont wfT1 = new WritableFont(WritableFont.createFont("¿¬Ìå_GB2312"),14,WritableFont.BOLD);
-			WritableCellFormat wcfT1 = new WritableCellFormat(wfT1);
-			wcfT1.setAlignment(jxl.format.Alignment.CENTRE); 		//¾ÓÖĞ¶ÔÆë
-			wcfT1.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
+        WritableWorkbook workbook=null;
+        OutputStream os=null;
+        String writePath=null;
+        String downLoadPath=null;
+        WorkbookSettings ws=null;
 
-			WritableFont wfT2 = new WritableFont(WritableFont.createFont("¿¬Ìå_GB2312"),10,WritableFont.BOLD);
-			WritableCellFormat wcfT2 = new WritableCellFormat(wfT2);
-			wcfT2.setAlignment(jxl.format.Alignment.LEFT); 			//¾Ó×ó¶ÔÆë
-			
-			WritableFont wfT3 = new WritableFont(WritableFont.createFont("¿¬Ìå"),12,WritableFont.BOLD);
-			WritableCellFormat wcfT3 = new WritableCellFormat(wfT3);
-			wcfT3.setAlignment(jxl.format.Alignment.CENTRE); 		//¾ÓÖĞ¶ÔÆë
-			wcfT3.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
-			
-			
-			NumberFormat nf = new NumberFormat("0.00");
+        String fileName="account"+query[0];
 
-			WritableFont wf1 = new WritableFont(WritableFont.createFont("¿¬Ìå_GB2312"),10);
-			WritableFont wf2 = new WritableFont(WritableFont.createFont("¿¬Ìå"),10);
-			WritableFont wf3 = new WritableFont(WritableFont.createFont("¿¬Ìå_GB2312"),10,WritableFont.BOLD);
+        try{
+            AccountStatisticsForm asf = new AccountStatisticsForm();
+            asf.setAccountMonth(new Integer(query[0]));
 
-			WritableCellFormat wcfY1 = new WritableCellFormat(wf2);	//¾ÓÖĞ¡¢Ï¸¿ò
-			wcfY1.setAlignment(jxl.format.Alignment.CENTRE); 
-			wcfY1.setBorder(Border.ALL, BorderLineStyle.THIN);
-			wcfY1.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
-			
-			WritableCellFormat wcfY2 = new WritableCellFormat(wf2);	//¾Ó×ó
-			wcfY2.setAlignment(jxl.format.Alignment.LEFT); 
-			
-			WritableCellFormat wcfY3 = new WritableCellFormat(wf2);	//¾Ó×ó¡¢Ï¸¿ò
-			wcfY3.setBorder(Border.ALL, BorderLineStyle.THIN);
-			wcfY3.setAlignment(jxl.format.Alignment.RIGHT); 
-			
-			WritableCellFormat wcfY4 = new WritableCellFormat(wf2);	//¾Ó×ó¡¢Ï¸¿ò
-			wcfY4.setBorder(Border.ALL, BorderLineStyle.THIN);
-			wcfY4.setAlignment(jxl.format.Alignment.LEFT); 
-			
-			WritableCellFormat wcf1 = new WritableCellFormat(wf1);	//¾ÓÖĞ¡¢Ï¸¿ò
-			wcf1.setAlignment(jxl.format.Alignment.CENTRE); 
-			wcf1.setBorder(Border.ALL, BorderLineStyle.THIN);
-			
-			WritableCellFormat wcf2 = new WritableCellFormat(wf1);	//¾Ó×ó¡¢Ï¸¿ò
-			wcf2.setAlignment(jxl.format.Alignment.LEFT); 
-			wcf2.setBorder(Border.ALL, BorderLineStyle.THIN);
-			
-			WritableCellFormat wcf3 = new WritableCellFormat(wf1,nf);	//¾ÓÓÒ¡¢Ï¸¿ò
-			wcf3.setAlignment(jxl.format.Alignment.RIGHT); 
-			wcf3.setBorder(Border.ALL, BorderLineStyle.THIN);
-			
-			WritableCellFormat wcf4 = new WritableCellFormat(wf1,nf);	//¾ÓÓÒ¡¢ÎŞ¿ò
-			wcf4.setAlignment(jxl.format.Alignment.RIGHT);
+            AccountStatisticsQuery uq = new AccountStatisticsQuery(asf);
+            List asfList=uq.doListQuery();
+            asf = (AccountStatisticsForm)asfList.get(0);
 
-			WritableCellFormat wcf5 = new WritableCellFormat(wf1);	//¾Ó×ó¡¢ÎŞ¿ò
-			wcf5.setAlignment(jxl.format.Alignment.LEFT);
-			
-			WritableCellFormat wcf6 = new WritableCellFormat(wf1);	//ºáÊú¾ÓÖĞ¡¢Ï¸¿ò
-			wcf6.setAlignment(jxl.format.Alignment.CENTRE); 
-			wcf6.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
-			wcf6.setBorder(Border.ALL, BorderLineStyle.THIN);
-			
-			WritableCellFormat wcf7 = new WritableCellFormat(wf3);	//¾ÓÖĞ¡¢Ï¸¿ò
-			wcf7.setAlignment(jxl.format.Alignment.CENTRE); 
-			wcf7.setBorder(Border.ALL, BorderLineStyle.THIN);
+            String bgDay=query[0].substring(0,4)+"-"+query[0].substring(4,6)+"-01";
+            String endDay=Operate.trimDate(Operate.getLastDayOfMonth(bgDay));
 
-			
-			Label labelTitle = null;
-			Label labelData = null;
-			jxl.write.Number labelNumber=null;
-			
-			int sheetCount=0;
+            writePath=reportsPath[0]+"accountStat/";
+            downLoadPath=reportsPath[1]+"accountStat/";
+            File f=new File(writePath);
+            if(!f.exists()){
+                f.mkdirs();
+            }
+            fileName=fileName+Operate.getSectTime()+".xls";
+
+            ws=new WorkbookSettings();
+
+            os=new FileOutputStream(writePath+fileName);
+            workbook=Workbook.createWorkbook(os,ws);
+
+            //sheetå¯¹è±¡æ•°ç»„ï¼Œé•¿åº¦ä¸ºé¡µçš„ä¸ªæ•°
+            WritableSheet[] sheets = new WritableSheet[SheetNames.length];
+
+            //è®¾ç½®ç²—ä½“æ ·å¼,æ ‡é¢˜åŠ ç²—
+            WritableFont wfT1 = new WritableFont(WritableFont.createFont("æ¥·ä½“_GB2312"),14,WritableFont.BOLD);
+            WritableCellFormat wcfT1 = new WritableCellFormat(wfT1);
+            wcfT1.setAlignment(jxl.format.Alignment.CENTRE); 		//å±…ä¸­å¯¹é½
+            wcfT1.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
+
+            WritableFont wfT2 = new WritableFont(WritableFont.createFont("æ¥·ä½“_GB2312"),10,WritableFont.BOLD);
+            WritableCellFormat wcfT2 = new WritableCellFormat(wfT2);
+            wcfT2.setAlignment(jxl.format.Alignment.LEFT); 			//å±…å·¦å¯¹é½
+
+            WritableFont wfT3 = new WritableFont(WritableFont.createFont("æ¥·ä½“"),12,WritableFont.BOLD);
+            WritableCellFormat wcfT3 = new WritableCellFormat(wfT3);
+            wcfT3.setAlignment(jxl.format.Alignment.CENTRE); 		//å±…ä¸­å¯¹é½
+            wcfT3.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
+
+
+            NumberFormat nf = new NumberFormat("0.00");
+
+            WritableFont wf1 = new WritableFont(WritableFont.createFont("æ¥·ä½“_GB2312"),10);
+            WritableFont wf2 = new WritableFont(WritableFont.createFont("æ¥·ä½“"),10);
+            WritableFont wf3 = new WritableFont(WritableFont.createFont("æ¥·ä½“_GB2312"),10,WritableFont.BOLD);
+
+            WritableCellFormat wcfY1 = new WritableCellFormat(wf2);	//å±…ä¸­ã€ç»†æ¡†
+            wcfY1.setAlignment(jxl.format.Alignment.CENTRE);
+            wcfY1.setBorder(Border.ALL, BorderLineStyle.THIN);
+            wcfY1.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
+
+            WritableCellFormat wcfY2 = new WritableCellFormat(wf2);	//å±…å·¦
+            wcfY2.setAlignment(jxl.format.Alignment.LEFT);
+
+            WritableCellFormat wcfY3 = new WritableCellFormat(wf2);	//å±…å·¦ã€ç»†æ¡†
+            wcfY3.setBorder(Border.ALL, BorderLineStyle.THIN);
+            wcfY3.setAlignment(jxl.format.Alignment.RIGHT);
+
+            WritableCellFormat wcfY4 = new WritableCellFormat(wf2);	//å±…å·¦ã€ç»†æ¡†
+            wcfY4.setBorder(Border.ALL, BorderLineStyle.THIN);
+            wcfY4.setAlignment(jxl.format.Alignment.LEFT);
+
+            WritableCellFormat wcf1 = new WritableCellFormat(wf1);	//å±…ä¸­ã€ç»†æ¡†
+            wcf1.setAlignment(jxl.format.Alignment.CENTRE);
+            wcf1.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+            WritableCellFormat wcf2 = new WritableCellFormat(wf1);	//å±…å·¦ã€ç»†æ¡†
+            wcf2.setAlignment(jxl.format.Alignment.LEFT);
+            wcf2.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+            WritableCellFormat wcf3 = new WritableCellFormat(wf1,nf);	//å±…å³ã€ç»†æ¡†
+            wcf3.setAlignment(jxl.format.Alignment.RIGHT);
+            wcf3.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+            WritableCellFormat wcf4 = new WritableCellFormat(wf1,nf);	//å±…å³ã€æ— æ¡†
+            wcf4.setAlignment(jxl.format.Alignment.RIGHT);
+
+            WritableCellFormat wcf5 = new WritableCellFormat(wf1);	//å±…å·¦ã€æ— æ¡†
+            wcf5.setAlignment(jxl.format.Alignment.LEFT);
+
+            WritableCellFormat wcf6 = new WritableCellFormat(wf1);	//æ¨ªç«–å±…ä¸­ã€ç»†æ¡†
+            wcf6.setAlignment(jxl.format.Alignment.CENTRE);
+            wcf6.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
+            wcf6.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+            WritableCellFormat wcf7 = new WritableCellFormat(wf3);	//å±…ä¸­ã€ç»†æ¡†
+            wcf7.setAlignment(jxl.format.Alignment.CENTRE);
+            wcf7.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+
+            Label labelTitle = null;
+            Label labelData = null;
+            jxl.write.Number labelNumber=null;
+
+            int sheetCount=0;
 			
 			/*
-			 * sheet1:ÏÖ½ğÈÕ¼ÇÕË
+			 * sheet1:ç°é‡‘æ—¥è®°è´¦
 			 */
-			if(true){
-				//¸ù¾İsheetÃû³Æ£¬´´½¨²»Í¬µÄsheet¶ÔÏó
-				String sheetName=SheetNames[sheetCount];
-				sheets[sheetCount]=workbook.createSheet(sheetName, 0); 
-				//ÉèÖÃsheetÃû
-				//sheets[sheetCount].setName(me.getKey().toString());
-				
-				//½«µÚÒ»ĞĞµÄ¸ß¶ÈÉèÎª46
-				sheets[sheetCount].setRowView(0,700); 
-			
-				//ÉèÖÃÁĞ¿í£¬È¡×î³¤Êı¾İµÄ³¤¶ÈÎªÁĞ¿í
-				sheets[sheetCount].setColumnView(0,6);
-				sheets[sheetCount].setColumnView(1,6);
-				sheets[sheetCount].setColumnView(2,7); 
-				sheets[sheetCount].setColumnView(3,14); 
-				sheets[sheetCount].setColumnView(4,14); 
-				sheets[sheetCount].setColumnView(5,20); 
-				sheets[sheetCount].setColumnView(6,14); 
-				sheets[sheetCount].setColumnView(7,12);
-				sheets[sheetCount].setColumnView(8,12);
-				sheets[sheetCount].setColumnView(9,12);
+            if(true){
+                //æ ¹æ®sheetåç§°ï¼Œåˆ›å»ºä¸åŒçš„sheetå¯¹è±¡
+                String sheetName=SheetNames[sheetCount];
+                sheets[sheetCount]=workbook.createSheet(sheetName, 0);
+                //è®¾ç½®sheetå
+                //sheets[sheetCount].setName(me.getKey().toString());
 
-				//ÉèÖÃ×Ô¶¯»»ĞĞ 
-				//wcf1.setWrap(true);
-				
+                //å°†ç¬¬ä¸€è¡Œçš„é«˜åº¦è®¾ä¸º46
+                sheets[sheetCount].setRowView(0,700);
 
-				//Ö¸¶¨ºÏ²¢ÇøÓò,×óÉÏ½Çµ½ÓÒÏÂ½Ç,mergeCells(int startCol,int startRow,int endCol,int endRow)
-				sheets[sheetCount].mergeCells(0,0,9,0);
-				//´´½¨µ¥Ôª¸ñ¶ÔÏó,Label(ÁĞºÅ,ĞĞºÅ ,ÄÚÈİ,×ÖÌå )
-				labelTitle = new Label(0, 0,"ÉÏº£°ìÏÖ½ğ£¨"+query[0].substring(4,6)+"ÔÂ·İ£©",wcfT1);
-				sheets[sheetCount].addCell(labelTitle);
-				
-				sheets[sheetCount].mergeCells(0,1,2,1);
-				sheets[sheetCount].addCell(new Label(0, 1,query[0].substring(2,4)+"Äê",wcf1));
-				sheets[sheetCount].addCell(new Label(0, 2,"ÔÂ·İ",wcf1));
-				sheets[sheetCount].addCell(new Label(1, 2,"ÈÕÆÚ",wcf1));
-				sheets[sheetCount].addCell(new Label(2, 2,"Æ¾Ö¤",wcf1));
-				
-				sheets[sheetCount].mergeCells(3,1,6,2);
-				sheets[sheetCount].addCell(new Label(3, 1,"ÕªÒª",wcf1));
+                //è®¾ç½®åˆ—å®½ï¼Œå–æœ€é•¿æ•°æ®çš„é•¿åº¦ä¸ºåˆ—å®½
+                sheets[sheetCount].setColumnView(0,6);
+                sheets[sheetCount].setColumnView(1,6);
+                sheets[sheetCount].setColumnView(2,7);
+                sheets[sheetCount].setColumnView(3,14);
+                sheets[sheetCount].setColumnView(4,14);
+                sheets[sheetCount].setColumnView(5,20);
+                sheets[sheetCount].setColumnView(6,14);
+                sheets[sheetCount].setColumnView(7,12);
+                sheets[sheetCount].setColumnView(8,12);
+                sheets[sheetCount].setColumnView(9,12);
 
-				sheets[sheetCount].mergeCells(7,1,7,2);
-				sheets[sheetCount].addCell(new Label(7, 1,"ÊÕÈë½ğ¶î",wcf1));
-				sheets[sheetCount].mergeCells(8,1,8,2);
-				sheets[sheetCount].addCell(new Label(8, 1,"Ö§³ö½ğ¶î",wcf1));
-				sheets[sheetCount].mergeCells(9,1,9,2);
-				sheets[sheetCount].addCell(new Label(9, 1,"½á´æ½ğ¶î",wcf1));
-				
-				String strSql="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d,ai.voucher_no vn,st.subject_name sn,"+
-					" (select ec.employee_name from ts_employee_info ec where ec.employee_code=ai.employee_code) emp,"+
-					" ai.place pl,ai.summary sm,(case when pay_type='XS' then ai.money else '' end) xs,"+
-					" (case when pay_type='XF' then ai.money else '' end) xf"+
-					" from td_account_info as ai,td_subject_tree as st"+
-					" where ai.subject_id=st.subject_id and ai.pay_type in('XS','XF')"+
-					" and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
-					" order by ai.fee_date,ai.subject_id";
-				
-				System.out.println("--tab1--strSql="+strSql);
-				ArrayList<String[]> dataList = DBOperation.select(strSql);
-				double xs=0d,xf=0d;
-				for(int i=0;i<dataList.size();i++) {
-					String[] temp=(String[])dataList.get(i);
-					for (int j = 0; j < temp.length; j++) {
-						String value = temp[j]==null?"":temp[j];
-						//wcf2 = new WritableCellFormat(wf2);
-						//ÉèÖÃ×Ô¶¯»»ĞĞ 
-						//wcf2.setWrap(true);
-						//labelData = new Label(j,i,strTemp==null?"":strTemp,wcf2);
-						
-						if((j==7||j==8)&&!value.equals("")){
-							labelNumber = new jxl.write.Number(j,i+3,Double.parseDouble(value),wcf3);
-							sheets[sheetCount].addCell(labelNumber); 
-						}else{
-							if(j==0||j==1) labelData = new Label(j,i+3,value,wcf1);
-							else labelData = new Label(j,i+3,value,wcf2);
-							sheets[sheetCount].addCell(labelData); 
-						}
-						
-						
-						
-						
-						if(j==7&&!value.equals("")){
-							xs+=Double.parseDouble(value);
-						}else if(j==8&&!value.equals("")){
-							xf+=Double.parseDouble(value);
-						}
-					}
-					sheets[sheetCount].addCell(new Label(9,i+3,"",wcf1)); 
-					
-				}
-				
-				//×Ü¼Æ
-				sheets[sheetCount].addCell(new Label(3, dataList.size()+3,"ÉÏÔÂ½á´æ",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+3,asf.getPriorCash(),wcf4));
-				
-				sheets[sheetCount].addCell(new Label(3, dataList.size()+4,"±¾ÔÂºÏ¼Æ",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(7, dataList.size()+4,asf.getCashReceipt(),wcf4));
-				sheets[sheetCount].addCell(new jxl.write.Number(8, dataList.size()+4,asf.getCashPayment(),wcf4));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+4,asf.getCashReceipt()-asf.getCashPayment(),wcf4));
-				
-				sheets[sheetCount].addCell(new Label(3, dataList.size()+5,"±¾ÄêÀÛ¼Æ",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+5,asf.getCurrentCash(),wcf4));
-				
-			} //end sheet1
+                //è®¾ç½®è‡ªåŠ¨æ¢è¡Œ
+                //wcf1.setWrap(true);
+
+
+                //æŒ‡å®šåˆå¹¶åŒºåŸŸ,å·¦ä¸Šè§’åˆ°å³ä¸‹è§’,mergeCells(int startCol,int startRow,int endCol,int endRow)
+                sheets[sheetCount].mergeCells(0,0,9,0);
+                //åˆ›å»ºå•å…ƒæ ¼å¯¹è±¡,Label(åˆ—å·,è¡Œå· ,å†…å®¹,å­—ä½“ )
+                labelTitle = new Label(0, 0,"ä¸Šæµ·åŠç°é‡‘ï¼ˆ"+query[0].substring(4,6)+"æœˆä»½ï¼‰",wcfT1);
+                sheets[sheetCount].addCell(labelTitle);
+
+                sheets[sheetCount].mergeCells(0,1,2,1);
+                sheets[sheetCount].addCell(new Label(0, 1,query[0].substring(2,4)+"å¹´",wcf1));
+                sheets[sheetCount].addCell(new Label(0, 2,"æœˆä»½",wcf1));
+                sheets[sheetCount].addCell(new Label(1, 2,"æ—¥æœŸ",wcf1));
+                sheets[sheetCount].addCell(new Label(2, 2,"å‡­è¯",wcf1));
+
+                sheets[sheetCount].mergeCells(3,1,6,2);
+                sheets[sheetCount].addCell(new Label(3, 1,"æ‘˜è¦",wcf1));
+
+                sheets[sheetCount].mergeCells(7,1,7,2);
+                sheets[sheetCount].addCell(new Label(7, 1,"æ”¶å…¥é‡‘é¢",wcf1));
+                sheets[sheetCount].mergeCells(8,1,8,2);
+                sheets[sheetCount].addCell(new Label(8, 1,"æ”¯å‡ºé‡‘é¢",wcf1));
+                sheets[sheetCount].mergeCells(9,1,9,2);
+                sheets[sheetCount].addCell(new Label(9, 1,"ç»“å­˜é‡‘é¢",wcf1));
+
+                String strSql="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d,ai.voucher_no vn,st.subject_name sn,"+
+                        " (select ec.employee_name from ts_employee_info ec where ec.employee_code=ai.employee_code) emp,"+
+                        " ai.place pl,ai.summary sm,(case when pay_type='XS' then ai.money else '' end) xs,"+
+                        " (case when pay_type='XF' then ai.money else '' end) xf"+
+                        " from td_account_info as ai,td_subject_tree as st"+
+                        " where ai.subject_id=st.subject_id and ai.pay_type in('XS','XF')"+
+                        " and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
+                        " order by ai.fee_date,ai.subject_id";
+
+                System.out.println("--tab1--strSql="+strSql);
+                ArrayList<String[]> dataList = DBOperation.select(strSql);
+                double xs=0d,xf=0d;
+                for(int i=0;i<dataList.size();i++) {
+                    String[] temp=(String[])dataList.get(i);
+                    for (int j = 0; j < temp.length; j++) {
+                        String value = temp[j]==null?"":temp[j];
+                        //wcf2 = new WritableCellFormat(wf2);
+                        //è®¾ç½®è‡ªåŠ¨æ¢è¡Œ
+                        //wcf2.setWrap(true);
+                        //labelData = new Label(j,i,strTemp==null?"":strTemp,wcf2);
+
+                        if((j==7||j==8)&&!value.equals("")){
+                            labelNumber = new jxl.write.Number(j,i+3,Double.parseDouble(value),wcf3);
+                            sheets[sheetCount].addCell(labelNumber);
+                        }else{
+                            if(j==0||j==1) labelData = new Label(j,i+3,value,wcf1);
+                            else labelData = new Label(j,i+3,value,wcf2);
+                            sheets[sheetCount].addCell(labelData);
+                        }
+
+
+
+
+                        if(j==7&&!value.equals("")){
+                            xs+=Double.parseDouble(value);
+                        }else if(j==8&&!value.equals("")){
+                            xf+=Double.parseDouble(value);
+                        }
+                    }
+                    sheets[sheetCount].addCell(new Label(9,i+3,"",wcf1));
+
+                }
+
+                //æ€»è®¡
+                sheets[sheetCount].addCell(new Label(3, dataList.size()+3,"ä¸Šæœˆç»“å­˜",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+3,asf.getPriorCash(),wcf4));
+
+                sheets[sheetCount].addCell(new Label(3, dataList.size()+4,"æœ¬æœˆåˆè®¡",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(7, dataList.size()+4,asf.getCashReceipt(),wcf4));
+                sheets[sheetCount].addCell(new jxl.write.Number(8, dataList.size()+4,asf.getCashPayment(),wcf4));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+4,asf.getCashReceipt()-asf.getCashPayment(),wcf4));
+
+                sheets[sheetCount].addCell(new Label(3, dataList.size()+5,"æœ¬å¹´ç´¯è®¡",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+5,asf.getCurrentCash(),wcf4));
+
+            } //end sheet1
 			
 			
 
 			/*
-			 * sheet2:ÏÖ½ğÖ§³öÃ÷Ï¸ÕË
+			 * sheet2:ç°é‡‘æ”¯å‡ºæ˜ç»†è´¦
 			 */
-			if(true){
-				sheetCount=1;
-				//¸ù¾İsheetÃû³Æ£¬´´½¨²»Í¬µÄsheet¶ÔÏó
-				String sheetName=SheetNames[sheetCount];
-				sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount); 
-				
-			
-				//ÉèÖÃÁĞ¿í£¬È¡×î³¤Êı¾İµÄ³¤¶ÈÎªÁĞ¿í
-				sheets[sheetCount].setColumnView(0,5); 
-				sheets[sheetCount].setColumnView(1,5); 
-				sheets[sheetCount].setColumnView(2,6); 
-				sheets[sheetCount].setColumnView(3,15); 
-				sheets[sheetCount].setColumnView(4,15); 
-				sheets[sheetCount].setColumnView(5,15); 
-				sheets[sheetCount].setColumnView(6,15); 
-				sheets[sheetCount].setColumnView(7,15); 
+            if(true){
+                sheetCount=1;
+                //æ ¹æ®sheetåç§°ï¼Œåˆ›å»ºä¸åŒçš„sheetå¯¹è±¡
+                String sheetName=SheetNames[sheetCount];
+                sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount);
 
-				//Title:ÏÖ½ğÖ§³öÃ÷Ï¸
-				sheets[sheetCount].mergeCells(0,0,7,0);
-				labelTitle = new Label(0, 0,query[0].substring(4,6)+"ÔÂ·İÖ§³öÃ÷Ï¸",wcfT1);
-				sheets[sheetCount].addCell(labelTitle);
-				
-				AccountBo ab = AccountBo.getInstance();
-				String statIds=ab.getReportStatIds();
+
+                //è®¾ç½®åˆ—å®½ï¼Œå–æœ€é•¿æ•°æ®çš„é•¿åº¦ä¸ºåˆ—å®½
+                sheets[sheetCount].setColumnView(0,5);
+                sheets[sheetCount].setColumnView(1,5);
+                sheets[sheetCount].setColumnView(2,6);
+                sheets[sheetCount].setColumnView(3,15);
+                sheets[sheetCount].setColumnView(4,15);
+                sheets[sheetCount].setColumnView(5,15);
+                sheets[sheetCount].setColumnView(6,15);
+                sheets[sheetCount].setColumnView(7,15);
+
+                //Title:ç°é‡‘æ”¯å‡ºæ˜ç»†
+                sheets[sheetCount].mergeCells(0,0,7,0);
+                labelTitle = new Label(0, 0,query[0].substring(4,6)+"æœˆä»½æ”¯å‡ºæ˜ç»†",wcfT1);
+                sheets[sheetCount].addCell(labelTitle);
+
+                AccountBo ab = AccountBo.getInstance();
+                String statIds=ab.getReportStatIds();
 				
 				/*
-				 *	subjectÍ³¼Æ
-				 *	 ¿ìµİ·Ñ							
-					1	4	5	Ö÷ÓªÒµÎñ	¿ìµİ·Ñ	ÕÅ³¤Çà	¹¤¾ß					336.00 
-					1	18	75	Ö÷ÓªÒµÎñ	¿ìµİ·Ñ	½İÌØ		µ¶Ì×/¼Ğ×¦/ÎÄ¼şºÏÍ¬	715.00 
-					1	21	83	Ö÷ÓªÒµÎñ	¿ìµİ·Ñ	½İÌØ		Í¹ÂÖ/½Ó½ü¿ª¹Ø		1,505.00 
+				 *	subjectç»Ÿè®¡
+				 *	 å¿«é€’è´¹							
+					1	4	5	ä¸»è¥ä¸šåŠ¡	å¿«é€’è´¹	å¼ é•¿é’	å·¥å…·					336.00 
+					1	18	75	ä¸»è¥ä¸šåŠ¡	å¿«é€’è´¹	æ·ç‰¹		åˆ€å¥—/å¤¹çˆª/æ–‡ä»¶åˆåŒ	715.00 
+					1	21	83	ä¸»è¥ä¸šåŠ¡	å¿«é€’è´¹	æ·ç‰¹		å‡¸è½®/æ¥è¿‘å¼€å…³		1,505.00 
 																			2,556.00 
 				 */
-				String strSqlSub="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d,ai.voucher_no vn," +
-					"(select tr1.subject_name from td_subject_tree tr1 where tr1.subject_id=st.parent_id ) sn0,"+
-					"st.subject_name sn,"+
-					" (select ec.employee_name from ts_employee_info ec where ec.employee_code=ai.employee_code) emp," +
-					" ai.place,ai.money,st.report_flag,st.subject_id,st.layer "+
-					" from td_account_info as ai,td_subject_tree as st"+
-					" where ai.subject_id=st.subject_id and st.subject_id in("+statIds+") and ai.pay_type ='XF'"+
-					" and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
-					" order by st.parent_id,ai.subject_id,ai.fee_date";
-				
-				System.out.println("--tab2--strSqlSub="+strSqlSub);
-				ArrayList<String[]> dataList = DBOperation.select(strSqlSub);
-				double xs=0d;
-				String subName=null;
-				Long lastId=null;
-				String lastReportFlag=null;
-				int tit=1;
-				//ĞĞ
-				for(int i=0;i<dataList.size();i++) {
-					String[] temp=(String[])dataList.get(i);
-					if(subName==null){	//subject begin
-						sheets[sheetCount].addCell(new Label(0,i+tit,temp[4],wcf5));
-						tit++;
-					}else if(!subName.equals(temp[4])){	//subject end
-						
-						Long a1=ab.findChkFather(new Long(temp[9]),0);
-						Long a2=ab.findChkFather(lastId,0);
-						
-						if("1".equals(temp[8])|| "1".equals(lastReportFlag)|| "1".equals(temp[10])|| (a1!=null&&a2!=null&& a1.intValue()!=a2.intValue())){		
+                String strSqlSub="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d,ai.voucher_no vn," +
+                        "(select tr1.subject_name from td_subject_tree tr1 where tr1.subject_id=st.parent_id ) sn0,"+
+                        "st.subject_name sn,"+
+                        " (select ec.employee_name from ts_employee_info ec where ec.employee_code=ai.employee_code) emp," +
+                        " ai.place,ai.money,st.report_flag,st.subject_id,st.layer "+
+                        " from td_account_info as ai,td_subject_tree as st"+
+                        " where ai.subject_id=st.subject_id and st.subject_id in("+statIds+") and ai.pay_type ='XF'"+
+                        " and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
+                        " order by st.parent_id,ai.subject_id,ai.fee_date";
+
+                System.out.println("--tab2--strSqlSub="+strSqlSub);
+                ArrayList<String[]> dataList = DBOperation.select(strSqlSub);
+                double xs=0d;
+                String subName=null;
+                Long lastId=null;
+                String lastReportFlag=null;
+                int tit=1;
+                //è¡Œ
+                for(int i=0;i<dataList.size();i++) {
+                    String[] temp=(String[])dataList.get(i);
+                    if(subName==null){	//subject begin
+                        sheets[sheetCount].addCell(new Label(0,i+tit,temp[4],wcf5));
+                        tit++;
+                    }else if(!subName.equals(temp[4])){	//subject end
+
+                        Long a1=ab.findChkFather(new Long(temp[9]),0);
+                        Long a2=ab.findChkFather(lastId,0);
+
+                        if("1".equals(temp[8])|| "1".equals(lastReportFlag)|| "1".equals(temp[10])|| (a1!=null&&a2!=null&& a1.intValue()!=a2.intValue())){
 //							System.out.println("====="+a1+"---"+a2);
 //							System.out.println(temp[4]+"~~~~~~="+temp[9]+"---"+lastId+"---"+temp[10]);
-							
-							//Í³¼ÆÉÏÒ»subject_name×Ü·ÑÓÃ
-							sheets[sheetCount].addCell(new jxl.write.Number(7,i+tit,xs,wcf3));
-							xs=0;
-							tit++;
-							
-							//µ±Ç°subject_name
-							if("1".equals(temp[8])){
-								sheets[sheetCount].addCell(new Label(0,i+tit,temp[4],wcf5));
-							}else{
-								sheets[sheetCount].addCell(new Label(0,i+tit,temp[3],wcf5));
-							}
-							
-							tit++;
-						}
-					}
-					//ÁĞ
-					for (int j = 0; j < temp.length-3; j++) {
-						String value = temp[j]==null?"":temp[j];
-						
-						if(j==7&&!value.equals("")){
-							labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcf3);
-							sheets[sheetCount].addCell(labelNumber); 
-						}else{
-							labelData = new Label(j,i+tit,value,wcf1);
-							sheets[sheetCount].addCell(labelData); 
-						}
-						
-						
-						
-						if(j==7&&!value.equals("")){
-							xs+=Double.parseDouble(value);
-						}
-					}
-					subName=temp[4];
-					lastId= new Long(temp[9]);
-					lastReportFlag = temp[8];
-				}
-				tit+=dataList.size();
-				sheets[sheetCount].addCell(new jxl.write.Number(7,tit,xs,wcf3));
-				System.out.println("----tit="+tit);
+
+                            //ç»Ÿè®¡ä¸Šä¸€subject_nameæ€»è´¹ç”¨
+                            sheets[sheetCount].addCell(new jxl.write.Number(7,i+tit,xs,wcf3));
+                            xs=0;
+                            tit++;
+
+                            //å½“å‰subject_name
+                            if("1".equals(temp[8])){
+                                sheets[sheetCount].addCell(new Label(0,i+tit,temp[4],wcf5));
+                            }else{
+                                sheets[sheetCount].addCell(new Label(0,i+tit,temp[3],wcf5));
+                            }
+
+                            tit++;
+                        }
+                    }
+                    //åˆ—
+                    for (int j = 0; j < temp.length-3; j++) {
+                        String value = temp[j]==null?"":temp[j];
+
+                        if(j==7&&!value.equals("")){
+                            labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcf3);
+                            sheets[sheetCount].addCell(labelNumber);
+                        }else{
+                            labelData = new Label(j,i+tit,value,wcf1);
+                            sheets[sheetCount].addCell(labelData);
+                        }
+
+
+
+                        if(j==7&&!value.equals("")){
+                            xs+=Double.parseDouble(value);
+                        }
+                    }
+                    subName=temp[4];
+                    lastId= new Long(temp[9]);
+                    lastReportFlag = temp[8];
+                }
+                tit+=dataList.size();
+                sheets[sheetCount].addCell(new jxl.write.Number(7,tit,xs,wcf3));
+                System.out.println("----tit="+tit);
 
 				/*
-				 * employeeÍ³¼ÆÍ³¼Æ
-				 * ÁõĞñ¶«							
-					1	20	80	¾­Óª·Ñ	²îÂÃ·Ñ	ÁõĞñ¶«	ËÕÖİµÀÉ­		405.00 
-					1	20	81	¾­Óª·Ñ	ÊĞÄÚ³µ×Ê	ÁõĞñ¶«	ÄÏÏè			410.00 
-					1	20	82	¾­Óª·Ñ	²îÂÃ·Ñ	ÁõĞñ¶«	À¥É½Ã·Èû¶û	1,343.00 
+				 * employeeç»Ÿè®¡ç»Ÿè®¡
+				 * åˆ˜æ—­ä¸œ							
+					1	20	80	ç»è¥è´¹	å·®æ—…è´¹	åˆ˜æ—­ä¸œ	è‹å·é“æ£®		405.00 
+					1	20	81	ç»è¥è´¹	å¸‚å†…è½¦èµ„	åˆ˜æ—­ä¸œ	å—ç¿”			410.00 
+					1	20	82	ç»è¥è´¹	å·®æ—…è´¹	åˆ˜æ—­ä¸œ	æ˜†å±±æ¢…å¡å°”	1,343.00 
 																	2,158.00 
 				 */
-				String ten=reportsPath[2].replaceAll(",","','");
-				String strSqlEmp="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d,ai.voucher_no vn," +
-					" (select tr1.subject_name from td_subject_tree tr1 where tr1.subject_id=st.parent_id ) parentName,"+
-					" st.subject_name sn,"+
-					" (select ec.employee_name from ts_employee_info ec where ec.employee_code=ai.employee_code) emp," +
-					" ai.place,ai.money "+
-					" from td_account_info as ai,td_subject_tree as st"+
-					" where ai.subject_id=st.subject_id and ai.pay_type ='XF'" +
-					" and st.subject_name in('"+ten+"')"+
-					" and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
-					" order by ai.employee_code,ai.fee_date";
-				
-				System.out.println("--tab2--strSqlEmp="+strSqlEmp);
-				dataList = DBOperation.select(strSqlEmp);
-				xs=0d;
-				tit=tit+3;
-				String empName=null;
-				
-				//Title:²îÂÃ·Ñ
-				sheets[sheetCount].mergeCells(0,tit,7,tit);
-				labelTitle = new Label(0, tit,"²îÂÃ·Ñ",wcfT1);
-				sheets[sheetCount].addCell(labelTitle);
-				tit++;
-				
-				//ĞĞ
-				for(int i=0;i<dataList.size();i++) {
-					String[] temp=(String[])dataList.get(i);
-					if(empName==null){	//subject begin
-						sheets[sheetCount].addCell(new Label(0,i+tit,temp[5],wcf5));
-						tit++;
-					}else if(!empName.equals(temp[5])){	//subject end
-						sheets[sheetCount].addCell(new jxl.write.Number(7,i+tit,xs,wcf3));
-						xs=0;
-						tit++;
-						
-						sheets[sheetCount].addCell(new Label(0,i+tit,temp[5],wcf5));
-						tit++;
-					}
-					//ÁĞ
-					for (int j = 0; j < temp.length; j++) {
-						String value = temp[j]==null?"":temp[j];
-						
-						if(j==7&&!value.equals("")){
-							labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcf3);
-							sheets[sheetCount].addCell(labelNumber); 
-						}else{
-							labelData = new Label(j,i+tit,value,wcf1);
-							sheets[sheetCount].addCell(labelData); 
-						}
-						
-						
-						
-						if(j==7&&!value.equals("")){
-							xs+=Double.parseDouble(value);
-						}
-					}
-					empName=temp[5];
-				}
-				tit+=dataList.size();
-				sheets[sheetCount].addCell(new jxl.write.Number(7,tit,xs,wcf3));
-				System.out.println("----tit="+tit);
-				
-				//ÏÖ½ğÖ§³ö×Ü¼Æ
-				String monXF=DBOperation.selectOne("SELECT cash_payment FROM td_account_statistics t where account_month="+query[0]);
-				
-				//sheets[sheetCount].addCell(new Label(6, tit+2,query[0]+"ÏÖ½ğÖ§³ö",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(7, tit+2,Double.parseDouble(monXF),wcf4));
-				
-			} //end sheet2
+                String ten=reportsPath[2].replaceAll(",","','");
+                String strSqlEmp="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d,ai.voucher_no vn," +
+                        " (select tr1.subject_name from td_subject_tree tr1 where tr1.subject_id=st.parent_id ) parentName,"+
+                        " st.subject_name sn,"+
+                        " (select ec.employee_name from ts_employee_info ec where ec.employee_code=ai.employee_code) emp," +
+                        " ai.place,ai.money "+
+                        " from td_account_info as ai,td_subject_tree as st"+
+                        " where ai.subject_id=st.subject_id and ai.pay_type ='XF'" +
+                        " and st.subject_name in('"+ten+"')"+
+                        " and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
+                        " order by ai.employee_code,ai.fee_date";
+
+                System.out.println("--tab2--strSqlEmp="+strSqlEmp);
+                dataList = DBOperation.select(strSqlEmp);
+                xs=0d;
+                tit=tit+3;
+                String empName=null;
+
+                //Title:å·®æ—…è´¹
+                sheets[sheetCount].mergeCells(0,tit,7,tit);
+                labelTitle = new Label(0, tit,"å·®æ—…è´¹",wcfT1);
+                sheets[sheetCount].addCell(labelTitle);
+                tit++;
+
+                //è¡Œ
+                for(int i=0;i<dataList.size();i++) {
+                    String[] temp=(String[])dataList.get(i);
+                    if(empName==null){	//subject begin
+                        sheets[sheetCount].addCell(new Label(0,i+tit,temp[5],wcf5));
+                        tit++;
+                    }else if(!empName.equals(temp[5])){	//subject end
+                        sheets[sheetCount].addCell(new jxl.write.Number(7,i+tit,xs,wcf3));
+                        xs=0;
+                        tit++;
+
+                        sheets[sheetCount].addCell(new Label(0,i+tit,temp[5],wcf5));
+                        tit++;
+                    }
+                    //åˆ—
+                    for (int j = 0; j < temp.length; j++) {
+                        String value = temp[j]==null?"":temp[j];
+
+                        if(j==7&&!value.equals("")){
+                            labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcf3);
+                            sheets[sheetCount].addCell(labelNumber);
+                        }else{
+                            labelData = new Label(j,i+tit,value,wcf1);
+                            sheets[sheetCount].addCell(labelData);
+                        }
+
+
+
+                        if(j==7&&!value.equals("")){
+                            xs+=Double.parseDouble(value);
+                        }
+                    }
+                    empName=temp[5];
+                }
+                tit+=dataList.size();
+                sheets[sheetCount].addCell(new jxl.write.Number(7,tit,xs,wcf3));
+                System.out.println("----tit="+tit);
+
+                //ç°é‡‘æ”¯å‡ºæ€»è®¡
+                String monXF=DBOperation.selectOne("SELECT cash_payment FROM td_account_statistics t where account_month="+query[0]);
+
+                //sheets[sheetCount].addCell(new Label(6, tit+2,query[0]+"ç°é‡‘æ”¯å‡º",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(7, tit+2,Double.parseDouble(monXF),wcf4));
+
+            } //end sheet2
 			
 			
 			
 
 			/*
-			 * sheet3:ÊÕÖ§Ã÷Ï¸ÕË
+			 * sheet3:æ”¶æ”¯æ˜ç»†è´¦
 			 */
-			if(true){
-				sheetCount=2;
-				//¸ù¾İsheetÃû³Æ£¬´´½¨²»Í¬µÄsheet¶ÔÏó
-				String sheetName=SheetNames[sheetCount];
-				sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount);
+            if(true){
+                sheetCount=2;
+                //æ ¹æ®sheetåç§°ï¼Œåˆ›å»ºä¸åŒçš„sheetå¯¹è±¡
+                String sheetName=SheetNames[sheetCount];
+                sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount);
 
-				//ÉèÖÃÁĞ¿í£¬È¡×î³¤Êı¾İµÄ³¤¶ÈÎªÁĞ¿í
-				sheets[sheetCount].setColumnView(0,6); 
-				sheets[sheetCount].setColumnView(1,11); 
-				sheets[sheetCount].setColumnView(2,14); 
-				sheets[sheetCount].setColumnView(3,11); 
-				sheets[sheetCount].setColumnView(4,14); 
-				sheets[sheetCount].setColumnView(5,10); 
-				sheets[sheetCount].setColumnView(6,16); 
-				sheets[sheetCount].setColumnView(7,16); 
-				sheets[sheetCount].setColumnView(8,11); 
-				sheets[sheetCount].setColumnView(9,14); 
-				
-				
-				//Title:Ò»ÔÂ·İÊÕÖ§Ã÷Ï¸±í
-				sheets[sheetCount].mergeCells(0,0,9,0);
-				labelTitle = new Label(0, 0,query[0]+"ÊÕÖ§Ã÷Ï¸±í",wcfT3);
-				sheets[sheetCount].addCell(labelTitle);
-				
-				
-				String xfStat="select ss.subject_name,ss.money from td_account_statistics_subject ss"+
-					" where ss.pay_type='XF' and  ss.account_month = "+query[0];
-				
-				System.out.println("--tab3--xfStat="+xfStat);
-				ArrayList<String[]> xfStatList = DBOperation.select(xfStat);
-				
-				
-				//row2
-				sheets[sheetCount].mergeCells(0,2,0,xfStatList.size()+4);
-				sheets[sheetCount].addCell(new Label(0, 2,"ÉÏº£",wcfY1));
-				sheets[sheetCount].addCell(new Label(1, 2,"ÆÚ³õ½ğ¶î",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(2, 2,asf.getPriorCash()+asf.getPriorBank(),wcf3));
-				sheets[sheetCount].mergeCells(3,2,7,2);
-				sheets[sheetCount].addCell(new Label(3, 2,"±¾ÆÚ·¢Éú¶î",wcfY1));
-				sheets[sheetCount].addCell(new Label(8, 2,"ÆÚÄ©½ğ¶î ",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, 2,asf.getTotalAmount(),wcf3));
-				
-				//row3
-				sheets[sheetCount].addCell(new Label(1, 3,"ÕÊ»§",wcfY1));
-				sheets[sheetCount].addCell(new Label(2, 3,"½ğ¶î",wcfY1));
-				sheets[sheetCount].mergeCells(3,3,4,3);
-				sheets[sheetCount].addCell(new Label(3, 3,"ÊÕÈë",wcfY1));
-				sheets[sheetCount].mergeCells(5,3,7,3);
-				sheets[sheetCount].addCell(new Label(5, 3,"Ö§³ö",wcfY1));
-				sheets[sheetCount].addCell(new Label(8, 3,"ÕÊ»§",wcfY1));
-				sheets[sheetCount].addCell(new Label(9, 3,"½ğ¶î",wcfY1));
-				
-				//row4
-				sheets[sheetCount].addCell(new Label(1, 4,"ÉÏ/ÏÖ",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(2, 4,asf.getPriorCash(),wcf3));
-				sheets[sheetCount].addCell(new Label(3, 4,"ÏîÄ¿",wcfY1));
-				sheets[sheetCount].addCell(new Label(4, 4,"½ğ¶î",wcfY1));
-				sheets[sheetCount].addCell(new Label(5, 4,"¿ÆÄ¿",wcfY1));
-				sheets[sheetCount].addCell(new Label(6, 4,"·ÖÀà",wcfY1));
-				sheets[sheetCount].addCell(new Label(7, 4,"Ğ¡¼Æ",wcfY1));
-				sheets[sheetCount].addCell(new Label(8, 4,"ÉÏ/ÏÖ",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, 4,asf.getCurrentCash(),wcf3));
-				
-				int tit=5;
-				
-				//row5 ~ row 5+xfStatList.size()
-				for(int i=0;i<xfStatList.size();i++) {
-					String[] temp=(String[])xfStatList.get(i);
-					if(i==0){
-						sheets[sheetCount].addCell(new Label(1, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(2, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(3, i+tit,"ÊÕÈëÏÖ½ğ",wcfY1));
-						sheets[sheetCount].addCell(new jxl.write.Number(4, i+tit,asf.getCashReceipt(),wcf3));
-						sheets[sheetCount].mergeCells(5,i+tit,5,xfStatList.size()+i+tit-1);
-						sheets[sheetCount].addCell(new Label(5, i+tit,"¹ÜÏú·Ñ",wcfY1));
-						sheets[sheetCount].addCell(new Label(6, i+tit,temp[0],wcfY1));
-						sheets[sheetCount].addCell(new jxl.write.Number(7, i+tit,Double.parseDouble(temp[1]),wcf3));
-						sheets[sheetCount].addCell(new Label(8, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(9, i+tit,"",wcfY1));
-					}else{
-						sheets[sheetCount].addCell(new Label(1, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(2, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(3, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(4, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(6, i+tit,temp[0],wcfY1));
-						sheets[sheetCount].addCell(new jxl.write.Number(7, i+tit,Double.parseDouble(temp[1]),wcf3));
-						sheets[sheetCount].addCell(new Label(8, i+tit,"",wcfY1));
-						sheets[sheetCount].addCell(new Label(9, i+tit,"",wcfY1));
-					}
-				}
-				tit+=xfStatList.size();
-				
-				//row ÒøĞĞ
-				sheets[sheetCount].addCell(new Label(0, tit,"³¿È½",wcfY1));
-				sheets[sheetCount].addCell(new Label(1, tit,"³¿È½",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(2, tit,asf.getPriorBank(),wcf3));
-				sheets[sheetCount].addCell(new Label(3, tit,"³¿È½ÊÕÈë",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(4, tit,asf.getBankReceipt(),wcf3));
-				sheets[sheetCount].addCell(new Label(5, tit,"",wcfY1));
-				sheets[sheetCount].addCell(new Label(6, tit,"³¿È½Ö§³ö",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(7, tit,asf.getBankPayment(),wcf3));
-				sheets[sheetCount].addCell(new Label(8, tit,"³¿È½",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, tit,asf.getCurrentBank(),wcf3));
-				
-				//ºÏ¼Æ
-				tit++;
-				sheets[sheetCount].addCell(new Label(3, tit,"ºÏ¼Æ",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(4, tit,(asf.getCashReceipt()+asf.getBankReceipt()),wcf3));
-				sheets[sheetCount].addCell(new Label(6, tit,"ºÏ¼Æ",wcfY1));
-				sheets[sheetCount].addCell(new jxl.write.Number(7, tit,(asf.getCashPayment()+asf.getBankPayment()),wcf3));
-				
-				//ËµÃ÷
-				tit=tit+2;
-				
-				sheets[sheetCount].addCell(new Label(0, tit,"ËµÃ÷Ò»:",wcfY2));
-				sheets[sheetCount].addCell(new Label(1, tit,"ÏÖ½ğÈÕ¼ÇÕÊ£¨2Ò³£©",wcfY2));
-				sheets[sheetCount].addCell(new Label(6, tit,"ËµÃ÷Îå:",wcfY2));
-				sheets[sheetCount].addCell(new Label(7, tit,"ÖÁ1ÔÂµ×Ó¦¸¶Î´¸¶¿îÃ÷Ï¸(1)Ò³",wcfY2));
-				tit++;
-				sheets[sheetCount].addCell(new Label(0, tit,"ËµÃ÷¶ş:",wcfY2));
-				sheets[sheetCount].addCell(new Label(1, tit,"³¿È½ÒøĞĞÊÕÖ§Ã÷Ï¸(3Ò³)",wcfY2));
-				sheets[sheetCount].addCell(new Label(6, tit,"ËµÃ÷Áù:",wcfY2));
-				sheets[sheetCount].addCell(new Label(7, tit,"Óë¸ßÃ÷Ó¦ÊÕÓ¦¸¶½áËã",wcfY2));
-				tit++;
-				sheets[sheetCount].addCell(new Label(0, tit,"ËµÃ÷Èı:",wcfY2));
-				sheets[sheetCount].addCell(new Label(1, tit,"ÏÖ½ğÖ§³ö·ÖÀàÃ÷Ï¸(3Ò³)",wcfY2));
-				sheets[sheetCount].addCell(new Label(6, tit,"ËµÃ÷Æß:",wcfY2));
-				sheets[sheetCount].addCell(new Label(7, tit,"±¾ÔÂ»¹¿îÃ÷Ï¸(1)Ò³",wcfY2));
-				tit++;
-				sheets[sheetCount].addCell(new Label(0, tit,"ËµÃ÷ËÄ:",wcfY2));
-				sheets[sheetCount].addCell(new Label(1, tit,"ÖÁ1ÔÂµ×Ó¦ÊÕÎ´ÊÕ¿îÃ÷Ï¸(1)Ò³",wcfY2));
-				sheets[sheetCount].addCell(new Label(6, tit,"ËµÃ÷°Ë:",wcfY2));
-				sheets[sheetCount].addCell(new Label(7, tit,"±¾ÔÂÇ·¿îÃ÷Ï¸",wcfY2));
-				
-			} //end sheet3
+                //è®¾ç½®åˆ—å®½ï¼Œå–æœ€é•¿æ•°æ®çš„é•¿åº¦ä¸ºåˆ—å®½
+                sheets[sheetCount].setColumnView(0,6);
+                sheets[sheetCount].setColumnView(1,11);
+                sheets[sheetCount].setColumnView(2,14);
+                sheets[sheetCount].setColumnView(3,11);
+                sheets[sheetCount].setColumnView(4,14);
+                sheets[sheetCount].setColumnView(5,10);
+                sheets[sheetCount].setColumnView(6,16);
+                sheets[sheetCount].setColumnView(7,16);
+                sheets[sheetCount].setColumnView(8,11);
+                sheets[sheetCount].setColumnView(9,14);
+
+
+                //Title:ä¸€æœˆä»½æ”¶æ”¯æ˜ç»†è¡¨
+                sheets[sheetCount].mergeCells(0,0,9,0);
+                labelTitle = new Label(0, 0,query[0]+"æ”¶æ”¯æ˜ç»†è¡¨",wcfT3);
+                sheets[sheetCount].addCell(labelTitle);
+
+
+                String xfStat="select ss.subject_name,ss.money from td_account_statistics_subject ss"+
+                        " where ss.pay_type='XF' and  ss.account_month = "+query[0];
+
+                System.out.println("--tab3--xfStat="+xfStat);
+                ArrayList<String[]> xfStatList = DBOperation.select(xfStat);
+
+
+                //row2
+                sheets[sheetCount].mergeCells(0,2,0,xfStatList.size()+4);
+                sheets[sheetCount].addCell(new Label(0, 2,"ä¸Šæµ·",wcfY1));
+                sheets[sheetCount].addCell(new Label(1, 2,"æœŸåˆé‡‘é¢",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(2, 2,asf.getPriorCash()+asf.getPriorBank(),wcf3));
+                sheets[sheetCount].mergeCells(3,2,7,2);
+                sheets[sheetCount].addCell(new Label(3, 2,"æœ¬æœŸå‘ç”Ÿé¢",wcfY1));
+                sheets[sheetCount].addCell(new Label(8, 2,"æœŸæœ«é‡‘é¢ ",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, 2,asf.getTotalAmount(),wcf3));
+
+                //row3
+                sheets[sheetCount].addCell(new Label(1, 3,"å¸æˆ·",wcfY1));
+                sheets[sheetCount].addCell(new Label(2, 3,"é‡‘é¢",wcfY1));
+                sheets[sheetCount].mergeCells(3,3,4,3);
+                sheets[sheetCount].addCell(new Label(3, 3,"æ”¶å…¥",wcfY1));
+                sheets[sheetCount].mergeCells(5,3,7,3);
+                sheets[sheetCount].addCell(new Label(5, 3,"æ”¯å‡º",wcfY1));
+                sheets[sheetCount].addCell(new Label(8, 3,"å¸æˆ·",wcfY1));
+                sheets[sheetCount].addCell(new Label(9, 3,"é‡‘é¢",wcfY1));
+
+                //row4
+                sheets[sheetCount].addCell(new Label(1, 4,"ä¸Š/ç°",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(2, 4,asf.getPriorCash(),wcf3));
+                sheets[sheetCount].addCell(new Label(3, 4,"é¡¹ç›®",wcfY1));
+                sheets[sheetCount].addCell(new Label(4, 4,"é‡‘é¢",wcfY1));
+                sheets[sheetCount].addCell(new Label(5, 4,"ç§‘ç›®",wcfY1));
+                sheets[sheetCount].addCell(new Label(6, 4,"åˆ†ç±»",wcfY1));
+                sheets[sheetCount].addCell(new Label(7, 4,"å°è®¡",wcfY1));
+                sheets[sheetCount].addCell(new Label(8, 4,"ä¸Š/ç°",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, 4,asf.getCurrentCash(),wcf3));
+
+                int tit=5;
+
+                //row5 ~ row 5+xfStatList.size()
+                for(int i=0;i<xfStatList.size();i++) {
+                    String[] temp=(String[])xfStatList.get(i);
+                    if(i==0){
+                        sheets[sheetCount].addCell(new Label(1, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(2, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(3, i+tit,"æ”¶å…¥ç°é‡‘",wcfY1));
+                        sheets[sheetCount].addCell(new jxl.write.Number(4, i+tit,asf.getCashReceipt(),wcf3));
+                        sheets[sheetCount].mergeCells(5,i+tit,5,xfStatList.size()+i+tit-1);
+                        sheets[sheetCount].addCell(new Label(5, i+tit,"ç®¡é”€è´¹",wcfY1));
+                        sheets[sheetCount].addCell(new Label(6, i+tit,temp[0],wcfY1));
+                        sheets[sheetCount].addCell(new jxl.write.Number(7, i+tit,Double.parseDouble(temp[1]),wcf3));
+                        sheets[sheetCount].addCell(new Label(8, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(9, i+tit,"",wcfY1));
+                    }else{
+                        sheets[sheetCount].addCell(new Label(1, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(2, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(3, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(4, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(6, i+tit,temp[0],wcfY1));
+                        sheets[sheetCount].addCell(new jxl.write.Number(7, i+tit,Double.parseDouble(temp[1]),wcf3));
+                        sheets[sheetCount].addCell(new Label(8, i+tit,"",wcfY1));
+                        sheets[sheetCount].addCell(new Label(9, i+tit,"",wcfY1));
+                    }
+                }
+                tit+=xfStatList.size();
+
+                //row é“¶è¡Œ
+                sheets[sheetCount].addCell(new Label(0, tit,"æ™¨å†‰",wcfY1));
+                sheets[sheetCount].addCell(new Label(1, tit,"æ™¨å†‰",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(2, tit,asf.getPriorBank(),wcf3));
+                sheets[sheetCount].addCell(new Label(3, tit,"æ™¨å†‰æ”¶å…¥",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(4, tit,asf.getBankReceipt(),wcf3));
+                sheets[sheetCount].addCell(new Label(5, tit,"",wcfY1));
+                sheets[sheetCount].addCell(new Label(6, tit,"æ™¨å†‰æ”¯å‡º",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(7, tit,asf.getBankPayment(),wcf3));
+                sheets[sheetCount].addCell(new Label(8, tit,"æ™¨å†‰",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, tit,asf.getCurrentBank(),wcf3));
+
+                //åˆè®¡
+                tit++;
+                sheets[sheetCount].addCell(new Label(3, tit,"åˆè®¡",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(4, tit,(asf.getCashReceipt()+asf.getBankReceipt()),wcf3));
+                sheets[sheetCount].addCell(new Label(6, tit,"åˆè®¡",wcfY1));
+                sheets[sheetCount].addCell(new jxl.write.Number(7, tit,(asf.getCashPayment()+asf.getBankPayment()),wcf3));
+
+                //è¯´æ˜
+                tit=tit+2;
+
+                sheets[sheetCount].addCell(new Label(0, tit,"è¯´æ˜ä¸€:",wcfY2));
+                sheets[sheetCount].addCell(new Label(1, tit,"ç°é‡‘æ—¥è®°å¸ï¼ˆ2é¡µï¼‰",wcfY2));
+                sheets[sheetCount].addCell(new Label(6, tit,"è¯´æ˜äº”:",wcfY2));
+                sheets[sheetCount].addCell(new Label(7, tit,"è‡³1æœˆåº•åº”ä»˜æœªä»˜æ¬¾æ˜ç»†(1)é¡µ",wcfY2));
+                tit++;
+                sheets[sheetCount].addCell(new Label(0, tit,"è¯´æ˜äºŒ:",wcfY2));
+                sheets[sheetCount].addCell(new Label(1, tit,"æ™¨å†‰é“¶è¡Œæ”¶æ”¯æ˜ç»†(3é¡µ)",wcfY2));
+                sheets[sheetCount].addCell(new Label(6, tit,"è¯´æ˜å…­:",wcfY2));
+                sheets[sheetCount].addCell(new Label(7, tit,"ä¸é«˜æ˜åº”æ”¶åº”ä»˜ç»“ç®—",wcfY2));
+                tit++;
+                sheets[sheetCount].addCell(new Label(0, tit,"è¯´æ˜ä¸‰:",wcfY2));
+                sheets[sheetCount].addCell(new Label(1, tit,"ç°é‡‘æ”¯å‡ºåˆ†ç±»æ˜ç»†(3é¡µ)",wcfY2));
+                sheets[sheetCount].addCell(new Label(6, tit,"è¯´æ˜ä¸ƒ:",wcfY2));
+                sheets[sheetCount].addCell(new Label(7, tit,"æœ¬æœˆè¿˜æ¬¾æ˜ç»†(1)é¡µ",wcfY2));
+                tit++;
+                sheets[sheetCount].addCell(new Label(0, tit,"è¯´æ˜å››:",wcfY2));
+                sheets[sheetCount].addCell(new Label(1, tit,"è‡³1æœˆåº•åº”æ”¶æœªæ”¶æ¬¾æ˜ç»†(1)é¡µ",wcfY2));
+                sheets[sheetCount].addCell(new Label(6, tit,"è¯´æ˜å…«:",wcfY2));
+                sheets[sheetCount].addCell(new Label(7, tit,"æœ¬æœˆæ¬ æ¬¾æ˜ç»†",wcfY2));
+
+            } //end sheet3
 			
 			
 
 			/*
-			 * sheet4:ÒøĞĞ´æ¿îÊÕÖ§±í
+			 * sheet4:é“¶è¡Œå­˜æ¬¾æ”¶æ”¯è¡¨
 			 */
-			if(true){
-				sheetCount=3;
-				//¸ù¾İsheetÃû³Æ£¬´´½¨²»Í¬µÄsheet¶ÔÏó
-				String sheetName=SheetNames[sheetCount];
-				sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount); 
-				
-			
-				//ÉèÖÃÁĞ¿í£¬È¡×î³¤Êı¾İµÄ³¤¶ÈÎªÁĞ¿í
-				sheets[sheetCount].setColumnView(0,14); 
-				sheets[sheetCount].setColumnView(1,20); 
-				sheets[sheetCount].setColumnView(2,17); 
-				sheets[sheetCount].setColumnView(3,17); 
-				sheets[sheetCount].setColumnView(4,14); 
-				sheets[sheetCount].setColumnView(5,12); 
-				sheets[sheetCount].setColumnView(6,19); 
+            if(true){
+                sheetCount=3;
+                //æ ¹æ®sheetåç§°ï¼Œåˆ›å»ºä¸åŒçš„sheetå¯¹è±¡
+                String sheetName=SheetNames[sheetCount];
+                sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount);
 
-				//Title:ÏÖ½ğÖ§³öÃ÷Ï¸
-				sheets[sheetCount].setRowView(0,700); 
-				sheets[sheetCount].mergeCells(0,0,6,0);
-				labelTitle = new Label(0, 0,query[0].substring(4,6)+"ÔÂ·İÊÕÖ§Ã÷Ï¸±í-³¿È½",wcfT3);
-				sheets[sheetCount].addCell(labelTitle);
+
+                //è®¾ç½®åˆ—å®½ï¼Œå–æœ€é•¿æ•°æ®çš„é•¿åº¦ä¸ºåˆ—å®½
+                sheets[sheetCount].setColumnView(0,14);
+                sheets[sheetCount].setColumnView(1,20);
+                sheets[sheetCount].setColumnView(2,17);
+                sheets[sheetCount].setColumnView(3,17);
+                sheets[sheetCount].setColumnView(4,14);
+                sheets[sheetCount].setColumnView(5,12);
+                sheets[sheetCount].setColumnView(6,19);
+
+                //Title:ç°é‡‘æ”¯å‡ºæ˜ç»†
+                sheets[sheetCount].setRowView(0,700);
+                sheets[sheetCount].mergeCells(0,0,6,0);
+                labelTitle = new Label(0, 0,query[0].substring(4,6)+"æœˆä»½æ”¶æ”¯æ˜ç»†è¡¨-æ™¨å†‰",wcfT3);
+                sheets[sheetCount].addCell(labelTitle);
 				
 				
 				/*
-				 *	ÊÕÈëÍ³¼Æ
+				 *	æ”¶å…¥ç»Ÿè®¡
 				 *
-				 *	 ´úÉÏº£°ì-ÊÕÈë							
-				 *  ¸¶¿îÈÕÆÚ	¸¶¿îÈË		Êµ¸¶½ğ¶î 	 	»ú´²ĞÍºÅ	 		¿îÏîÄÚÈİ		¿îÏî±ÈÁĞ		±¸×¢	
-					1ÔÂ4ÈÕ	ÒÔÀÕ¾«ÃÜ		2,925.00 								Î¬ĞŞ·Ñ		100%	
-					1ÔÂ4ÈÕ	ËÕÖİµÀÉ­		2,400,000.00 		 		2000SV*2 	»ú´²¿î		90%	
-					1ÔÂ4ÈÕ	°®µÏ¿Ë		1,056,000.00 							»ú´²¿î		80%	
+				 *	 ä»£ä¸Šæµ·åŠ-æ”¶å…¥							
+				 *  ä»˜æ¬¾æ—¥æœŸ	ä»˜æ¬¾äºº		å®ä»˜é‡‘é¢ 	 	æœºåºŠå‹å·	 		æ¬¾é¡¹å†…å®¹		æ¬¾é¡¹æ¯”åˆ—		å¤‡æ³¨	
+					1æœˆ4æ—¥	ä»¥å‹’ç²¾å¯†		2,925.00 								ç»´ä¿®è´¹		100%	
+					1æœˆ4æ—¥	è‹å·é“æ£®		2,400,000.00 		 		2000SV*2 	æœºåºŠæ¬¾		90%	
+					1æœˆ4æ—¥	çˆ±è¿ªå…‹		1,056,000.00 							æœºåºŠæ¬¾		80%	
 				 */
-				String strSqlYS="SELECT ai.fee_date,ci.CUSTOMER_NAME,ai.money,'' dl," +
-					" st.subject_name,CONCAT(round(ai.ratio),'%'),ai.summary "+
-					" from td_account_info ai ,td_customer_info ci,td_subject_tree st"+
-					" where ai.subject_id=st.subject_id and ai.CUSTOMER_ID=ci.CUSTOMER_ID"+
-					" and ai.pay_type='YS' " +
-					" and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
-					" order by ai.fee_date,ai.CUSTOMER_ID,ai.subject_id";
-				
+                String strSqlYS="SELECT ai.fee_date,ci.CUSTOMER_NAME,ai.money,'' dl," +
+                        " st.subject_name,CONCAT(round(ai.ratio),'%'),ai.summary "+
+                        " from td_account_info ai ,td_customer_info ci,td_subject_tree st"+
+                        " where ai.subject_id=st.subject_id and ai.CUSTOMER_ID=ci.CUSTOMER_ID"+
+                        " and ai.pay_type='YS' " +
+                        " and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
+                        " order by ai.fee_date,ai.CUSTOMER_ID,ai.subject_id";
+
 //				System.out.println("--tab4--strSqlYS="+strSqlYS);
-				ArrayList<String[]> dataList = DBOperation.select(strSqlYS);
-				double ys=0d;
-				
-				//Title:ÊÕÈë
-				sheets[sheetCount].addCell(new Label(0, 1,"´úÉÏº£°ì-ÊÕÈë",wcfT2));
-				sheets[sheetCount].addCell(new Label(0, 2,"¸¶¿îÈÕÆÚ",wcfY1));
-				sheets[sheetCount].addCell(new Label(1, 2,"¸¶¿îÈË",wcfY1));
-				sheets[sheetCount].addCell(new Label(2, 2,"Êµ¸¶½ğ¶î ",wcfY1));
-				sheets[sheetCount].addCell(new Label(3, 2,"»ú´²ĞÍºÅ",wcfY1));
-				sheets[sheetCount].addCell(new Label(4, 2,"¿îÏîÄÚÈİ",wcfY1));
-				sheets[sheetCount].addCell(new Label(5, 2,"¿îÏî±ÈÁĞ",wcfY1));
-				sheets[sheetCount].addCell(new Label(6, 2,"±¸×¢",wcfY1));
-				
-				int tit=3;
-				//ĞĞ
-				for(int i=0;i<dataList.size();i++) {
-					String[] temp=(String[])dataList.get(i);
-					
-					//ÁĞ
-					for (int j = 0; j < temp.length; j++) {
-						String value = temp[j]==null?"":temp[j];
-						
-						if(j==5){
-							if(value.indexOf(".00")!=-1){
-								value=value.substring(0,value.indexOf(".00"));
-							}
-						}
-						if(j==2&&!value.equals("")){
-							labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcfY3);
-							sheets[sheetCount].addCell(labelNumber); 
-						}else if(j==1||j==6){
-							labelData = new Label(j,i+tit,value,wcfY4);
-							sheets[sheetCount].addCell(labelData); 
-						}else{
-							labelData = new Label(j,i+tit,value,wcfY1);
-							sheets[sheetCount].addCell(labelData); 
-						}
-						
-						if(j==2&&!value.equals("")){
-							ys+=Double.parseDouble(value);
-						}
-					}
-				}
-				tit+=dataList.size();
-				sheets[sheetCount].addCell(new jxl.write.Number(2,tit,ys,wcfY3));
+                ArrayList<String[]> dataList = DBOperation.select(strSqlYS);
+                double ys=0d;
+
+                //Title:æ”¶å…¥
+                sheets[sheetCount].addCell(new Label(0, 1,"ä»£ä¸Šæµ·åŠ-æ”¶å…¥",wcfT2));
+                sheets[sheetCount].addCell(new Label(0, 2,"ä»˜æ¬¾æ—¥æœŸ",wcfY1));
+                sheets[sheetCount].addCell(new Label(1, 2,"ä»˜æ¬¾äºº",wcfY1));
+                sheets[sheetCount].addCell(new Label(2, 2,"å®ä»˜é‡‘é¢ ",wcfY1));
+                sheets[sheetCount].addCell(new Label(3, 2,"æœºåºŠå‹å·",wcfY1));
+                sheets[sheetCount].addCell(new Label(4, 2,"æ¬¾é¡¹å†…å®¹",wcfY1));
+                sheets[sheetCount].addCell(new Label(5, 2,"æ¬¾é¡¹æ¯”åˆ—",wcfY1));
+                sheets[sheetCount].addCell(new Label(6, 2,"å¤‡æ³¨",wcfY1));
+
+                int tit=3;
+                //è¡Œ
+                for(int i=0;i<dataList.size();i++) {
+                    String[] temp=(String[])dataList.get(i);
+
+                    //åˆ—
+                    for (int j = 0; j < temp.length; j++) {
+                        String value = temp[j]==null?"":temp[j];
+
+                        if(j==5){
+                            if(value.indexOf(".00")!=-1){
+                                value=value.substring(0,value.indexOf(".00"));
+                            }
+                        }
+                        if(j==2&&!value.equals("")){
+                            labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcfY3);
+                            sheets[sheetCount].addCell(labelNumber);
+                        }else if(j==1||j==6){
+                            labelData = new Label(j,i+tit,value,wcfY4);
+                            sheets[sheetCount].addCell(labelData);
+                        }else{
+                            labelData = new Label(j,i+tit,value,wcfY1);
+                            sheets[sheetCount].addCell(labelData);
+                        }
+
+                        if(j==2&&!value.equals("")){
+                            ys+=Double.parseDouble(value);
+                        }
+                    }
+                }
+                tit+=dataList.size();
+                sheets[sheetCount].addCell(new jxl.write.Number(2,tit,ys,wcfY3));
 //				System.out.println("--4--tit1="+tit);
 
 				/*
-				 * Ö§³öÍ³¼Æ
+				 * æ”¯å‡ºç»Ÿè®¡
 				 * 
-				 * ´úÉÏº£°ì-Ö§³ö						
-				 *  ¸¶¿îÈÕÆÚ	ÊÕ¿îÈË		Êµ¸¶½ğ¶î 		ºÏÍ¬¿Í»§		¿îÏîÃ÷Ï¸		»õ¿î		±¸×¢
-					1ÔÂ4ÈÕ	ÉÏº£°ì		40000								È¡ÏÖ		
-					1ÔÂ4ÈÕ	ÉÏº£·ºÌ«		805,545.00 				°®µÏ¿Ë		»õ¿î		90%	
-					1ÔÂ4ÈÕ	Éî·¢Õ¹		1.00 					µÀÉ­Ñ¹Á¦		ÊÖĞø·Ñ	100%	
+				 * ä»£ä¸Šæµ·åŠ-æ”¯å‡º						
+				 *  ä»˜æ¬¾æ—¥æœŸ	æ”¶æ¬¾äºº		å®ä»˜é‡‘é¢ 		åˆåŒå®¢æˆ·		æ¬¾é¡¹æ˜ç»†		è´§æ¬¾		å¤‡æ³¨
+					1æœˆ4æ—¥	ä¸Šæµ·åŠ		40000								å–ç°		
+					1æœˆ4æ—¥	ä¸Šæµ·æ³›å¤ª		805,545.00 				çˆ±è¿ªå…‹		è´§æ¬¾		90%	
+					1æœˆ4æ—¥	æ·±å‘å±•		1.00 					é“æ£®å‹åŠ›		æ‰‹ç»­è´¹	100%	
 				 */
-				String strSqlYF="SELECT ai.fee_date,ci.CUSTOMER_NAME,ai.money," +
-					" ai.place,st.subject_name,CONCAT(round(ai.ratio),'%'),ai.summary"+
-					" from td_account_info ai ,td_customer_info ci,td_subject_tree st"+
-					" where ai.subject_id=st.subject_id and ai.CUSTOMER_ID=ci.CUSTOMER_ID"+
-					" and ai.pay_type='YF'" +
-					" and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
-					" order by ai.employee_code,ai.fee_date";
-				
+                String strSqlYF="SELECT ai.fee_date,ci.CUSTOMER_NAME,ai.money," +
+                        " ai.place,st.subject_name,CONCAT(round(ai.ratio),'%'),ai.summary"+
+                        " from td_account_info ai ,td_customer_info ci,td_subject_tree st"+
+                        " where ai.subject_id=st.subject_id and ai.CUSTOMER_ID=ci.CUSTOMER_ID"+
+                        " and ai.pay_type='YF'" +
+                        " and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
+                        " order by ai.employee_code,ai.fee_date";
+
 //				System.out.println("--tab4--strSqlYF="+strSqlYF);
-				dataList = DBOperation.select(strSqlYF);
-				ys=0d;
-				tit=tit+3;
-				
-				sheets[sheetCount].setColumnView(7,20); 
-				
-				//Title:Ö§³ö
-				labelTitle = new Label(0, tit,"´úÉÏº£°ì-Ö§³ö",wcfT2);
-				sheets[sheetCount].addCell(labelTitle);
-				
-				tit++;
-				sheets[sheetCount].addCell(new Label(0, tit,"¸¶¿îÈÕÆÚ",wcfY1));
-				sheets[sheetCount].addCell(new Label(1, tit,"¸¶¿îÈË",wcfY1));
-				sheets[sheetCount].addCell(new Label(2, tit,"Êµ¸¶½ğ¶î ",wcfY1));
-				sheets[sheetCount].addCell(new Label(3, tit,"ºÏÍ¬¿Í»§",wcfY1));
-				sheets[sheetCount].addCell(new Label(4, tit,"¿îÏîÃ÷Ï¸",wcfY1));
-				sheets[sheetCount].addCell(new Label(5, tit,"»õ¿î",wcfY1));
-				sheets[sheetCount].addCell(new Label(6, tit,"±¸×¢",wcfY1));
-				
-				tit++;
-				//ĞĞ
-				for(int i=0;i<dataList.size();i++) {
-					String[] temp=(String[])dataList.get(i);
-					
-					//ÁĞ
-					for (int j = 0; j < temp.length; j++) {
-						String value = temp[j]==null?"":temp[j];
-						
-						if(j==5){
-							if(value.indexOf(".00")!=-1){
-								value=value.substring(0,value.indexOf(".00"));
-							}
-						}
-						if(j==2&&!value.equals("")){
-							labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcfY3);
-							sheets[sheetCount].addCell(labelNumber); 
-						}else if(j==1||j==6){
-							labelData = new Label(j,i+tit,value,wcfY4);
-							sheets[sheetCount].addCell(labelData); 
-						}else{
-							labelData = new Label(j,i+tit,value,wcfY1);
-							sheets[sheetCount].addCell(labelData); 
-						}
-						
-						if(j==2&&!value.equals("")){
-							ys+=Double.parseDouble(value);
-						}
-					}
-				}
-				tit+=dataList.size();
-				sheets[sheetCount].addCell(new jxl.write.Number(2,tit,ys,wcfY3));
+                dataList = DBOperation.select(strSqlYF);
+                ys=0d;
+                tit=tit+3;
+
+                sheets[sheetCount].setColumnView(7,20);
+
+                //Title:æ”¯å‡º
+                labelTitle = new Label(0, tit,"ä»£ä¸Šæµ·åŠ-æ”¯å‡º",wcfT2);
+                sheets[sheetCount].addCell(labelTitle);
+
+                tit++;
+                sheets[sheetCount].addCell(new Label(0, tit,"ä»˜æ¬¾æ—¥æœŸ",wcfY1));
+                sheets[sheetCount].addCell(new Label(1, tit,"ä»˜æ¬¾äºº",wcfY1));
+                sheets[sheetCount].addCell(new Label(2, tit,"å®ä»˜é‡‘é¢ ",wcfY1));
+                sheets[sheetCount].addCell(new Label(3, tit,"åˆåŒå®¢æˆ·",wcfY1));
+                sheets[sheetCount].addCell(new Label(4, tit,"æ¬¾é¡¹æ˜ç»†",wcfY1));
+                sheets[sheetCount].addCell(new Label(5, tit,"è´§æ¬¾",wcfY1));
+                sheets[sheetCount].addCell(new Label(6, tit,"å¤‡æ³¨",wcfY1));
+
+                tit++;
+                //è¡Œ
+                for(int i=0;i<dataList.size();i++) {
+                    String[] temp=(String[])dataList.get(i);
+
+                    //åˆ—
+                    for (int j = 0; j < temp.length; j++) {
+                        String value = temp[j]==null?"":temp[j];
+
+                        if(j==5){
+                            if(value.indexOf(".00")!=-1){
+                                value=value.substring(0,value.indexOf(".00"));
+                            }
+                        }
+                        if(j==2&&!value.equals("")){
+                            labelNumber = new jxl.write.Number(j,i+tit,Double.parseDouble(value),wcfY3);
+                            sheets[sheetCount].addCell(labelNumber);
+                        }else if(j==1||j==6){
+                            labelData = new Label(j,i+tit,value,wcfY4);
+                            sheets[sheetCount].addCell(labelData);
+                        }else{
+                            labelData = new Label(j,i+tit,value,wcfY1);
+                            sheets[sheetCount].addCell(labelData);
+                        }
+
+                        if(j==2&&!value.equals("")){
+                            ys+=Double.parseDouble(value);
+                        }
+                    }
+                }
+                tit+=dataList.size();
+                sheets[sheetCount].addCell(new jxl.write.Number(2,tit,ys,wcfY3));
 //				System.out.println("--4--tit2="+tit);
-				
-				//ÊÕÖ§½áÓà
-				tit=tit+3;
-				
-				sheets[sheetCount].mergeCells(0,tit,2,tit);
-				sheets[sheetCount].addCell(new Label(0, tit,"³¿È½"+query[0]+"´úÉÏº£°ìÊÕÖ§½áÓà£º",wcfT3));
-				
-				tit=tit+3;
-				sheets[sheetCount].mergeCells(1,tit,1,tit+1);
-				sheets[sheetCount].addCell(new Label(1, tit,"Ç°ÆÚ½áÓà",wcfY1));
-				sheets[sheetCount].mergeCells(2,tit,2,tit+1);
-				sheets[sheetCount].addCell(new Label(2, tit,"±¾ÆÚÊÕÖ§",wcfY1));
-				sheets[sheetCount].mergeCells(3,tit,3,tit+1);
-				sheets[sheetCount].addCell(new Label(3, tit,"ÆÚÄ©½áÓà",wcfY1));
-				tit=tit+2;
-				sheets[sheetCount].mergeCells(1,tit,1,tit+1);
-				sheets[sheetCount].addCell(new jxl.write.Number(1, tit,asf.getPriorBank(),wcfY3));
-				sheets[sheetCount].mergeCells(2,tit,2,tit+1);
-				sheets[sheetCount].addCell(new jxl.write.Number(2, tit,asf.getBankReceipt()-asf.getBankPayment(),wcfY3));
-				sheets[sheetCount].mergeCells(3,tit,3,tit+1);
-				sheets[sheetCount].addCell(new jxl.write.Number(3, tit,asf.getCurrentBank(),wcfY3));
-				
-			} //end sheet4
+
+                //æ”¶æ”¯ç»“ä½™
+                tit=tit+3;
+
+                sheets[sheetCount].mergeCells(0,tit,2,tit);
+                sheets[sheetCount].addCell(new Label(0, tit,"æ™¨å†‰"+query[0]+"ä»£ä¸Šæµ·åŠæ”¶æ”¯ç»“ä½™ï¼š",wcfT3));
+
+                tit=tit+3;
+                sheets[sheetCount].mergeCells(1,tit,1,tit+1);
+                sheets[sheetCount].addCell(new Label(1, tit,"å‰æœŸç»“ä½™",wcfY1));
+                sheets[sheetCount].mergeCells(2,tit,2,tit+1);
+                sheets[sheetCount].addCell(new Label(2, tit,"æœ¬æœŸæ”¶æ”¯",wcfY1));
+                sheets[sheetCount].mergeCells(3,tit,3,tit+1);
+                sheets[sheetCount].addCell(new Label(3, tit,"æœŸæœ«ç»“ä½™",wcfY1));
+                tit=tit+2;
+                sheets[sheetCount].mergeCells(1,tit,1,tit+1);
+                sheets[sheetCount].addCell(new jxl.write.Number(1, tit,asf.getPriorBank(),wcfY3));
+                sheets[sheetCount].mergeCells(2,tit,2,tit+1);
+                sheets[sheetCount].addCell(new jxl.write.Number(2, tit,asf.getBankReceipt()-asf.getBankPayment(),wcfY3));
+                sheets[sheetCount].mergeCells(3,tit,3,tit+1);
+                sheets[sheetCount].addCell(new jxl.write.Number(3, tit,asf.getCurrentBank(),wcfY3));
+
+            } //end sheet4
 			
 
 			/*
-			 * sheet5:ÒøĞĞÈÕ¼ÇÕË
+			 * sheet5:é“¶è¡Œæ—¥è®°è´¦
 			 */
-			if(true){
-				sheetCount=4;
-				//¸ù¾İsheetÃû³Æ£¬´´½¨²»Í¬µÄsheet¶ÔÏó
-				String sheetName=SheetNames[sheetCount];
-				sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount); 
-				//ÉèÖÃsheetÃû
-				//sheets[sheetCount].setName(me.getKey().toString());
-				
-			
-				//ÉèÖÃÁĞ¿í£¬È¡×î³¤Êı¾İµÄ³¤¶ÈÎªÁĞ¿í
-				sheets[sheetCount].setColumnView(0,6); 
-				sheets[sheetCount].setColumnView(1,6); 
-				sheets[sheetCount].setColumnView(2,6); 
-				sheets[sheetCount].setColumnView(3,14); 
-				sheets[sheetCount].setColumnView(4,14); 
-				sheets[sheetCount].setColumnView(5,30); 
-				sheets[sheetCount].setColumnView(6,20); 
-				sheets[sheetCount].setColumnView(7,14);
-				sheets[sheetCount].setColumnView(8,14);
-				sheets[sheetCount].setColumnView(9,14);
+            if(true){
+                sheetCount=4;
+                //æ ¹æ®sheetåç§°ï¼Œåˆ›å»ºä¸åŒçš„sheetå¯¹è±¡
+                String sheetName=SheetNames[sheetCount];
+                sheets[sheetCount]=workbook.createSheet(sheetName, sheetCount);
+                //è®¾ç½®sheetå
+                //sheets[sheetCount].setName(me.getKey().toString());
 
-				sheets[sheetCount].setRowView(0,600); 
-				//Ö¸¶¨ºÏ²¢ÇøÓò,×óÉÏ½Çµ½ÓÒÏÂ½Ç,mergeCells(int startCol,int startRow,int endCol,int endRow)
-				sheets[sheetCount].mergeCells(0,0,9,0);
-				
-				//´´½¨µ¥Ôª¸ñ¶ÔÏó,Label(ÁĞºÅ,ĞĞºÅ ,ÄÚÈİ,×ÖÌå )
-				labelTitle = new Label(0, 0,query[0].substring(0,4)+"Äê¶È¹«Ë¾ÕÊÄ¿£¨³¿È½£©",wcfT1);
-				sheets[sheetCount].addCell(labelTitle);
-				
-				
-				sheets[sheetCount].mergeCells(0,1,1,1);
-				sheets[sheetCount].addCell(new Label(0, 1,"Ê±¼ä",wcf1));
-				sheets[sheetCount].addCell(new Label(0, 2,"ÔÂ·İ",wcf1));
-				sheets[sheetCount].addCell(new Label(1, 2,"ÈÕÆÚ",wcf1));
-				sheets[sheetCount].mergeCells(2,1,2,2);
-				sheets[sheetCount].addCell(new Label(2, 1,"Æ¾Ö¤",wcf1));
-				sheets[sheetCount].mergeCells(3,1,6,1);
-				sheets[sheetCount].addCell(new Label(3, 1,"ÕªÒª",wcf1));
-				sheets[sheetCount].addCell(new Label(3, 2,"Ò»¼¶¿ÆÄ¿",wcf7));
-				sheets[sheetCount].addCell(new Label(4, 2,"¶ş¼¶¿ÆÄ¿",wcf7));
-				sheets[sheetCount].addCell(new Label(5, 2,"Èı¼¶¿ÆÄ¿",wcf7));
-				sheets[sheetCount].addCell(new Label(6, 2,"ËÄ¼¶¿ÆÄ¿",wcf7));
-				
-				sheets[sheetCount].mergeCells(7,1,9,1);
-				sheets[sheetCount].addCell(new Label(7, 1,"½ğ¶î",wcf1));
-				sheets[sheetCount].addCell(new Label(7, 2,"ÊÕÈë",wcf1));
-				sheets[sheetCount].addCell(new Label(8, 2,"Ö§³ö",wcf1));
-				sheets[sheetCount].addCell(new Label(9, 2,"½á´æ",wcf1));
-				
-				String strSql="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d," +
-					" ai.voucher_no vn,ai.subject_all_name sn,st.subject_name,"+
-					" (select ec.CUSTOMER_NAME from td_customer_info ec " +
-					"		where ec.CUSTOMER_ID=ai.CUSTOMER_ID) emp,"+
-					" ai.place pl,(case when pay_type='YS' then ai.money else '' end) ys,"+
-					" (case when pay_type='YF' then ai.money else '' end) yf,pay_type "+
-					" from td_account_info as ai,td_subject_tree as st"+
-					" where ai.subject_id=st.subject_id and ai.pay_type in('YS','YF')"+
-					" and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
-					" order by pay_type desc,ai.fee_date,ai.subject_id";
-				
-				System.out.println("--tab5--strSql="+strSql);
-				ArrayList<String[]> dataList = DBOperation.select(strSql);
-				double xs=0d,xf=0d;
-				boolean flag = false; 
-				int row = 0;
-				for(int i=0;i<dataList.size();i++) {
-					String[] temp=(String[])dataList.get(i);
-					
-					if("YS".equals(temp[temp.length-1])){
-						row = i + 3;
-					}else{
-						if(!flag){
-							flag = true;
-							sheets[sheetCount].addCell(new jxl.write.Number(7, i+3, xs,wcf3));
-						}
-						row = i + 6;
-					}
-					
-					for (int j = 0; j < temp.length-1; j++) {
-						String value = temp[j]==null?"":temp[j];
-						if((j==7||j==8)&&!value.equals("")){
-							labelNumber = new jxl.write.Number(j,row,Double.parseDouble(value),wcf3);
-							sheets[sheetCount].addCell(labelNumber); 
-						}else if(j==3){
-							if(value.indexOf(" - ")!=-1){
-								value=value.substring(0,value.lastIndexOf(" - "));
-							}
-							labelData = new Label(j,row,value,wcf2);
-							sheets[sheetCount].addCell(labelData); 
-						}else{
-							if(j==0||j==1) labelData = new Label(j,row,value,wcf1);
-							else labelData = new Label(j,row,value,wcf2);
-							sheets[sheetCount].addCell(labelData); 
-						}
-						if(j==7&&!value.equals("")){
-							xs+=Double.parseDouble(value);
-						}else if(j==8&&!value.equals("")){
-							xf+=Double.parseDouble(value);
-						}
-					}
-					sheets[sheetCount].addCell(new Label(9,row,"",wcf1)); 
-					
-				}
-				sheets[sheetCount].addCell(new jxl.write.Number(8, dataList.size()+6,xf,wcf3));
-				
-				
-				//×Ü¼Æ
-				sheets[sheetCount].addCell(new Label(3, dataList.size()+7,"ÉÏÔÂ½á´æ",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+7,asf.getPriorBank(),wcf4));
-				
-				sheets[sheetCount].addCell(new Label(3, dataList.size()+8,"±¾ÔÂºÏ¼Æ",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(7, dataList.size()+8,asf.getBankReceipt(),wcf4));
-				sheets[sheetCount].addCell(new jxl.write.Number(8, dataList.size()+8,asf.getBankPayment(),wcf4));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+8,asf.getBankReceipt()-asf.getBankPayment(),wcf4));
-				
-				sheets[sheetCount].addCell(new Label(3, dataList.size()+9,"±¾ÄêÀÛ¼Æ",wcf5));
-				sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+9,asf.getCurrentBank(),wcf4));
-				
-			} //end sheet5
-			
-			
-			
-			workbook.write(); 
-			
-			fileName=downLoadPath+fileName;
-			//System.out.println("--------fileName="+fileName);
-		
-		}catch(Exception e){
-			throw e;
-		} finally {
-			try{
-				if(workbook!=null) workbook.close();
-			}catch(Exception e1){
-				e1.printStackTrace();
-			}
-			try{
-				if(os!=null) os.close();
-			}catch(Exception e1){
-				e1.printStackTrace();
-			}
-			
-		}
-		return fileName;
-	}
-	
+
+                //è®¾ç½®åˆ—å®½ï¼Œå–æœ€é•¿æ•°æ®çš„é•¿åº¦ä¸ºåˆ—å®½
+                sheets[sheetCount].setColumnView(0,6);
+                sheets[sheetCount].setColumnView(1,6);
+                sheets[sheetCount].setColumnView(2,6);
+                sheets[sheetCount].setColumnView(3,14);
+                sheets[sheetCount].setColumnView(4,14);
+                sheets[sheetCount].setColumnView(5,30);
+                sheets[sheetCount].setColumnView(6,20);
+                sheets[sheetCount].setColumnView(7,14);
+                sheets[sheetCount].setColumnView(8,14);
+                sheets[sheetCount].setColumnView(9,14);
+
+                sheets[sheetCount].setRowView(0,600);
+                //æŒ‡å®šåˆå¹¶åŒºåŸŸ,å·¦ä¸Šè§’åˆ°å³ä¸‹è§’,mergeCells(int startCol,int startRow,int endCol,int endRow)
+                sheets[sheetCount].mergeCells(0,0,9,0);
+
+                //åˆ›å»ºå•å…ƒæ ¼å¯¹è±¡,Label(åˆ—å·,è¡Œå· ,å†…å®¹,å­—ä½“ )
+                labelTitle = new Label(0, 0,query[0].substring(0,4)+"å¹´åº¦å…¬å¸å¸ç›®ï¼ˆæ™¨å†‰ï¼‰",wcfT1);
+                sheets[sheetCount].addCell(labelTitle);
+
+
+                sheets[sheetCount].mergeCells(0,1,1,1);
+                sheets[sheetCount].addCell(new Label(0, 1,"æ—¶é—´",wcf1));
+                sheets[sheetCount].addCell(new Label(0, 2,"æœˆä»½",wcf1));
+                sheets[sheetCount].addCell(new Label(1, 2,"æ—¥æœŸ",wcf1));
+                sheets[sheetCount].mergeCells(2,1,2,2);
+                sheets[sheetCount].addCell(new Label(2, 1,"å‡­è¯",wcf1));
+                sheets[sheetCount].mergeCells(3,1,6,1);
+                sheets[sheetCount].addCell(new Label(3, 1,"æ‘˜è¦",wcf1));
+                sheets[sheetCount].addCell(new Label(3, 2,"ä¸€çº§ç§‘ç›®",wcf7));
+                sheets[sheetCount].addCell(new Label(4, 2,"äºŒçº§ç§‘ç›®",wcf7));
+                sheets[sheetCount].addCell(new Label(5, 2,"ä¸‰çº§ç§‘ç›®",wcf7));
+                sheets[sheetCount].addCell(new Label(6, 2,"å››çº§ç§‘ç›®",wcf7));
+
+                sheets[sheetCount].mergeCells(7,1,9,1);
+                sheets[sheetCount].addCell(new Label(7, 1,"é‡‘é¢",wcf1));
+                sheets[sheetCount].addCell(new Label(7, 2,"æ”¶å…¥",wcf1));
+                sheets[sheetCount].addCell(new Label(8, 2,"æ”¯å‡º",wcf1));
+                sheets[sheetCount].addCell(new Label(9, 2,"ç»“å­˜",wcf1));
+
+                String strSql="SELECT  month(ai.fee_date) m,dayofmonth(ai.fee_date) d," +
+                        " ai.voucher_no vn,ai.subject_all_name sn,st.subject_name,"+
+                        " (select ec.CUSTOMER_NAME from td_customer_info ec " +
+                        "		where ec.CUSTOMER_ID=ai.CUSTOMER_ID) emp,"+
+                        " ai.place pl,(case when pay_type='YS' then ai.money else '' end) ys,"+
+                        " (case when pay_type='YF' then ai.money else '' end) yf,pay_type "+
+                        " from td_account_info as ai,td_subject_tree as st"+
+                        " where ai.subject_id=st.subject_id and ai.pay_type in('YS','YF')"+
+                        " and ai.fee_date >= '"+bgDay+"' and ai.fee_date<= '"+endDay+"'" +
+                        " order by pay_type desc,ai.fee_date,ai.subject_id";
+
+                System.out.println("--tab5--strSql="+strSql);
+                ArrayList<String[]> dataList = DBOperation.select(strSql);
+                double xs=0d,xf=0d;
+                boolean flag = false;
+                int row = 0;
+                for(int i=0;i<dataList.size();i++) {
+                    String[] temp=(String[])dataList.get(i);
+
+                    if("YS".equals(temp[temp.length-1])){
+                        row = i + 3;
+                    }else{
+                        if(!flag){
+                            flag = true;
+                            sheets[sheetCount].addCell(new jxl.write.Number(7, i+3, xs,wcf3));
+                        }
+                        row = i + 6;
+                    }
+
+                    for (int j = 0; j < temp.length-1; j++) {
+                        String value = temp[j]==null?"":temp[j];
+                        if((j==7||j==8)&&!value.equals("")){
+                            labelNumber = new jxl.write.Number(j,row,Double.parseDouble(value),wcf3);
+                            sheets[sheetCount].addCell(labelNumber);
+                        }else if(j==3){
+                            if(value.indexOf(" - ")!=-1){
+                                value=value.substring(0,value.lastIndexOf(" - "));
+                            }
+                            labelData = new Label(j,row,value,wcf2);
+                            sheets[sheetCount].addCell(labelData);
+                        }else{
+                            if(j==0||j==1) labelData = new Label(j,row,value,wcf1);
+                            else labelData = new Label(j,row,value,wcf2);
+                            sheets[sheetCount].addCell(labelData);
+                        }
+                        if(j==7&&!value.equals("")){
+                            xs+=Double.parseDouble(value);
+                        }else if(j==8&&!value.equals("")){
+                            xf+=Double.parseDouble(value);
+                        }
+                    }
+                    sheets[sheetCount].addCell(new Label(9,row,"",wcf1));
+
+                }
+                sheets[sheetCount].addCell(new jxl.write.Number(8, dataList.size()+6,xf,wcf3));
+
+
+                //æ€»è®¡
+                sheets[sheetCount].addCell(new Label(3, dataList.size()+7,"ä¸Šæœˆç»“å­˜",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+7,asf.getPriorBank(),wcf4));
+
+                sheets[sheetCount].addCell(new Label(3, dataList.size()+8,"æœ¬æœˆåˆè®¡",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(7, dataList.size()+8,asf.getBankReceipt(),wcf4));
+                sheets[sheetCount].addCell(new jxl.write.Number(8, dataList.size()+8,asf.getBankPayment(),wcf4));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+8,asf.getBankReceipt()-asf.getBankPayment(),wcf4));
+
+                sheets[sheetCount].addCell(new Label(3, dataList.size()+9,"æœ¬å¹´ç´¯è®¡",wcf5));
+                sheets[sheetCount].addCell(new jxl.write.Number(9, dataList.size()+9,asf.getCurrentBank(),wcf4));
+
+            } //end sheet5
+
+
+
+            workbook.write();
+
+            fileName=downLoadPath+fileName;
+            //System.out.println("--------fileName="+fileName);
+
+        }catch(Exception e){
+            throw e;
+        } finally {
+            try{
+                if(workbook!=null) workbook.close();
+            }catch(Exception e1){
+                e1.printStackTrace();
+            }
+            try{
+                if(os!=null) os.close();
+            }catch(Exception e1){
+                e1.printStackTrace();
+            }
+
+        }
+        return fileName;
+    }
+
 }
