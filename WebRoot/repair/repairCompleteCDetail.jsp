@@ -868,7 +868,7 @@ function f_update_rm_end(){
    			</table>
 	
 	
-	<table HEIGHT="380" width="100%" cellspacing="0" cellpadding="0" border="0" id="irisTree">
+	<table  width="100%" cellspacing="0" cellpadding="0" border="0" id="irisTree">
 	
 	
 	

@@ -1,319 +1,316 @@
 package com.dne.sie.common.tools;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
-import org.hibernate.Hibernate;
 
 import com.dne.sie.maintenance.form.IrisCodeForm;
 import com.dne.sie.maintenance.form.PartInfoForm;
-import com.dne.sie.maintenance.form.TsSystemCodeForm;
 import com.dne.sie.util.bo.CommBo;
 import com.dne.sie.util.query.QueryParameter;
+import org.hibernate.Hibernate;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
- * NeWSIS ÖĞÒ»Ğ©Í¨ÓÃµÄ²éÑ¯·½·¨¼¯ºÏÀà£¬¸ÃÀàÎªµ¥×ÓÄ£Ê½
+ * NeWSIS ä¸­ä¸€äº›é€šç”¨çš„æŸ¥è¯¢æ–¹æ³•é›†åˆç±»ï¼Œè¯¥ç±»ä¸ºå•å­æ¨¡å¼
  * @author HaoShuang
  */
 public class CommonSearch extends CommBo{
-	
-	private static HashMap userNameMap= new HashMap();
-	public static List<IrisCodeForm> IrisInfoList = null;
-	
-	
-	private static final CommonSearch INSTANCE = new CommonSearch();
-	
-	/**
-	 * ¹¹Ôìº¯Êı
-	 */	
-	private CommonSearch(){
-	}
-	
-	
-	/**
-	 * ¾²Ì¬·½·¨£¬¹©Íâ²¿ÈËÔ±ÄÃµ½¸ÃÀàÊµÀı
-	 */
-	public static final CommonSearch getInstance() {
-	   return INSTANCE;
-	}
 
-	public static float ExchangeRate = 0;
-	
-	
-	/**
-	 * ¸ù¾İÓÃ»§ID²éÑ¯ÓÃ»§Ãû³Æ
-	 * @param userid Long ÓÃ»§ID
-	 * @return String ÓÃ»§Ãû³Æ
-	 */
-	public String findUserNameByUserId(Long userid){//¸ù¾İÓÃ»§ID²éÑ¯ÓÃ»§Ãû³Æ
-		String result = "";
-		try{
-			if(userid!=null){
-				if(userNameMap.containsKey(userid)){
-					result=(String)userNameMap.get(userid);
-				}else{
-					String strHql="select uf.userName from UserForm as uf where uf.id=?";
-					Object obj= this.getDao().uniqueResult(strHql,userid);
-					if(obj!=null){
-						result = (String)obj;
-						userNameMap.put(userid,result);
-					}
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	
-	
-	/**
-	 * ²éÑ¯ÀúÊ·Á÷Ë®¼ÇÂ¼µÄÁã¼ş³É±¾
-	 * @param formNo-µ¥ºÅ
-	 * @param skuCode-Áã¼ş
-	 * @param inOutType-³öÈë¿â±êÖ¾
-	 * @return Double ³É±¾
-	 */
-	public Double getFlowCost(String formNo,String skuCode,String inOutType){
-		Double perCost = null;
-		try{
-			Object obj=this.getDao().uniqueResult("select sff.realCost from StockFlowForm as sff " +
-				"where sff.formNo='"+formNo+"' and sff.skuCode='"+skuCode+"'and sff.inOutType='"+inOutType+"' " +
-				" order by sff.createDate desc ");
-			if(obj!=null){
-				perCost=(Double)obj;
-			}else{
-				System.err.println("µ¥ºÅ:"+formNo+",Áã¼ş:"+skuCode+",ÔÚÁ÷Ë®±í("+inOutType+")ÖĞµÄ³É±¾ÓĞÎó");
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return perCost;	
-	}
-	/**
-	 * ¸ù¾İÁã¼ş´úÂëÈ¡µÃÁã¼şµÄstdCost
-	 * @param partCode Áã¼ş±àºÅ
-	 * @return Double stdCost
-	 */
-	public Float getPartPerCost(String stuffNo){
-		Float perCost = 0f;
-		try{
-			Object obj=this.getDao().uniqueResult("select pif.buyCost from PartInfoForm as pif where pif.stuffNo=?",stuffNo);
-			if(obj!=null) perCost=(Float)obj;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return perCost;	
-	}
-	
-	/**
-	 * ¸ù¾İ¸½¼şids²éÑ¯Ïà¹Ø
-	 * @param partCode Áã¼ş±àºÅ
-	 * @return Double stdCost
-	 */
-	public List getAttachedList(String aIds) throws Exception{
-		
-		String strHql="from AttachedInfoForm as aif where aif.attachedId in (: aIds)";
-		ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
-		QueryParameter param = new QueryParameter();
-		param.setName("aIds");
-		param.setValue(aIds);
-		param.setHbType(Hibernate.STRING);
-		paramList.add(param);
-		
-		List aList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
-		
-	
-		return aList;	
-	}
-	
+    private static HashMap userNameMap= new HashMap();
+    public static List<IrisCodeForm> IrisInfoList = null;
 
-	/**
-	 * ²éÑ¯¿Í»§ĞÅÏ¢
-	 * @param 
-	 * @return List
-	 */
-	public List getCustomerList() throws Exception{
-		
-		String strHql="select cif.customerId,cif.customerName,cif.linkman,cif.phone," +
-				"cif.cityName,cif.fax,cif.address from CustomerInfoForm as cif where cif.delFlag=0";
-		
-		List aList = (ArrayList)this.getDao().list(strHql);
-		
-	
-		return aList;	
-	}
-	
-	public String getCustomerName(String custId) throws Exception{
-		
-		String strHql="select cif.customerName from CustomerInfoForm as cif where cif.customerId=?";
-		
-		return (String)this.getDao().uniqueResult(strHql,custId);	
-	}
 
-	/**
-	 * ²éÑ¯³§ÉÌĞÅÏ¢
-	 * @param 
-	 * @return List
-	 */
-	public List getFactoryList() throws Exception{
-		
-		String strHql="select cif.factoryId,cif.factoryName,cif.linkman,cif.phone," +
-				"cif.cityName,cif.fax,cif.address from FactoryInfoForm as cif where cif.delFlag=0";
-		
-		List aList = (ArrayList)this.getDao().list(strHql);
-		
-	
-		return aList;	
-	}
-	
+    private static final CommonSearch INSTANCE = new CommonSearch();
 
-	/**
-	 * ²éÑ¯´ı·¢»õ¿Í»§ĞÅÏ¢
-	 * @param 
-	 * @return List
-	 */
-	public List getAsnCustomerList() throws Exception{
-		
-		String strHql="select distinct sif.customerId,sif.customerName from SaleInfoForm as sif,SaleDetailForm as sd " +
-				"where sd.saleNo=sif.saleNo and sif.delFlag=0 and sd.partStatus in('M','Q','O')";
-		
-	
-		return this.getDao().list(strHql);	
-	}
-	
+    /**
+     * æ„é€ å‡½æ•°
+     */
+    private CommonSearch(){
+    }
 
-	/**
-	 * ¸ù¾İÁÏºÅ²éÑ¯Áã¼ş±í
-	 * @param stuffNo ÁÏºÅ
-	 * @return PartInfoForm
-	 */
-	public PartInfoForm getPartInfo(String stuffNo) throws Exception{
-		PartInfoForm pi=null;
-		String strHql="from PartInfoForm as pi where pi.stuffNo=:stuffNo";
-		
-		ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
-		QueryParameter param = new QueryParameter();
-		param.setName("stuffNo");
-		param.setValue(stuffNo);
-		param.setHbType(Hibernate.STRING);
-		paramList.add(param);
-		
-		List<PartInfoForm> aList = this.getDao().parameterQuery(strHql, paramList);
-		if(aList!=null&&aList.size()>0) pi=aList.get(0);
-	
-		return pi;	
-	}
-	
-	
-	/**
-	 * ¸ù¾İsaleNo·µ»ØËùÓĞÉêÇëµÄStuffNo
-	 * @param partCode ÁãsaleNo±àºÅ
-	 * @return String StuffNoÆ´×°
-	 */
-	public String getStuffNos(String saleNo) throws Exception{
-		String stuffNos=null;
-		String strHql="select sif.stuffNo,sum(sif.partNum) from SaleDetailForm as sif where sif.saleNo = :saleNo " +
-				"and sif.delFlag=0 group by sif.stuffNo";
-		ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
-		QueryParameter param = new QueryParameter();
-		param.setName("saleNo");
-		param.setValue(saleNo);
-		param.setHbType(Hibernate.STRING);
-		paramList.add(param);
-		
-		List aList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
-		for(int i=0;aList!=null&&i<aList.size();i++){
-			Object[] obj=(Object[])aList.get(i);
-			if(i==0) stuffNos=obj[0]+" * "+obj[1];
-			else stuffNos+="; "+obj[0]+" * "+obj[1];
-			
-		}
-	
-		return stuffNos;
-	}
-	
 
-	/**
-	 * ¼ÆËã×îĞÂµÄÃÀÔª»ãÂÊ
-	 * @return exchangeRate
-	 */
-	public float getExchangeRate() throws Exception{
-		if(ExchangeRate==0){
-			String strHql="select sif.exchangeRate from SaleInfoForm as sif " +
-				"where sif.exchangeRate is not null and sif.delFlag=0 order by sif.saleNo desc";
-			Float ecr=(Float)this.getDao().uniqueResult(strHql);
-			if(ecr!=null) ExchangeRate=ecr.floatValue();
-		}
-		return ExchangeRate;
-	}
+    /**
+     * é™æ€æ–¹æ³•ï¼Œä¾›å¤–éƒ¨äººå‘˜æ‹¿åˆ°è¯¥ç±»å®ä¾‹
+     */
+    public static final CommonSearch getInstance() {
+        return INSTANCE;
+    }
 
-	/**
-	 * ¼ÆËã¶ÔÓ¦ÏúÊÛµ¥µÄÃÀÔª»ãÂÊ
-	 * @param partCode ÁãsaleNo±àºÅ
-	 * @return exchangeRate
-	 */
-	public float getExchangeRate(String saleNo) throws Exception{
-		Float ecr = null;
-		if(ExchangeRate==0){
-			String strHql="select sif.exchangeRate from SaleInfoForm as sif " +
-				"where sif.saleNo = :saleNo ";
-			
-			ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
-			QueryParameter param = new QueryParameter();
-			param.setName("saleNo");
-			param.setValue(saleNo);
-			param.setHbType(Hibernate.STRING);
-			paramList.add(param);
-			
-			List aList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
-			if(aList!=null&&aList.size()>0){
-				ecr= (Float)aList.get(0);
-			}else{
-				ecr = this.getExchangeRate();
-			}
-			
-			if(ecr!=null) ExchangeRate=ecr.floatValue();
-		}
-		return ExchangeRate;
-	}
-	
-	/**
-	 * »ñÈ¡¿ÆÄ¿Ê÷id¶ÔÓ¦µÄname
-	 * @return 
-	 * @throws Exception
-	 */
-	public String getSubjectTreeName(Long subId) throws Exception{
-		
-		String strHql="select st.subjectName from SubjectTreeForm st where st.subjectId= :subjectId";
-		QueryParameter param = new QueryParameter();
-		param.setName("subjectId");
-		param.setValue(subId);
-		param.setHbType(Hibernate.LONG);
-		
-		String subName = (String)this.getDao().parameterUnique(strHql, param);
-		
-	
-		return subName;	
-	}
-	
-	public Long getStockCount() throws Exception{
-		String strHql="select count(*) from StockInfoForm ";
-		return (Long)this.getDao().uniqueResult(strHql);
-	}
-	
-	public List<IrisCodeForm> getIrisInfoList() throws Exception{
-		if(IrisInfoList==null){
-			IrisInfoList = (List<IrisCodeForm>)this.getDao().list("from IrisCodeForm as ff order by ff.parentCode,ff.orderId ");
-		}
-		return IrisInfoList;
-	}
+    public static float ExchangeRate = 0;
 
-		public static void  main(String[] args){
-			
-		}
+
+    /**
+     * æ ¹æ®ç”¨æˆ·IDæŸ¥è¯¢ç”¨æˆ·åç§°
+     * @param userid Long ç”¨æˆ·ID
+     * @return String ç”¨æˆ·åç§°
+     */
+    public String findUserNameByUserId(Long userid){//æ ¹æ®ç”¨æˆ·IDæŸ¥è¯¢ç”¨æˆ·åç§°
+        String result = "";
+        try{
+            if(userid!=null){
+                if(userNameMap.containsKey(userid)){
+                    result=(String)userNameMap.get(userid);
+                }else{
+                    String strHql="select uf.userName from UserForm as uf where uf.id=?";
+                    Object obj= this.getDao().uniqueResult(strHql,userid);
+                    if(obj!=null){
+                        result = (String)obj;
+                        userNameMap.put(userid,result);
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+
+    /**
+     * æŸ¥è¯¢å†å²æµæ°´è®°å½•çš„é›¶ä»¶æˆæœ¬
+     * @param formNo-å•å·
+     * @param skuCode-é›¶ä»¶
+     * @param inOutType-å‡ºå…¥åº“æ ‡å¿—
+     * @return Double æˆæœ¬
+     */
+    public Double getFlowCost(String formNo,String skuCode,String inOutType){
+        Double perCost = null;
+        try{
+            Object obj=this.getDao().uniqueResult("select sff.realCost from StockFlowForm as sff " +
+                    "where sff.formNo='"+formNo+"' and sff.skuCode='"+skuCode+"'and sff.inOutType='"+inOutType+"' " +
+                    " order by sff.createDate desc ");
+            if(obj!=null){
+                perCost=(Double)obj;
+            }else{
+                System.err.println("å•å·:"+formNo+",é›¶ä»¶:"+skuCode+",åœ¨æµæ°´è¡¨("+inOutType+")ä¸­çš„æˆæœ¬æœ‰è¯¯");
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return perCost;
+    }
+    /**
+     * æ ¹æ®é›¶ä»¶ä»£ç å–å¾—é›¶ä»¶çš„stdCost
+     * @param stuffNo é›¶ä»¶ç¼–å·
+     * @return Double stdCost
+     */
+    public Float getPartPerCost(String stuffNo){
+        Float perCost = 0f;
+        try{
+            Object obj=this.getDao().uniqueResult("select pif.buyCost from PartInfoForm as pif where pif.stuffNo=?",stuffNo);
+            if(obj!=null) perCost=(Float)obj;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return perCost;
+    }
+
+    /**
+     * æ ¹æ®é™„ä»¶idsæŸ¥è¯¢ç›¸å…³
+     * @param aIds
+     * @return Double stdCost
+     */
+    public List getAttachedList(String aIds) throws Exception{
+
+        String strHql="from AttachedInfoForm as aif where aif.attachedId in (: aIds)";
+        ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
+        QueryParameter param = new QueryParameter();
+        param.setName("aIds");
+        param.setValue(aIds);
+        param.setHbType(Hibernate.STRING);
+        paramList.add(param);
+
+        List aList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
+
+
+        return aList;
+    }
+
+
+    /**
+     * æŸ¥è¯¢å®¢æˆ·ä¿¡æ¯
+     * @param
+     * @return List
+     */
+    public List getCustomerList() throws Exception{
+
+        String strHql="select cif.customerId,cif.customerName,cif.linkman,cif.phone," +
+                "cif.cityName,cif.fax,cif.address from CustomerInfoForm as cif where cif.delFlag=0";
+
+        List aList = (ArrayList)this.getDao().list(strHql);
+
+
+        return aList;
+    }
+
+    public String getCustomerName(String custId) throws Exception{
+
+        String strHql="select cif.customerName from CustomerInfoForm as cif where cif.customerId=?";
+
+        return (String)this.getDao().uniqueResult(strHql,custId);
+    }
+
+    /**
+     * æŸ¥è¯¢å‚å•†ä¿¡æ¯
+     * @param
+     * @return List
+     */
+    public List getFactoryList() throws Exception{
+
+        String strHql="select cif.factoryId,cif.factoryName,cif.linkman,cif.phone," +
+                "cif.cityName,cif.fax,cif.address from FactoryInfoForm as cif where cif.delFlag=0";
+
+        List aList = (ArrayList)this.getDao().list(strHql);
+
+
+        return aList;
+    }
+
+
+    /**
+     * æŸ¥è¯¢å¾…å‘è´§å®¢æˆ·ä¿¡æ¯
+     * @param
+     * @return List
+     */
+    public List getAsnCustomerList() throws Exception{
+
+        String strHql="select distinct sif.customerId,sif.customerName from SaleInfoForm as sif,SaleDetailForm as sd " +
+                "where sd.saleNo=sif.saleNo and sif.delFlag=0 and sd.partStatus in('M','Q','O')";
+
+
+        return this.getDao().list(strHql);
+    }
+
+
+    /**
+     * æ ¹æ®æ–™å·æŸ¥è¯¢é›¶ä»¶è¡¨
+     * @param stuffNo æ–™å·
+     * @return PartInfoForm
+     */
+    public PartInfoForm getPartInfo(String stuffNo) throws Exception{
+        PartInfoForm pi=null;
+        String strHql="from PartInfoForm as pi where pi.stuffNo=:stuffNo";
+
+        ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
+        QueryParameter param = new QueryParameter();
+        param.setName("stuffNo");
+        param.setValue(stuffNo);
+        param.setHbType(Hibernate.STRING);
+        paramList.add(param);
+
+        List<PartInfoForm> aList = this.getDao().parameterQuery(strHql, paramList);
+        if(aList!=null&&aList.size()>0) pi=aList.get(0);
+
+        return pi;
+    }
+
+
+    /**
+     * æ ¹æ®saleNoè¿”å›æ‰€æœ‰ç”³è¯·çš„StuffNo
+     * @param saleNo é›¶saleNoç¼–å·
+     * @return String StuffNoæ‹¼è£…
+     */
+    public String getStuffNos(String saleNo) throws Exception{
+        String stuffNos=null;
+        String strHql="select sif.stuffNo,sum(sif.partNum) from SaleDetailForm as sif where sif.saleNo = :saleNo " +
+                "and sif.delFlag=0 group by sif.stuffNo";
+        ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
+        QueryParameter param = new QueryParameter();
+        param.setName("saleNo");
+        param.setValue(saleNo);
+        param.setHbType(Hibernate.STRING);
+        paramList.add(param);
+
+        List aList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
+        for(int i=0;aList!=null&&i<aList.size();i++){
+            Object[] obj=(Object[])aList.get(i);
+            if(i==0) stuffNos=obj[0]+" * "+obj[1];
+            else stuffNos+="; "+obj[0]+" * "+obj[1];
+
+        }
+
+        return stuffNos;
+    }
+
+
+    /**
+     * è®¡ç®—æœ€æ–°çš„ç¾å…ƒæ±‡ç‡
+     * @return exchangeRate
+     */
+    public float getExchangeRate() throws Exception{
+        if(ExchangeRate==0){
+            String strHql="select sif.exchangeRate from SaleInfoForm as sif " +
+                    "where sif.exchangeRate is not null and sif.delFlag=0 order by sif.saleNo desc";
+            Float ecr=(Float)this.getDao().uniqueResult(strHql);
+            if(ecr!=null) ExchangeRate=ecr.floatValue();
+        }
+        return ExchangeRate;
+    }
+
+    /**
+     * è®¡ç®—å¯¹åº”é”€å”®å•çš„ç¾å…ƒæ±‡ç‡
+     * @param saleNo é›¶saleNoç¼–å·
+     * @return exchangeRate
+     */
+    public float getExchangeRate(String saleNo) throws Exception{
+        Float ecr = null;
+        if(ExchangeRate==0){
+            String strHql="select sif.exchangeRate from SaleInfoForm as sif " +
+                    "where sif.saleNo = :saleNo ";
+
+            ArrayList<QueryParameter> paramList = new ArrayList<QueryParameter>();
+            QueryParameter param = new QueryParameter();
+            param.setName("saleNo");
+            param.setValue(saleNo);
+            param.setHbType(Hibernate.STRING);
+            paramList.add(param);
+
+            List aList = (ArrayList)this.getDao().parameterQuery(strHql, paramList);
+            if(aList!=null&&aList.size()>0){
+                ecr= (Float)aList.get(0);
+            }else{
+                ecr = this.getExchangeRate();
+            }
+
+            if(ecr!=null) ExchangeRate=ecr.floatValue();
+        }
+        return ExchangeRate;
+    }
+
+    /**
+     * è·å–ç§‘ç›®æ ‘idå¯¹åº”çš„name
+     * @return
+     * @throws Exception
+     */
+    public String getSubjectTreeName(Long subId) throws Exception{
+
+        String strHql="select st.subjectName from SubjectTreeForm st where st.subjectId= :subjectId";
+        QueryParameter param = new QueryParameter();
+        param.setName("subjectId");
+        param.setValue(subId);
+        param.setHbType(Hibernate.LONG);
+
+        String subName = (String)this.getDao().parameterUnique(strHql, param);
+
+
+        return subName;
+    }
+
+    public Long getStockCount() throws Exception{
+        String strHql="select count(*) from StockInfoForm ";
+        return (Long)this.getDao().uniqueResult(strHql);
+    }
+
+    public List<IrisCodeForm> getIrisInfoList() throws Exception{
+        if(IrisInfoList==null){
+            IrisInfoList = (List<IrisCodeForm>)this.getDao().list("from IrisCodeForm as ff order by ff.parentCode,ff.orderId ");
+        }
+        return IrisInfoList;
+    }
+
+    public static void  main(String[] args){
+
+    }
 }

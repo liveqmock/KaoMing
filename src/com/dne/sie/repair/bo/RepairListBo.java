@@ -1,24 +1,17 @@
 package com.dne.sie.repair.bo;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import com.dne.sie.common.tools.DicInit;
-import org.apache.log4j.Logger;
-
 import com.dne.sie.common.tools.CommonSearch;
+import com.dne.sie.common.tools.DicInit;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.maintenance.form.IrisCodeForm;
-import com.dne.sie.repair.form.RepairFeeInfoForm;
-import com.dne.sie.repair.form.RepairIrisInfoForm;
-import com.dne.sie.repair.form.RepairManInfoForm;
-import com.dne.sie.repair.form.RepairPartForm;
-import com.dne.sie.repair.form.RepairSearchForm;
-import com.dne.sie.repair.form.RepairServiceForm;
+import com.dne.sie.repair.form.*;
 import com.dne.sie.repair.queryBean.RepairListQuery;
 import com.dne.sie.util.bo.CommBo;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class RepairListBo extends CommBo {
     private static Logger logger = Logger.getLogger(RepairListBo.class);
