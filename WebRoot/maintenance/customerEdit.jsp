@@ -31,7 +31,7 @@
    <tr class="tableback2">
     
     <td>客户ID：<font color="red">*</font></td>
-    <td colspan="2" ><html:text  styleClass="form" property="customerId"  maxlength="4"  size="20"  readonly="true"/> </td>
+    <td  ><html:text  styleClass="form" property="customerId"  maxlength="4"  size="20"  readonly="true"/> </td>
     <td>客户名称：<font color="red">*</font></td>
     <td colspan="3" ><html:text  styleClass="form" property="customerName"  maxlength="32"  size="45" /> </td>
     

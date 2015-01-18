@@ -18,22 +18,34 @@ try {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>电诊单</title>
-<link href="<%= request.getContextPath()%>/repair/css/reset.css" rel="stylesheet" />
 <link href="<%= request.getContextPath()%>/repair/css/css.css" rel="stylesheet" />
 </head>
 
 <body>
-<div class="main" > 
-	<div class="head">
-		<div class="logo"><img src="<%= request.getContextPath()%>/repair/images/logo.jpg" width="189" height="93" /></div>
-		<div class="about">
-			<p>KAO MING MACHINERY INDUSRTIAL CO.,LTD</p>
-			<p>&nbsp;</p>
-			<p>E-MAIL:  <a href="#">KAOMING2005@163.COM</a></p>
-			<p>TELL:  021-62128864   FAX:021-62128854</p>
-			<p>地址：上海市静安区镇宁路200号东峰9楼A座</p>
-		</div>
-	</div>
+
+<table border="0" width="98%" height="162">
+    <tr>
+        <td height="150" width="182"><b><i><font size="8" color="purple">&nbsp;&nbsp;KAO</font></i></b><p style="line-height:10px;">
+            <b><i><font size="8" color="purple">&nbsp;&nbsp;MING</font></i></b></td>
+        <td height="150" width="575">
+            <p>&nbsp;</p>
+            <p align="right" style="line-height:3px;"><b><font size="4">KAO MING MACHINERY INDUSTRIAL CO., LTD.</font></b></p>
+            <p align="right" style="line-height:3px;">高明精机工业股份有限公司上海营业处&nbsp; </p>
+            <p align="right" style="line-height:3px;">上海晨冉机电有限公司&nbsp;</p>
+            <p align="right" style="line-height:3px;"><b>E-MAIL：kaoming2005@163.com</b></p>
+            <p align="right" style="line-height:3px;">电话:<b>021-62128864</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                传真:<b>021-62128854</b></p>
+            <p align="right" style="line-height:15px;">地址：上海市静安区镇宁路<b> 200 </b>号 东峰<b> 9 </b>楼<b>A</b>座
+        </td>
+    </tr>
+    <tr>
+        <td height="2" colspan="6" bgcolor="#677789" style='width:37.4pt;border:none;border-bottom:solid windowtext 1.0pt;
+  mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 1.4pt 0cm 1.4pt'></td>
+    </tr>
+</table>
+
+<div class="main" >
+
 	<div class="content">
 		<h1>客 户 维 修 服 务 表</h1>
 		<table border="1" cellspacing="1">

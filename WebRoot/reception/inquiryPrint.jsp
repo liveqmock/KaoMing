@@ -9,18 +9,53 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gbk">
 
 <style type="text/css">
-<!--
-table
-{
-	font-size: 12pt;
-	
-}
--->
+    <!--
+    table
+    {
+        font-size: 12pt;
+        font-family:'方正姚体';
+    }
+
+    @font-face
+    {
+        font-family:'方正姚体';
+        mso-font-alt:'方正姚体';
+        text-align:right;text-indent:249.95pt;
+        mso-char-indent-count:22.0
+    }
+
+    .border1 {
+        border:solid windowtext 1.0pt;
+        mso-border-alt:solid windowtext .5pt;
+        padding:0cm 1.4pt 0cm 1.4pt;
+    }
+    .borderrow1{
+        border:solid windowtext 1.0pt;
+        border-left:none;
+        mso-border-left-alt:solid windowtext .5pt;
+        mso-border-alt: solid windowtext .5pt;
+        padding:0cm 1.4pt 0cm 1.4pt;
+    }
+    .bordercol1{
+        border:solid windowtext 1.0pt;
+        border-top:none;
+        mso-border-top-alt:solid windowtext .5pt;
+        mso-border-alt:solid windowtext .5pt;
+        padding:0cm 1.4pt 0cm 1.4pt;
+    }
+    .border2{
+        border-top:none;
+        /*border-left: none;*/
+        border-bottom:solid windowtext 1.0pt;
+        border-right:solid windowtext 1.0pt;
+        mso-border-top-alt:solid windowtext .5pt;
+        /*mso-border-left-alt:solid windowtext .5pt;*/
+        mso-border-alt:solid windowtext .5pt;
+        padding:0cm 1.4pt 0cm 1.4pt;
+    }
+    -->
 </style>
-<style media=print>
-.Noprint{display:none;}
-.PageNext{page-break-after: always;}
-</style>
+
 </head>
 <%
 		String[] kmInfo = (String[])request.getAttribute("kmInfo");
@@ -48,23 +83,21 @@ table
 		<p align="right" style="line-height:3px;"><b>E-MAIL：kaoming2005@163.com</b></p>
 		<p align="right" style="line-height:3px;">电话:<b>021-62128864</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 		传真:<b>021-62128854</b></p>
-		<p align="right" style="line-height:15px;">上海市静安区镇宁路号<b> 200 </b>号 东峰<b> 9A </b>座
+		<p align="right" style="line-height:15px;">地址：上海市静安区镇宁路<b> 200 </b>号 东峰<b> 9 </b>楼<b>A</b>座
 		</td>
 	</tr>
-	 <tr> 
-    <td height="2" colspan="6" bgcolor="#677789"></td>
-  </tr>
+    <tr>
+        <td height="2" colspan="6" bgcolor="#677789" style='width:37.4pt;border:none;border-bottom:solid windowtext 1.0pt;
+  mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 1.4pt 0cm 1.4pt'></td>
+    </tr>
 </table>
 
 <table border="0" width="98%" height="117">
-
-
 	<tr>
 		<td height="111" width="388"><font  color="purple">
-		
 		<p style="line-height:18px;"><b>&nbsp;To:</b>&nbsp;&nbsp;&nbsp; 高明精机工业股份有限公司</p>
-		<p style="line-height:8px;"><b>&nbsp;Attn:</b>&nbsp;&nbsp;&nbsp;<%=kmInfo[2]%></p>
-		<p style="line-height:8px;"><b>&nbsp;Cc:</b>&nbsp;&nbsp;&nbsp; <%=kmInfo[0]%></p>
+		<p style="line-height:8px;"><b>&nbsp;Attn:</b>&nbsp;&nbsp;&nbsp;</p>
+		<p style="line-height:8px;"><b>&nbsp;Cc:</b>&nbsp;&nbsp;&nbsp; <%=kmInfo[2]%></p>
 		<p style="line-height:8px;"><b>&nbsp;Fax:</b>&nbsp;&nbsp; <%=kmInfo[1]%></font></td>
 		
 		<td height="111" width="460"><font  color="purple">
@@ -72,64 +105,49 @@ table
 		<p style="line-height:8px;"><b>Date:</b>&nbsp;&nbsp; <%=Operate.toSqlDate()%></p>
 		<p style="line-height:8px;"><b>Page:</b>&nbsp;&nbsp; 1</p>
 		<p style="line-height:8px;">主旨:&nbsp;&nbsp; 询价</font></td>
-		
 	</tr>
-	
-	<tr> 
-    <td height="1" colspan="6" bgcolor="#677789"></td>
-  </tr>
+    <tr>
+        <td height="1" colspan="6" bgcolor="#677789" style='width:37.4pt;border:none;border-bottom:solid windowtext 1.0pt;
+  mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 1.4pt 0cm 1.4pt'></td>
+    </tr>
 </table>
  
 <p align="center"><b><font size="6">询价单</font></b></p>
 <p>询 价 单 号： <%=sif.getSaleNo()%></p>
 <p>客 户 名 称： <%=sif.getCustomerName()%></p>
-<p>交 货 时 间： </p>
+<p>交 货 时 间： 15天</p>
 <p>交 货 地 点： <%=sif.getDeliveryPlaceTw()==null?"上海办":sif.getDeliveryPlaceTw()%></p>
-<table border="1" width="96%" id="table1">
+<table  width="96%" id="table1" border=0 cellspacing=0 cellpadding=0>
 	<tr>
-		<td width="59" align="center">项次</td>
-		<td width="15%" align="center">机型</td>
-		<td width="15%" align="center">机身编码</td>
-		<td width="35%"align="center">零件名称</td>
-		<td width="160" align="center">料号</td>
-		<td align="center">数量</td>
+		<td class="border1" width="59" align="center">项次</td>
+        <td class="borderrow1" width="35%"align="center">零件名称</td>
+        <td class="borderrow1" width="160" align="center">零件号码</td>
+        <td class="borderrow1" align="center" width="80">数量</td>
+		<td class="borderrow1" width="15%" align="center">机型</td>
+		<td class="borderrow1" width="15%" align="center">机身编码</td>
+
 	</tr>
 	
 	<%for(int i=0;i<partsList.size();i++){
             SaleDetailForm sdf=(SaleDetailForm)partsList.get(i);
 	%>
 	<tr>
-		<td align="center"><%=(i+1)%></td>
-		<td align="left"><%=sdf.getModelCode()%></td>
-		<td align="left"><%=sdf.getModelSerialNo()%></td>
-		<td ><%=sdf.getSkuCode()%></td>
-		<td ><%=sdf.getStuffNo()%></td>
-		<td align="center"><%=sdf.getPartNum()%><%=sdf.getSkuUnit()%></td>
+		<td class="bordercol1" align="center"><%=(i+1)%></td>
+        <td class="border2" align="left"><%=sdf.getSkuCode()%></td>
+        <td class="border2" align="left"><%=sdf.getStuffNo()%></td>
+        <td class="border2" align="center"><%=sdf.getPartNum()%><%=sdf.getSkuUnit()%></td>
+		<td class="border2" align="left"><%=sdf.getModelCode()%></td>
+		<td class="border2" align="left"><%=sdf.getModelSerialNo()%></td>
 	</tr>
 	<%}%>
 	
 	
 </table>
-<p>　</p>
+<p><font color="#8b0000">沟通事项：</font></p>
 <p>　</p>
 <p align="right"><font size="4">上海办： <%=userName%> </font><font size="4">&nbsp; </font>&nbsp;&nbsp;&nbsp;&nbsp;
 </p>
- 
 
-
-  
-  
-    <table>
-    
-  <tr align="center">
-      <td >
-  	<input type="button" onclick="f_print1()" value='页面设置' class="NOPRINT">
-  	<input type="button" onclick="f_print2()" value='打印预览' class="NOPRINT">
-  	<input type="button" onclick="f_print3()" value='直接打印'  class="NOPRINT">
-      </td>
-  </tr>
-  
-</table>
   
 </form>
 </body>

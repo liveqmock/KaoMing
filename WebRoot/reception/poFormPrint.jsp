@@ -54,10 +54,7 @@ table
 }
 -->
 </style>
-<style media=print>
-.Noprint{display:none;}
-.PageNext{page-break-after: always;}
-</style>
+
 </head>
 <%
 try{
@@ -73,20 +70,20 @@ try{
 <OBJECT  id=WebBrowser  classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2  height=0  width=0 VIEWASTEXT> </OBJECT> 
 
 <table border="0" width="98%" height="162">
-	<tr>
-		<td height="150" width="182"><b><i><font size="8" color="purple">&nbsp;&nbsp;KAO</font></i></b><p style="line-height:10px;">
-		<b><i><font size="8" color="purple">&nbsp;&nbsp;MING</font></i></b></td>
-		<td height="150" width="575">
-		<p>&nbsp;</p>
-		<p align="right" style="line-height:3px;"><b><font size="4">KAO MING MACHINERY INDUSTRIAL CO., LTD.</font></b></p>
-		<p align="right" style="line-height:3px;">高明精机工业股份有限公司上海营业处&nbsp; </p>
-		<p align="right" style="line-height:3px;">上海晨冉机电有限公司&nbsp;</p>
-		<p align="right" style="line-height:3px;"><b>E-MAIL：kaoming2005@163.com</b></p>
-		<p align="right" style="line-height:3px;">电话:<b>021-62128864</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		传真:<b>021-62128854</b></p>
-		<p align="right" style="line-height:15px;">上海市静安区镇宁路号<b> 200 </b>号 东峰<b> 9A </b>座
-		</td>
-	</tr>
+    <tr>
+        <td height="150" width="182"><b><i><font size="8" color="purple">&nbsp;&nbsp;KAO</font></i></b><p style="line-height:10px;">
+            <b><i><font size="8" color="purple">&nbsp;&nbsp;MING</font></i></b></td>
+        <td height="150" width="575">
+            <p>&nbsp;</p>
+            <p align="right" style="line-height:3px;"><b><font size="4">KAO MING MACHINERY INDUSTRIAL CO., LTD.</font></b></p>
+            <p align="right" style="line-height:3px;">高明精机工业股份有限公司上海营业处&nbsp; </p>
+            <p align="right" style="line-height:3px;">上海晨冉机电有限公司&nbsp;</p>
+            <p align="right" style="line-height:3px;"><b>E-MAIL：kaoming2005@163.com</b></p>
+            <p align="right" style="line-height:3px;">电话:<b>021-62128864</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                传真:<b>021-62128854</b></p>
+            <p align="right" style="line-height:15px;">地址：上海市静安区镇宁路<b> 200 </b>号 东峰<b> 9 </b>楼<b>A</b>座
+        </td>
+    </tr>
 	<tr>
         <td height="2" colspan="6" bgcolor="#677789" style='width:37.4pt;border:none;border-bottom:solid windowtext 1.0pt;
   mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 1.4pt 0cm 1.4pt'></td>
@@ -97,8 +94,8 @@ try{
 	<tr>
 		<td height="111" width="388"><font  color="purple">
 		<p style="line-height:18px;"><b>&nbsp;To:</b>&nbsp;&nbsp;&nbsp; 高明精机工业股份有限公司</p>
-		<p style="line-height:8px;"><b>&nbsp;Attn:</b>&nbsp;&nbsp;&nbsp;<%=kmInfo[2]%></p>
-		<p style="line-height:8px;"><b>&nbsp;Cc:</b>&nbsp;&nbsp;&nbsp; <%=kmInfo[0]%></p>
+		<p style="line-height:8px;"><b>&nbsp;Attn:</b>&nbsp;&nbsp;&nbsp;</p>
+		<p style="line-height:8px;"><b>&nbsp;Cc:</b>&nbsp;&nbsp;&nbsp; <%=kmInfo[2]%></p>
 		<p style="line-height:8px;"><b>&nbsp;Fax:</b>&nbsp;&nbsp; <%=kmInfo[1]%></font></td>
 		
 		<td height="111" width="460"><font  color="purple">
