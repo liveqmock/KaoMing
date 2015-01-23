@@ -1,18 +1,18 @@
 package com.dne.sie.support.userRole.action;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 import java.util.ArrayList;
 import java.util.Date;
 
-//Java À©Õ¹Àà
+//Java æ‰©å±•ç±»
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-//µÚÈı·½Àà
+//ç¬¬ä¸‰æ–¹ç±»
 import org.apache.struts.action.ActionForm;
 import org.apache.log4j.Logger;
 
-//×Ô¶¨ÒåÀà
+//è‡ªå®šä¹‰ç±»
 import com.dne.sie.support.userRole.bo.RoleBo;
 import com.dne.sie.support.userRole.form.RoleForm;
 //import com.dne.sie.common.tools.AtomRoleCheck;
@@ -20,27 +20,26 @@ import com.dne.sie.util.action.ControlAction;
 
 
 /**
- * È¨ÏŞ¹ÜÀíAction´¦ÀíÀà
+ * æƒé™ç®¡ç†Actionå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
- * @see RoleAction.java <br>
  */
 public class RoleAction extends ControlAction{
 
-   
-	/**
-	 * È¨ÏŞä¯ÀÀÒ³Ãæ
-	 * @param request HttpServletRequest
-	 * @param form ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */
-	public String roleList(HttpServletRequest request, ActionForm form){
-		String forward = "roleList";
-	
-		try{
-			RoleForm rf=(RoleForm)form;
-			RoleBo rbo = RoleBo.getInstance();
-			
+
+    /**
+     * æƒé™æµè§ˆé¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String roleList(HttpServletRequest request, ActionForm form){
+        String forward = "roleList";
+
+        try{
+            RoleForm rf=(RoleForm)form;
+            RoleBo rbo = RoleBo.getInstance();
+
 //			HttpSession session=request.getSession();
 //			Long userId=(Long)session.getAttribute("userId");
 //			if(AtomRoleCheck.checkRole(userId,"admin")){
@@ -48,202 +47,202 @@ public class RoleAction extends ControlAction{
 //			}else{
 //				rf.setRoleType("C");
 //			}
-			request.setAttribute("vtrData",rbo.list(rf));
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
+            request.setAttribute("vtrData",rbo.list(rf));
 
-	 /**
-	   * ÏÔÊ¾È¨ÏŞÌí¼ÓÒ³Ãæ
-	   * @param request HttpServletRequest
-	   * @param form ±íµ¥Êı¾İ
-	   * @return Ò³Ãæ
-	   */
-	  public String addInit(HttpServletRequest request,ActionForm form) {
-		  String forward = "addInit";	
-	
-		  try{
-		  
-		
-		
-		  }catch(Exception e){
-			  e.printStackTrace();
-		  }
-	
-		  return forward;
-	  }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * æ˜¾ç¤ºæƒé™æ·»åŠ é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String addInit(HttpServletRequest request,ActionForm form) {
+        String forward = "addInit";
+
+        try{
 
 
-	/**
-	 * Ìí¼ÓÈ¨ÏŞÊı¾İ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public String roleAdd(HttpServletRequest request,ActionForm form) {
-		String forward = "resultMessage";
-		int tag =-1;
 
-		try{
-			RoleForm rf=(RoleForm)form;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return forward;
+    }
+
+
+    /**
+     * æ·»åŠ æƒé™æ•°æ®
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String roleAdd(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag =-1;
+
+        try{
+            RoleForm rf=(RoleForm)form;
 //			rf.setRoleType("C");
-			HttpSession session=request.getSession();
-			Long userId=(Long)session.getAttribute("userId");
-			rf.setCreateBy(userId);
-			rf.setCreateDate(new Date());
-							
-			RoleBo rbo = RoleBo.getInstance();
-			
-			
-			tag = rbo.add(rf);
-			request.setAttribute("tag",tag+"");
-			request.setAttribute("businessFlag","roleAdd");
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
+            HttpSession session=request.getSession();
+            Long userId=(Long)session.getAttribute("userId");
+            rf.setCreateBy(userId);
+            rf.setCreateDate(new Date());
+
+            RoleBo rbo = RoleBo.getInstance();
 
 
-	/**
-	 * È¨ÏŞ¼ÇÂ¼É¾³ı
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public String roleDelete(HttpServletRequest request,ActionForm form) {
-		String forward = "resultMessage";
-		int tag =-1;
-		try{
-			String chkId = request.getParameter("id");
-			
+            tag = rbo.add(rf);
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag","roleAdd");
 
-			if(chkId!=null&&!chkId.equals("")){
-					RoleBo ubo = RoleBo.getInstance();
-					tag = ubo.deleteList(chkId);
-			}
-			request.setAttribute("tag",tag+"");
-			request.setAttribute("businessFlag","roleDelete");
-	
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}	
-
-	/**
-	 * È¨ÏŞĞŞ¸ÄºÍÏêÏ¸½çÃæ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public String roleDetail(HttpServletRequest request,ActionForm form) {
-		String forward = "roleDetail";
-
-		try{
-			String strId = request.getParameter("id");
-	
-			RoleBo rbo = RoleBo.getInstance();
-			RoleForm rf=rbo.find(strId);
-		
-		
-			request.setAttribute("roleForm",rf);	
-			request.setAttribute("state","detail");
-	
-	
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
 
 
+    /**
+     * æƒé™è®°å½•åˆ é™¤
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String roleDelete(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag =-1;
+        try{
+            String chkId = request.getParameter("id");
 
-	/**
-	 * ĞŞ¸ÄÈ¨ÏŞÊı¾İ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public String roleModify(HttpServletRequest request,ActionForm form) {
-		String forward = "resultMessage";
-		int tag=-1;
-		try{
-			RoleBo rbo = RoleBo.getInstance();
-			RoleForm rf=(RoleForm)form;
-			HttpSession session=request.getSession();
-			Long userId=(Long)session.getAttribute("userId");
-			rf.setUpdateBy(userId);
-			rf.setUpdateDate(new java.util.Date());
-			
-			RoleForm oldRf=rbo.findById(rf.getId().toString());
-			
-			rf.setUsers(oldRf.getUsers());
-			
-			tag=rbo.modify(rf);
+
+            if(chkId!=null&&!chkId.equals("")){
+                RoleBo ubo = RoleBo.getInstance();
+                tag = ubo.deleteList(chkId);
+            }
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag","roleDelete");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * æƒé™ä¿®æ”¹å’Œè¯¦ç»†ç•Œé¢
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String roleDetail(HttpServletRequest request,ActionForm form) {
+        String forward = "roleDetail";
+
+        try{
+            String strId = request.getParameter("id");
+
+            RoleBo rbo = RoleBo.getInstance();
+            RoleForm rf=rbo.find(strId);
+
+
+            request.setAttribute("roleForm",rf);
+            request.setAttribute("state","detail");
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+    /**
+     * ä¿®æ”¹æƒé™æ•°æ®
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String roleModify(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        try{
+            RoleBo rbo = RoleBo.getInstance();
+            RoleForm rf=(RoleForm)form;
+            HttpSession session=request.getSession();
+            Long userId=(Long)session.getAttribute("userId");
+            rf.setUpdateBy(userId);
+            rf.setUpdateDate(new java.util.Date());
+
+            RoleForm oldRf=rbo.findById(rf.getId().toString());
+
+            rf.setUsers(oldRf.getUsers());
+
+            tag=rbo.modify(rf);
 			/*
 			if(tag==1&&!newRoleContain.equals(oldRoleContain)){
 				FunctionBo fbo = new FunctionBo();
 				fbo.modelBuild(rf.getId().toString());
 			}*/
-			request.setAttribute("tag",tag+"");
-			request.setAttribute("businessFlag","roleModify");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
-	
-	/**
-	 * Ä³ÓÃ»§ÓµÓĞµÄÈ¨ÏŞ¼¯ºÏ
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public String userRole(HttpServletRequest request,ActionForm form) {
-		String forward = "roleSelect";
-		try{
-			String strUserId = request.getParameter("id");
-			
-			HttpSession session=request.getSession();
-			Integer orgType=(Integer)session.getAttribute("orgType");
-		
-			RoleBo rbo = RoleBo.getInstance();
-			ArrayList[] roleList=new ArrayList[2];
-			
-			//if(AtomRoleCheck.checkRole(userId,"admin")){
-			if(false){
-				roleList=rbo.userRole(strUserId,orgType,"admin");
-			}else{
-				roleList=rbo.userRole(strUserId,orgType,"common");
-			}
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag","roleModify");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * æŸç”¨æˆ·æ‹¥æœ‰çš„æƒé™é›†åˆ
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userRole(HttpServletRequest request,ActionForm form) {
+        String forward = "roleSelect";
+        try{
+            String strUserId = request.getParameter("id");
+
+            HttpSession session=request.getSession();
+            Integer orgType=(Integer)session.getAttribute("orgType");
+
+            RoleBo rbo = RoleBo.getInstance();
+            ArrayList[] roleList=new ArrayList[2];
+
+            //if(AtomRoleCheck.checkRole(userId,"admin")){
+            if(false){
+                roleList=rbo.userRole(strUserId,orgType,"admin");
+            }else{
+                roleList=rbo.userRole(strUserId,orgType,"common");
+            }
 			
 			/*else if(AtomRoleCheck.checkRole(userId,"station")&&orgCode!=null){
 				roleList=rbo.userRole(strUserId,orgCode.toString());
 			}else{
 				forward = "roleFalse";
 			}*/
-		
-			request.setAttribute("userList",roleList);
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
-	
-	/**
-		 * ²éÑ¯Ä³¸ö²¿ÃÅºÍÄ³¸ö½ÇÉ«ÏÂµÄÓÃ»§ĞÅÏ¢
-		 * @param request HttpServletRequest
-		 * @param form  ±íµ¥Êı¾İ
-		 * @return Ò³Ãæ
-		 */	
+
+            request.setAttribute("userList",roleList);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * æŸ¥è¯¢æŸä¸ªéƒ¨é—¨å’ŒæŸä¸ªè§’è‰²ä¸‹çš„ç”¨æˆ·ä¿¡æ¯
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
 //		  public String roleContainSelect(HttpServletRequest request, ActionForm form) {
 //			String forward = "roleContainSelect";
 //			
@@ -275,6 +274,6 @@ public class RoleAction extends ControlAction{
 //	  	
 //			return forward;
 //		  }
-		  
+
 
 }

@@ -11,7 +11,8 @@
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <script language=javascript src="js/popCalendar.js"></script>
 <script language=javascript src="js/common.js"></script>
-<script language=javascript src="js/checkValid.js"></script>
+    <SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
+    <script language=javascript src="js/checkValid.js"></script>
 <script language=javascript src="js/ajax.js"></script>
 <script language=javascript src="js/inputValidation.js"></script>
 
@@ -21,6 +22,9 @@
 		ArrayList sexList = (ArrayList)DicInit.SYS_CODE_MAP.get("SEX");
 		
 		ArrayList<String[]> empList = (ArrayList<String[]>)request.getAttribute("empList");
+        ArrayList<String[]> roleList = (ArrayList<String[]>)request.getAttribute("roleList");
+
+
 %>
 <body>
 <html:form method="post" action="userAction.do?method=userAdd">
@@ -80,7 +84,14 @@
   </tr>
  <tr class="tableback1"> 
     <td width="97"> 角色选择 ：<font color="red">*</font></td>
-    <td colspan="5"><html:text property="roleName" readonly="true" styleClass="form" size="56"/> <a href="javascript:f_role()">[选择]</a> </td>
+    <td colspan="5">
+        <%for(int i = 0; i< roleList.size();i++){
+            String[] temp = roleList.get(i);
+        %>
+        <input type="checkbox" name="chk" value="<%=temp[0]%>">&nbsp;<%=temp[1]%>
+
+        <%}%>
+    </td>
   </tr>
   <tr class="tableback1"> 
     <td valign="top">备注：</td>
@@ -115,13 +126,12 @@ function f_submit(){
 
 function f_check(){
     var retFlag=false;
-    alert(document.forms[0].userName.value);
     if(f_isNull(document.forms[0].employeeCode,'用户ID')&&f_isNumChar2(document.forms[0].employeeCode,'用户ID')
     	&&f_isNull(document.forms[0].userName,'用户名称')&&verifyEmail(document.forms[0].email)
     	&&f_isNull(document.forms[0].password,'用户密码')&&f_isNumChar2(document.forms[0].password,'用户密码')
     	&&f_maxLength(document.forms[0].remark,'备注',50)){
  
-	var roleName=document.forms[0].roleName.value;
+	var roleCode=chk();
 	var pw=document.forms[0].password.value;
 	var uName=document.forms[0].userName.value;
 	uName=uName.replaceAll(" ","");
@@ -132,9 +142,10 @@ function f_check(){
 		alert("密码长度最小6位");
 	}else if(!chkChar(pw)){
 		
-	}else if(roleName==null||roleName==''){
+	}else if(roleCode==null||roleCode==''){
 		alert("请选择角色！");
 	}else{
+        document.forms[0].roleCode.value=roleCode;
 		retFlag =  true;
 	}
     }
@@ -166,18 +177,7 @@ function chkChar(etext){
 	}		
 	return flag;
 }
-	
-function f_role(){
-	var userId=document.forms[0].id.value;
-	var varUser=window.showModalDialog("roleAction.do?method=userRole&id="+userId,"","dialogHeight: 500px; dialogWidth: 600px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
 
-	if(varUser!=null){
-		var retValue=varUser[0];
-		var retName=varUser[1];
-		document.forms[0].roleName.value=retName;
-		document.forms[0].roleCode.value=retValue;
-	}
-}
 
 function checkId(){
 	var employeeCode=document.forms[0].employeeCode.value;

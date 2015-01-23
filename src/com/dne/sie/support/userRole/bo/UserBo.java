@@ -1,15 +1,15 @@
 package com.dne.sie.support.userRole.bo;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-//Java À©Õ¹Àà
+//Java æ‰©å±•ç±»
 
-//µÚÈı·½Àà
+//ç¬¬ä¸‰æ–¹ç±»
 import org.apache.log4j.Logger;
 
-//×Ô¶¨ÒåÀà
+//è‡ªå®šä¹‰ç±»
 import com.dne.sie.support.userRole.form.UserForm;
 import com.dne.sie.support.userRole.form.RoleForm;
 
@@ -20,344 +20,343 @@ import com.dne.sie.util.bo.CommBo;
 
 
 /**
- * ÓÃ»§¹ÜÀíBO´¦ÀíÀà
+ * ç”¨æˆ·ç®¡ç†BOå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
- * @see UserBo.java <br>
  */
 public class UserBo extends CommBo {
-	private static Logger logger = Logger.getLogger(UserBo.class);
+    private static Logger logger = Logger.getLogger(UserBo.class);
 
-	private static final UserBo INSTANCE = new UserBo();
-		
-	private UserBo(){
-	}
-	
-	public static final UserBo getInstance() {
-	   return INSTANCE;
-	}
-   
-   /**
-	 * ÓÃ»§ÁĞ±í²éÑ¯Æ´×°
-	 * @param UserForm ²éÑ¯Ìõ¼ş
-	 * @return ArrayList ²éÑ¯½á¹û,·â×°String[]
-	 */
-   public ArrayList list(UserForm user) {
-		List dataList = null;
-		ArrayList alData = new ArrayList();
-		UserQuery uq = new UserQuery(user);
-    	
-			int count=0;
-			try {
-				dataList=uq.doListQuery(user.getFromPage(),user.getToPage());
-				
-				count=uq.doCountQuery();
-			
-				for (int i=0;i<dataList.size();i++) {
-					String[] data = new String[7];
-					UserForm uf = (UserForm)dataList.get(i);
-						uf.setRoleCodeAndName();
-						data[0] = uf.getId()+"";
-						data[1] = uf.getEmployeeCode();
-						data[2] = uf.getUserName();
-						data[3] = uf.getRoleName();
-						data[4] = uf.getEmail();
-						data[5] = uf.getPhone();
-						data[6] = uf.getRemark();
-						alData.add(data);
-					
-				}
-				alData.add(0,count+"");
-		
-			} catch(Exception e) {
-				e.printStackTrace();
-			} finally {
-			}
-			return alData;
-		}
-		
-   /**
-	* ¸ù¾İid²éÑ¯¸ÃÓÃ»§ĞÅÏ¢
-	* @param String ÓÃ»§±í¼ÇÂ¼pk
-	* @return ¸ÃÓÃ»§Form
-	*/
-	public UserForm find(String id) {
-		UserForm uf =null;
-		try {
-			uf = (UserForm)this.getDao().findById(UserForm.class,new Long(id));
-			
-			uf.setRoleCodeAndName();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return uf;		    	
-	} 
+    private static final UserBo INSTANCE = new UserBo();
 
-
-	/**
-	 * ¸ù¾İid²éÑ¯¸ÃÓÃ»§ĞÅÏ¢£¬Íâ¹ØÁª²¿ÃÅĞÅÏ¢
-	 * @param String ÓÃ»§±í¼ÇÂ¼pk
-	 * @return ¸ÃÓÃ»§Form
-	 */
-	public UserForm findUserAndGroup(String id) {
-		UserForm uf =null;
-		try {
-			uf = (UserForm)this.getDao().findById(UserForm.class,new Long(id));
-			
-			uf.setRoleCodeAndName();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return uf;		    	
-	} 
-	
-	/**
-	 * Ğ£ÑéÓÃ»§id(µÇÂ¼id)ÊÇ·ñ´æÔÚ
-	 * @param String ÊäÈëµÄÓÃ»§id
-	 * @return ¸ÃÓÃ»§idÊÇ·ñ¿ÉÒÔÊäÈë
-	 */
-	public boolean chkName(String empId) {
-		boolean retBoo = false;
-		
-		try {
-			Object obj=this.getDao().uniqueResult("select count(uf) from UserForm as uf where uf.employeeCode='"+empId+"'");
-			int count=((Long)obj).intValue();
-			
-			if(count==0) retBoo=true;
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return retBoo;		    	
-	} 
-	
-	
-	/**
-	* Ğ£ÑéÓÃ»§passwordÊÇ·ñ´æÔÚ
-	* @param Long ÊäÈëµÄÓÃ»§id£¬String password
-	* @return ¸ÃÓÃ»§idÊÇ·ñ¿ÉÒÔÊäÈë
-	*/
-	public boolean chkPw(Long userId,String pw) {
-		boolean retBoo = false;
-	
-		try {
-			MD5 md=new MD5();
-			pw=md.getMD5ofStr(pw);
-			Object obj=this.getDao().uniqueResult("select count(uf) from UserForm as uf where uf.id="+userId+" and uf.password='"+pw+"'");
-			int count=((Long)obj).intValue();
-		
-			if(count==1) retBoo=true;
-		
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return retBoo;		    	
-	} 
-	
-	   /**
-		* ĞŞ¸ÄÓÃ»§×Ô¼ºµÄÃÜÂë
-		* @param Long ÊäÈëµÄÓÃ»§id£¬String password
-		* @return ¸ÃÓÃ»§idÊÇ·ñ¿ÉÒÔÊäÈë
-		*/
-		public boolean modifyPw(String updateId,Long userId,String pw) {
-			boolean retBoo = false;
-	
-			try {
-				
-				int tag=this.getDao().execute("update UserForm as uf set uf.password='"+pw+"'" +
-						",uf.updateBy="+userId+",uf.updateDate=sysdate() where uf.id="+updateId);
-				if(tag>0) retBoo=true;
-		
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			return retBoo;		    	
-		} 
-		
-   
-	/**
-	  * ²åÈëÒ»ÌõÓÃ»§ĞÅÏ¢<br>
-	  * passwordÍ¨¹ıMD5×ªÂë
-	  * @param UserForm ÓÃ»§ĞÅÏ¢Form
-	  * @return ÊÇ·ñ³É¹¦±êÖ¾
-	  */
-    public int add(UserForm uf) {
-		int tag=-1;
-		
-		try {
-			if(chkName(uf.getEmployeeCode())){ 
-				String password=uf.getPassword();
-				MD5 md=new MD5();
-				uf.setPassword(md.getMD5ofStr(password));
-				if(this.getDao().insert(uf)) tag = 1;
-			}else {
-				tag=-2;
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-		}
-		
-		return tag;	   	
+    private UserBo(){
     }
-    
-	
-	
-	/**
-	 * ĞŞ¸ÄÒ»ÌõÓÃ»§ĞÅÏ¢
-	 * @param UserForm ÓÃ»§ĞÅÏ¢Form
-	 * @return ÊÇ·ñ³É¹¦±êÖ¾£¬
-	 */
-   public int modify(UserForm uf) {
-		int tag=-1;
-		boolean t = false;
-		try {
-			t = this.getDao().update(uf);
-		} catch(Exception e) {
-			e.printStackTrace();
-		} 
-		if (t) {
-			tag = 1;
-		}
-		return tag;	   	
-	}
-	
-	
-	/**
-	 * Âß¼­É¾³ı¶àÌõÓÃ»§ĞÅÏ¢
-	 * @param String É¾³ıÓÃ»§id£¨¶ººÅ·Ö¸ô£©£»Long ²Ù×÷ÓÃ»§id
-	 * @return ÊÇ·ñ³É¹¦±êÖ¾£¬
-	 */
-	public int modify(String ids,Long userId) {
-		int tag=-1;
-		
-		
-		ArrayList modList=new ArrayList();
-		try {
-			ArrayList dataList = (ArrayList)this.getDao().list("from UserForm as uf  where uf.id in ("+ids+")");
-			for(int i=0;i<dataList.size();i++){
-				UserForm uf=(UserForm)dataList.get(i);
-				uf.setDelFlag(new Integer(1));
-				uf.setUpdateBy(userId);
-				uf.setUpdateDate(new java.util.Date());
-				modList.add(uf);
-			}
-			
-			
-			if(this.getBatchDao().updateBatch(modList)) tag=1;
-		} catch(Exception e) {
-			e.printStackTrace();
-		} 
-		
-		return tag;	   	
-	}
-	
-	
 
-   
-   
-   /**
-	* ĞÂÔöÒ»ÌõÓÃ»§ĞÅÏ¢¼°Ïà¹Ø²¿ÃÅºÍÈ¨ÏŞ
-	* @param UserForm ÓÃ»§ĞÅÏ¢Form
-	* @return ÊÇ·ñ³É¹¦±êÖ¾£¬
-	*/
-	public int userAndDeptAdd(UserForm user) 	  {
-	   	int tag=-1;
-	   	try{
-			
-			String roleCode=user.getRoleCode();
-			if(roleCode!=null&&!roleCode.equals("")){
-				
-				List roleList=this.getDao().list("from RoleForm rf where rf.id in ("+roleCode+")");
-				Iterator it2=roleList.iterator();
-				while(it2.hasNext()){
-					RoleForm rf=(RoleForm)it2.next();
-					user.getRoles().add(rf);
-				}
-			}
-			tag=this.add(user);	
-			
-	   	}catch(Exception e){
-			e.printStackTrace();
-		}
-	   
-		return tag;
-	}
-	
-	  /**
-		* ĞŞ¸ÄÒ»ÌõÓÃ»§ĞÅÏ¢¼°Ïà¹Ø²¿ÃÅºÍÈ¨ÏŞ
-		* @param UserForm ÓÃ»§ĞÅÏ¢Form
-		* @return ÊÇ·ñ³É¹¦±êÖ¾£¬
-		*/
-		public int userAndDeptModify(UserForm user) {
-			int tag=-1;
-			try{
-				String roleCode=user.getRoleCode();
-				if(roleCode!=null&&!roleCode.equals("")){
-					
-					List roleList=this.getDao().list("from RoleForm rf where rf.id in ("+roleCode+")");
-					Iterator it2=roleList.iterator();
-					while(it2.hasNext()){
-						RoleForm rf=(RoleForm)it2.next();
-						user.getRoles().remove(rf);
-						user.getRoles().add(rf);
-					}
-				}
-				tag=this.modify(user);	
-			
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-	   
-			return tag;
-		}
-   
-   
-	
-	/**
-	* ²éÑ¯Ä³È¨ÏŞÏÂµÄÓÃ»§ºÍÎ´¸³È¨ÏŞµÄÓÃ»§
-	* @param strDeptId ²¿ÃÅid£¬strReptIdÎ¬ĞŞÕ¾id
-	* @return ArrayList[] 
-	*/
-	public ArrayList[] roleUser(String strRole) {
-		ArrayList[] arrayRet=new ArrayList[2];
-		
-		try{
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	 	
-		return arrayRet;
-		
-	}
-	
-	
-	/**
-	* ²éÑ¯Ä³È¨ÏŞÏÂµÄÓÃ»§ºÍÎ´¸³È¨ÏŞµÄÓÃ»§
-	* @param String ²¿ÃÅid£¬String Î¬ĞŞÕ¾id
-	* @return Object ²¿ÃÅ»òÈ¨ÏŞµÄform
-	*/
-	public Object removeUser(String userId,String flag,String deptRoleId) {
-		Object objRet=null;
-	
-		try{
-			ArrayList dataList = (ArrayList)this.getDao().list("from UserForm as uf where uf.id in ("+userId+")");
-			
-			if(flag.equals("role")){
-				RoleBo rbo=RoleBo.getInstance();
-				RoleForm rf=rbo.findRoleUser(deptRoleId);
-				
-				for(int i=0;i<dataList.size();i++){
-					UserForm uf =(UserForm)dataList.get(i);
-					rf.romoveUser(uf);
-				}
-				if(this.getDao().update(rf)){ 
-					objRet=rf;
+    public static final UserBo getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * ç”¨æˆ·åˆ—è¡¨æŸ¥è¯¢æ‹¼è£…
+     * @param UserForm æŸ¥è¯¢æ¡ä»¶
+     * @return ArrayList æŸ¥è¯¢ç»“æœ,å°è£…String[]
+     */
+    public ArrayList list(UserForm user) {
+        List dataList = null;
+        ArrayList alData = new ArrayList();
+        UserQuery uq = new UserQuery(user);
+
+        int count=0;
+        try {
+            dataList=uq.doListQuery(user.getFromPage(),user.getToPage());
+
+            count=uq.doCountQuery();
+
+            for (int i=0;i<dataList.size();i++) {
+                String[] data = new String[7];
+                UserForm uf = (UserForm)dataList.get(i);
+                uf.setRoleCodeAndName();
+                data[0] = uf.getId()+"";
+                data[1] = uf.getEmployeeCode();
+                data[2] = uf.getUserName();
+                data[3] = uf.getRoleName();
+                data[4] = uf.getEmail();
+                data[5] = uf.getPhone();
+                data[6] = uf.getRemark();
+                alData.add(data);
+
+            }
+            alData.add(0,count+"");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return alData;
+    }
+
+    /**
+     * æ ¹æ®idæŸ¥è¯¢è¯¥ç”¨æˆ·ä¿¡æ¯
+     * @param String ç”¨æˆ·è¡¨è®°å½•pk
+     * @return è¯¥ç”¨æˆ·Form
+     */
+    public UserForm find(String id) {
+        UserForm uf =null;
+        try {
+            uf = (UserForm)this.getDao().findById(UserForm.class,new Long(id));
+
+            uf.setRoleCodeAndName();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return uf;
+    }
+
+
+    /**
+     * æ ¹æ®idæŸ¥è¯¢è¯¥ç”¨æˆ·ä¿¡æ¯ï¼Œå¤–å…³è”éƒ¨é—¨ä¿¡æ¯
+     * @param String ç”¨æˆ·è¡¨è®°å½•pk
+     * @return è¯¥ç”¨æˆ·Form
+     */
+    public UserForm findUserAndGroup(String id) {
+        UserForm uf =null;
+        try {
+            uf = (UserForm)this.getDao().findById(UserForm.class,new Long(id));
+
+            uf.setRoleCodeAndName();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return uf;
+    }
+
+    /**
+     * æ ¡éªŒç”¨æˆ·id(ç™»å½•id)æ˜¯å¦å­˜åœ¨
+     * @param String è¾“å…¥çš„ç”¨æˆ·id
+     * @return è¯¥ç”¨æˆ·idæ˜¯å¦å¯ä»¥è¾“å…¥
+     */
+    public boolean chkName(String empId) {
+        boolean retBoo = false;
+
+        try {
+            Object obj=this.getDao().uniqueResult("select count(uf) from UserForm as uf where uf.employeeCode='"+empId+"'");
+            int count=((Long)obj).intValue();
+
+            if(count==0) retBoo=true;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return retBoo;
+    }
+
+
+    /**
+     * æ ¡éªŒç”¨æˆ·passwordæ˜¯å¦å­˜åœ¨
+     * @param Long è¾“å…¥çš„ç”¨æˆ·idï¼ŒString password
+     * @return è¯¥ç”¨æˆ·idæ˜¯å¦å¯ä»¥è¾“å…¥
+     */
+    public boolean chkPw(Long userId,String pw) {
+        boolean retBoo = false;
+
+        try {
+            MD5 md=new MD5();
+            pw=md.getMD5ofStr(pw);
+            Object obj=this.getDao().uniqueResult("select count(uf) from UserForm as uf where uf.id="+userId+" and uf.password='"+pw+"'");
+            int count=((Long)obj).intValue();
+
+            if(count==1) retBoo=true;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return retBoo;
+    }
+
+    /**
+     * ä¿®æ”¹ç”¨æˆ·è‡ªå·±çš„å¯†ç 
+     * @param Long è¾“å…¥çš„ç”¨æˆ·idï¼ŒString password
+     * @return è¯¥ç”¨æˆ·idæ˜¯å¦å¯ä»¥è¾“å…¥
+     */
+    public boolean modifyPw(String updateId,Long userId,String pw) {
+        boolean retBoo = false;
+
+        try {
+
+            int tag=this.getDao().execute("update UserForm as uf set uf.password='"+pw+"'" +
+                    ",uf.updateBy="+userId+",uf.updateDate=sysdate() where uf.id="+updateId);
+            if(tag>0) retBoo=true;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return retBoo;
+    }
+
+
+    /**
+     * æ’å…¥ä¸€æ¡ç”¨æˆ·ä¿¡æ¯<br>
+     * passwordé€šè¿‡MD5è½¬ç 
+     * @param UserForm ç”¨æˆ·ä¿¡æ¯Form
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int add(UserForm uf) {
+        int tag=-1;
+
+        try {
+            if(chkName(uf.getEmployeeCode())){
+                String password=uf.getPassword();
+                MD5 md=new MD5();
+                uf.setPassword(md.getMD5ofStr(password));
+                if(this.getDao().insert(uf)) tag = 1;
+            }else {
+                tag=-2;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+
+        return tag;
+    }
+
+
+
+    /**
+     * ä¿®æ”¹ä¸€æ¡ç”¨æˆ·ä¿¡æ¯
+     * @param UserForm ç”¨æˆ·ä¿¡æ¯Form
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—ï¼Œ
+     */
+    public int modify(UserForm uf) {
+        int tag=-1;
+        boolean t = false;
+        try {
+            t = this.getDao().update(uf);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        if (t) {
+            tag = 1;
+        }
+        return tag;
+    }
+
+
+    /**
+     * é€»è¾‘åˆ é™¤å¤šæ¡ç”¨æˆ·ä¿¡æ¯
+     * @param String åˆ é™¤ç”¨æˆ·idï¼ˆé€—å·åˆ†éš”ï¼‰ï¼›Long æ“ä½œç”¨æˆ·id
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—ï¼Œ
+     */
+    public int modify(String ids,Long userId) {
+        int tag=-1;
+
+
+        ArrayList modList=new ArrayList();
+        try {
+            ArrayList dataList = (ArrayList)this.getDao().list("from UserForm as uf  where uf.id in ("+ids+")");
+            for(int i=0;i<dataList.size();i++){
+                UserForm uf=(UserForm)dataList.get(i);
+                uf.setDelFlag(new Integer(1));
+                uf.setUpdateBy(userId);
+                uf.setUpdateDate(new java.util.Date());
+                modList.add(uf);
+            }
+
+
+            if(this.getBatchDao().updateBatch(modList)) tag=1;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return tag;
+    }
+
+
+
+
+
+    /**
+     * æ–°å¢ä¸€æ¡ç”¨æˆ·ä¿¡æ¯åŠç›¸å…³éƒ¨é—¨å’Œæƒé™
+     * @param UserForm ç”¨æˆ·ä¿¡æ¯Form
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—ï¼Œ
+     */
+    public int userAndDeptAdd(UserForm user) 	  {
+        int tag=-1;
+        try{
+
+            String roleCode=user.getRoleCode();
+            if(roleCode!=null&&!roleCode.equals("")){
+
+                List roleList=this.getDao().list("from RoleForm rf where rf.id in ("+roleCode+")");
+                Iterator it2=roleList.iterator();
+                while(it2.hasNext()){
+                    RoleForm rf=(RoleForm)it2.next();
+                    user.getRoles().add(rf);
+                }
+            }
+            tag=this.add(user);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return tag;
+    }
+
+    /**
+     * ä¿®æ”¹ä¸€æ¡ç”¨æˆ·ä¿¡æ¯åŠç›¸å…³éƒ¨é—¨å’Œæƒé™
+     * @param UserForm ç”¨æˆ·ä¿¡æ¯Form
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—ï¼Œ
+     */
+    public int userAndDeptModify(UserForm user) {
+        int tag=-1;
+        try{
+            String roleCode=user.getRoleCode();
+            if(roleCode!=null&&!roleCode.equals("")){
+
+                List roleList=this.getDao().list("from RoleForm rf where rf.id in ("+roleCode+")");
+                Iterator it2=roleList.iterator();
+                while(it2.hasNext()){
+                    RoleForm rf=(RoleForm)it2.next();
+                    user.getRoles().remove(rf);
+                    user.getRoles().add(rf);
+                }
+            }
+            tag=this.modify(user);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return tag;
+    }
+
+
+
+    /**
+     * æŸ¥è¯¢æŸæƒé™ä¸‹çš„ç”¨æˆ·å’Œæœªèµ‹æƒé™çš„ç”¨æˆ·
+     * @param strDeptId éƒ¨é—¨idï¼ŒstrReptIdç»´ä¿®ç«™id
+     * @return ArrayList[]
+     */
+    public ArrayList[] roleUser(String strRole) {
+        ArrayList[] arrayRet=new ArrayList[2];
+
+        try{
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return arrayRet;
+
+    }
+
+
+    /**
+     * æŸ¥è¯¢æŸæƒé™ä¸‹çš„ç”¨æˆ·å’Œæœªèµ‹æƒé™çš„ç”¨æˆ·
+     * @param String éƒ¨é—¨idï¼ŒString ç»´ä¿®ç«™id
+     * @return Object éƒ¨é—¨æˆ–æƒé™çš„form
+     */
+    public Object removeUser(String userId,String flag,String deptRoleId) {
+        Object objRet=null;
+
+        try{
+            ArrayList dataList = (ArrayList)this.getDao().list("from UserForm as uf where uf.id in ("+userId+")");
+
+            if(flag.equals("role")){
+                RoleBo rbo=RoleBo.getInstance();
+                RoleForm rf=rbo.findRoleUser(deptRoleId);
+
+                for(int i=0;i<dataList.size();i++){
+                    UserForm uf =(UserForm)dataList.get(i);
+                    rf.romoveUser(uf);
+                }
+                if(this.getDao().update(rf)){
+                    objRet=rf;
 					/*
-					//ĞŞ¸Ä×ó²Ëµ¥·ÃÎÊÁ´½Ó
+					//ä¿®æ”¹å·¦èœå•è®¿é—®é“¾æ¥
 					FunctionBo fbo = new FunctionBo();
 					ArrayList tempList = (ArrayList)this.getDao().list("from UserForm as uf where uf.id in ("+ids+")");
 					for(int i=0;i<tempList.size();i++){
@@ -367,53 +366,53 @@ public class UserBo extends CommBo {
 						fbo.modelBuild(uf.getId().toString(),uf.getRoleCode(),"modify");
 					}
 					*/
-				}
-								
-			}
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
- 	
-		return objRet;
-	
-	}
+                }
 
-	/**
-	* Ä³ÓÃ»§µÄid£¬nameºÍËùÊôµÄ²¿ÃÅasc_level£¬unit_Code
-	* @param String ÓÃ»§µÇÂ¼id
-	* @return Object[] ·µ»ØÊı¾İ
-	*/
-	public Object[] getLogInfo(String empCode) {
-		Object[] intRet=null;
-		
-		try{
-			String strHql="select uf.id,uf.employeeCode,uf.userName from UserForm as uf " +
-				"where uf.employeeCode='"+empCode+"'";
-			intRet=(Object[])this.getDao().uniqueResult(strHql);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+            }
 
-		return intRet;
-	}
-	
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-	public static void main(String args[]){
-		try{
-			UserBo ubo=new UserBo();
-			Object[] obj=ubo.getLogInfo("dne_xt");
-			
-		 // modified by xt	System.out.println((Long)obj[0]);
-		 // modified by xt	System.out.println((String)obj[3]);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
+        return objRet;
 
-	}
-	
-   
+    }
+
+    /**
+     * æŸç”¨æˆ·çš„idï¼Œnameå’Œæ‰€å±çš„éƒ¨é—¨asc_levelï¼Œunit_Code
+     * @param String ç”¨æˆ·ç™»å½•id
+     * @return Object[] è¿”å›æ•°æ®
+     */
+    public Object[] getLogInfo(String empCode) {
+        Object[] intRet=null;
+
+        try{
+            String strHql="select uf.id,uf.employeeCode,uf.userName from UserForm as uf " +
+                    "where uf.employeeCode='"+empCode+"'";
+            intRet=(Object[])this.getDao().uniqueResult(strHql);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return intRet;
+    }
+
+
+    public static void main(String args[]){
+        try{
+            UserBo ubo=new UserBo();
+            Object[] obj=ubo.getLogInfo("dne_xt");
+
+            // modified by xt	System.out.println((Long)obj[0]);
+            // modified by xt	System.out.println((String)obj[3]);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 }

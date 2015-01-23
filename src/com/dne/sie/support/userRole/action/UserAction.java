@@ -1,22 +1,22 @@
 package com.dne.sie.support.userRole.action;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.PrintWriter;
 import java.util.Date;
 
-//Java À©Õ¹Àà
+//Java æ‰©å±•ç±»
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//µÚÈı·½Àà
+//ç¬¬ä¸‰æ–¹ç±»
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.log4j.Logger;
 
-//×Ô¶¨ÒåÀà
+//è‡ªå®šä¹‰ç±»
 import com.dne.sie.maintenance.bo.EmployeeInfoBo;
 import com.dne.sie.support.userRole.bo.UserBo;
 import com.dne.sie.support.userRole.bo.RoleBo;
@@ -28,393 +28,396 @@ import com.dne.sie.util.action.ControlAction;
 
 
 /**
- * ÓÃ»§¹ÜÀíActionÀà
+ * ç”¨æˆ·ç®¡ç†Actionç±»
  * @author xt
  * @version 1.1.5.6
- * @see DepartmentAction.java <br>
  */
 public class UserAction extends ControlAction {
-	private static Logger logger = Logger.getLogger(UserAction.class);
-   
-   /**
-	 * ÓÃ»§ä¯ÀÀÒ³Ãæ
-	 * @param request HttpServletRequest
-	 * @param form ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */
-   public String userList(HttpServletRequest request, ActionForm form){
-		String forward = "userList";
-		
-		try{
-			UserForm uf=(UserForm)form;
-			
-			UserBo ubo = UserBo.getInstance();
-			
-			request.setAttribute("vtrData",ubo.list(uf));
-				
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-   }
-   
-  	 /**
-	   * ÓÃ»§ÏÔÊ¾Ìí¼ÓÒ³Ãæ
-	   * @param request HttpServletRequest
-	   * @param form ±íµ¥Êı¾İ
-	   * @return Ò³Ãæ
-	   */
-	  public String addInit(HttpServletRequest request,ActionForm form) throws Exception {
-		  String forward = "addInit";	
-		
-		  request.setAttribute("empList",EmployeeInfoBo.getInstance().getEmpSelectRegistList());
-		
-		  return forward;
-	  }
-   
-   
-		/**
-		 * Ìí¼ÓÓÃ»§Êı¾İ
-		 * @param request HttpServletRequest
-		 * @param form  ±íµ¥Êı¾İ
-		 * @return Ò³Ãæ
-		 */	
-		public String userAdd(HttpServletRequest request,ActionForm form) {
-			String forward = "resultMessage";
-			int tag =-1;
-		
-			try{
-				UserForm uf=(UserForm)form;
-				HttpSession session=request.getSession();
-				Long userId=(Long)session.getAttribute("userId");
-				uf.setCreateBy(userId);
-				uf.setCreateDate(new Date());
-				
-				UserBo ubo = UserBo.getInstance();
-				
-				
-				tag = ubo.userAndDeptAdd(uf);
-				
-				
-				if(tag==-2){
-					forward="addInit";
-					uf.setEmployeeCode("");
-					request.setAttribute("userForm",uf);
-					request.setAttribute("idRepeat","idRepeat");
-				}else{
-					request.setAttribute("tag",tag+"");
-					request.setAttribute("businessFlag","userAdd");
-				}
-				
-				
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			return forward;
-		}
-	
-	
-		/**
-		 * ÓÃ»§¼ÇÂ¼É¾³ı
-		 * @param request HttpServletRequest
-		 * @param form  ±íµ¥Êı¾İ
-		 * @return Ò³Ãæ
-		 */	
-		public String userDelete(HttpServletRequest request,ActionForm form) {
-			String forward = "resultMessage";
-			int tag =-1;
-			try{
-				String strFlag = request.getParameter("flag")==null?"userDelete":request.getParameter("flag");
-				
-				String chkId = request.getParameter("id");
-		
-				if(chkId!=null&&!chkId.equals("")){
-					HttpSession session=request.getSession();
-					Long userId=(Long)session.getAttribute("userId");
-									
-					UserBo ubo = UserBo.getInstance();
-					//Âß¼­É¾³ı£¬Ö»ÊÇĞŞ¸ÄÉ¾³ı±êÖ¾
-					tag = ubo.modify(chkId,userId);
-					
-				}
-				request.setAttribute("tag",tag+"");
-				request.setAttribute("businessFlag",strFlag);
-			
-			
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			return forward;
-		}	
-	
-		/**
-		 * ÓÃ»§ĞŞ¸ÄºÍÏêÏ¸µÄ³õÊ¼½çÃæ
-		 * @param request HttpServletRequest
-		 * @param form  ±íµ¥Êı¾İ
-		 * @return Ò³Ãæ
-		 */	
-		public String userDetail(HttpServletRequest request,ActionForm form) {
-			String forward = "userDetail";
+    private static Logger logger = Logger.getLogger(UserAction.class);
 
-			try{
-				String strId = request.getParameter("id");
-			
-				UserBo ubo = UserBo.getInstance();
-				UserForm uf=ubo.findUserAndGroup(strId);
-				
-				//uf.setDelFlag("0");
-				
-				request.setAttribute("userForm",uf);	
-				request.setAttribute("strUserId",strId);
-				request.setAttribute("empList",EmployeeInfoBo.getInstance().getEmpSelectRegistList());
-			
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			return forward;
-		}
-	
+    /**
+     * ç”¨æˆ·æµè§ˆé¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userList(HttpServletRequest request, ActionForm form){
+        String forward = "userList";
 
-	
-		/**
-		 * ĞŞ¸ÄÓÃ»§Êı¾İ
-		 * @param request HttpServletRequest
-		 * @param form  ±íµ¥Êı¾İ
-		 * @return Ò³Ãæ
-		 */	
-		public String userModify(HttpServletRequest request,ActionForm form) {
-			String forward = "resultMessage";
-			int tag=-1;
-			try{
-				UserBo ubo = UserBo.getInstance();
-				UserForm uf=(UserForm)form;
-				
-				
-				HttpSession session=request.getSession();
-				Long userId=(Long)session.getAttribute("userId");
-				uf.setUpdateBy(userId);
-				uf.setUpdateDate(new java.util.Date());
-				
-				tag=ubo.userAndDeptModify(uf);
-				
-								
-				request.setAttribute("tag",tag+"");
-				request.setAttribute("businessFlag","userModify");
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			return forward;
-		}
-		
-		
-	
- 
-	  
-	  
-	/**
-	 * ²éÑ¯Ä³¸ö²¿ÃÅºÍÄ³¸ö½ÇÉ«ÏÂµÄÓÃ»§ĞÅÏ¢
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	  public String userSelect(HttpServletRequest request, ActionForm form) {
-		String forward = "userSelect";
-		ArrayList selectList=new ArrayList();
-		
-		try{
-			String flag = request.getParameter("flag")==null?"":request.getParameter("flag");
-			String id=request.getParameter("id");
-			//System.out.println("---------flag="+flag);
-			//System.out.println("---------id="+id);
-			
-			Iterator userIt=null;
-			if(id!=null&&flag.equals("role")){
-				RoleBo rbo=RoleBo.getInstance();
-				userIt=rbo.findRoleUser(id).getUsers().iterator();
-			}
-			
-			while(userIt!=null&&userIt.hasNext()){
-				UserForm uf = (UserForm)userIt.next();
-				if(uf.getDelFlag().intValue()==0){
-					String[] data = new String[5];
-					data[0] = uf.getId()+"";
-					data[1] = uf.getEmployeeCode();
-					data[2] = uf.getUserName();
-					data[3] = uf.getRoleName();
-					selectList.add(data);
-				}
-			}
-			request.setAttribute("vtrData",selectList);
-			request.setAttribute("flag",flag);
-			request.setAttribute("deptRoleId",id);
-			
+        try{
+            UserForm uf=(UserForm)form;
 
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	  	
-	   	return forward;
-	  }
-	  
-	  
-   /**
-	* ÒÆ³ıÄ³Ğ©ÓÃ»§ ´ÓÄ³²¿ÃÅ»òÄ³È¨ÏŞ
-	* @param request HttpServletRequest
-	* param form  ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/	
-	public String userMove(HttpServletRequest request, ActionForm form) {
-		String forward = "resultMessage";
-		int tag =-1;
-		
-		try{
-			String flag = request.getParameter("flag");
-			String chkId = request.getParameter("id");
-			String deptRoleId = request.getParameter("deptRoleId");
-			
-			UserBo ubo = UserBo.getInstance();
-			if(flag.equals("role")){
-				Object obj=ubo.removeUser(chkId,flag,deptRoleId);
-				if(obj!=null){ 
-					tag=1; 
-				}
-			}
-			
-			request.setAttribute("tag",tag+"");
-			request.setAttribute("businessFlag","userMove");
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	  
-	  
-	  
+            UserBo ubo = UserBo.getInstance();
 
-	 
-	/**
-	* ¸ù¾İÌõ¼şÏÔÊ¾È¨ÏŞ-ÓÃ»§×óÓÒ¸³Öµ¿òµÄÄÚÈİ
-	* @param request HttpServletRequest
-	* param form  ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/	
-	public String roleUser(HttpServletRequest request, ActionForm form) {
-		String forward = "lrSelect";
-		try{
-			String strRoleId = request.getParameter("id");
-		
-			UserBo ubo = UserBo.getInstance();
-			ArrayList[] userList=ubo.roleUser(strRoleId);
-		
-			request.setAttribute("userList",userList);
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-	}
-	
-	
-		/**
-		 * Ğ£ÑéÓÃ»§idÊÇ·ñ´æÔÚ
-		 * @param request HttpServletRequest
-		 * @param form  ±íµ¥Êı¾İ
-		 * @return Ò³Ãæ
-		 */	
-		public void ajaxChk(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
-			
-			
-			try{
-				String empCode=request.getParameter("empCode");
-				UserBo ubo = UserBo.getInstance();
-				String strXml="false";
-				if(ubo.chkName(empCode)){
-					strXml="true";
-				}
-			
-				PrintWriter writer = response.getWriter();				  //½«´ÓÊı¾İ¿âÖĞÈ¡À´µÄÊı¾İ·ÅÈëXML×Ö·û´®ÖĞ
-				response.setContentType("text/xml");						  //½«´ÓÊı¾İ¿âÖĞÈ¡À´µÄÊı¾İ·ÅÈëXML×Ö·û´®ÖĞ
-				response.setHeader("Cache-Control", "no-cache");             //½«´ÓÊı¾İ¿âÖĞÈ¡À´µÄÊı¾İ·ÅÈëXML×Ö·û´®ÖĞ
-				writer.println("<xml>");
-				
-				writer.println("<ifUse>"+strXml+"</ifUse>");
-			
-				writer.println("</xml>");
-				writer.flush();
-				writer.close();
-			
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		
-		}
-		
-	/**
-	 * Ğ£ÑéÓÃ»§password£¬ÓÉÉÏ¼¶È¨ÏŞĞŞ¸Ä
-	 * @param request HttpServletRequest
-	 * @param form  ±íµ¥Êı¾İ
-	 * @return Ò³Ãæ
-	 */	
-	public void ajaxChkPw(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
-		
-		try{
-			HttpSession session=request.getSession();
-			Long userId=(Long)session.getAttribute("userId");
-			String updateId=request.getParameter("id");
-			
-			String oldPw=request.getParameter("oldPw");
-			String newPw=request.getParameter("newPw");
-			UserBo ubo = UserBo.getInstance();
-			String strXml="false";
-			String strPw="0";
-			
-			
-			if(AtomRoleCheck.checkRole(userId,"admin")
-					||ubo.chkPw(new Long(updateId),oldPw)){
-				strXml="true";
-				MD5 md=new MD5();
-				strPw=md.getMD5ofStr(newPw);
-				ubo.modifyPw(updateId,userId,strPw);
-				
-			}
-	
-			PrintWriter writer = response.getWriter();				  //½«´ÓÊı¾İ¿âÖĞÈ¡À´µÄÊı¾İ·ÅÈëXML×Ö·û´®ÖĞ
-			response.setContentType("text/xml");						  //½«´ÓÊı¾İ¿âÖĞÈ¡À´µÄÊı¾İ·ÅÈëXML×Ö·û´®ÖĞ
-			response.setHeader("Cache-Control", "no-cache");             //½«´ÓÊı¾İ¿âÖĞÈ¡À´µÄÊı¾İ·ÅÈëXML×Ö·û´®ÖĞ
-			writer.println("<xml>");
-		
-			writer.println("<ifUse>"+strXml+"</ifUse>");
-	
-			writer.println("</xml>");
-			writer.flush();
-			writer.close();
-	
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+            request.setAttribute("vtrData",ubo.list(uf));
 
-	}
-	
 
-	
-		
-		/**
-		   * ÏÔÊ¾×ó±ß²Ëµ¥
-		   * @param request HttpServletRequest
-		   * @param form ±íµ¥Êı¾İ
-		   * @return Ò³Ãæ
-		   */
-		  public String leftCreat(HttpServletRequest request,ActionForm form) {
-			  String forward = "leftCreat";	
-			  String typeId = request.getParameter("typeId");
-			  
-			  request.setAttribute("typeId",typeId);
-			  return forward;
-		  }
-		  
-		
-		
-	
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * ç”¨æˆ·æ˜¾ç¤ºæ·»åŠ é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String addInit(HttpServletRequest request,ActionForm form) throws Exception {
+        String forward = "addInit";
+
+        request.setAttribute("empList",EmployeeInfoBo.getInstance().getEmpSelectRegistList());
+        request.setAttribute("roleList",RoleBo.getInstance().findAllRoleList());
+
+
+        return forward;
+    }
+
+
+    /**
+     * æ·»åŠ ç”¨æˆ·æ•°æ®
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userAdd(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag =-1;
+
+        try{
+            UserForm uf=(UserForm)form;
+            HttpSession session=request.getSession();
+            Long userId=(Long)session.getAttribute("userId");
+            uf.setCreateBy(userId);
+            uf.setCreateDate(new Date());
+
+            UserBo ubo = UserBo.getInstance();
+
+
+            tag = ubo.userAndDeptAdd(uf);
+
+
+            if(tag==-2){
+                forward="addInit";
+                uf.setEmployeeCode("");
+                request.setAttribute("userForm",uf);
+                request.setAttribute("idRepeat","idRepeat");
+            }else{
+                request.setAttribute("tag",tag+"");
+                request.setAttribute("businessFlag","userAdd");
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * ç”¨æˆ·è®°å½•åˆ é™¤
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userDelete(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag =-1;
+        try{
+            String strFlag = request.getParameter("flag")==null?"userDelete":request.getParameter("flag");
+
+            String chkId = request.getParameter("id");
+
+            if(chkId!=null&&!chkId.equals("")){
+                HttpSession session=request.getSession();
+                Long userId=(Long)session.getAttribute("userId");
+
+                UserBo ubo = UserBo.getInstance();
+                //é€»è¾‘åˆ é™¤ï¼Œåªæ˜¯ä¿®æ”¹åˆ é™¤æ ‡å¿—
+                tag = ubo.modify(chkId,userId);
+
+            }
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag",strFlag);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * ç”¨æˆ·ä¿®æ”¹å’Œè¯¦ç»†çš„åˆå§‹ç•Œé¢
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userDetail(HttpServletRequest request,ActionForm form) {
+        String forward = "userDetail";
+
+        try{
+            String strId = request.getParameter("id");
+
+            UserBo ubo = UserBo.getInstance();
+            UserForm uf=ubo.findUserAndGroup(strId);
+
+            //uf.setDelFlag("0");
+
+            request.setAttribute("userForm",uf);
+            request.setAttribute("strUserId",strId);
+            request.setAttribute("empList",EmployeeInfoBo.getInstance().getEmpSelectRegistList());
+            request.setAttribute("roleAllList",RoleBo.getInstance().findAllRoleList());
+            request.setAttribute("roleHadList",RoleBo.getInstance().findRoleIdList(uf.getId()));
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+    /**
+     * ä¿®æ”¹ç”¨æˆ·æ•°æ®
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userModify(HttpServletRequest request,ActionForm form) {
+        String forward = "resultMessage";
+        int tag=-1;
+        try{
+            UserBo ubo = UserBo.getInstance();
+            UserForm uf=(UserForm)form;
+
+
+            HttpSession session=request.getSession();
+            Long userId=(Long)session.getAttribute("userId");
+            uf.setUpdateBy(userId);
+            uf.setUpdateDate(new java.util.Date());
+
+            tag=ubo.userAndDeptModify(uf);
+
+
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag","userModify");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+
+
+
+    /**
+     * æŸ¥è¯¢æŸä¸ªéƒ¨é—¨å’ŒæŸä¸ªè§’è‰²ä¸‹çš„ç”¨æˆ·ä¿¡æ¯
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userSelect(HttpServletRequest request, ActionForm form) {
+        String forward = "userSelect";
+        ArrayList selectList=new ArrayList();
+
+        try{
+            String flag = request.getParameter("flag")==null?"":request.getParameter("flag");
+            String id=request.getParameter("id");
+            //System.out.println("---------flag="+flag);
+            //System.out.println("---------id="+id);
+
+            Iterator userIt=null;
+            if(id!=null&&flag.equals("role")){
+                RoleBo rbo=RoleBo.getInstance();
+                userIt=rbo.findRoleUser(id).getUsers().iterator();
+            }
+
+            while(userIt!=null&&userIt.hasNext()){
+                UserForm uf = (UserForm)userIt.next();
+                if(uf.getDelFlag().intValue()==0){
+                    String[] data = new String[5];
+                    data[0] = uf.getId()+"";
+                    data[1] = uf.getEmployeeCode();
+                    data[2] = uf.getUserName();
+                    data[3] = uf.getRoleName();
+                    selectList.add(data);
+                }
+            }
+            request.setAttribute("vtrData",selectList);
+            request.setAttribute("flag",flag);
+            request.setAttribute("deptRoleId",id);
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return forward;
+    }
+
+
+    /**
+     * ç§»é™¤æŸäº›ç”¨æˆ· ä»æŸéƒ¨é—¨æˆ–æŸæƒé™
+     * @param request HttpServletRequest
+     * param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String userMove(HttpServletRequest request, ActionForm form) {
+        String forward = "resultMessage";
+        int tag =-1;
+
+        try{
+            String flag = request.getParameter("flag");
+            String chkId = request.getParameter("id");
+            String deptRoleId = request.getParameter("deptRoleId");
+
+            UserBo ubo = UserBo.getInstance();
+            if(flag.equals("role")){
+                Object obj=ubo.removeUser(chkId,flag,deptRoleId);
+                if(obj!=null){
+                    tag=1;
+                }
+            }
+
+            request.setAttribute("tag",tag+"");
+            request.setAttribute("businessFlag","userMove");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+
+
+
+    /**
+     * æ ¹æ®æ¡ä»¶æ˜¾ç¤ºæƒé™-ç”¨æˆ·å·¦å³èµ‹å€¼æ¡†çš„å†…å®¹
+     * @param request HttpServletRequest
+     * param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String roleUser(HttpServletRequest request, ActionForm form) {
+        String forward = "lrSelect";
+        try{
+            String strRoleId = request.getParameter("id");
+
+            UserBo ubo = UserBo.getInstance();
+            ArrayList[] userList=ubo.roleUser(strRoleId);
+
+            request.setAttribute("userList",userList);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+
+    /**
+     * æ ¡éªŒç”¨æˆ·idæ˜¯å¦å­˜åœ¨
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public void ajaxChk(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+
+
+        try{
+            String empCode=request.getParameter("empCode");
+            UserBo ubo = UserBo.getInstance();
+            String strXml="false";
+            if(ubo.chkName(empCode)){
+                strXml="true";
+            }
+
+            PrintWriter writer = response.getWriter();				  //å°†ä»æ•°æ®åº“ä¸­å–æ¥çš„æ•°æ®æ”¾å…¥XMLå­—ç¬¦ä¸²ä¸­
+            response.setContentType("text/xml");						  //å°†ä»æ•°æ®åº“ä¸­å–æ¥çš„æ•°æ®æ”¾å…¥XMLå­—ç¬¦ä¸²ä¸­
+            response.setHeader("Cache-Control", "no-cache");             //å°†ä»æ•°æ®åº“ä¸­å–æ¥çš„æ•°æ®æ”¾å…¥XMLå­—ç¬¦ä¸²ä¸­
+            writer.println("<xml>");
+
+            writer.println("<ifUse>"+strXml+"</ifUse>");
+
+            writer.println("</xml>");
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * æ ¡éªŒç”¨æˆ·passwordï¼Œç”±ä¸Šçº§æƒé™ä¿®æ”¹
+     * @param request HttpServletRequest
+     * @param form  è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public void ajaxChkPw(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) {
+
+        try{
+            HttpSession session=request.getSession();
+            Long userId=(Long)session.getAttribute("userId");
+            String updateId=request.getParameter("id");
+
+            String oldPw=request.getParameter("oldPw");
+            String newPw=request.getParameter("newPw");
+            UserBo ubo = UserBo.getInstance();
+            String strXml="false";
+            String strPw="0";
+
+
+            if(AtomRoleCheck.checkRole(userId,"admin")
+                    ||ubo.chkPw(new Long(updateId),oldPw)){
+                strXml="true";
+                MD5 md=new MD5();
+                strPw=md.getMD5ofStr(newPw);
+                ubo.modifyPw(updateId,userId,strPw);
+
+            }
+
+            PrintWriter writer = response.getWriter();				  //å°†ä»æ•°æ®åº“ä¸­å–æ¥çš„æ•°æ®æ”¾å…¥XMLå­—ç¬¦ä¸²ä¸­
+            response.setContentType("text/xml");						  //å°†ä»æ•°æ®åº“ä¸­å–æ¥çš„æ•°æ®æ”¾å…¥XMLå­—ç¬¦ä¸²ä¸­
+            response.setHeader("Cache-Control", "no-cache");             //å°†ä»æ•°æ®åº“ä¸­å–æ¥çš„æ•°æ®æ”¾å…¥XMLå­—ç¬¦ä¸²ä¸­
+            writer.println("<xml>");
+
+            writer.println("<ifUse>"+strXml+"</ifUse>");
+
+            writer.println("</xml>");
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+    /**
+     * æ˜¾ç¤ºå·¦è¾¹èœå•
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String leftCreat(HttpServletRequest request,ActionForm form) {
+        String forward = "leftCreat";
+        String typeId = request.getParameter("typeId");
+
+        request.setAttribute("typeId",typeId);
+        return forward;
+    }
+
+
+
+
 }

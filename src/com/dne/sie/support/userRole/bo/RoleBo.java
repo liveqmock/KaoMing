@@ -1,16 +1,16 @@
 package com.dne.sie.support.userRole.bo;
 
-//Java »ù´¡Àà
+//Java åŸºç¡€ç±»
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.TreeSet;
 
 
-//µÚÈı·½Àà
+//ç¬¬ä¸‰æ–¹ç±»
 import org.apache.log4j.Logger;
 
-//×Ô¶¨ÒåÀà
+//è‡ªå®šä¹‰ç±»
 import com.dne.sie.support.userRole.queryBean.RoleQuery;
 import com.dne.sie.support.userRole.form.RoleForm;
 import com.dne.sie.support.userRole.form.UserForm;
@@ -19,255 +19,281 @@ import com.dne.sie.util.bo.CommBo;
 
 
 /**
- * È¨ÏŞ¹ÜÀíBO´¦ÀíÀà
+ * æƒé™ç®¡ç†BOå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
- * @see RoleBo.java <br>
  */
 public class RoleBo extends CommBo {
-	private static Logger logger = Logger.getLogger(RoleBo.class);
+    private static Logger logger = Logger.getLogger(RoleBo.class);
 
-	private static final RoleBo INSTANCE = new RoleBo();
-		
-	private RoleBo(){
-	}
-	
-	public static final RoleBo getInstance() {
-	   return INSTANCE;
-	}
+    private static final RoleBo INSTANCE = new RoleBo();
 
-	   /**
-		 * È¨ÏŞÁĞ±í²éÑ¯Æ´×°
-		 * @param RoleForm ²éÑ¯Ìõ¼ş
-		 * @return ArrayList ²éÑ¯½á¹û
-		 */
-	   public ArrayList list(RoleForm dept) {
-			List dataList = new ArrayList();
-			ArrayList alData = new ArrayList();
-			RoleQuery dq = new RoleQuery(dept);
+    private RoleBo(){
+    }
 
-				int count=0;
-				try {
-					dataList=dq.doListQuery(dept.getFromPage(),dept.getToPage());
-			
-					count=dq.doCountQuery();
-		
-					for (int i=0;i<dataList.size();i++) {
-						String[] data = new String[3];
-						RoleForm df = (RoleForm)dataList.get(i);
-						
-						data[0] = df.getId()+"";
-						data[1] = df.getRoleName();
+    public static final RoleBo getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * æƒé™åˆ—è¡¨æŸ¥è¯¢æ‹¼è£…
+     * @param dept æŸ¥è¯¢æ¡ä»¶
+     * @return ArrayList æŸ¥è¯¢ç»“æœ
+     */
+    public ArrayList list(RoleForm dept) {
+        List dataList = new ArrayList();
+        ArrayList alData = new ArrayList();
+        RoleQuery dq = new RoleQuery(dept);
+
+        int count=0;
+        try {
+            dataList=dq.doListQuery(dept.getFromPage(),dept.getToPage());
+
+            count=dq.doCountQuery();
+
+            for (int i=0;i<dataList.size();i++) {
+                String[] data = new String[3];
+                RoleForm df = (RoleForm)dataList.get(i);
+
+                data[0] = df.getId()+"";
+                data[1] = df.getRoleName();
 //						data[2] = df.getRoleType();
-						data[2] = df.getRemark();
-						
-						alData.add(data);
-					}
-					alData.add(0,count+"");
-	
-				} catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-				}
-				return alData;
-			}
-	
-	   /**
-		* ¸ù¾İid²éÑ¯¸ÃÈ¨ÏŞĞÅÏ¢£¬°üº¬×ÓÈ¨ÏŞĞÅÏ¢
-		* @param String È¨ÏŞ¼ÇÂ¼pk
-		* @return È¨ÏŞForm
-		*/
-		public RoleForm find(String id) {
-			RoleForm rf = null;
-			try {
-				
-				ArrayList roleList=(ArrayList)this.getDao().list("from RoleForm as rf left outer join fetch rf.users where rf.id ="+id);
-				rf=(RoleForm)roleList.get(0);
-				rf.setUserCodeAndName();
-				
-				
-				
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			return rf;		    	
-		} 
-		
-		
+                data[2] = df.getRemark();
 
-	/**
-	 * ¸ù¾İid²éÑ¯¸ÃÈ¨ÏŞĞÅÏ¢£¬Íâ¹ØÁªuser
-	 * @param String È¨ÏŞ¼ÇÂ¼pk
-	 * @return È¨ÏŞForm
-	 */
-	 public RoleForm findRoleUser(String id) {
-		 RoleForm rf = null;
-		 try {
-			 ArrayList roleList=(ArrayList)this.getDao().list("from RoleForm as rf left outer join fetch rf.users where rf.id = ?",new Long(id));
-			 rf=(RoleForm)roleList.get(0);
-			 rf.setUserCodeAndName();
-				
-		 } catch(Exception e) {
-			 e.printStackTrace();
-		 }
-		 return rf;		    	
-	 } 
+                alData.add(data);
+            }
+            alData.add(0,count+"");
 
-	/**
-	 * ¸ù¾İid²éÑ¯¸ÃÈ¨ÏŞĞÅÏ¢
-	 * @param String È¨ÏŞ¼ÇÂ¼pk
-	 * @return È¨ÏŞForm
-	 */
-	public RoleForm findById(String id) {
-		RoleForm rf = null;
-		try {
-			rf = (RoleForm)this.getDao().findById(RoleForm.class,new Long(id));
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return rf;		    	
-	} 
-			
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return alData;
+    }
 
-		/**
-		  * ²åÈëÒ»ÌõÈ¨ÏŞĞÅÏ¢
-		  * @param RoleForm È¨ÏŞĞÅÏ¢Form
-		  * @return ÊÇ·ñ³É¹¦±êÖ¾
-		  */
-		public int add(RoleForm rf) {
-			int tag=-1;
-			boolean t = false;
-			try {
-				t = this.getDao().insert(rf);
-			} catch(Exception e) {
-				e.printStackTrace();
-			} finally {
-			}
-			if (t) {
-				tag = 1;
-			}
-			return tag;	   	
-		}
+    /**
+     * æ ¹æ®idæŸ¥è¯¢è¯¥æƒé™ä¿¡æ¯ï¼ŒåŒ…å«å­æƒé™ä¿¡æ¯
+     * @param id æƒé™è®°å½•pk
+     * @return æƒé™Form
+     */
+    public RoleForm find(String id) {
+        RoleForm rf = null;
+        try {
 
-		/**
-		  * É¾³ı´«ÈëµÄÈ¨ÏŞĞÅÏ¢
-		  * @param String[] ´ıÉ¾³ıÈ¨ÏŞidµÄList
-		  * @return ÊÇ·ñ³É¹¦±êÖ¾
-		  */
-		public int deleteList(String ids) {
-			int tag=-1;
-			
-			try {
-				String hql="delete from RoleForm where id in ("+ids+")";
-				tag = this.getDao().execute(hql);
-			} catch(Exception e) {
-				e.printStackTrace();
-			} 
-			
-			return tag;	     	
-		}
-	
-		
-	
+            ArrayList roleList=(ArrayList)this.getDao().list("from RoleForm as rf left outer join fetch rf.users where rf.id ="+id);
+            rf=(RoleForm)roleList.get(0);
+            rf.setUserCodeAndName();
 
-		/**
-		 * ĞŞ¸ÄÒ»ÌõÈ¨ÏŞĞÅÏ¢
-		 * @param RoleForm È¨ÏŞĞÅÏ¢Form
-		 * @return ÊÇ·ñ³É¹¦±êÖ¾
-		 */
-	   public int modify(RoleForm rf) {
-			int tag=-1;
-			boolean t = false;
-			try {
-				t = this.getDao().update(rf);
-			} catch(Exception e) {
-			} finally {
-			}
-			if (t) {
-				tag = 1;
-			}
-			return tag;	   	
-		}
-      
-	/**
-	* ²éÑ¯ÓÃ»§ÓµÓĞµÄÈ¨ÏŞºÍÆäËû¿ÉÑ¡ÔñµÄÈ¨ÏŞ
-	* @param String ²¿ÃÅid£¬Long ²¿ÃÅid £¬Integer ²¿ÃÅÀàĞÍ£¬String ²Ù×÷È¨ÏŞ
-	* @return  ArrayList[] ·Ö±ğÊÇÒÑÓµÓĞÈ¨ÏŞ£¬ÆäËû¿ÉÑ¡È¨ÏŞµÄ¼¯ºÏ
-	*/
-	public ArrayList[] userRole(String strUserId,Integer orgType,String flag) {
-		//BASETABLEÈ¨ÏŞÓµÓĞadminµÄÆäËû¹¦ÄÜ£¬µ«²»ÄÜ°ÑBASETABLE¸³Óè±ğÈË
-		//String strWhere = " where rf.delFlag=0 and rf.id!="+AtomRoleCheck.BASETABLE;
-		String strWhere = " where rf.delFlag=0 and rf.id!=0";
-		if(flag.equals("common")){
+
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return rf;
+    }
+
+
+
+    /**
+     * æ ¹æ®idæŸ¥è¯¢è¯¥æƒé™ä¿¡æ¯ï¼Œå¤–å…³è”user
+     * @param id æƒé™è®°å½•pk
+     * @return æƒé™Form
+     */
+    public RoleForm findRoleUser(String id) {
+        RoleForm rf = null;
+        try {
+            ArrayList roleList=(ArrayList)this.getDao().list("from RoleForm as rf left outer join fetch rf.users where rf.id = ?",new Long(id));
+            rf=(RoleForm)roleList.get(0);
+            rf.setUserCodeAndName();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return rf;
+    }
+
+    /**
+     * æ ¹æ®idæŸ¥è¯¢è¯¥æƒé™ä¿¡æ¯
+     * @param id æƒé™è®°å½•pk
+     * @return æƒé™Form
+     */
+    public RoleForm findById(String id) {
+        RoleForm rf = null;
+        try {
+            rf = (RoleForm)this.getDao().findById(RoleForm.class,new Long(id));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return rf;
+    }
+
+
+    /**
+     * æ’å…¥ä¸€æ¡æƒé™ä¿¡æ¯
+     * @param rf æƒé™ä¿¡æ¯Form
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int add(RoleForm rf) {
+        int tag=-1;
+        boolean t = false;
+        try {
+            t = this.getDao().insert(rf);
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        if (t) {
+            tag = 1;
+        }
+        return tag;
+    }
+
+    /**
+     * åˆ é™¤ä¼ å…¥çš„æƒé™ä¿¡æ¯
+     * @param ids å¾…åˆ é™¤æƒé™idçš„List
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int deleteList(String ids) {
+        int tag=-1;
+
+        try {
+            String hql="delete from RoleForm where id in ("+ids+")";
+            tag = this.getDao().execute(hql);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return tag;
+    }
+
+
+
+
+    /**
+     * ä¿®æ”¹ä¸€æ¡æƒé™ä¿¡æ¯
+     * @param rf æƒé™ä¿¡æ¯Form
+     * @return æ˜¯å¦æˆåŠŸæ ‡å¿—
+     */
+    public int modify(RoleForm rf) {
+        int tag=-1;
+        boolean t = false;
+        try {
+            t = this.getDao().update(rf);
+        } catch(Exception e) {
+        } finally {
+        }
+        if (t) {
+            tag = 1;
+        }
+        return tag;
+    }
+
+    /**
+     * æŸ¥è¯¢ç”¨æˆ·æ‹¥æœ‰çš„æƒé™å’Œå…¶ä»–å¯é€‰æ‹©çš„æƒé™
+     * @param orgType éƒ¨é—¨ç±»å‹ï¼Œflag æ“ä½œæƒé™
+     * @return  ArrayList[] åˆ†åˆ«æ˜¯å·²æ‹¥æœ‰æƒé™ï¼Œå…¶ä»–å¯é€‰æƒé™çš„é›†åˆ
+     */
+    public ArrayList[] userRole(String strUserId,Integer orgType,String flag) {
+        //BASETABLEæƒé™æ‹¥æœ‰adminçš„å…¶ä»–åŠŸèƒ½ï¼Œä½†ä¸èƒ½æŠŠBASETABLEèµ‹äºˆåˆ«äºº
+        //String strWhere = " where rf.delFlag=0 and rf.id!="+AtomRoleCheck.BASETABLE;
+        String strWhere = " where rf.delFlag=0 and rf.id!=0";
+        if(flag.equals("common")){
 //			strWhere+=" and rf.roleType='C'  ";
-		
-		}else if(flag.equals("admin")){
-//			strWhere+="  and rf.roleType!='C' ";
-		}
-		strWhere+=" order by rf.roleName ";
-		
-		ArrayList[] arrayRet=new ArrayList[2];
-		ArrayList userRoleList=new ArrayList();
-		ArrayList allRoleList=new ArrayList();
-		
-		ArrayList roleTemp=new ArrayList();
-		ArrayList allTemp=new ArrayList();
-		
-		ArrayList idTemp=new ArrayList();
-		
-		try{
-			
-			//Ä³ÓÃ»§ÏÂµÄÈ¨ÏŞ
-		 	if(strUserId!=null&&!strUserId.equals("")) 
-		 		userRoleList=(ArrayList)this.getDao().list("from UserForm uf where uf.id="+strUserId);
-			
-			//ÆäËû¿ÉÑ¡ÔñµÄÈ¨ÏŞ
-			allRoleList=(ArrayList)this.getDao().list("from RoleForm rf "+strWhere);
-			
-			if(userRoleList!=null&&userRoleList.size()>0){
-				UserForm uf=(UserForm)userRoleList.get(0);
-				Iterator itRole=uf.getRoles().iterator();
-				
-				while(itRole.hasNext()){
-					RoleForm rf1=(RoleForm)itRole.next();
-					if(rf1.getDelFlag().intValue()==0){
-						String temp[]={rf1.getId().toString(),rf1.getRoleName(),""};
-						roleTemp.add(temp);
-						idTemp.add(rf1.getId().toString());
-					}
-				}
-			}
 
-			for(int i=0;i<allRoleList.size();i++){
-				RoleForm rf2=(RoleForm)allRoleList.get(i);
-				if(rf2.getDelFlag()!=null&&rf2.getDelFlag().intValue()==0){
-					String temp[]={rf2.getId().toString(),rf2.getRoleName(),"",""};
-					if(!idTemp.contains(rf2.getId().toString())) allTemp.add(temp);
-				}
-			}
-			
-			arrayRet[0]=roleTemp;
-			arrayRet[1]=allTemp;
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	 	
-		return arrayRet;
-		
-	}
-   
-   
-	   /**
-		* ÏÔÊ¾Ä³¸ö×Ô¶¨ÒåÈ¨ÏŞ¿É·ÖÅäµÄÔ­×ÓÈ¨ÏŞ
-		* @param String È¨ÏŞid£»int ²¿ÃÅÀàĞÍ
-		* @return ArrayList[]
-		*/
+        }else if(flag.equals("admin")){
+//			strWhere+="  and rf.roleType!='C' ";
+        }
+        strWhere+=" order by rf.roleName ";
+
+        ArrayList[] arrayRet=new ArrayList[2];
+        ArrayList userRoleList=new ArrayList();
+        ArrayList allRoleList=new ArrayList();
+
+        ArrayList roleTemp=new ArrayList();
+        ArrayList allTemp=new ArrayList();
+
+        ArrayList idTemp=new ArrayList();
+
+        try{
+
+            //æŸç”¨æˆ·ä¸‹çš„æƒé™
+            if(strUserId!=null&&!strUserId.equals(""))
+                userRoleList=(ArrayList)this.getDao().list("from UserForm uf where uf.id="+strUserId);
+
+            //å…¶ä»–å¯é€‰æ‹©çš„æƒé™
+            allRoleList=(ArrayList)this.getDao().list("from RoleForm rf "+strWhere);
+
+            if(userRoleList!=null&&userRoleList.size()>0){
+                UserForm uf=(UserForm)userRoleList.get(0);
+                Iterator itRole=uf.getRoles().iterator();
+
+                while(itRole.hasNext()){
+                    RoleForm rf1=(RoleForm)itRole.next();
+                    if(rf1.getDelFlag().intValue()==0){
+                        String temp[]={rf1.getId().toString(),rf1.getRoleName(),""};
+                        roleTemp.add(temp);
+                        idTemp.add(rf1.getId().toString());
+                    }
+                }
+            }
+
+            for(int i=0;i<allRoleList.size();i++){
+                RoleForm rf2=(RoleForm)allRoleList.get(i);
+                if(rf2.getDelFlag()!=null&&rf2.getDelFlag().intValue()==0){
+                    String temp[]={rf2.getId().toString(),rf2.getRoleName(),"",""};
+                    if(!idTemp.contains(rf2.getId().toString())) allTemp.add(temp);
+                }
+            }
+
+            arrayRet[0]=roleTemp;
+            arrayRet[1]=allTemp;
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return arrayRet;
+
+    }
+
+    public ArrayList<String[]> findAllRoleList() throws Exception{
+        ArrayList<String[]> list = new ArrayList();
+        List<RoleForm> allRoleList=this.getDao().list("from RoleForm rf where rf.delFlag=0 and rf.id!=0 order by rf.roleName");
+        for(RoleForm rf:allRoleList){
+            String[] temp = new String[2];
+            temp[0] = rf.getId().toString();
+            temp[1]=rf.getRoleName();
+            list.add(temp);
+        }
+        return list;
+    }
+
+    public ArrayList<Long> findRoleIdList(Long userId) throws Exception{
+        UserForm uf = (UserForm)this.getDao().findById(UserForm.class,new Long(userId));
+        if(uf.getRoles()==null || uf.getRoles().isEmpty()){
+            return new ArrayList<Long>();
+        }
+
+        ArrayList<Long> ids = new ArrayList();
+        Iterator itRole=uf.getRoles().iterator();
+        while(itRole.hasNext()){
+            RoleForm rf=(RoleForm)itRole.next();
+            ids.add(rf.getId());
+        }
+        return ids;
+    }
+
+
+    /**
+     * æ˜¾ç¤ºæŸä¸ªè‡ªå®šä¹‰æƒé™å¯åˆ†é…çš„åŸå­æƒé™
+     * @param String æƒé™idï¼›int éƒ¨é—¨ç±»å‹
+     * @return ArrayList[]
+     */
 //		public ArrayList[] roleContainSelect(String roleId,int orgType) {
 //			ArrayList retList[] = new ArrayList[2];
-//			ArrayList roleLeft = new ArrayList();	//¿ÉÑ¡µÄµÄÔ­×Órole
-//			ArrayList roleRight = new ArrayList();	//ÒÑÓĞµÄÔ­×Órole
+//			ArrayList roleLeft = new ArrayList();	//å¯é€‰çš„çš„åŸå­role
+//			ArrayList roleRight = new ArrayList();	//å·²æœ‰çš„åŸå­role
 //			
 //			ArrayList leftTemp=new ArrayList();
 //			ArrayList rightTemp=new ArrayList();
@@ -313,44 +339,44 @@ public class RoleBo extends CommBo {
 //			return retList;
 //		}
 //		
-		
-		
-		/**
-		 * ½«Ô­×ÓroleµÄ¹¦ÄÜµãid¸³¸øfunction_codes£¨ĞÂÔö£©
-		 * @param String È¨ÏŞids
-		 * @return String »ã×ÜºóµÄÁ´½Óid
-		 */
-		public String getNewFunCode(String strContainCode) {
-			String funCode="";
 
-			try{
-				ArrayList dataList = (ArrayList)this.getDao().list("from RoleForm as rf where rf.id in ("+strContainCode+") ");
-				TreeSet ts = new TreeSet();
-				for(int i=0;i<dataList.size();i++){
-					RoleForm rf1=(RoleForm)dataList.get(i);
-					String tempCodes = rf1.getFunctionCodes();
-					
-					if(tempCodes!=null&&!tempCodes.equals("")){
-						String[] tempFun=tempCodes.split(",");
-						for(int j=0;j<tempFun.length;j++){
-							ts.add(new Integer(tempFun[j]));
-						}
-					}
-				}
-				Iterator it=ts.iterator();
-				String strFunCode="";
-				while(it.hasNext()){
-					String tempCode=((Integer)it.next()).toString();
-					strFunCode+=","+tempCode;
-				}
-				if(strFunCode.length()>1) strFunCode=strFunCode.substring(1);
 
-				funCode=strFunCode;
-				
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			return funCode;	   	
-		}
+    /**
+     * å°†åŸå­roleçš„åŠŸèƒ½ç‚¹idèµ‹ç»™function_codesï¼ˆæ–°å¢ï¼‰
+     * @param strContainCode æƒé™ids
+     * @return String æ±‡æ€»åçš„é“¾æ¥id
+     */
+    public String getNewFunCode(String strContainCode) {
+        String funCode="";
+
+        try{
+            ArrayList dataList = (ArrayList)this.getDao().list("from RoleForm as rf where rf.id in ("+strContainCode+") ");
+            TreeSet ts = new TreeSet();
+            for(int i=0;i<dataList.size();i++){
+                RoleForm rf1=(RoleForm)dataList.get(i);
+                String tempCodes = rf1.getFunctionCodes();
+
+                if(tempCodes!=null&&!tempCodes.equals("")){
+                    String[] tempFun=tempCodes.split(",");
+                    for(int j=0;j<tempFun.length;j++){
+                        ts.add(new Integer(tempFun[j]));
+                    }
+                }
+            }
+            Iterator it=ts.iterator();
+            String strFunCode="";
+            while(it.hasNext()){
+                String tempCode=((Integer)it.next()).toString();
+                strFunCode+=","+tempCode;
+            }
+            if(strFunCode.length()>1) strFunCode=strFunCode.substring(1);
+
+            funCode=strFunCode;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return funCode;
+    }
 
 }

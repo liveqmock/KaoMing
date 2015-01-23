@@ -14,6 +14,7 @@
 <script language=javascript src="js/common.js"></script>
 <script language=javascript src="js/checkValid.js"></script>
 <script language=javascript src="js/inputValidation.js"></script>
+<SCRIPT language="javascript" src="js/commonSelect.js"></SCRIPT>
 
 </head>
 <%
@@ -27,6 +28,8 @@
 		}
 		
 		ArrayList<String[]> empList = (ArrayList<String[]>)request.getAttribute("empList");
+        ArrayList<String[]> roleAllList = (ArrayList<String[]>)request.getAttribute("roleAllList");
+        ArrayList<Long> roleHadList = (ArrayList<Long>)request.getAttribute("roleHadList");
 
 %>
 <body>
@@ -85,8 +88,15 @@
       	</html:select> </td>
   </tr>
  <tr class="tableback1"> 
-    <td width="97"> 角色选择 ：</td>
-    <td colspan="5"><html:text property="roleName" readonly="true" styleClass="form" size="56"/> <a href="javascript:f_role()">[选择]</a> <font color="red">*</font></td>
+    <td width="97"> 角色选择 ：<font color="red">*</font></td>
+    <td colspan="5">
+        <%for(int i = 0; i< roleAllList.size();i++){
+            String[] temp = roleAllList.get(i);
+        %>
+        <input type="checkbox" name="chk" value="<%=temp[0]%>" <%if(roleHadList.contains(new Long(temp[0]))){%> checked <%}%>>&nbsp;<%=temp[1]%>
+
+        <%}%>
+    </td>
   </tr>
   <tr class="tableback1"> 
     <td valign="top">备注：</td>
@@ -125,35 +135,23 @@ function f_check(){
     if(f_isNull(document.forms[0].employeeCode,'用户ID')&&f_isNumChar2(document.forms[0].employeeCode,'用户ID')
     	&&f_isNull(document.forms[0].userName,'用户名称')&&verifyEmail(document.forms[0].email)
     	&&f_maxLength(document.forms[0].remark,'备注',50)){
- 
-	var roleName=document.forms[0].roleName.value;
-	
-	var uName=document.forms[0].userName.value;
-	uName=uName.replaceAll(" ","");
-	uName=uName.replaceAll("	","");
-	document.forms[0].userName.value=uName;
-		
-	if(roleName==null||roleName==''){
-		alert("请选择角色！");
-	}else{
-		retFlag =  true;
-	}
+
+        var roleCode=chk();
+        var uName=document.forms[0].userName.value;
+        uName=uName.replaceAll(" ","");
+        uName=uName.replaceAll("	","");
+        document.forms[0].userName.value=uName;
+
+        if(roleCode==null||roleCode==''){
+            alert("请选择角色！");
+        }else{
+            document.forms[0].roleCode.value=roleCode;
+            retFlag =  true;
+        }
     }
     return retFlag;
 }
 
-	
-function f_role(){
-	var userId=document.forms[0].id.value;
-	var varUser=window.showModalDialog("roleAction.do?method=userRole&id="+userId,"","dialogHeight: 500px; dialogWidth: 600px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
-
-	if(varUser!=null){
-		var retValue=varUser[0];
-		var retName=varUser[1];
-		document.forms[0].roleName.value=retName;
-		document.forms[0].roleCode.value=retValue;
-	}
-}
 
 
 

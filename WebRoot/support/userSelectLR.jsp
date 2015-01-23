@@ -359,23 +359,31 @@ function f_submit(){
     var childrens=select2.all;
     var returnId=new Array(2);
     var reptId="",reptName="";
-    if(childrens.length>0){
-	for (var i = 0; i <= childrens.length - 1; i++) {
-		if(childrens[i].tagName=='INPUT'){
-			reptId+=","+childrens[i].value;
-			reptName+=","+childrens[i].id;
-		}
-	}
-	if(reptId.indexOf(',')!=-1) reptId=reptId.substring(1);
-	if(reptName.indexOf(',')!=-1) reptName=reptName.substring(1);
-	returnId[0]=reptId;
-	returnId[1]=reptName;
-	
-	returnValue=returnId;
+    if(childrens!=null && childrens.length>0){
+        for (var i = 0; i <= childrens.length - 1; i++) {
+            if(childrens[i].tagName=='INPUT'){
+                reptId+=","+childrens[i].value;
+                reptName+=","+childrens[i].id;
+            }
+        }
+        if(reptId.indexOf(',')!=-1) reptId=reptId.substring(1);
+        if(reptName.indexOf(',')!=-1) reptName=reptName.substring(1);
+        returnId[0]=reptId;
+        returnId[1]=reptName;
+
+    //	returnValue=returnId;
+        if(window.opener) {
+            window.opener.setValue(returnId) ;
+        }
+
     }else{
     	returnId[0]="";
-	returnId[1]="";
-    	returnValue=returnId;
+	    returnId[1]="";
+//    	returnValue=returnId;
+        if(window.opener) {
+            window.opener.setValue(returnId) ;
+        }
+
     }
     self.close();
 }
