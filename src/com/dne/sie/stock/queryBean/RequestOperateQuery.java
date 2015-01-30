@@ -32,7 +32,8 @@ public class RequestOperateQuery extends QueryBean{
     private ArrayList queryCondition(SaleDetailForm form){
 		ArrayList paramList = new ArrayList();
 		try{
-			where = " where si.requestId=pa.saleDetailId and pa.partStatus='L' and si.stockStatus='R' ";
+			where = " where si.requestId=pa.saleDetailId and pa.partStatus='L' and si.stockStatus='R' " +
+                    " and si.skuType='S' and si.stuffNo = pa.stuffNo ";
 		if(form!=null){
 
 			if (form.getSaleNo() != null && !form.getSaleNo().equals("")) {
