@@ -70,15 +70,24 @@
     <td>地址：<font color="red">*</font></td>
     <td ><html:text  styleClass="form" property="address"  maxlength="200"  size="40"  /></td>
   </tr>
-  <tr class="tableback2"> 
+
+    <tr class="tableback2">
+        <td>上班时间：</td>
+        <td ><html:text  styleClass="form" property="workHours"  maxlength="20"  size="16"  /></td>
+        <td>双休：</td>
+        <td ><html:text  styleClass="form" property="weekEnd"  maxlength="20"  size="16"  /></td>
+        <td></td>
+        <td ></td>
+    </tr>
+  <tr class="tableback1">
     <td>开户行 ：</td>
     <td><html:text  styleClass="form" property="bank"  maxlength="45"  size="30"  /></td>
   	<td>银行账号：</td>
     <td ><html:text  styleClass="form" property="bankAccount"  maxlength="45"  size="30"  /></td>
-    <td></td>
-    <td></td>
+    <td>税号：</td>
+    <td><html:text  styleClass="form" property="taxNumber"  maxlength="45"  size="30"  /></td>
   </tr>
-  <tr class="tableback1"> 
+  <tr class="tableback2">
     <td valign="top">备注：</td>
     <td colspan="5">
     	<html:textarea property="remark" style="width:90% " styleClass="form"></html:textarea> </td>

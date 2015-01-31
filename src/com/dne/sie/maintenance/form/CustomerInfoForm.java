@@ -5,158 +5,165 @@ import java.util.Date;
 import com.dne.sie.util.form.CommForm;
 
 public class CustomerInfoForm extends CommForm{
-	
-	private String customerId;		//¿Í»§ID      
-	private String customerName;    //¿Í»§Ãû³Æ    
-	private String address;         //µØÖ·        
-	private String linkman;         //ÁªÏµÈË      
-	private String postCode;        //ÓÊÕş±àÂë    
-	private String phone;           //µç»°        
-	private String fax;             //´«Õæ        
-	private String mobile;          //ÊÖ»ú        
-	private String email;           //µç×ÓÓÊ¼ş    
-	private String cityName;        //³ÇÊĞ        
-	private String provinceName;    //Ê¡·İ     
-	private String workHours;    	//ÉÏ°àÊ±¼ä    
-	private String weekEnd;			//Ë«Ğİ
-	private String remark;          //±¸×¢        
-	private String bank;            //¿ª»§ĞĞ  
-	private String bankAccount;     //ÒøĞĞÕËºÅ  
-	private int delFlag;               
 
-	private Date createDate;
-	private Long updateBy;
-	private Long createBy;
-	private Date updateDate;
-	
-	
-	public String getCustomerId() {
-		return customerId;
-	}
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getLinkman() {
-		return linkman;
-	}
-	public void setLinkman(String linkman) {
-		this.linkman = linkman;
-	}
-	public String getPostCode() {
-		return postCode;
-	}
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getFax() {
-		return fax;
-	}
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getCityName() {
-		return cityName;
-	}
-	public void setCityName(String cityName) {
-		this.cityName = cityName;
-	}
-	public String getProvinceName() {
-		return provinceName;
-	}
-	public void setProvinceName(String provinceName) {
-		this.provinceName = provinceName;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public Long getUpdateBy() {
-		return updateBy;
-	}
-	public void setUpdateBy(Long updateBy) {
-		this.updateBy = updateBy;
-	}
-	public Long getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(Long createBy) {
-		this.createBy = createBy;
-	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	public int getDelFlag() {
-		return delFlag;
-	}
-	public void setDelFlag(int delFlag) {
-		this.delFlag = delFlag;
-	}
-	public String getWorkHours() {
-		return workHours;
-	}
-	public void setWorkHours(String workHours) {
-		this.workHours = workHours;
-	}
-	public String getWeekEnd() {
-		return weekEnd;
-	}
-	public void setWeekEnd(String weekEnd) {
-		this.weekEnd = weekEnd;
-	}
-	public String getBank() {
-		return bank;
-	}
-	public void setBank(String bank) {
-		this.bank = bank;
-	}
-	public String getBankAccount() {
-		return bankAccount;
-	}
-	public void setBankAccount(String bankAccount) {
-		this.bankAccount = bankAccount;
-	}
-	
-	
+    private String customerId;		//å®¢æˆ·ID
+    private String customerName;    //å®¢æˆ·åç§°
+    private String address;         //åœ°å€
+    private String linkman;         //è”ç³»äºº
+    private String postCode;        //é‚®æ”¿ç¼–ç 
+    private String phone;           //ç”µè¯
+    private String fax;             //ä¼ çœŸ
+    private String mobile;          //æ‰‹æœº
+    private String email;           //ç”µå­é‚®ä»¶
+    private String cityName;        //åŸå¸‚
+    private String provinceName;    //çœä»½
+    private String workHours;    	//ä¸Šç­æ—¶é—´
+    private String weekEnd;			//åŒä¼‘
+    private String remark;          //å¤‡æ³¨
+    private String bank;            //å¼€æˆ·è¡Œ
+    private String bankAccount;     //é“¶è¡Œè´¦å·
+    private String taxNumber;       //ç¨å·
 
+    private int delFlag;
+
+    private Date createDate;
+    private Long updateBy;
+    private Long createBy;
+    private Date updateDate;
+
+
+    public String getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+    public String getCustomerName() {
+        return customerName;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getLinkman() {
+        return linkman;
+    }
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+    public String getPostCode() {
+        return postCode;
+    }
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getFax() {
+        return fax;
+    }
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+    public String getMobile() {
+        return mobile;
+    }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getCityName() {
+        return cityName;
+    }
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+    public String getProvinceName() {
+        return provinceName;
+    }
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Long getCreateBy() {
+        return createBy;
+    }
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public int getDelFlag() {
+        return delFlag;
+    }
+    public void setDelFlag(int delFlag) {
+        this.delFlag = delFlag;
+    }
+    public String getWorkHours() {
+        return workHours;
+    }
+    public void setWorkHours(String workHours) {
+        this.workHours = workHours;
+    }
+    public String getWeekEnd() {
+        return weekEnd;
+    }
+    public void setWeekEnd(String weekEnd) {
+        this.weekEnd = weekEnd;
+    }
+    public String getBank() {
+        return bank;
+    }
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+    public String getBankAccount() {
+        return bankAccount;
+    }
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String getTaxNumber() {
+        return taxNumber;
+    }
+
+    public void setTaxNumber(String taxNumber) {
+        this.taxNumber = taxNumber;
+    }
 }

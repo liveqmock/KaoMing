@@ -47,7 +47,7 @@ try {
 <div class="main" >
 
 	<div class="content">
-		<h1>客 户 维 修 服 务 表</h1>
+		<h1>维 修 服 务 报 价 单</h1>
 		<table border="1" cellspacing="1">
 			<tr>
 				<td width="65"><b>客户</b></td>
@@ -91,13 +91,14 @@ try {
 			<tr><td><%=rsf.getCustomerTrouble() == null ? "" : rsf.getCustomerTrouble()%></td></tr>
 			<tr><td></td></tr>
 		</table>
+
 		<div class="root">
 			<span class="fyy-fl">维修内容：</span>
 		</div>
 		<table border="1" cellspacing="1">
 			<tr height="100" class="height1"><td style="height:68px;"><%=rsf.getRepairContent() == null ? "&nbsp;" : rsf.getRepairContent()%></td></tr>
-			
 		</table>
+
 		<div class="root">
 			<span class="fyy-fl">更换零件（若现场更换零件另计费）</span>
 		</div>

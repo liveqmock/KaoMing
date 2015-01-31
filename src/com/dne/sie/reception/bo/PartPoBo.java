@@ -6,6 +6,7 @@ import com.dne.sie.common.tools.CommonSearch;
 import com.dne.sie.common.tools.DicInit;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.reception.form.PoForm;
+import com.dne.sie.reception.form.SaleDetailForm;
 import com.dne.sie.reception.queryBean.PartPoQuery;
 import com.dne.sie.util.bo.CommBo;
 import com.dne.sie.util.hibernate.AllDefaultDaoImp;
@@ -33,7 +34,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * 列表查询拼装
-     * @param PoForm 查询条件
+     * @param dept 查询条件
      * @return ArrayList 查询结果
      */
     public ArrayList planList(PoForm dept) throws Exception {
@@ -86,7 +87,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * 根据id查询PoForm信息
-     * @param String 记录pk
+     * @param id 记录pk
      * @return PoForm
      */
     public PoForm findById(Long id) throws Exception {
@@ -97,7 +98,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * PO确认
-     * @param checked ids
+     * @param ids
      * @return int 1为成功，-1为失败
      */
     public static synchronized int sendPo(String ids,Long userId,String orderNo,
@@ -108,6 +109,7 @@ public class PartPoBo extends CommBo {
         String strHql="from PoForm as pf where pf.poNo in ( "+ids+" ) and pf.orderStatus='A'";
         List<PoForm> planList=adi.list(strHql);
         List<PoForm> sendList = new ArrayList<PoForm>();
+        List<SaleDetailForm> salePartsList = new ArrayList<SaleDetailForm>();
         for(int i=0;planList!=null&&i<planList.size();i++){
             PoForm po = planList.get(i);
             po.setOrderStatus("B");	//订购中
@@ -120,9 +122,19 @@ public class PartPoBo extends CommBo {
             po.setTransportMode(transportMode);
 
             sendList.add(po);
+            if(po.getRequestId()!=null) {
+                SaleDetailForm sdf = (SaleDetailForm)adi.findById(SaleDetailForm.class, po.getRequestId());
+                if(sdf.getSaleNo().equals(po.getSaleNo()) && sdf.getStuffNo().equals(po.getStuffNo())){
+                    sdf.setPartStatus("I"); //在途中
+                    sdf.setUpdateDate(new Date());
+                    sdf.setUpdateBy(userId);
+                    salePartsList.add(sdf);
+                }
+            }
 
         }
         if(adi.updateBatch(sendList)){
+            adi.updateBatch(salePartsList);
             tag=1;
         }
 
@@ -133,7 +145,6 @@ public class PartPoBo extends CommBo {
      * PO取消
      * @param ids
      * @param userId
-     * @param orderNo
      * @param remark
      * @return
      * @throws Exception
@@ -192,7 +203,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * 保内订购新增
-     * @param PoForm
+     * @param pof
      * @return int 1为成功，-1为失败
      */
     public int manualPlanAdd(PoForm pof) throws Exception{
@@ -208,7 +219,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * 保内订购删除
-     * @param checked ids
+     * @param  ids
      * @return int 1为成功，-1为失败
      */
     public int manuPoDel(String ids) throws Exception{
@@ -219,7 +230,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * 订购单取消
-     * @param checked ids
+     * @param ids
      * @return int 1为成功，-1为失败
      */
     public int orderCancel(String ids,Long userId) throws Exception{
@@ -231,7 +242,6 @@ public class PartPoBo extends CommBo {
 
     /**
      * 获取订单所有年月
-     * @param String
      * @return Float
      */
     public List<String> getOrderMonthList() {
@@ -241,7 +251,7 @@ public class PartPoBo extends CommBo {
 
     /**
      * 订购单打印
-     * @param poNo
+     * @param orderNo
      * @return
      */
     public ArrayList poFormPrint(String orderNo) throws Exception {
