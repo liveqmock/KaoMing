@@ -91,14 +91,14 @@ try {
 			<tr><td><%=rsf.getCustomerTrouble() == null ? "" : rsf.getCustomerTrouble()%></td></tr>
 			<tr><td></td></tr>
 		</table>
-
+        <!--
 		<div class="root">
 			<span class="fyy-fl">维修内容：</span>
 		</div>
 		<table border="1" cellspacing="1">
 			<tr height="100" class="height1"><td style="height:68px;"><%=rsf.getRepairContent() == null ? "&nbsp;" : rsf.getRepairContent()%></td></tr>
 		</table>
-
+        -->
 		<div class="root">
 			<span class="fyy-fl">更换零件（若现场更换零件另计费）</span>
 		</div>
