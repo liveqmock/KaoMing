@@ -822,7 +822,7 @@ public class SaleInfoAction extends ControlAction{
             SaleInfoBo pib = SaleInfoBo.getInstance();
             request.setAttribute("salePartsInfoList",pib.salePartsPrint(saleNo));
             String[] kmInfo=CustomerInfoBo.getInstance().getKmInfo(custId);
-            String[] chenranInfo=CustomerInfoBo.getInstance().getKmInfo("CHRA");
+            String[] chenranInfo=CustomerInfoBo.getInstance().getKmInfo("SHB2");
             request.setAttribute("kmInfo",kmInfo);
             request.setAttribute("chenranInfo",chenranInfo);
             if("quotePrint".equals(flag)){	//核算单
