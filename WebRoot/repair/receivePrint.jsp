@@ -104,11 +104,11 @@ try {
 		</div>
 		<table border="1" cellspacing="1">
 			<tr>
-				<td width="210"><b>零件料号</b></td>
-                <td width="210"><b>零件名称</b></td>
-				<td width="160"><b>数量</b></td>
-				<td width="140"><b>单价</b></td>
-                <td width="140"><b>总价</b></td>
+				<td width="25%"><b>零件料号</b></td>
+                <td width="35%"><b>零件名称</b></td>
+				<td width="10%"><b>数量</b></td>
+				<td width="15%"><b>单价</b></td>
+                <td width="15%"><b>总价</b></td>
 			</tr>
 			 <%
                  double totleQuote = 0;
