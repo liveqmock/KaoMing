@@ -7,13 +7,21 @@
 <script language=javascript src="js/inputValidation.js"></script>
  <%
 	String stuffNo = (String)request.getAttribute("stuffNo");
+     String detailId = (String)request.getAttribute("saleDetailId");
+     String partNum = (String)request.getAttribute("partNum");
 %>
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function returnIrisValue(){
-	returnValue=document.forms[0].returnNum.value;;
-	
-	window.close();
+    if(window.opener) {
+
+        var returnNum = document.forms[0].returnNum.value;
+        //alert(returnNum);
+        //alert(<%=partNum%>);
+        //alert(<%=detailId%>);
+        window.opener.setReturnNum(returnNum,<%=partNum%>,<%=detailId%>) ;
+    }
+    window.close();
 }
 
 //-->

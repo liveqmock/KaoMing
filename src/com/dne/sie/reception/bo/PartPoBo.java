@@ -6,7 +6,6 @@ import com.dne.sie.common.tools.CommonSearch;
 import com.dne.sie.common.tools.DicInit;
 import com.dne.sie.common.tools.Operate;
 import com.dne.sie.reception.form.PoForm;
-import com.dne.sie.reception.form.SaleDetailForm;
 import com.dne.sie.reception.queryBean.PartPoQuery;
 import com.dne.sie.util.bo.CommBo;
 import com.dne.sie.util.hibernate.AllDefaultDaoImp;
@@ -109,7 +108,7 @@ public class PartPoBo extends CommBo {
         String strHql="from PoForm as pf where pf.poNo in ( "+ids+" ) and pf.orderStatus='A'";
         List<PoForm> planList=adi.list(strHql);
         List<PoForm> sendList = new ArrayList<PoForm>();
-        List<SaleDetailForm> salePartsList = new ArrayList<SaleDetailForm>();
+//        List<SaleDetailForm> salePartsList = new ArrayList<SaleDetailForm>();
         for(int i=0;planList!=null&&i<planList.size();i++){
             PoForm po = planList.get(i);
             po.setOrderStatus("B");	//订购中
@@ -122,19 +121,19 @@ public class PartPoBo extends CommBo {
             po.setTransportMode(transportMode);
 
             sendList.add(po);
-            if(po.getRequestId()!=null) {
-                SaleDetailForm sdf = (SaleDetailForm)adi.findById(SaleDetailForm.class, po.getRequestId());
-                if(sdf.getSaleNo().equals(po.getSaleNo()) && sdf.getStuffNo().equals(po.getStuffNo())){
-                    sdf.setPartStatus("I"); //在途中
-                    sdf.setUpdateDate(new Date());
-                    sdf.setUpdateBy(userId);
-                    salePartsList.add(sdf);
-                }
-            }
+//            if(po.getRequestId()!=null) {
+//                SaleDetailForm sdf = (SaleDetailForm)adi.findById(SaleDetailForm.class, po.getRequestId());
+//                if(sdf.getSaleNo().equals(po.getSaleNo()) && sdf.getStuffNo().equals(po.getStuffNo())){
+//                    sdf.setPartStatus("I"); //在途中
+//                    sdf.setUpdateDate(new Date());
+//                    sdf.setUpdateBy(userId);
+//                    salePartsList.add(sdf);
+//                }
+//            }
 
         }
         if(adi.updateBatch(sendList)){
-            adi.updateBatch(salePartsList);
+//            adi.updateBatch(salePartsList);
             tag=1;
         }
 

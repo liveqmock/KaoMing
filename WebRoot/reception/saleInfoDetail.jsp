@@ -528,8 +528,10 @@ try{
 	}
 	
 	function f_return(detailId,stuffNo,partNum){
-		var returnNum=window.showModalDialog("saleInfoAction.do?method=partReturnDetail&saleDetailId="+detailId+"&stuffNo="+stuffNo+"&Rnd="+Math.random(),"","dialogHeight: 220px; dialogWidth: 620px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
-		if(returnNum!=null){
+        /*
+		var returnNum=window.showModalDialog("saleInfoAction.do?method=partReturnDetail&saleDetailId="+detailId+"&stuffNo="+stuffNo+"&Rnd="+Math.random(),
+                "","dialogHeight: 220px; dialogWidth: 620px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
+        if(returnNum!=null){
 			if(new Number(returnNum)>new Number(partNum)){
 				alert("不能大于原数量！");
 			}else{
@@ -537,13 +539,27 @@ try{
 				document.forms[0].action="saleInfoAction.do?method=partReturnConfirm&returnNum="+returnNum;
 				document.forms[0].submit();
 			}
-		}
-	}
-	
-	function up_affix(detailId){
-			window.showModalDialog("attachedInfoAction.do?method=affixList&saleDetailId="+detailId+"&viewFlag=<%=viewFlag%>&Rnd="+Math.random(),"","dialogHeight: 220px; dialogWidth: 620px; edge: Sunken; center: Yes; help: No; resizable: No; status: Yes;");
+		}*/
 
+        middleOpen("saleInfoAction.do?method=partReturnDetail&saleDetailId="+detailId+"&stuffNo="+stuffNo+"&partNum="+partNum,"",
+                "height= 220, width= 620,toolbar=no,scrollbars=no, resizable=no,location=no, status=no");
 	}
+
+    function setReturnNum(returnNum,partNum,detailId){
+        if(new Number(returnNum)>new Number(partNum)){
+            alert("不能大于原数量！");
+        }else{
+            document.forms[0].saleDetailId.value=detailId;
+            document.forms[0].action="saleInfoAction.do?method=partReturnConfirm&returnNum="+returnNum;
+            document.forms[0].submit();
+        }
+    }
+
+
+    function up_affix(detailId){
+        middleOpen("attachedInfoAction.do?method=affixList&saleDetailId="+detailId+"&viewFlag=<%=viewFlag%>","",
+                "height= 220, width= 620,toolbar=no,scrollbars=no, resizable=no,location=no, status=no");
+    }
 	
 	
 	

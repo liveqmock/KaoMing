@@ -12,138 +12,137 @@ import com.dne.sie.util.action.ControlAction;
 
 
 /**
- * Èë¿â²Ù×÷Action´¦ÀíÀà
+ * å…¥åº“æ“ä½œActionå¤„ç†ç±»
  * @author xt
  * @version 1.1.5.6
- * @see StockOutOperateAction.java <br>
  */
 public class StockInOperateAction extends ControlAction{
 
 
-	/**
-	* ÊÕ»õÈë¿âÒ³Ãæ
-	* @param request HttpServletRequest
-	* @param form ±íµ¥Êı¾İ
-	* @return Ò³Ãæ
-	*/
-   public String orderInList(HttpServletRequest request, ActionForm form) {
-		String forward = "orderInList";
-		
-		try{
-			String orderNo=request.getParameter("orderNo");
-			if(orderNo!=null){
-				StockInBo sib = StockInBo.getInstance();
-				request.setAttribute("orderInList",sib.orderInList(orderNo));
-			}
-			request.setAttribute("orderNo",orderNo);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return forward;
-   }
-   
-	/**
-	 * ÊÕ»õÈë¿âÈ·ÈÏ
-	 * @param request HttpServletRequest
-	 * @param form ActionForm ±íµ¥Êı¾İ
-	 * @return ÊÕ»õÈë¿âÒ³Ãæ
-	 */
-	public String orderInReceive(HttpServletRequest request, ActionForm form){
-		String forward = "resultMessage";
-		int tag=-1;
-		try{
-			HttpSession session = request.getSession();
-			Long userId = (Long) session.getAttribute("userId");
-			
-			String orderNo = request.getParameter("orderNo");
-			String transportMode = request.getParameter("transportMode");
-			
-			String[] poNo = request.getParameterValues("poNo"); //pk
-			String[] receiveNum = request.getParameterValues("receiveNum"); //ÊµÊÕÊıÁ¿
-			String[] perCost = request.getParameterValues("perCost"); //Êµ¼Êµ¥¼Û(RMB)
-			String[] orderDollar = request.getParameterValues("orderDollar"); //¶©¹ºµ¥¼Û($)
-			String[] freightTW = request.getParameterValues("freightTW"); //Ì¨ÍåÔË·Ñ(RMB)
-			String[] tariff = request.getParameterValues("tariff"); //¹ØË°(RMB)
-			String[] invoiceNo = request.getParameterValues("invoiceNo"); //·¢Æ±ºÅ
-			String[] binCode = request.getParameterValues("binCode"); //·¢Æ±ºÅ
-			String[][] para = {poNo,receiveNum,perCost,orderDollar,freightTW,invoiceNo,tariff,binCode};
-			
-			StockInBo sib = StockInBo.getInstance();
-			tag=sib.orderInReceive(para,orderNo,userId,transportMode);
-		}catch(IllegalPoException e1){
-			request.setAttribute("errStuffNo", e1.getMessage());
-			forward="IllegalPoException";
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			request.setAttribute("tag", tag + "");
-			request.setAttribute("businessFlag", "orderInReceive");
-		}
-		return forward;
-	}
-   
-   
-   
+    /**
+     * æ”¶è´§å…¥åº“é¡µé¢
+     * @param request HttpServletRequest
+     * @param form è¡¨å•æ•°æ®
+     * @return é¡µé¢
+     */
+    public String orderInList(HttpServletRequest request, ActionForm form) {
+        String forward = "orderInList";
+
+        try{
+            String orderNo=request.getParameter("orderNo");
+            if(orderNo!=null){
+                StockInBo sib = StockInBo.getInstance();
+                request.setAttribute("orderInList",sib.orderInList(orderNo));
+            }
+            request.setAttribute("orderNo",orderNo);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return forward;
+    }
+
+    /**
+     * æ”¶è´§å…¥åº“ç¡®è®¤
+     * @param request HttpServletRequest
+     * @param form ActionForm è¡¨å•æ•°æ®
+     * @return æ”¶è´§å…¥åº“é¡µé¢
+     */
+    public String orderInReceive(HttpServletRequest request, ActionForm form){
+        String forward = "resultMessage";
+        int tag=-1;
+        try{
+            HttpSession session = request.getSession();
+            Long userId = (Long) session.getAttribute("userId");
+
+            String orderNo = request.getParameter("orderNo");
+            String transportMode = request.getParameter("transportMode");
+
+            String[] poNo = request.getParameterValues("poNo"); //pk
+            String[] receiveNum = request.getParameterValues("receiveNum"); //å®æ”¶æ•°é‡
+            String[] perCost = request.getParameterValues("perCost"); //å®é™…å•ä»·(RMB)
+            String[] orderDollar = request.getParameterValues("orderDollar"); //è®¢è´­å•ä»·($)
+            String[] freightTW = request.getParameterValues("freightTW"); //å°æ¹¾è¿è´¹(RMB)
+            String[] tariff = request.getParameterValues("tariff"); //å…³ç¨(RMB)
+            String[] invoiceNo = request.getParameterValues("invoiceNo"); //å‘ç¥¨å·
+            String[] binCode = request.getParameterValues("binCode"); //å‘ç¥¨å·
+            String[][] para = {poNo,receiveNum,perCost,orderDollar,freightTW,invoiceNo,tariff,binCode};
+
+            StockInBo sib = StockInBo.getInstance();
+            tag=sib.orderInReceive(para,orderNo,userId,transportMode);
+        }catch(IllegalPoException e1){
+            request.setAttribute("errStuffNo", e1.getMessage());
+            forward="IllegalPoException";
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            request.setAttribute("tag", tag + "");
+            request.setAttribute("businessFlag", "orderInReceive");
+        }
+        return forward;
+    }
+
+
+
 //	/**
-//	* ¿â´æµ÷ÕûÈë¿â ÁĞ±íÒ³Ãæ
+//	* åº“å­˜è°ƒæ•´å…¥åº“ åˆ—è¡¨é¡µé¢
 //	* @param request HttpServletRequest
-//	* @param form ±íµ¥Êı¾İ
-//	* @return Ò³Ãæ
+//	* @param form è¡¨å•æ•°æ®
+//	* @return é¡µé¢
 //	*/
 //   public String stockAdjustInList(HttpServletRequest request, ActionForm form) {
 //		String forward = "stockAdjustInList";
-//		
+//
 //		try{
 //			StockFlowForm sff=(StockFlowForm)form;
-//			//±¾ÖÜÈë¿â
+//			//æœ¬å‘¨å…¥åº“
 //			String[] days=Operate.getDayOfWeek();
 //			sff.setInOutDate1(days[0]);
 //			sff.setInOutDate2(days[1]);
-//			//Èë¿â
+//			//å…¥åº“
 //			sff.setFlowType("I");
-//			//¿âµ÷
+//			//åº“è°ƒ
 //			sff.setFlowItem("K");
 //			StockInBo sio = StockInBo.getInstance();
-//			
+//
 //			request.setAttribute("stockAdjustInList",sio.stockInOutList(sff));
-//			
-//		    
+//
+//
 //		}catch(Exception e){
 //			e.printStackTrace();
 //		}
 //		return forward;
 //   }
-//   
 //
-//   
+//
+//
 //   /**
-//   * ¿â´æµ÷ÕûÈë¿âÈ·ÈÏ
+//   * åº“å­˜è°ƒæ•´å…¥åº“ç¡®è®¤
 //   * @param request HttpServletRequest
-//   * @param form  ±íµ¥Êı¾İ
-//   * @return Ò³Ãæ
-//   */	
+//   * @param form  è¡¨å•æ•°æ®
+//   * @return é¡µé¢
+//   */
 //	  public String stockAdjustInConfirm(HttpServletRequest request,ActionForm form) {
-//		  
+//
 //		  int tag =-1;
 //
 //		  try{
 //			  StockFlowForm sff=(StockFlowForm)form;
-//			  //Èë¿â
+//			  //å…¥åº“
 //			  sff.setFlowType("I");
-//			  //¿âµ÷Èë
+//			  //åº“è°ƒå…¥
 //			  sff.setFlowItem("K");
 //			  sff.setCreateDate(new Date());
 //			  StockInBo sio = StockInBo.getInstance();
 //			  tag= sio.stockAdjustIn(sff);
 //			  request.setAttribute("tag",tag+"");
-//			  
+//
 //		  }catch(Exception e){
 //			  e.printStackTrace();
 //		  }
 //		  return this.stockAdjustInList(request, form);
 //	  }
-	  
 
-   
-		
+
+
+
 }

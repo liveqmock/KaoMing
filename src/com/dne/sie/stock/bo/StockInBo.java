@@ -276,7 +276,9 @@ public class StockInBo extends CommBo{
      * 		a. 将销售零件进行状态修改或拆分，再判断销售单状态是否需要修改；
      * 		b. 将销售零件的detailId赋值给库存requestId，保留该库存零件（已分配待领取） ；
      * 		c. 若入库有剩余，将剩余零件再分配给其他需要该零件的单子；
-     * @param 收货信息，销售单号，操作人
+     * @param para 收货信息
+     * @param saleNo 销售单号
+     * @param userId 操作人
      * @return tag
      */
     public synchronized int orderInReceive(String[][] para,String saleNo,Long userId,String transportMode) throws Exception {

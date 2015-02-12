@@ -724,6 +724,7 @@ public class SaleInfoAction extends ControlAction{
     public String partReturnDetail(HttpServletRequest request, ActionForm form) throws Exception {
         request.setAttribute("saleDetailId",request.getParameter("saleDetailId"));
         request.setAttribute("stuffNo",request.getParameter("stuffNo"));
+        request.setAttribute("partNum",request.getParameter("partNum"));
 
         return "partReturnDetail";
     }
