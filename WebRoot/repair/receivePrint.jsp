@@ -104,7 +104,8 @@ try {
 		</div>
 		<table border="1" cellspacing="1">
 			<tr>
-				<td width="210"><b>零件名称</b></td>
+				<td width="210"><b>零件料号</b></td>
+                <td width="210"><b>零件名称</b></td>
 				<td width="160"><b>数量</b></td>
 				<td width="140"><b>单价</b></td>
                 <td width="140"><b>总价</b></td>
@@ -117,7 +118,7 @@ try {
                         double tmp = Integer.parseInt(obj[5]) * Double.parseDouble(obj[6]);
                         totleQuote += tmp;
 			  %>
-			    <tr><td><%=obj[4] %></td><td><%=obj[5] %></td><td><%=obj[6] %></td><td><%=tmp %></td></tr>
+			    <tr><td><%=obj[4] %></td><td><%=obj[3] %></td><td><%=obj[5] %></td><td><%=obj[6] %></td><td><%=tmp %></td></tr>
 			<%}} %>
 		</table>
 		<div class="root"></div>
