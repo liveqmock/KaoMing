@@ -129,7 +129,7 @@ public class DicInit extends HttpServlet{
     }
 
     public void threadInit() throws Exception {
-        if(Operate.getSysPath().startsWith("/home")){
+        if(Operate.getSysPath().startsWith("/home") && Operate.getSysPath().contains("KaoMing")){
 
             ProcessWatchDog dog = new ProcessWatchDog();
             dog.setName("Daemon Server");

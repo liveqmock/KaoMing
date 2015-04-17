@@ -61,8 +61,12 @@
         <property name="bankAccount">
             <column name="BANK_ACCOUNT"/>
         </property>
-    
-        
+
+        <property name="taxNumber">
+            <column name="tax_number"/>
+        </property>
+
+
         <property name="createBy" update="false">
             <column name="CREATE_BY" />
         </property>
